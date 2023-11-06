@@ -1,9 +1,8 @@
-package graphql
+package client
 
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -26,17 +25,8 @@ func NewHTTPClient(endpoint Endpoint, headers http.Header) *HttpClient {
 	}
 }
 
-func (c *HttpClient) Query(ctx context.Context, query string, variables map[string]interface{}, method string) ([]byte, error) {
-	body := map[string]interface{}{
-		"query":     query,
-		"variables": variables,
-	}
-	reqBody, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.do(ctx, method, reqBody)
+func (c *HttpClient) Query(ctx context.Context, body string, method string) ([]byte, error) {
+	return c.do(ctx, method, []byte(body))
 }
 
 func (c *HttpClient) do(ctx context.Context, method string, body []byte) ([]byte, error) {
@@ -54,13 +44,14 @@ func (c *HttpClient) do(ctx context.Context, method string, body []byte) ([]byte
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode)
-	}
-
 	bs, readErr := io.ReadAll(resp.Body)
 	if readErr != nil {
 		return nil, readErr
 	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("unexpected status code: %d\n response: %s", resp.StatusCode, string(bs))
+	}
+
 	return bs, nil
 }

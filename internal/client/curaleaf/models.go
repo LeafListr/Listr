@@ -8,32 +8,41 @@ const (
 )
 
 type Image struct {
-	URL      string `json:"url"`
-	TypeName string `json:"__typename,omitempty"`
+	URL string `json:"url"`
 }
 
 type Brand struct {
 	Description string `json:"description"`
-	ID          string `json:"id"`
+	Id          string `json:"id"`
 	Image       Image  `json:"image"`
 	Name        string `json:"name"`
 	Slug        string `json:"slug"`
-	TypeName    string `json:"__typename,omitempty"`
 }
 
 type Category struct {
 	DisplayName string `json:"displayName"`
 	Key         string `json:"key"`
-	TypeName    string `json:"__typename,omitempty"`
 }
 
 type Effect struct {
 	DisplayName string `json:"displayName"`
 }
 
+type CannabinoidObj struct {
+	Cannabinoid Cannabinoid `json:"cannabinoid"`
+	Unit        string      `json:"unit"`
+	Value       float64     `json:"value"`
+}
+
 type Cannabinoid struct {
 	Description string `json:"description"`
 	Name        string `json:"name"`
+}
+
+type TerpeneObj struct {
+	Terpene    Terpene `json:"terpene"`
+	UnitSymbol string  `json:"unitSymbol"`
+	Value      float64 `json:"value"`
 }
 
 type Terpene struct {
@@ -42,43 +51,30 @@ type Terpene struct {
 }
 
 type THC struct {
-	Formatted string `json:"formatted"`
-	Range     string `json:"range"`
-	TypeName  string `json:"__typename,omitempty"`
+	Formatted string    `json:"formatted"`
+	Range     []float64 `json:"range"`
 }
 
 type LabResult struct {
-	Cannabinoids []struct {
-		Cannabinoid Cannabinoid `json:"cannabinoid"`
-		Unit        string      `json:"unit"`
-		Value       float64     `json:"value"`
-	} `json:"cannabinoids"`
-	Terpenes []struct {
-		Terpene    Terpene `json:"terpene"`
-		UnitSymbol string  `json:"unitSymbol"`
-		Value      float64 `json:"value"`
-	} `json:"terpenes"`
-	THC      THC    `json:"thc"`
-	TypeName string `json:"__typename,omitempty"`
+	Cannabinoids []CannabinoidObj `json:"cannabinoids"`
+	Terpenes     []TerpeneObj     `json:"terpenes"`
+	THC          THC              `json:"thc"`
 }
 
 type Offer struct {
 	Description string `json:"description,omitempty"`
-	ID          string `json:"id"`
+	Id          string `json:"id"`
 	Title       string `json:"title"`
-	TypeName    string `json:"__typename,omitempty"`
 }
 
 type Strain struct {
 	Key         string `json:"key"`
 	DisplayName string `json:"displayName"`
-	TypeName    string `json:"__typename,omitempty"`
 }
 
 type Subcategory struct {
 	Key         string `json:"key"`
 	DisplayName string `json:"displayName"`
-	TypeName    string `json:"__typename,omitempty"`
 }
 
 type Variant struct {
@@ -86,13 +82,12 @@ type Variant struct {
 		Unit  string  `json:"unit"`
 		Value float64 `json:"value"`
 	} `json:"flowerEquivalent,omitempty"`
-	ID           string  `json:"id"`
+	Id           string  `json:"id"`
 	IsSpecial    bool    `json:"isSpecial"`
 	Option       string  `json:"option"`
 	Price        float64 `json:"price"`
 	Quantity     int     `json:"quantity"`
 	SpecialPrice float64 `json:"specialPrice,omitempty"`
-	TypeName     string  `json:"__typename,omitempty"`
 }
 
 type Product struct {
@@ -108,24 +103,72 @@ type Product struct {
 	Strain          Strain      `json:"strain,omitempty"`
 	Subcategory     Subcategory `json:"subcategory,omitempty"`
 	Variants        []Variant   `json:"variants"`
-	TypeName        string      `json:"__typename,omitempty"`
 	CardDescription string      `json:"cardDescription,omitempty"`
 }
 
-type AllProductResponse struct {
+type AllOffersResponse struct {
 	Data struct {
-		Product struct {
-			Product Product `json:"product"`
-		} `json:"product"`
+		DispensaryMenu struct {
+			Offers []Offer `json:"offers"`
+		} `json:"dispensaryMenu"`
 	} `json:"data"`
 }
 
-type AllProductForCategoryResponse struct {
+func NewAllOffersResponse(offers []Offer) AllOffersResponse {
+	return AllOffersResponse{
+		Data: struct {
+			DispensaryMenu struct {
+				Offers []Offer `json:"offers"`
+			} `json:"dispensaryMenu"`
+		}{
+			DispensaryMenu: struct {
+				Offers []Offer `json:"offers"`
+			}{
+				Offers: offers,
+			},
+		},
+	}
+}
+
+type AllCategoriesResponse struct {
+	Data struct {
+		DispensaryMenu struct {
+			AllFilters struct {
+				Categories []Category `json:"categories"`
+			} `json:"allFilters"`
+		} `json:"dispensaryMenu"`
+	} `json:"data"`
+}
+
+func NewAllCategoriesResponse(categories []Category) AllCategoriesResponse {
+	return AllCategoriesResponse{
+		Data: struct {
+			DispensaryMenu struct {
+				AllFilters struct {
+					Categories []Category `json:"categories"`
+				} `json:"allFilters"`
+			} `json:"dispensaryMenu"`
+		}{
+			DispensaryMenu: struct {
+				AllFilters struct {
+					Categories []Category `json:"categories"`
+				} `json:"allFilters"`
+			}{
+				AllFilters: struct {
+					Categories []Category `json:"categories"`
+				}{
+					Categories: categories,
+				},
+			},
+		},
+	}
+}
+
+type AllProductsResponse struct {
 	Data struct {
 		DispensaryMenu struct {
 			Offers   []Offer   `json:"offers"`
 			Products []Product `json:"products"`
-			TypeName string    `json:"__typename"`
 		} `json:"dispensaryMenu"`
 	} `json:"data"`
 }

@@ -1,4 +1,4 @@
-package graphql
+package client
 
 import (
 	"context"
@@ -8,5 +8,5 @@ import (
 
 //counterfeiter:generate . Client
 type Client interface {
-	Query(ctx context.Context, query string, variables map[string]interface{}, method string) ([]byte, error)
+	Query(ctx context.Context, body string, method string) ([]byte, error)
 }
