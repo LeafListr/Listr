@@ -3,6 +3,7 @@ module github.com/Linkinlog/LeafList
 go 1.21.0
 
 require (
+	github.com/go-chi/chi/v5 v5.0.10
 	github.com/maxbrunsfeld/counterfeiter/v6 v6.7.0
 	github.com/stretchr/testify v1.8.4
 )

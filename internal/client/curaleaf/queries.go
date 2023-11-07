@@ -2,6 +2,18 @@ package curaleaf
 
 import "fmt"
 
+func ProductQuery(menuId, productId, menuType string) string {
+	return fmt.Sprintf(`
+{
+    "query": "fragment full on Product { brand { description id image { url } name slug } category { displayName key } descriptionHtml effects { displayName } id images { id url } labResults { cannabinoids { cannabinoid { description name } unit value } terpenes { terpene { description name } unitSymbol value } thc { formatted range } } name offers { description id title } strain { key displayName } subcategory { key displayName } variants { flowerEquivalent { unit value } id isSpecial option price quantity specialPrice } } query PDP($dispensaryUniqueId: ID!, $menuType: MenuType!, $productId: ID!) { product( dispensaryUniqueId: $dispensaryUniqueId menuType: $menuType productId: $productId ) { product { ...full } } }",
+    "variables": {
+        "dispensaryUniqueId": "%s",
+        "menuType": "%s",
+		"productId": "%s"
+    }
+}`, menuId, menuType, productId)
+}
+
 func AllProductQuery(menuId, menuType string) string {
 	return fmt.Sprintf(`
 {

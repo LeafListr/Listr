@@ -1,11 +1,11 @@
 package curaleaf
 
-const (
-	Endpoint  = "https://graph.curaleaf.com/api/curaql"
-	Authority = "graph.curaleaf.com"
-	GbgId     = "LMR124"
-	MenuType  = "MEDICAL"
-)
+// const (
+// 	Endpoint  = "https://graph.curaleaf.com/api/curaql"
+// 	Authority = "graph.curaleaf.com"
+// 	GbgId     = "LMR124"
+// 	MenuType  = "MEDICAL"
+// )
 
 type Image struct {
 	URL string `json:"url"`
@@ -106,6 +106,37 @@ type Product struct {
 	CardDescription string      `json:"cardDescription,omitempty"`
 }
 
+type LocationResponse struct {
+	Data struct {
+		Dispensaries []Location `json:"dispensaries"`
+	} `json:"data"`
+}
+
+type Location struct {
+	UniqueId   string   `json:"uniqueId"`
+	Name       string   `json:"name"`
+	Slug       string   `json:"slug"`
+	OrderTypes []string `json:"orderTypes"`
+	MenuTypes  []string `json:"menuTypes"`
+	IsOpened   bool     `json:"isOpened"`
+	Location   struct {
+		Coordinates struct {
+			Latitude  float64 `json:"latitude"`
+			Longitude float64 `json:"longitude"`
+		} `json:"coordinates"`
+		Address           string  `json:"address"`
+		City              string  `json:"city"`
+		Distance          float64 `json:"distance"`
+		DistanceFormatted string  `json:"distanceFormatted"`
+		State             string  `json:"state"`
+		StateAbbreviation string  `json:"stateAbbreviation"`
+		StateSlug         string  `json:"stateSlug"`
+		ZipCode           string  `json:"zipCode"`
+	} `json:"location"`
+	NextTime         string `json:"nextTime"`
+	ValidForDelivery bool   `json:"validForDelivery"`
+}
+
 type AllOffersResponse struct {
 	Data struct {
 		DispensaryMenu struct {
@@ -171,4 +202,28 @@ type AllProductsResponse struct {
 			Products []Product `json:"products"`
 		} `json:"dispensaryMenu"`
 	} `json:"data"`
+}
+
+type ProductResponse struct {
+	Data struct {
+		Product struct {
+			Product Product `json:"product"`
+		} `json:"product"`
+	} `json:"data"`
+}
+
+func NewProductResponse(product Product) *ProductResponse {
+	return &ProductResponse{
+		Data: struct {
+			Product struct {
+				Product Product `json:"product"`
+			} `json:"product"`
+		}{
+			Product: struct {
+				Product Product `json:"product"`
+			}{
+				product,
+			},
+		},
+	}
 }

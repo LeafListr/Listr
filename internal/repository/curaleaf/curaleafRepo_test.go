@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"github.com/Linkinlog/LeafList/internal/client/clientfakes"
 	cm "github.com/Linkinlog/LeafList/internal/client/curaleaf"
+	"github.com/Linkinlog/LeafList/internal/models"
 	"github.com/Linkinlog/LeafList/internal/repository/curaleaf"
-	"github.com/Linkinlog/LeafList/internal/repository/models"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -19,9 +19,7 @@ func TestGetProducts(t *testing.T) {
 	}
 	c := clientfakes.FakeClient{}
 	c.QueryReturns(bs, nil)
-	cr := curaleaf.Repository{
-		C: &c,
-	}
+	cr := curaleaf.NewRepository(&c)
 	ps, getErr := cr.GetProducts("foo")
 	if getErr != nil {
 		t.Fatal(getErr)
@@ -39,7 +37,7 @@ func TestGetProducts(t *testing.T) {
 		expectedProd := expectedProducts[i]
 
 		assert.Equal(t, expectedProd.ID, prod.Id)
-		assert.Equal(t, models.Category(expectedProd.Category.DisplayName), prod.Ctg)
+		assert.Equal(t, models.Category(expectedProd.Category.Key), prod.Ctg)
 
 		// Assertions for Prices (Variants)
 		assert.Equal(t, len(expectedProd.Variants), len(prod.P))
@@ -78,9 +76,7 @@ func TestGetProductsForCategory(t *testing.T) {
 	}
 	c := clientfakes.FakeClient{}
 	c.QueryReturns(bs, nil)
-	cr := curaleaf.Repository{
-		C: &c,
-	}
+	cr := curaleaf.NewRepository(&c)
 	ps, getErr := cr.GetProductsForCategory("foo", "category")
 	if getErr != nil {
 		t.Fatal(getErr)
@@ -103,10 +99,7 @@ func TestRepository_GetCategories(t *testing.T) {
 			args: args{menuId: "abc123"},
 			want: []models.Category{"VAPORIZERS", "FLOWER"},
 			wantErr: func(t assert.TestingT, err error, i ...interface{}) bool {
-				if err != nil {
-					return false
-				}
-				return true
+				return err == nil
 			},
 		},
 	}
@@ -119,9 +112,7 @@ func TestRepository_GetCategories(t *testing.T) {
 			}
 			c := clientfakes.FakeClient{}
 			c.QueryReturns(bs, nil)
-			r := &curaleaf.Repository{
-				C: &c,
-			}
+			r := curaleaf.NewRepository(&c)
 			got, getErr := r.GetCategories(tt.args.menuId)
 			if !tt.wantErr(t, getErr, fmt.Sprintf("GetCategories(%v)", tt.args.menuId)) {
 				return
@@ -168,9 +159,7 @@ func TestRepository_GetTerpenes(t *testing.T) {
 			}
 			c := clientfakes.FakeClient{}
 			c.QueryReturns(bs, nil)
-			r := &curaleaf.Repository{
-				C: &c,
-			}
+			r := curaleaf.NewRepository(&c)
 			got, getErr := r.GetTerpenes(tt.args.menuId)
 			if !tt.wantErr(t, getErr, fmt.Sprintf("GetTerpenes(%v)", tt.args.menuId)) {
 				return
@@ -215,14 +204,92 @@ func TestRepository_GetOffers(t *testing.T) {
 			}
 			c := clientfakes.FakeClient{}
 			c.QueryReturns(bs, nil)
-			r := &curaleaf.Repository{
-				C: &c,
-			}
+			r := curaleaf.NewRepository(&c)
 			got, getErr := r.GetOffers(tt.args.menuId)
 			if !tt.wantErr(t, getErr, fmt.Sprintf("GetOffers(%v)", tt.args.menuId)) {
 				return
 			}
 			assert.Equalf(t, tt.want, got, "GetOffers(%v)", tt.args.menuId)
+		})
+	}
+}
+
+func TestRepository_GetProduct(t *testing.T) {
+	type args struct {
+		menuId    string
+		productId string
+	}
+	tests := map[string]struct {
+		args    args
+		want    *models.Product
+		wantErr assert.ErrorAssertionFunc
+	}{
+		"product": {
+			args: args{
+				menuId:    "foo",
+				productId: "abc121",
+			},
+			want: &models.Product{
+				Id:   "abc121",
+				Name: "Cheesey Wheezey",
+				P: []*models.Price{
+					{
+						Variant:         "Size 1",
+						Total:           7.99,
+						DiscountedTotal: 3.99,
+					},
+					{
+						Variant:         "Size 2",
+						Total:           8.99,
+						DiscountedTotal: 0,
+					},
+				},
+				C: []*models.Cannabinoid{
+					{
+						Name:        "THC",
+						Description: "THC is a cannabinoid",
+						Value:       4.20,
+					},
+					{
+						Name:        "CBD",
+						Description: "CBD is a cannabinoid",
+						Value:       6.90,
+					},
+				},
+				T: []*models.Terpene{
+					{
+						Name:        "B-Myrcene",
+						Description: "Big strong and here to sing along",
+						Value:       4.20,
+					},
+					{
+						Name:        "B-Pinene",
+						Description: "A great way to get around",
+						Value:       6.90,
+					},
+				},
+				Ctg: "OUTDOORS",
+			},
+			wantErr: func(t assert.TestingT, err error, i ...interface{}) bool {
+				return true
+			},
+		},
+	}
+	for name, tt := range tests {
+		t.Run(name, func(t *testing.T) {
+			prodResp := productResponseSample()
+			bs, err := json.Marshal(prodResp)
+			if err != nil {
+				t.Fatal(err)
+			}
+			c := clientfakes.FakeClient{}
+			c.QueryReturns(bs, nil)
+			r := curaleaf.NewRepository(&c)
+			got, getErr := r.GetProduct(tt.args.menuId, tt.args.productId)
+			if !tt.wantErr(t, getErr, fmt.Sprintf("GetProduct(%v, %v)", tt.args.menuId, tt.args.productId)) {
+				return
+			}
+			assert.Equalf(t, tt.want, got, "GetProduct(%v, %v)", tt.args.menuId, tt.args.productId)
 		})
 	}
 }
@@ -258,6 +325,115 @@ func allCategoriesResponseSample() cm.AllCategoriesResponse {
 	return cm.NewAllCategoriesResponse(cats)
 }
 
+func productSample() cm.Product {
+	product := cm.Product{
+		Brand: cm.Brand{
+			Description: "Big Brand",
+			Id:          "brand-1",
+			Image: cm.Image{
+				URL: "https://example.com/image.png",
+			},
+			Name: "Super cool product",
+			Slug: "brand-slug",
+		},
+		Category: cm.Category{
+			DisplayName: "Outdoors",
+			Key:         "OUTDOORS",
+		},
+		DescriptionHtml: "",
+		Effects:         nil,
+		ID:              "abc121",
+		Images: []cm.Image{
+			{
+				URL: "https://example.com/image",
+			},
+		},
+		LabResults: cm.LabResult{
+			Cannabinoids: []cm.CannabinoidObj{
+				{
+					Cannabinoid: cm.Cannabinoid{
+						Description: "THC is a cannabinoid",
+						Name:        "THC",
+					},
+					Unit:  "PERCENTAGE",
+					Value: 4.20,
+				},
+				{
+					Cannabinoid: cm.Cannabinoid{
+						Description: "CBD is a cannabinoid",
+						Name:        "CBD",
+					},
+					Unit:  "PERCENTAGE",
+					Value: 6.90,
+				},
+			},
+			Terpenes: []cm.TerpeneObj{
+				{
+					Terpene: cm.Terpene{
+						Description: "Big strong and here to sing along",
+						Name:        "B-Myrcene",
+					},
+					UnitSymbol: "%",
+					Value:      4.20,
+				},
+				{
+					Terpene: cm.Terpene{
+						Description: "A great way to get around",
+						Name:        "B-Pinene",
+					},
+					UnitSymbol: "%",
+					Value:      6.90,
+				},
+			},
+			THC: cm.THC{
+				Formatted: "4.20%",
+				Range:     []float64{4.20},
+			},
+		},
+		Name: "Cheesey Wheezey",
+		Offers: []cm.Offer{
+			{
+				Description: "A great deal",
+				Id:          "internal-offer-1",
+				Title:       "This is on the product",
+			},
+		},
+		Strain: cm.Strain{
+			Key:         "wisdom",
+			DisplayName: "hybrid",
+		},
+		Subcategory: cm.Subcategory{
+			Key:         "DISPOSABLES",
+			DisplayName: "Disposables",
+		},
+		Variants: []cm.Variant{
+			{
+				Id:           "variant-1",
+				IsSpecial:    false,
+				Option:       "Size 1",
+				Price:        7.99,
+				Quantity:     98,
+				SpecialPrice: 3.99,
+			},
+			{
+				Id:        "variant-2",
+				IsSpecial: false,
+				Option:    "Size 2",
+				Price:     8.99,
+				Quantity:  69,
+			},
+		},
+		CardDescription: "I have a thc percentage as well sometimes 25.5%",
+	}
+	return product
+}
+
+func productResponseSample() *cm.ProductResponse {
+	product := productSample()
+
+	return cm.NewProductResponse(product)
+}
+
 func allProductsResponseSample() cm.AllProductsResponse {
 	return cm.AllProductsResponse{
 		Data: struct {
@@ -281,104 +457,7 @@ func allProductsResponseSample() cm.AllProductsResponse {
 					},
 				},
 				Products: []cm.Product{
-					{
-						Brand: cm.Brand{
-							Description: "Big Brand",
-							Id:          "brand-1",
-							Image: cm.Image{
-								URL: "https://example.com/image.png",
-							},
-							Name: "Super cool product",
-							Slug: "brand-slug",
-						},
-						Category: cm.Category{
-							DisplayName: "Outdoors",
-							Key:         "abc121",
-						},
-						DescriptionHtml: "",
-						Effects:         nil,
-						ID:              "abc121",
-						Images: []cm.Image{
-							{
-								URL: "https://example.com/image",
-							},
-						},
-						LabResults: cm.LabResult{
-							Cannabinoids: []cm.CannabinoidObj{
-								{
-									Cannabinoid: cm.Cannabinoid{
-										Description: "THC is a cannabinoid",
-										Name:        "THC",
-									},
-									Unit:  "PERCENTAGE",
-									Value: 4.20,
-								},
-								{
-									Cannabinoid: cm.Cannabinoid{
-										Description: "CBD is a cannabinoid",
-										Name:        "CBD",
-									},
-									Unit:  "PERCENTAGE",
-									Value: 6.90,
-								},
-							},
-							Terpenes: []cm.TerpeneObj{
-								{
-									Terpene: cm.Terpene{
-										Description: "Big strong and here to sing along",
-										Name:        "B-Myrcene",
-									},
-									UnitSymbol: "%",
-									Value:      4.20,
-								},
-								{
-									Terpene: cm.Terpene{
-										Description: "A great way to get around",
-										Name:        "B-Pinene",
-									},
-									UnitSymbol: "%",
-									Value:      6.90,
-								},
-							},
-							THC: cm.THC{
-								Formatted: "4.20%",
-								Range:     []float64{4.20},
-							},
-						},
-						Name: "Cheesey Wheezey",
-						Offers: []cm.Offer{
-							{
-								Description: "A great deal",
-								Id:          "internal-offer-1",
-								Title:       "This is on the product",
-							},
-						},
-						Strain: cm.Strain{
-							Key:         "wisdom",
-							DisplayName: "hybrid",
-						},
-						Subcategory: cm.Subcategory{
-							Key:         "DISPOSABLES",
-							DisplayName: "Disposables",
-						},
-						Variants: []cm.Variant{
-							{
-								Id:        "variant-1",
-								IsSpecial: false,
-								Option:    "Size",
-								Price:     7.99,
-								Quantity:  98,
-							},
-							{
-								Id:        "variant-2",
-								IsSpecial: false,
-								Option:    "Size",
-								Price:     8.99,
-								Quantity:  69,
-							},
-						},
-						CardDescription: "I have a thc percentage as well sometimes 25.5%",
-					},
+					productSample(),
 				},
 			},
 		},
