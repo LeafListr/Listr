@@ -1,12 +1,5 @@
 package curaleaf
 
-// const (
-// 	Endpoint  = "https://graph.curaleaf.com/api/curaql"
-// 	Authority = "graph.curaleaf.com"
-// 	GbgId     = "LMR124"
-// 	MenuType  = "MEDICAL"
-// )
-
 type Image struct {
 	URL string `json:"url"`
 }
@@ -106,12 +99,6 @@ type Product struct {
 	CardDescription string      `json:"cardDescription,omitempty"`
 }
 
-type LocationResponse struct {
-	Data struct {
-		Dispensaries []Location `json:"dispensaries"`
-	} `json:"data"`
-}
-
 type Location struct {
 	UniqueId   string   `json:"uniqueId"`
 	Name       string   `json:"name"`
@@ -137,93 +124,110 @@ type Location struct {
 	ValidForDelivery bool   `json:"validForDelivery"`
 }
 
-type AllOffersResponse struct {
-	Data struct {
-		DispensaryMenu struct {
-			Offers []Offer `json:"offers"`
-		} `json:"dispensaryMenu"`
-	} `json:"data"`
+type Response struct {
+	*DataObj
+	*ErrorObj
 }
 
-func NewAllOffersResponse(offers []Offer) AllOffersResponse {
-	return AllOffersResponse{
-		Data: struct {
-			DispensaryMenu struct {
-				Offers []Offer `json:"offers"`
-			} `json:"dispensaryMenu"`
-		}{
-			DispensaryMenu: struct {
-				Offers []Offer `json:"offers"`
-			}{
-				Offers: offers,
-			},
-		},
+type ErrorObj struct {
+	Errors []struct {
+		Message   string `json:"message"`
+		Locations []struct {
+			Line   int `json:"line"`
+			Column int `json:"column"`
+		} `json:"locations"`
+		Path       []string `json:"path"`
+		Extensions struct {
+			Code      string `json:"code"`
+			Exception struct {
+				Stacktrace []string `json:"stacktrace"`
+			} `json:"exception"`
+		} `json:"extensions"`
+	} `json:"errors,omitempty"`
+}
+
+type DataObj struct {
+	Data struct {
+		Dispensaries []*Location `json:"dispensaries,omitempty"`
+		*DispensaryMenuObj
+		*ProductObj
+	} `json:"data,omitempty"`
+}
+
+type ProductObj struct {
+	Product struct {
+		Product *Product `json:"product"`
+	} `json:"product,omitempty"`
+}
+
+type DispensaryMenuObj struct {
+	DispensaryMenu struct {
+		Offers   []*Offer   `json:"offers"`
+		Products []*Product `json:"products"`
+		*AllFiltersObj
+	} `json:"dispensaryMenu,omitempty"`
+}
+
+type AllFiltersObj struct {
+	AllFilters struct {
+		Categories []*Category `json:"categories"`
+	} `json:"allFilters,omitempty"`
+}
+
+func NewResponse(products []*Product, offers []*Offer, categories []*Category) *Response {
+	var product *Product
+	if len(products) >= 1 {
+		product = products[0]
 	}
-}
-
-type AllCategoriesResponse struct {
-	Data struct {
-		DispensaryMenu struct {
-			AllFilters struct {
-				Categories []Category `json:"categories"`
-			} `json:"allFilters"`
-		} `json:"dispensaryMenu"`
-	} `json:"data"`
-}
-
-func NewAllCategoriesResponse(categories []Category) AllCategoriesResponse {
-	return AllCategoriesResponse{
-		Data: struct {
-			DispensaryMenu struct {
-				AllFilters struct {
-					Categories []Category `json:"categories"`
-				} `json:"allFilters"`
-			} `json:"dispensaryMenu"`
-		}{
-			DispensaryMenu: struct {
-				AllFilters struct {
-					Categories []Category `json:"categories"`
-				} `json:"allFilters"`
+	return &Response{
+		DataObj: &DataObj{
+			Data: struct {
+				Dispensaries []*Location `json:"dispensaries,omitempty"`
+				*DispensaryMenuObj
+				*ProductObj
 			}{
-				AllFilters: struct {
-					Categories []Category `json:"categories"`
-				}{
-					Categories: categories,
+				Dispensaries: []*Location{},
+				DispensaryMenuObj: &DispensaryMenuObj{
+					DispensaryMenu: struct {
+						Offers   []*Offer   `json:"offers"`
+						Products []*Product `json:"products"`
+						*AllFiltersObj
+					}{
+						Offers:   offers,
+						Products: products,
+						AllFiltersObj: &AllFiltersObj{
+							AllFilters: struct {
+								Categories []*Category `json:"categories"`
+							}{
+								Categories: categories,
+							},
+						},
+					},
+				},
+				ProductObj: &ProductObj{
+					Product: struct {
+						Product *Product `json:"product"`
+					}{
+						Product: product,
+					},
 				},
 			},
 		},
-	}
-}
-
-type AllProductsResponse struct {
-	Data struct {
-		DispensaryMenu struct {
-			Offers   []Offer   `json:"offers"`
-			Products []Product `json:"products"`
-		} `json:"dispensaryMenu"`
-	} `json:"data"`
-}
-
-type ProductResponse struct {
-	Data struct {
-		Product struct {
-			Product Product `json:"product"`
-		} `json:"product"`
-	} `json:"data"`
-}
-
-func NewProductResponse(product Product) *ProductResponse {
-	return &ProductResponse{
-		Data: struct {
-			Product struct {
-				Product Product `json:"product"`
-			} `json:"product"`
-		}{
-			Product: struct {
-				Product Product `json:"product"`
-			}{
-				product,
-			},
+		ErrorObj: &ErrorObj{
+			Errors: []struct {
+				Message   string `json:"message"`
+				Locations []struct {
+					Line   int `json:"line"`
+					Column int `json:"column"`
+				} `json:"locations"`
+				Path       []string `json:"path"`
+				Extensions struct {
+					Code      string `json:"code"`
+					Exception struct {
+						Stacktrace []string `json:"stacktrace"`
+					} `json:"exception"`
+				} `json:"extensions"`
+			}{},
 		},
 	}
 }

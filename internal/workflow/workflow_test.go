@@ -27,17 +27,17 @@ func TestWorkflow_AllProducts(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			f := factoryfakes.FakeRepositoryFactory{}
-			f.FindReturns(tt.fields.r, nil)
+			f.FindRepositoryReturns(tt.fields.r, nil)
 			w := &Workflow{
 				f: &f,
 			}
-			got, err := w.AllProducts("", tt.args.menuId)
+			got, err := w.Products("", tt.args.menuId)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("AllProducts() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("Products() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("AllProducts() got = %v, want %v", got, tt.want)
+				t.Errorf("Products() got = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -63,17 +63,17 @@ func TestWorkflow_AllProductsForCategory(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			f := factoryfakes.FakeRepositoryFactory{}
-			f.FindReturns(tt.fields.r, nil)
+			f.FindRepositoryReturns(tt.fields.r, nil)
 			w := &Workflow{
 				f: &f,
 			}
-			got, err := w.AllProductsForCategory("", tt.args.menuId, tt.args.category)
+			got, err := w.ProductsForCategory("", tt.args.menuId, tt.args.category)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("AllProductsForCategory() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("ProductsForCategory() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("AllProductsForCategory() got = %v, want %v", got, tt.want)
+				t.Errorf("ProductsForCategory() got = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -98,7 +98,7 @@ func TestWorkflow_Categories(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			f := factoryfakes.FakeRepositoryFactory{}
-			f.FindReturns(tt.fields.r, nil)
+			f.FindRepositoryReturns(tt.fields.r, nil)
 			w := &Workflow{
 				f: &f,
 			}
@@ -133,7 +133,7 @@ func TestWorkflow_Offers(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			f := factoryfakes.FakeRepositoryFactory{}
-			f.FindReturns(tt.fields.r, nil)
+			f.FindRepositoryReturns(tt.fields.r, nil)
 			w := &Workflow{
 				f: &f,
 			}
@@ -169,7 +169,7 @@ func TestWorkflow_Product(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			f := factoryfakes.FakeRepositoryFactory{}
-			f.FindReturns(tt.fields.r, nil)
+			f.FindRepositoryReturns(tt.fields.r, nil)
 			w := &Workflow{
 				f: &f,
 			}
@@ -204,7 +204,7 @@ func TestWorkflow_Terpenes(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			f := factoryfakes.FakeRepositoryFactory{}
-			f.FindReturns(tt.fields.r, nil)
+			f.FindRepositoryReturns(tt.fields.r, nil)
 			w := &Workflow{
 				f: &f,
 			}

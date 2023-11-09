@@ -55,21 +55,14 @@ func ListenAndServe(addr string) error {
 	return http.ListenAndServe(addr, a.h)
 }
 
-//func ListenAndServeTLS(addr string) error {
-//	// todo
-//	fmt.Println("TODO")
-//	return nil
-//}
-
-func (a *API) handleError(r http.ResponseWriter, err error) {
-	a.w.LogError(err)
-	r.WriteHeader(http.StatusInternalServerError)
-}
-
-func (a *API) writeJson(r http.ResponseWriter, j any) {
-	resp, err := json.Marshal(&j)
+func (a *API) writeJson(r http.ResponseWriter, data any, err error) {
 	if err != nil {
 		a.handleError(r, err)
+		return
+	}
+	resp, marshalErr := json.Marshal(&data)
+	if marshalErr != nil {
+		a.handleError(r, marshalErr)
 	}
 	r.Header().Set("Content-Type", "application/json")
 	_, err = r.Write(resp)
@@ -78,92 +71,77 @@ func (a *API) writeJson(r http.ResponseWriter, j any) {
 	}
 }
 
-func (a *API) handleDispensary(respw http.ResponseWriter, _ *http.Request) {
+func (a *API) handleError(r http.ResponseWriter, err error) {
+	a.w.LogError(err)
+	r.WriteHeader(http.StatusInternalServerError)
+}
+
+func (a *API) handleDispensary(r http.ResponseWriter, _ *http.Request) {
 	supportedPages := []string{
 		"menus",
 	}
-	a.writeJson(respw, supportedPages)
+	a.writeJson(r, supportedPages, nil)
 }
 
-func (a *API) handleDispensaryListing(respw http.ResponseWriter, _ *http.Request) {
+func (a *API) handleDispensaryListing(r http.ResponseWriter, _ *http.Request) {
 	supportedDispensaries := []string{
 		"curaleaf",
 	}
-	a.writeJson(respw, supportedDispensaries)
+	a.writeJson(r, supportedDispensaries, nil)
 }
 
-func (a *API) handleMenu(respw http.ResponseWriter, _ *http.Request) {
-	supportedDispensaries := []string{
+func (a *API) handleMenu(r http.ResponseWriter, _ *http.Request) {
+	// do we need to abstract this out? might be something to look into
+	supportedMenuOptions := []string{
 		"products",
 		"offers",
 		"terpenes",
 		"cannabinoids",
 		"categories",
 	}
-	a.writeJson(respw, supportedDispensaries)
+	a.writeJson(r, supportedMenuOptions, nil)
 }
 
-func (a *API) handleMenuListing(respw http.ResponseWriter, req *http.Request) {
+func (a *API) handleMenuListing(r http.ResponseWriter, req *http.Request) {
 	dispensary, _, _ := params(req, "")
-	locations, err := a.w.Locations(dispensary, 0, 0)
-	if err != nil {
-		a.handleError(respw, err)
-	}
-	a.writeJson(respw, locations)
+	menus, err := a.w.Menus(dispensary)
+	a.writeJson(r, menus, err)
 }
 
-func (a *API) handleProduct(respw http.ResponseWriter, req *http.Request) {
+func (a *API) handleProduct(r http.ResponseWriter, req *http.Request) {
 	dispensary, menuId, productId := params(req, "productId")
 	product, err := a.w.Product(dispensary, menuId, productId)
-	if err != nil {
-		a.handleError(respw, err)
-	}
-	a.writeJson(respw, product)
+	a.writeJson(r, product, err)
 }
 
-func (a *API) handleProductListing(respw http.ResponseWriter, req *http.Request) {
+func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 	dispensary, menuId, _ := params(req, "")
-	products, err := a.w.AllProducts(dispensary, menuId)
-	if err != nil {
-		a.handleError(respw, err)
-	}
-	a.writeJson(respw, products)
+	products, err := a.w.Products(dispensary, menuId)
+	a.writeJson(r, products, err)
 }
 
-func (a *API) handleOfferListing(respw http.ResponseWriter, req *http.Request) {
+func (a *API) handleOfferListing(r http.ResponseWriter, req *http.Request) {
 	dispensary, menuId, _ := params(req, "")
 	offers, err := a.w.Offers(dispensary, menuId)
-	if err != nil {
-		a.handleError(respw, err)
-	}
-	a.writeJson(respw, offers)
+	a.writeJson(r, offers, err)
 }
 
-func (a *API) handleCategoryListing(respw http.ResponseWriter, req *http.Request) {
+func (a *API) handleCategoryListing(r http.ResponseWriter, req *http.Request) {
 	dispensary, menuId, _ := params(req, "")
 	categories, err := a.w.Categories(dispensary, menuId)
-	if err != nil {
-		a.handleError(respw, err)
-	}
-	a.writeJson(respw, categories)
+	a.writeJson(r, categories, err)
 }
 
-func (a *API) handleTerpeneListing(respw http.ResponseWriter, req *http.Request) {
+func (a *API) handleTerpeneListing(r http.ResponseWriter, req *http.Request) {
 	dispensary, menuId, _ := params(req, "")
 	terpenes, err := a.w.Terpenes(dispensary, menuId)
-	if err != nil {
-		a.handleError(respw, err)
-	}
-	a.writeJson(respw, terpenes)
+	a.writeJson(r, terpenes, err)
 }
 
-func (a *API) handleCannabinoidListing(respw http.ResponseWriter, req *http.Request) {
+func (a *API) handleCannabinoidListing(r http.ResponseWriter, req *http.Request) {
 	dispensary, menuId, _ := params(req, "")
 	cannabinoids, err := a.w.Cannabinoids(dispensary, menuId)
-	if err != nil {
-		a.handleError(respw, err)
-	}
-	a.writeJson(respw, cannabinoids)
+	a.writeJson(r, cannabinoids, err)
 }
 
 func params(req *http.Request, resource string) (dispensary, menuId, resourceId string) {

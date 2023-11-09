@@ -40,7 +40,7 @@ func AllProductForCategoryQuery(menuId, menuType, category string) string {
 func AllOffersQuery(menuId, menuType string) string {
 	return fmt.Sprintf(`
 {
-	"query": "query PGP($dispensaryUniqueId: ID!, $menuType: MenuType!) { dispensaryMenu(dispensaryUniqueId: $dispensaryUniqueId, menuType: $menuType) { offers { id title } } }",
+    "query": "query PGP($dispensaryUniqueId: ID!, $menuType: MenuType!) { dispensaryMenu(dispensaryUniqueId: $dispensaryUniqueId, menuType: $menuType) { offers { id title } } }",
     "variables": {
         "dispensaryUniqueId": "%s",
         "menuType": "%s"

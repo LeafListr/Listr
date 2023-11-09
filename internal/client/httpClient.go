@@ -9,8 +9,6 @@ import (
 	"time"
 )
 
-type Endpoint string
-
 type HttpClient struct {
 	hC *http.Client
 	hH http.Header
@@ -44,14 +42,14 @@ func (c *HttpClient) do(ctx context.Context, method string, body []byte) ([]byte
 	}
 	defer resp.Body.Close()
 
-	bs, readErr := io.ReadAll(resp.Body)
+	respBytes, readErr := io.ReadAll(resp.Body)
 	if readErr != nil {
 		return nil, readErr
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("unexpected status code: %d\n response: %s", resp.StatusCode, string(bs))
+		return nil, fmt.Errorf("unexpected status code: %d\n response: %s", resp.StatusCode, string(respBytes))
 	}
 
-	return bs, nil
+	return respBytes, nil
 }

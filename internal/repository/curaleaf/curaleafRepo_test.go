@@ -12,7 +12,7 @@ import (
 )
 
 func TestGetProducts(t *testing.T) {
-	allProductsResp := allProductsResponseSample()
+	allProductsResp := allProductResponseSample()
 	bs, err := json.Marshal(allProductsResp)
 	if err != nil {
 		t.Fatal(err)
@@ -69,7 +69,7 @@ func TestGetProducts(t *testing.T) {
 }
 
 func TestGetProductsForCategory(t *testing.T) {
-	allProductsResp := allProductsResponseSample()
+	allProductsResp := allProductResponseSample()
 	bs, err := json.Marshal(allProductsResp)
 	if err != nil {
 		t.Fatal(err)
@@ -87,17 +87,19 @@ func TestGetProductsForCategory(t *testing.T) {
 }
 
 func TestRepository_GetCategories(t *testing.T) {
+	vapes := models.Category("VAPORIZERS")
+	flower := models.Category("FLOWER")
 	type args struct {
 		menuId string
 	}
 	tests := map[string]struct {
 		args    args
-		want    []models.Category
+		want    []*models.Category
 		wantErr assert.ErrorAssertionFunc
 	}{
 		"all categories": {
 			args: args{menuId: "abc123"},
-			want: []models.Category{"VAPORIZERS", "FLOWER"},
+			want: []*models.Category{&vapes, &flower},
 			wantErr: func(t assert.TestingT, err error, i ...interface{}) bool {
 				return err == nil
 			},
@@ -152,7 +154,7 @@ func TestRepository_GetTerpenes(t *testing.T) {
 	}
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			allProductsResp := allProductsResponseSample()
+			allProductsResp := allProductResponseSample()
 			bs, err := json.Marshal(allProductsResp)
 			if err != nil {
 				t.Fatal(err)
@@ -294,8 +296,8 @@ func TestRepository_GetProduct(t *testing.T) {
 	}
 }
 
-func allOffersResponseSample() cm.AllOffersResponse {
-	offers := []cm.Offer{
+func allOffersResponseSample() *cm.Response {
+	offers := []*cm.Offer{
 		{
 			Description: "Super cool offer",
 			Id:          "cool-offer-5",
@@ -307,11 +309,11 @@ func allOffersResponseSample() cm.AllOffersResponse {
 			Title:       "1000% extra",
 		},
 	}
-	return cm.NewAllOffersResponse(offers)
+	return cm.NewResponse(nil, offers, nil)
 }
 
-func allCategoriesResponseSample() cm.AllCategoriesResponse {
-	cats := []cm.Category{
+func allCategoriesResponseSample() *cm.Response {
+	cats := []*cm.Category{
 		{
 			DisplayName: "Vaporizers",
 			Key:         "VAPORIZERS",
@@ -322,13 +324,13 @@ func allCategoriesResponseSample() cm.AllCategoriesResponse {
 		},
 	}
 
-	return cm.NewAllCategoriesResponse(cats)
+	return cm.NewResponse(nil, nil, cats)
 }
 
-func productSample() cm.Product {
-	product := cm.Product{
+func productSample() *cm.Product {
+	product := &cm.Product{
 		Brand: cm.Brand{
-			Description: "Big Brand",
+			Description: "Big Dispensary",
 			Id:          "brand-1",
 			Image: cm.Image{
 				URL: "https://example.com/image.png",
@@ -428,38 +430,14 @@ func productSample() cm.Product {
 	return product
 }
 
-func productResponseSample() *cm.ProductResponse {
+func productResponseSample() *cm.Response {
 	product := productSample()
 
-	return cm.NewProductResponse(product)
+	return cm.NewResponse([]*cm.Product{product}, nil, nil)
 }
 
-func allProductsResponseSample() cm.AllProductsResponse {
-	return cm.AllProductsResponse{
-		Data: struct {
-			DispensaryMenu struct {
-				Offers   []cm.Offer   `json:"offers"`
-				Products []cm.Product `json:"products"`
-			} `json:"dispensaryMenu"`
-		}{
-			DispensaryMenu: struct {
-				Offers   []cm.Offer   `json:"offers"`
-				Products []cm.Product `json:"products"`
-			}{
-				Offers: []cm.Offer{
-					{
-						Id:    "offer 1",
-						Title: "18% off",
-					},
-					{
-						Id:    "offer 2",
-						Title: "38% off",
-					},
-				},
-				Products: []cm.Product{
-					productSample(),
-				},
-			},
-		},
-	}
+func allProductResponseSample() *cm.Response {
+	product := productSample()
+
+	return cm.NewResponse([]*cm.Product{product}, nil, nil)
 }

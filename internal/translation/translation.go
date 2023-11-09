@@ -6,21 +6,24 @@ import (
 )
 
 type Translatable interface {
-	TranslateLocations(ls []curaleaf.Location) []*models.Brand
-	TranslateProduct(curaleaf.Product) *models.Product
-	TranslateProducts([]curaleaf.Product) []*models.Product
-	TranslateCategories([]curaleaf.Category) []models.Category
-	TranslateTerpenes([]curaleaf.Product) []*models.Terpene
-	TranslateCannabinoids([]curaleaf.Product) []*models.Cannabinoid
-	TranslateOffers([]curaleaf.Offer) []*models.Offer
+	TranslateLocations(ls []*curaleaf.Location) []*models.Dispensary
+	TranslateProduct(*curaleaf.Product) *models.Product
+	TranslateProducts([]*curaleaf.Product) []*models.Product
+	TranslateCategories([]*curaleaf.Category) []*models.Category
+	TranslateTerpenes([]*curaleaf.Product) []*models.Terpene
+	TranslateCannabinoid(cannabinoid *curaleaf.CannabinoidObj) *models.Cannabinoid
+	TranslateOffers([]*curaleaf.Offer) []*models.Offer
 }
 
 type Translator struct{}
 
-func (t *Translator) TranslateLocations(ls []curaleaf.Location) []*models.Brand {
-	var mLs []*models.Brand
+func (t *Translator) TranslateLocations(ls []*curaleaf.Location) []*models.Dispensary {
+	var dispensaries []*models.Dispensary
 	for _, l := range ls {
-		mLs = append(mLs, &models.Brand{
+		if l == nil {
+			return dispensaries
+		}
+		dispensaries = append(dispensaries, &models.Dispensary{
 			UniqueId:   l.UniqueId,
 			Name:       l.Name,
 			OrderTypes: l.OrderTypes,
@@ -38,19 +41,25 @@ func (t *Translator) TranslateLocations(ls []curaleaf.Location) []*models.Brand 
 			},
 		})
 	}
-	return mLs
+	return dispensaries
 }
 
-func (t *Translator) TranslateProducts(ps []curaleaf.Product) []*models.Product {
-	var mPs []*models.Product
+func (t *Translator) TranslateProducts(ps []*curaleaf.Product) []*models.Product {
+	var products []*models.Product
 	for _, p := range ps {
-		mPs = append(mPs, t.TranslateProduct(p))
+		if p == nil {
+			return products
+		}
+		products = append(products, t.TranslateProduct(p))
 	}
-	return mPs
+	return products
 }
 
-func (t *Translator) TranslateProduct(p curaleaf.Product) *models.Product {
-	mp := &models.Product{
+func (t *Translator) TranslateProduct(p *curaleaf.Product) *models.Product {
+	if p == nil {
+		return &models.Product{}
+	}
+	product := &models.Product{
 		Id:   p.ID,
 		Name: p.Name,
 		Ctg:  models.Category(p.Category.Key),
@@ -61,7 +70,7 @@ func (t *Translator) TranslateProduct(p curaleaf.Product) *models.Product {
 			Total:           v.Price,
 			DiscountedTotal: v.SpecialPrice,
 		}
-		mp.P = append(mp.P, tempPrice)
+		product.P = append(product.P, tempPrice)
 	}
 	for _, t := range p.LabResults.Terpenes {
 		tempTerp := &models.Terpene{
@@ -69,7 +78,7 @@ func (t *Translator) TranslateProduct(p curaleaf.Product) *models.Product {
 			Description: t.Terpene.Description,
 			Value:       t.Value,
 		}
-		mp.T = append(mp.T, tempTerp)
+		product.T = append(product.T, tempTerp)
 	}
 	for _, c := range p.LabResults.Cannabinoids {
 		tempCanna := &models.Cannabinoid{
@@ -77,60 +86,66 @@ func (t *Translator) TranslateProduct(p curaleaf.Product) *models.Product {
 			Description: c.Cannabinoid.Description,
 			Value:       c.Value,
 		}
-		mp.C = append(mp.C, tempCanna)
+		product.C = append(product.C, tempCanna)
 	}
-	return mp
+	return product
 }
 
-func (t *Translator) TranslateCategories(cs []curaleaf.Category) []models.Category {
-	var mCs []models.Category
+func (t *Translator) TranslateCategories(cs []*curaleaf.Category) []*models.Category {
+	var categories []*models.Category
 	for _, c := range cs {
+		if c == nil {
+			return categories
+		}
 		tempC := models.Category(c.Key)
-		mCs = append(mCs, tempC)
+		categories = append(categories, &tempC)
 	}
-	return mCs
+	return categories
 }
 
-func (t *Translator) TranslateTerpenes(products []curaleaf.Product) []*models.Terpene {
-	var mTerpenes []*models.Terpene
+func (t *Translator) TranslateTerpenes(products []*curaleaf.Product) []*models.Terpene {
+	// TODO accept terpenes not products
+	var terpenes []*models.Terpene
 	for _, product := range products {
+		if product == nil {
+			return terpenes
+		}
 		for _, terp := range product.LabResults.Terpenes {
 			tempTerp := &models.Terpene{
 				Name:        terp.Terpene.Name,
 				Description: terp.Terpene.Description,
 				Value:       terp.Value,
 			}
-			mTerpenes = append(mTerpenes, tempTerp)
+			terpenes = append(terpenes, tempTerp)
 		}
 	}
-	return mTerpenes
+	return terpenes
 }
 
-func (t *Translator) TranslateCannabinoids(products []curaleaf.Product) []*models.Cannabinoid {
-	var mCannabinoids []*models.Cannabinoid
-	for _, product := range products {
-		for _, cannabinoid := range product.LabResults.Cannabinoids {
-			tempCannabinoid := &models.Cannabinoid{
-				Name:        cannabinoid.Cannabinoid.Name,
-				Description: cannabinoid.Cannabinoid.Description,
-				Value:       cannabinoid.Value,
-			}
-			mCannabinoids = append(mCannabinoids, tempCannabinoid)
-		}
+func (t *Translator) TranslateCannabinoid(c *curaleaf.CannabinoidObj) *models.Cannabinoid {
+	if c == nil {
+		return &models.Cannabinoid{}
 	}
-	return mCannabinoids
+	return &models.Cannabinoid{
+		Name:        c.Cannabinoid.Name,
+		Description: c.Cannabinoid.Description,
+		Value:       c.Value,
+	}
 }
 
-func (t *Translator) TranslateOffers(offers []curaleaf.Offer) []*models.Offer {
-	var mOffers []*models.Offer
-	for _, o := range offers {
+func (t *Translator) TranslateOffers(os []*curaleaf.Offer) []*models.Offer {
+	var offers []*models.Offer
+	for _, o := range os {
+		if o == nil {
+			return offers
+		}
 		tempOffer := &models.Offer{
 			Id:          o.Id,
 			Description: o.Title,
 		}
-		mOffers = append(mOffers, tempOffer)
+		offers = append(offers, tempOffer)
 	}
-	return mOffers
+	return offers
 }
 
 func NewTranslator() Translatable {

@@ -9,17 +9,30 @@ import (
 )
 
 type FakeRepositoryFactory struct {
-	FindStub        func(string, string) (repository.Repository, error)
-	findMutex       sync.RWMutex
-	findArgsForCall []struct {
+	FindMenuStub        func(string, string) (repository.Repository, error)
+	findMenuMutex       sync.RWMutex
+	findMenuArgsForCall []struct {
 		arg1 string
 		arg2 string
 	}
-	findReturns struct {
+	findMenuReturns struct {
 		result1 repository.Repository
 		result2 error
 	}
-	findReturnsOnCall map[int]struct {
+	findMenuReturnsOnCall map[int]struct {
+		result1 repository.Repository
+		result2 error
+	}
+	FindRepositoryStub        func(string) (repository.Repository, error)
+	findRepositoryMutex       sync.RWMutex
+	findRepositoryArgsForCall []struct {
+		arg1 string
+	}
+	findRepositoryReturns struct {
+		result1 repository.Repository
+		result2 error
+	}
+	findRepositoryReturnsOnCall map[int]struct {
 		result1 repository.Repository
 		result2 error
 	}
@@ -27,17 +40,17 @@ type FakeRepositoryFactory struct {
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeRepositoryFactory) Find(arg1 string, arg2 string) (repository.Repository, error) {
-	fake.findMutex.Lock()
-	ret, specificReturn := fake.findReturnsOnCall[len(fake.findArgsForCall)]
-	fake.findArgsForCall = append(fake.findArgsForCall, struct {
+func (fake *FakeRepositoryFactory) FindMenu(arg1 string, arg2 string) (repository.Repository, error) {
+	fake.findMenuMutex.Lock()
+	ret, specificReturn := fake.findMenuReturnsOnCall[len(fake.findMenuArgsForCall)]
+	fake.findMenuArgsForCall = append(fake.findMenuArgsForCall, struct {
 		arg1 string
 		arg2 string
 	}{arg1, arg2})
-	stub := fake.FindStub
-	fakeReturns := fake.findReturns
-	fake.recordInvocation("Find", []interface{}{arg1, arg2})
-	fake.findMutex.Unlock()
+	stub := fake.FindMenuStub
+	fakeReturns := fake.findMenuReturns
+	fake.recordInvocation("FindMenu", []interface{}{arg1, arg2})
+	fake.findMenuMutex.Unlock()
 	if stub != nil {
 		return stub(arg1, arg2)
 	}
@@ -47,46 +60,110 @@ func (fake *FakeRepositoryFactory) Find(arg1 string, arg2 string) (repository.Re
 	return fakeReturns.result1, fakeReturns.result2
 }
 
-func (fake *FakeRepositoryFactory) FindCallCount() int {
-	fake.findMutex.RLock()
-	defer fake.findMutex.RUnlock()
-	return len(fake.findArgsForCall)
+func (fake *FakeRepositoryFactory) FindMenuCallCount() int {
+	fake.findMenuMutex.RLock()
+	defer fake.findMenuMutex.RUnlock()
+	return len(fake.findMenuArgsForCall)
 }
 
-func (fake *FakeRepositoryFactory) FindCalls(stub func(string, string) (repository.Repository, error)) {
-	fake.findMutex.Lock()
-	defer fake.findMutex.Unlock()
-	fake.FindStub = stub
+func (fake *FakeRepositoryFactory) FindMenuCalls(stub func(string, string) (repository.Repository, error)) {
+	fake.findMenuMutex.Lock()
+	defer fake.findMenuMutex.Unlock()
+	fake.FindMenuStub = stub
 }
 
-func (fake *FakeRepositoryFactory) FindArgsForCall(i int) (string, string) {
-	fake.findMutex.RLock()
-	defer fake.findMutex.RUnlock()
-	argsForCall := fake.findArgsForCall[i]
+func (fake *FakeRepositoryFactory) FindMenuArgsForCall(i int) (string, string) {
+	fake.findMenuMutex.RLock()
+	defer fake.findMenuMutex.RUnlock()
+	argsForCall := fake.findMenuArgsForCall[i]
 	return argsForCall.arg1, argsForCall.arg2
 }
 
-func (fake *FakeRepositoryFactory) FindReturns(result1 repository.Repository, result2 error) {
-	fake.findMutex.Lock()
-	defer fake.findMutex.Unlock()
-	fake.FindStub = nil
-	fake.findReturns = struct {
+func (fake *FakeRepositoryFactory) FindMenuReturns(result1 repository.Repository, result2 error) {
+	fake.findMenuMutex.Lock()
+	defer fake.findMenuMutex.Unlock()
+	fake.FindMenuStub = nil
+	fake.findMenuReturns = struct {
 		result1 repository.Repository
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *FakeRepositoryFactory) FindReturnsOnCall(i int, result1 repository.Repository, result2 error) {
-	fake.findMutex.Lock()
-	defer fake.findMutex.Unlock()
-	fake.FindStub = nil
-	if fake.findReturnsOnCall == nil {
-		fake.findReturnsOnCall = make(map[int]struct {
+func (fake *FakeRepositoryFactory) FindMenuReturnsOnCall(i int, result1 repository.Repository, result2 error) {
+	fake.findMenuMutex.Lock()
+	defer fake.findMenuMutex.Unlock()
+	fake.FindMenuStub = nil
+	if fake.findMenuReturnsOnCall == nil {
+		fake.findMenuReturnsOnCall = make(map[int]struct {
 			result1 repository.Repository
 			result2 error
 		})
 	}
-	fake.findReturnsOnCall[i] = struct {
+	fake.findMenuReturnsOnCall[i] = struct {
+		result1 repository.Repository
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeRepositoryFactory) FindRepository(arg1 string) (repository.Repository, error) {
+	fake.findRepositoryMutex.Lock()
+	ret, specificReturn := fake.findRepositoryReturnsOnCall[len(fake.findRepositoryArgsForCall)]
+	fake.findRepositoryArgsForCall = append(fake.findRepositoryArgsForCall, struct {
+		arg1 string
+	}{arg1})
+	stub := fake.FindRepositoryStub
+	fakeReturns := fake.findRepositoryReturns
+	fake.recordInvocation("FindRepository", []interface{}{arg1})
+	fake.findRepositoryMutex.Unlock()
+	if stub != nil {
+		return stub(arg1)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fakeReturns.result1, fakeReturns.result2
+}
+
+func (fake *FakeRepositoryFactory) FindRepositoryCallCount() int {
+	fake.findRepositoryMutex.RLock()
+	defer fake.findRepositoryMutex.RUnlock()
+	return len(fake.findRepositoryArgsForCall)
+}
+
+func (fake *FakeRepositoryFactory) FindRepositoryCalls(stub func(string) (repository.Repository, error)) {
+	fake.findRepositoryMutex.Lock()
+	defer fake.findRepositoryMutex.Unlock()
+	fake.FindRepositoryStub = stub
+}
+
+func (fake *FakeRepositoryFactory) FindRepositoryArgsForCall(i int) string {
+	fake.findRepositoryMutex.RLock()
+	defer fake.findRepositoryMutex.RUnlock()
+	argsForCall := fake.findRepositoryArgsForCall[i]
+	return argsForCall.arg1
+}
+
+func (fake *FakeRepositoryFactory) FindRepositoryReturns(result1 repository.Repository, result2 error) {
+	fake.findRepositoryMutex.Lock()
+	defer fake.findRepositoryMutex.Unlock()
+	fake.FindRepositoryStub = nil
+	fake.findRepositoryReturns = struct {
+		result1 repository.Repository
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeRepositoryFactory) FindRepositoryReturnsOnCall(i int, result1 repository.Repository, result2 error) {
+	fake.findRepositoryMutex.Lock()
+	defer fake.findRepositoryMutex.Unlock()
+	fake.FindRepositoryStub = nil
+	if fake.findRepositoryReturnsOnCall == nil {
+		fake.findRepositoryReturnsOnCall = make(map[int]struct {
+			result1 repository.Repository
+			result2 error
+		})
+	}
+	fake.findRepositoryReturnsOnCall[i] = struct {
 		result1 repository.Repository
 		result2 error
 	}{result1, result2}
@@ -95,8 +172,10 @@ func (fake *FakeRepositoryFactory) FindReturnsOnCall(i int, result1 repository.R
 func (fake *FakeRepositoryFactory) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
-	fake.findMutex.RLock()
-	defer fake.findMutex.RUnlock()
+	fake.findMenuMutex.RLock()
+	defer fake.findMenuMutex.RUnlock()
+	fake.findRepositoryMutex.RLock()
+	defer fake.findRepositoryMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
 	for key, value := range fake.invocations {
 		copiedInvocations[key] = value

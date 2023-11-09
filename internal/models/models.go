@@ -34,7 +34,7 @@ type Offer struct {
 	Description string
 }
 
-type Brand struct {
+type Dispensary struct {
 	UniqueId   string   `json:"Id"`
 	Name       string   `json:"name"`
 	OrderTypes []string `json:"orderTypes"`

@@ -9,35 +9,6 @@ import (
 )
 
 type FakeManager struct {
-	AllProductsStub        func(string, string) ([]*models.Product, error)
-	allProductsMutex       sync.RWMutex
-	allProductsArgsForCall []struct {
-		arg1 string
-		arg2 string
-	}
-	allProductsReturns struct {
-		result1 []*models.Product
-		result2 error
-	}
-	allProductsReturnsOnCall map[int]struct {
-		result1 []*models.Product
-		result2 error
-	}
-	AllProductsForCategoryStub        func(string, string, models.Category) ([]*models.Product, error)
-	allProductsForCategoryMutex       sync.RWMutex
-	allProductsForCategoryArgsForCall []struct {
-		arg1 string
-		arg2 string
-		arg3 models.Category
-	}
-	allProductsForCategoryReturns struct {
-		result1 []*models.Product
-		result2 error
-	}
-	allProductsForCategoryReturnsOnCall map[int]struct {
-		result1 []*models.Product
-		result2 error
-	}
 	CannabinoidsStub        func(string, string) ([]*models.Cannabinoid, error)
 	cannabinoidsMutex       sync.RWMutex
 	cannabinoidsArgsForCall []struct {
@@ -52,39 +23,51 @@ type FakeManager struct {
 		result1 []*models.Cannabinoid
 		result2 error
 	}
-	CategoriesStub        func(string, string) ([]models.Category, error)
+	CategoriesStub        func(string, string) ([]*models.Category, error)
 	categoriesMutex       sync.RWMutex
 	categoriesArgsForCall []struct {
 		arg1 string
 		arg2 string
 	}
 	categoriesReturns struct {
-		result1 []models.Category
+		result1 []*models.Category
 		result2 error
 	}
 	categoriesReturnsOnCall map[int]struct {
-		result1 []models.Category
-		result2 error
-	}
-	LocationsStub        func(string, float64, float64) ([]*models.Brand, error)
-	locationsMutex       sync.RWMutex
-	locationsArgsForCall []struct {
-		arg1 string
-		arg2 float64
-		arg3 float64
-	}
-	locationsReturns struct {
-		result1 []*models.Brand
-		result2 error
-	}
-	locationsReturnsOnCall map[int]struct {
-		result1 []*models.Brand
+		result1 []*models.Category
 		result2 error
 	}
 	LogErrorStub        func(error)
 	logErrorMutex       sync.RWMutex
 	logErrorArgsForCall []struct {
 		arg1 error
+	}
+	MenuStub        func(string, string) (*models.Dispensary, error)
+	menuMutex       sync.RWMutex
+	menuArgsForCall []struct {
+		arg1 string
+		arg2 string
+	}
+	menuReturns struct {
+		result1 *models.Dispensary
+		result2 error
+	}
+	menuReturnsOnCall map[int]struct {
+		result1 *models.Dispensary
+		result2 error
+	}
+	MenusStub        func(string) ([]*models.Dispensary, error)
+	menusMutex       sync.RWMutex
+	menusArgsForCall []struct {
+		arg1 string
+	}
+	menusReturns struct {
+		result1 []*models.Dispensary
+		result2 error
+	}
+	menusReturnsOnCall map[int]struct {
+		result1 []*models.Dispensary
+		result2 error
 	}
 	OffersStub        func(string, string) ([]*models.Offer, error)
 	offersMutex       sync.RWMutex
@@ -115,6 +98,35 @@ type FakeManager struct {
 		result1 *models.Product
 		result2 error
 	}
+	ProductsStub        func(string, string) ([]*models.Product, error)
+	productsMutex       sync.RWMutex
+	productsArgsForCall []struct {
+		arg1 string
+		arg2 string
+	}
+	productsReturns struct {
+		result1 []*models.Product
+		result2 error
+	}
+	productsReturnsOnCall map[int]struct {
+		result1 []*models.Product
+		result2 error
+	}
+	ProductsForCategoryStub        func(string, string, models.Category) ([]*models.Product, error)
+	productsForCategoryMutex       sync.RWMutex
+	productsForCategoryArgsForCall []struct {
+		arg1 string
+		arg2 string
+		arg3 models.Category
+	}
+	productsForCategoryReturns struct {
+		result1 []*models.Product
+		result2 error
+	}
+	productsForCategoryReturnsOnCall map[int]struct {
+		result1 []*models.Product
+		result2 error
+	}
 	TerpenesStub        func(string, string) ([]*models.Terpene, error)
 	terpenesMutex       sync.RWMutex
 	terpenesArgsForCall []struct {
@@ -131,137 +143,6 @@ type FakeManager struct {
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
-}
-
-func (fake *FakeManager) AllProducts(arg1 string, arg2 string) ([]*models.Product, error) {
-	fake.allProductsMutex.Lock()
-	ret, specificReturn := fake.allProductsReturnsOnCall[len(fake.allProductsArgsForCall)]
-	fake.allProductsArgsForCall = append(fake.allProductsArgsForCall, struct {
-		arg1 string
-		arg2 string
-	}{arg1, arg2})
-	stub := fake.AllProductsStub
-	fakeReturns := fake.allProductsReturns
-	fake.recordInvocation("AllProducts", []interface{}{arg1, arg2})
-	fake.allProductsMutex.Unlock()
-	if stub != nil {
-		return stub(arg1, arg2)
-	}
-	if specificReturn {
-		return ret.result1, ret.result2
-	}
-	return fakeReturns.result1, fakeReturns.result2
-}
-
-func (fake *FakeManager) AllProductsCallCount() int {
-	fake.allProductsMutex.RLock()
-	defer fake.allProductsMutex.RUnlock()
-	return len(fake.allProductsArgsForCall)
-}
-
-func (fake *FakeManager) AllProductsCalls(stub func(string, string) ([]*models.Product, error)) {
-	fake.allProductsMutex.Lock()
-	defer fake.allProductsMutex.Unlock()
-	fake.AllProductsStub = stub
-}
-
-func (fake *FakeManager) AllProductsArgsForCall(i int) (string, string) {
-	fake.allProductsMutex.RLock()
-	defer fake.allProductsMutex.RUnlock()
-	argsForCall := fake.allProductsArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2
-}
-
-func (fake *FakeManager) AllProductsReturns(result1 []*models.Product, result2 error) {
-	fake.allProductsMutex.Lock()
-	defer fake.allProductsMutex.Unlock()
-	fake.AllProductsStub = nil
-	fake.allProductsReturns = struct {
-		result1 []*models.Product
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeManager) AllProductsReturnsOnCall(i int, result1 []*models.Product, result2 error) {
-	fake.allProductsMutex.Lock()
-	defer fake.allProductsMutex.Unlock()
-	fake.AllProductsStub = nil
-	if fake.allProductsReturnsOnCall == nil {
-		fake.allProductsReturnsOnCall = make(map[int]struct {
-			result1 []*models.Product
-			result2 error
-		})
-	}
-	fake.allProductsReturnsOnCall[i] = struct {
-		result1 []*models.Product
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeManager) AllProductsForCategory(arg1 string, arg2 string, arg3 models.Category) ([]*models.Product, error) {
-	fake.allProductsForCategoryMutex.Lock()
-	ret, specificReturn := fake.allProductsForCategoryReturnsOnCall[len(fake.allProductsForCategoryArgsForCall)]
-	fake.allProductsForCategoryArgsForCall = append(fake.allProductsForCategoryArgsForCall, struct {
-		arg1 string
-		arg2 string
-		arg3 models.Category
-	}{arg1, arg2, arg3})
-	stub := fake.AllProductsForCategoryStub
-	fakeReturns := fake.allProductsForCategoryReturns
-	fake.recordInvocation("AllProductsForCategory", []interface{}{arg1, arg2, arg3})
-	fake.allProductsForCategoryMutex.Unlock()
-	if stub != nil {
-		return stub(arg1, arg2, arg3)
-	}
-	if specificReturn {
-		return ret.result1, ret.result2
-	}
-	return fakeReturns.result1, fakeReturns.result2
-}
-
-func (fake *FakeManager) AllProductsForCategoryCallCount() int {
-	fake.allProductsForCategoryMutex.RLock()
-	defer fake.allProductsForCategoryMutex.RUnlock()
-	return len(fake.allProductsForCategoryArgsForCall)
-}
-
-func (fake *FakeManager) AllProductsForCategoryCalls(stub func(string, string, models.Category) ([]*models.Product, error)) {
-	fake.allProductsForCategoryMutex.Lock()
-	defer fake.allProductsForCategoryMutex.Unlock()
-	fake.AllProductsForCategoryStub = stub
-}
-
-func (fake *FakeManager) AllProductsForCategoryArgsForCall(i int) (string, string, models.Category) {
-	fake.allProductsForCategoryMutex.RLock()
-	defer fake.allProductsForCategoryMutex.RUnlock()
-	argsForCall := fake.allProductsForCategoryArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
-}
-
-func (fake *FakeManager) AllProductsForCategoryReturns(result1 []*models.Product, result2 error) {
-	fake.allProductsForCategoryMutex.Lock()
-	defer fake.allProductsForCategoryMutex.Unlock()
-	fake.AllProductsForCategoryStub = nil
-	fake.allProductsForCategoryReturns = struct {
-		result1 []*models.Product
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeManager) AllProductsForCategoryReturnsOnCall(i int, result1 []*models.Product, result2 error) {
-	fake.allProductsForCategoryMutex.Lock()
-	defer fake.allProductsForCategoryMutex.Unlock()
-	fake.AllProductsForCategoryStub = nil
-	if fake.allProductsForCategoryReturnsOnCall == nil {
-		fake.allProductsForCategoryReturnsOnCall = make(map[int]struct {
-			result1 []*models.Product
-			result2 error
-		})
-	}
-	fake.allProductsForCategoryReturnsOnCall[i] = struct {
-		result1 []*models.Product
-		result2 error
-	}{result1, result2}
 }
 
 func (fake *FakeManager) Cannabinoids(arg1 string, arg2 string) ([]*models.Cannabinoid, error) {
@@ -329,7 +210,7 @@ func (fake *FakeManager) CannabinoidsReturnsOnCall(i int, result1 []*models.Cann
 	}{result1, result2}
 }
 
-func (fake *FakeManager) Categories(arg1 string, arg2 string) ([]models.Category, error) {
+func (fake *FakeManager) Categories(arg1 string, arg2 string) ([]*models.Category, error) {
 	fake.categoriesMutex.Lock()
 	ret, specificReturn := fake.categoriesReturnsOnCall[len(fake.categoriesArgsForCall)]
 	fake.categoriesArgsForCall = append(fake.categoriesArgsForCall, struct {
@@ -355,7 +236,7 @@ func (fake *FakeManager) CategoriesCallCount() int {
 	return len(fake.categoriesArgsForCall)
 }
 
-func (fake *FakeManager) CategoriesCalls(stub func(string, string) ([]models.Category, error)) {
+func (fake *FakeManager) CategoriesCalls(stub func(string, string) ([]*models.Category, error)) {
 	fake.categoriesMutex.Lock()
 	defer fake.categoriesMutex.Unlock()
 	fake.CategoriesStub = stub
@@ -368,94 +249,28 @@ func (fake *FakeManager) CategoriesArgsForCall(i int) (string, string) {
 	return argsForCall.arg1, argsForCall.arg2
 }
 
-func (fake *FakeManager) CategoriesReturns(result1 []models.Category, result2 error) {
+func (fake *FakeManager) CategoriesReturns(result1 []*models.Category, result2 error) {
 	fake.categoriesMutex.Lock()
 	defer fake.categoriesMutex.Unlock()
 	fake.CategoriesStub = nil
 	fake.categoriesReturns = struct {
-		result1 []models.Category
+		result1 []*models.Category
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *FakeManager) CategoriesReturnsOnCall(i int, result1 []models.Category, result2 error) {
+func (fake *FakeManager) CategoriesReturnsOnCall(i int, result1 []*models.Category, result2 error) {
 	fake.categoriesMutex.Lock()
 	defer fake.categoriesMutex.Unlock()
 	fake.CategoriesStub = nil
 	if fake.categoriesReturnsOnCall == nil {
 		fake.categoriesReturnsOnCall = make(map[int]struct {
-			result1 []models.Category
+			result1 []*models.Category
 			result2 error
 		})
 	}
 	fake.categoriesReturnsOnCall[i] = struct {
-		result1 []models.Category
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeManager) Locations(arg1 string, arg2 float64, arg3 float64) ([]*models.Brand, error) {
-	fake.locationsMutex.Lock()
-	ret, specificReturn := fake.locationsReturnsOnCall[len(fake.locationsArgsForCall)]
-	fake.locationsArgsForCall = append(fake.locationsArgsForCall, struct {
-		arg1 string
-		arg2 float64
-		arg3 float64
-	}{arg1, arg2, arg3})
-	stub := fake.LocationsStub
-	fakeReturns := fake.locationsReturns
-	fake.recordInvocation("Locations", []interface{}{arg1, arg2, arg3})
-	fake.locationsMutex.Unlock()
-	if stub != nil {
-		return stub(arg1, arg2, arg3)
-	}
-	if specificReturn {
-		return ret.result1, ret.result2
-	}
-	return fakeReturns.result1, fakeReturns.result2
-}
-
-func (fake *FakeManager) LocationsCallCount() int {
-	fake.locationsMutex.RLock()
-	defer fake.locationsMutex.RUnlock()
-	return len(fake.locationsArgsForCall)
-}
-
-func (fake *FakeManager) LocationsCalls(stub func(string, float64, float64) ([]*models.Brand, error)) {
-	fake.locationsMutex.Lock()
-	defer fake.locationsMutex.Unlock()
-	fake.LocationsStub = stub
-}
-
-func (fake *FakeManager) LocationsArgsForCall(i int) (string, float64, float64) {
-	fake.locationsMutex.RLock()
-	defer fake.locationsMutex.RUnlock()
-	argsForCall := fake.locationsArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
-}
-
-func (fake *FakeManager) LocationsReturns(result1 []*models.Brand, result2 error) {
-	fake.locationsMutex.Lock()
-	defer fake.locationsMutex.Unlock()
-	fake.LocationsStub = nil
-	fake.locationsReturns = struct {
-		result1 []*models.Brand
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeManager) LocationsReturnsOnCall(i int, result1 []*models.Brand, result2 error) {
-	fake.locationsMutex.Lock()
-	defer fake.locationsMutex.Unlock()
-	fake.LocationsStub = nil
-	if fake.locationsReturnsOnCall == nil {
-		fake.locationsReturnsOnCall = make(map[int]struct {
-			result1 []*models.Brand
-			result2 error
-		})
-	}
-	fake.locationsReturnsOnCall[i] = struct {
-		result1 []*models.Brand
+		result1 []*models.Category
 		result2 error
 	}{result1, result2}
 }
@@ -490,6 +305,135 @@ func (fake *FakeManager) LogErrorArgsForCall(i int) error {
 	defer fake.logErrorMutex.RUnlock()
 	argsForCall := fake.logErrorArgsForCall[i]
 	return argsForCall.arg1
+}
+
+func (fake *FakeManager) Menu(arg1 string, arg2 string) (*models.Dispensary, error) {
+	fake.menuMutex.Lock()
+	ret, specificReturn := fake.menuReturnsOnCall[len(fake.menuArgsForCall)]
+	fake.menuArgsForCall = append(fake.menuArgsForCall, struct {
+		arg1 string
+		arg2 string
+	}{arg1, arg2})
+	stub := fake.MenuStub
+	fakeReturns := fake.menuReturns
+	fake.recordInvocation("Menu", []interface{}{arg1, arg2})
+	fake.menuMutex.Unlock()
+	if stub != nil {
+		return stub(arg1, arg2)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fakeReturns.result1, fakeReturns.result2
+}
+
+func (fake *FakeManager) MenuCallCount() int {
+	fake.menuMutex.RLock()
+	defer fake.menuMutex.RUnlock()
+	return len(fake.menuArgsForCall)
+}
+
+func (fake *FakeManager) MenuCalls(stub func(string, string) (*models.Dispensary, error)) {
+	fake.menuMutex.Lock()
+	defer fake.menuMutex.Unlock()
+	fake.MenuStub = stub
+}
+
+func (fake *FakeManager) MenuArgsForCall(i int) (string, string) {
+	fake.menuMutex.RLock()
+	defer fake.menuMutex.RUnlock()
+	argsForCall := fake.menuArgsForCall[i]
+	return argsForCall.arg1, argsForCall.arg2
+}
+
+func (fake *FakeManager) MenuReturns(result1 *models.Dispensary, result2 error) {
+	fake.menuMutex.Lock()
+	defer fake.menuMutex.Unlock()
+	fake.MenuStub = nil
+	fake.menuReturns = struct {
+		result1 *models.Dispensary
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeManager) MenuReturnsOnCall(i int, result1 *models.Dispensary, result2 error) {
+	fake.menuMutex.Lock()
+	defer fake.menuMutex.Unlock()
+	fake.MenuStub = nil
+	if fake.menuReturnsOnCall == nil {
+		fake.menuReturnsOnCall = make(map[int]struct {
+			result1 *models.Dispensary
+			result2 error
+		})
+	}
+	fake.menuReturnsOnCall[i] = struct {
+		result1 *models.Dispensary
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeManager) Menus(arg1 string) ([]*models.Dispensary, error) {
+	fake.menusMutex.Lock()
+	ret, specificReturn := fake.menusReturnsOnCall[len(fake.menusArgsForCall)]
+	fake.menusArgsForCall = append(fake.menusArgsForCall, struct {
+		arg1 string
+	}{arg1})
+	stub := fake.MenusStub
+	fakeReturns := fake.menusReturns
+	fake.recordInvocation("Menus", []interface{}{arg1})
+	fake.menusMutex.Unlock()
+	if stub != nil {
+		return stub(arg1)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fakeReturns.result1, fakeReturns.result2
+}
+
+func (fake *FakeManager) MenusCallCount() int {
+	fake.menusMutex.RLock()
+	defer fake.menusMutex.RUnlock()
+	return len(fake.menusArgsForCall)
+}
+
+func (fake *FakeManager) MenusCalls(stub func(string) ([]*models.Dispensary, error)) {
+	fake.menusMutex.Lock()
+	defer fake.menusMutex.Unlock()
+	fake.MenusStub = stub
+}
+
+func (fake *FakeManager) MenusArgsForCall(i int) string {
+	fake.menusMutex.RLock()
+	defer fake.menusMutex.RUnlock()
+	argsForCall := fake.menusArgsForCall[i]
+	return argsForCall.arg1
+}
+
+func (fake *FakeManager) MenusReturns(result1 []*models.Dispensary, result2 error) {
+	fake.menusMutex.Lock()
+	defer fake.menusMutex.Unlock()
+	fake.MenusStub = nil
+	fake.menusReturns = struct {
+		result1 []*models.Dispensary
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeManager) MenusReturnsOnCall(i int, result1 []*models.Dispensary, result2 error) {
+	fake.menusMutex.Lock()
+	defer fake.menusMutex.Unlock()
+	fake.MenusStub = nil
+	if fake.menusReturnsOnCall == nil {
+		fake.menusReturnsOnCall = make(map[int]struct {
+			result1 []*models.Dispensary
+			result2 error
+		})
+	}
+	fake.menusReturnsOnCall[i] = struct {
+		result1 []*models.Dispensary
+		result2 error
+	}{result1, result2}
 }
 
 func (fake *FakeManager) Offers(arg1 string, arg2 string) ([]*models.Offer, error) {
@@ -623,6 +567,137 @@ func (fake *FakeManager) ProductReturnsOnCall(i int, result1 *models.Product, re
 	}{result1, result2}
 }
 
+func (fake *FakeManager) Products(arg1 string, arg2 string) ([]*models.Product, error) {
+	fake.productsMutex.Lock()
+	ret, specificReturn := fake.productsReturnsOnCall[len(fake.productsArgsForCall)]
+	fake.productsArgsForCall = append(fake.productsArgsForCall, struct {
+		arg1 string
+		arg2 string
+	}{arg1, arg2})
+	stub := fake.ProductsStub
+	fakeReturns := fake.productsReturns
+	fake.recordInvocation("Products", []interface{}{arg1, arg2})
+	fake.productsMutex.Unlock()
+	if stub != nil {
+		return stub(arg1, arg2)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fakeReturns.result1, fakeReturns.result2
+}
+
+func (fake *FakeManager) ProductsCallCount() int {
+	fake.productsMutex.RLock()
+	defer fake.productsMutex.RUnlock()
+	return len(fake.productsArgsForCall)
+}
+
+func (fake *FakeManager) ProductsCalls(stub func(string, string) ([]*models.Product, error)) {
+	fake.productsMutex.Lock()
+	defer fake.productsMutex.Unlock()
+	fake.ProductsStub = stub
+}
+
+func (fake *FakeManager) ProductsArgsForCall(i int) (string, string) {
+	fake.productsMutex.RLock()
+	defer fake.productsMutex.RUnlock()
+	argsForCall := fake.productsArgsForCall[i]
+	return argsForCall.arg1, argsForCall.arg2
+}
+
+func (fake *FakeManager) ProductsReturns(result1 []*models.Product, result2 error) {
+	fake.productsMutex.Lock()
+	defer fake.productsMutex.Unlock()
+	fake.ProductsStub = nil
+	fake.productsReturns = struct {
+		result1 []*models.Product
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeManager) ProductsReturnsOnCall(i int, result1 []*models.Product, result2 error) {
+	fake.productsMutex.Lock()
+	defer fake.productsMutex.Unlock()
+	fake.ProductsStub = nil
+	if fake.productsReturnsOnCall == nil {
+		fake.productsReturnsOnCall = make(map[int]struct {
+			result1 []*models.Product
+			result2 error
+		})
+	}
+	fake.productsReturnsOnCall[i] = struct {
+		result1 []*models.Product
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeManager) ProductsForCategory(arg1 string, arg2 string, arg3 models.Category) ([]*models.Product, error) {
+	fake.productsForCategoryMutex.Lock()
+	ret, specificReturn := fake.productsForCategoryReturnsOnCall[len(fake.productsForCategoryArgsForCall)]
+	fake.productsForCategoryArgsForCall = append(fake.productsForCategoryArgsForCall, struct {
+		arg1 string
+		arg2 string
+		arg3 models.Category
+	}{arg1, arg2, arg3})
+	stub := fake.ProductsForCategoryStub
+	fakeReturns := fake.productsForCategoryReturns
+	fake.recordInvocation("ProductsForCategory", []interface{}{arg1, arg2, arg3})
+	fake.productsForCategoryMutex.Unlock()
+	if stub != nil {
+		return stub(arg1, arg2, arg3)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fakeReturns.result1, fakeReturns.result2
+}
+
+func (fake *FakeManager) ProductsForCategoryCallCount() int {
+	fake.productsForCategoryMutex.RLock()
+	defer fake.productsForCategoryMutex.RUnlock()
+	return len(fake.productsForCategoryArgsForCall)
+}
+
+func (fake *FakeManager) ProductsForCategoryCalls(stub func(string, string, models.Category) ([]*models.Product, error)) {
+	fake.productsForCategoryMutex.Lock()
+	defer fake.productsForCategoryMutex.Unlock()
+	fake.ProductsForCategoryStub = stub
+}
+
+func (fake *FakeManager) ProductsForCategoryArgsForCall(i int) (string, string, models.Category) {
+	fake.productsForCategoryMutex.RLock()
+	defer fake.productsForCategoryMutex.RUnlock()
+	argsForCall := fake.productsForCategoryArgsForCall[i]
+	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
+}
+
+func (fake *FakeManager) ProductsForCategoryReturns(result1 []*models.Product, result2 error) {
+	fake.productsForCategoryMutex.Lock()
+	defer fake.productsForCategoryMutex.Unlock()
+	fake.ProductsForCategoryStub = nil
+	fake.productsForCategoryReturns = struct {
+		result1 []*models.Product
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeManager) ProductsForCategoryReturnsOnCall(i int, result1 []*models.Product, result2 error) {
+	fake.productsForCategoryMutex.Lock()
+	defer fake.productsForCategoryMutex.Unlock()
+	fake.ProductsForCategoryStub = nil
+	if fake.productsForCategoryReturnsOnCall == nil {
+		fake.productsForCategoryReturnsOnCall = make(map[int]struct {
+			result1 []*models.Product
+			result2 error
+		})
+	}
+	fake.productsForCategoryReturnsOnCall[i] = struct {
+		result1 []*models.Product
+		result2 error
+	}{result1, result2}
+}
+
 func (fake *FakeManager) Terpenes(arg1 string, arg2 string) ([]*models.Terpene, error) {
 	fake.terpenesMutex.Lock()
 	ret, specificReturn := fake.terpenesReturnsOnCall[len(fake.terpenesArgsForCall)]
@@ -691,22 +766,24 @@ func (fake *FakeManager) TerpenesReturnsOnCall(i int, result1 []*models.Terpene,
 func (fake *FakeManager) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
-	fake.allProductsMutex.RLock()
-	defer fake.allProductsMutex.RUnlock()
-	fake.allProductsForCategoryMutex.RLock()
-	defer fake.allProductsForCategoryMutex.RUnlock()
 	fake.cannabinoidsMutex.RLock()
 	defer fake.cannabinoidsMutex.RUnlock()
 	fake.categoriesMutex.RLock()
 	defer fake.categoriesMutex.RUnlock()
-	fake.locationsMutex.RLock()
-	defer fake.locationsMutex.RUnlock()
 	fake.logErrorMutex.RLock()
 	defer fake.logErrorMutex.RUnlock()
+	fake.menuMutex.RLock()
+	defer fake.menuMutex.RUnlock()
+	fake.menusMutex.RLock()
+	defer fake.menusMutex.RUnlock()
 	fake.offersMutex.RLock()
 	defer fake.offersMutex.RUnlock()
 	fake.productMutex.RLock()
 	defer fake.productMutex.RUnlock()
+	fake.productsMutex.RLock()
+	defer fake.productsMutex.RUnlock()
+	fake.productsForCategoryMutex.RLock()
+	defer fake.productsForCategoryMutex.RUnlock()
 	fake.terpenesMutex.RLock()
 	defer fake.terpenesMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
