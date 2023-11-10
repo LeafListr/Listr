@@ -2,13 +2,16 @@ package factory
 
 import (
 	"errors"
+
 	"github.com/Linkinlog/LeafList/internal/client"
 	"github.com/Linkinlog/LeafList/internal/repository"
 	curarepo "github.com/Linkinlog/LeafList/internal/repository/curaleaf"
 )
 
-const RepoNotFoundError = "repository not found"
-const MenuNotFoundError = "menu not found"
+const (
+	RepoNotFoundError = "repository not found"
+	MenuNotFoundError = "menu not found"
+)
 
 type DefaultRepositoryFactory struct{}
 

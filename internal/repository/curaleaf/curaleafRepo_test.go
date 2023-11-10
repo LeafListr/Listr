@@ -3,12 +3,13 @@ package curaleaf_test
 import (
 	"encoding/json"
 	"fmt"
+	"testing"
+
 	"github.com/Linkinlog/LeafList/internal/client/clientfakes"
 	cm "github.com/Linkinlog/LeafList/internal/client/curaleaf"
 	"github.com/Linkinlog/LeafList/internal/models"
 	"github.com/Linkinlog/LeafList/internal/repository/curaleaf"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestGetProducts(t *testing.T) {

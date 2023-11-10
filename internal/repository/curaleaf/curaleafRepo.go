@@ -3,6 +3,7 @@ package curaleaf
 import (
 	"context"
 	"encoding/json"
+
 	"github.com/Linkinlog/LeafList/internal/client"
 	"github.com/Linkinlog/LeafList/internal/client/curaleaf"
 	"github.com/Linkinlog/LeafList/internal/models"
@@ -83,7 +84,6 @@ func (r *Repository) getMenu(menuId string) (*models.Dispensary, error) {
 
 func (r *Repository) getMenus(longitude, latitude float64) ([]*models.Dispensary, error) {
 	locationResp, err := r.C.Query(context.Background(), curaleaf.AllLocationsQuery(longitude, latitude), "POST")
-
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +99,6 @@ func (r *Repository) getMenus(longitude, latitude float64) ([]*models.Dispensary
 
 func (r *Repository) getProduct(menuId, productId string) (*models.Product, error) {
 	productResp, err := r.C.Query(context.Background(), curaleaf.ProductQuery(menuId, productId, "MEDICAL"), "POST")
-
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +114,6 @@ func (r *Repository) getProduct(menuId, productId string) (*models.Product, erro
 
 func (r *Repository) getProducts(menuId string) ([]*models.Product, error) {
 	allProdResp, err := r.C.Query(context.Background(), curaleaf.AllProductQuery(menuId, "MEDICAL"), "POST")
-
 	if err != nil {
 		return nil, err
 	}
@@ -131,7 +129,6 @@ func (r *Repository) getProducts(menuId string) ([]*models.Product, error) {
 
 func (r *Repository) getProductsForCategory(menuId string, category models.Category) ([]*models.Product, error) {
 	allProdForCatResp, err := r.C.Query(context.Background(), curaleaf.AllProductForCategoryQuery(menuId, "MEDICAL", string(category)), "POST")
-
 	if err != nil {
 		return nil, err
 	}
@@ -147,7 +144,6 @@ func (r *Repository) getProductsForCategory(menuId string, category models.Categ
 
 func (r *Repository) getCategories(menuId string) ([]*models.Category, error) {
 	allCatsResp, err := r.C.Query(context.Background(), curaleaf.AllCategoriesQuery(menuId, "MEDICAL"), "POST")
-
 	if err != nil {
 		return nil, err
 	}

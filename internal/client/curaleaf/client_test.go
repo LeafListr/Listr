@@ -3,9 +3,10 @@ package curaleaf_test
 import (
 	"context"
 	"encoding/json"
-	"github.com/Linkinlog/LeafList/internal/client/curaleaf"
 	"net/http"
 	"testing"
+
+	"github.com/Linkinlog/LeafList/internal/client/curaleaf"
 
 	curaRepo "github.com/Linkinlog/LeafList/internal/repository/curaleaf"
 

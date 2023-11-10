@@ -1,11 +1,12 @@
 package workflow
 
 import (
+	"reflect"
+	"testing"
+
 	"github.com/Linkinlog/LeafList/internal/factory/factoryfakes"
 	"github.com/Linkinlog/LeafList/internal/models"
 	"github.com/Linkinlog/LeafList/internal/repository"
-	"reflect"
-	"testing"
 )
 
 func TestWorkflow_AllProducts(t *testing.T) {

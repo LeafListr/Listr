@@ -2,9 +2,10 @@ package workflow
 
 import (
 	"context"
+	"log/slog"
+
 	"github.com/Linkinlog/LeafList/internal/factory"
 	"github.com/Linkinlog/LeafList/internal/models"
-	"log/slog"
 )
 
 //go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate
