@@ -1,4 +1,4 @@
-module github.com/Linkinlog/LeafList
+module github.com/Linkinlog/LeafListr
 
 go 1.21.0
 

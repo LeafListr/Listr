@@ -4,11 +4,11 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/Linkinlog/LeafList/internal/client"
-	"github.com/Linkinlog/LeafList/internal/client/curaleaf"
-	"github.com/Linkinlog/LeafList/internal/models"
-	"github.com/Linkinlog/LeafList/internal/repository"
-	"github.com/Linkinlog/LeafList/internal/translation"
+	"github.com/Linkinlog/LeafListr/internal/client"
+	"github.com/Linkinlog/LeafListr/internal/client/curaleaf"
+	"github.com/Linkinlog/LeafListr/internal/models"
+	"github.com/Linkinlog/LeafListr/internal/repository"
+	"github.com/Linkinlog/LeafListr/internal/translation"
 )
 
 const (

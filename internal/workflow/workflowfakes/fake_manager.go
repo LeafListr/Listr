@@ -5,8 +5,8 @@ import (
 	"context"
 	"sync"
 
-	"github.com/Linkinlog/LeafList/internal/models"
-	"github.com/Linkinlog/LeafList/internal/workflow"
+	"github.com/Linkinlog/LeafListr/internal/models"
+	"github.com/Linkinlog/LeafListr/internal/workflow"
 )
 
 type FakeManager struct {

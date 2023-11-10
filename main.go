@@ -1,6 +1,6 @@
 package main
 
-import "github.com/Linkinlog/LeafList/internal/api"
+import "github.com/Linkinlog/LeafListr/internal/api"
 
 func main() {
 	err := api.ListenAndServe(":8080")

@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/Linkinlog/LeafList/internal/client/curaleaf"
+	"github.com/Linkinlog/LeafListr/internal/client/curaleaf"
 
-	curaRepo "github.com/Linkinlog/LeafList/internal/repository/curaleaf"
+	curaRepo "github.com/Linkinlog/LeafListr/internal/repository/curaleaf"
 
-	"github.com/Linkinlog/LeafList/internal/client"
+	"github.com/Linkinlog/LeafListr/internal/client"
 )
 
 func TestSend(t *testing.T) {

@@ -1,7 +1,7 @@
 package factory
 
 import (
-	"github.com/Linkinlog/LeafList/internal/repository"
+	"github.com/Linkinlog/LeafListr/internal/repository"
 )
 
 //go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate

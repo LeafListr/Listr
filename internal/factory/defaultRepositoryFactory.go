@@ -3,9 +3,9 @@ package factory
 import (
 	"errors"
 
-	"github.com/Linkinlog/LeafList/internal/client"
-	"github.com/Linkinlog/LeafList/internal/repository"
-	curarepo "github.com/Linkinlog/LeafList/internal/repository/curaleaf"
+	"github.com/Linkinlog/LeafListr/internal/client"
+	"github.com/Linkinlog/LeafListr/internal/repository"
+	curarepo "github.com/Linkinlog/LeafListr/internal/repository/curaleaf"
 )
 
 const (

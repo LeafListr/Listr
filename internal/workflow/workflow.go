@@ -4,8 +4,8 @@ import (
 	"context"
 	"log/slog"
 
-	"github.com/Linkinlog/LeafList/internal/factory"
-	"github.com/Linkinlog/LeafList/internal/models"
+	"github.com/Linkinlog/LeafListr/internal/factory"
+	"github.com/Linkinlog/LeafListr/internal/models"
 )
 
 //go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate

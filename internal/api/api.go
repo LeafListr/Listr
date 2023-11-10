@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/Linkinlog/LeafList/internal/workflow"
+	"github.com/Linkinlog/LeafListr/internal/workflow"
 	"github.com/go-chi/chi/v5"
 )
 

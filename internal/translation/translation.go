@@ -1,8 +1,8 @@
 package translation
 
 import (
-	"github.com/Linkinlog/LeafList/internal/client/curaleaf"
-	"github.com/Linkinlog/LeafList/internal/models"
+	"github.com/Linkinlog/LeafListr/internal/client/curaleaf"
+	"github.com/Linkinlog/LeafListr/internal/models"
 )
 
 type Translatable interface {

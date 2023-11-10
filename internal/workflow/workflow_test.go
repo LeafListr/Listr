@@ -4,9 +4,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/Linkinlog/LeafList/internal/factory/factoryfakes"
-	"github.com/Linkinlog/LeafList/internal/models"
-	"github.com/Linkinlog/LeafList/internal/repository"
+	"github.com/Linkinlog/LeafListr/internal/factory/factoryfakes"
+	"github.com/Linkinlog/LeafListr/internal/models"
+	"github.com/Linkinlog/LeafListr/internal/repository"
 )
 
 func TestWorkflow_AllProducts(t *testing.T) {

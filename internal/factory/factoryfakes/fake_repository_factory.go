@@ -4,8 +4,8 @@ package factoryfakes
 import (
 	"sync"
 
-	"github.com/Linkinlog/LeafList/internal/factory"
-	"github.com/Linkinlog/LeafList/internal/repository"
+	"github.com/Linkinlog/LeafListr/internal/factory"
+	"github.com/Linkinlog/LeafListr/internal/repository"
 )
 
 type FakeRepositoryFactory struct {

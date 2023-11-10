@@ -4,8 +4,8 @@ package repositoryfakes
 import (
 	"sync"
 
-	"github.com/Linkinlog/LeafList/internal/models"
-	"github.com/Linkinlog/LeafList/internal/repository"
+	"github.com/Linkinlog/LeafListr/internal/models"
+	"github.com/Linkinlog/LeafListr/internal/repository"
 )
 
 type FakeRepository struct {

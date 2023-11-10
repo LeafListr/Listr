@@ -5,7 +5,7 @@ import (
 	"context"
 	"sync"
 
-	"github.com/Linkinlog/LeafList/internal/client"
+	"github.com/Linkinlog/LeafListr/internal/client"
 )
 
 type FakeClient struct {
