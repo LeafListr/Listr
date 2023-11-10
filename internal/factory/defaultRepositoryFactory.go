@@ -16,11 +16,11 @@ func NewRepoFactory() RepositoryFactory {
 	return &DefaultRepositoryFactory{}
 }
 
-func (rf *DefaultRepositoryFactory) FindRepository(dispensary string) (repository.Repository, error) {
+func (rf *DefaultRepositoryFactory) FindByDispensary(dispensary string) (repository.Repository, error) {
 	return findRepository(dispensary)
 }
 
-func (rf *DefaultRepositoryFactory) FindMenu(dispensary, menuId string) (repository.Repository, error) {
+func (rf *DefaultRepositoryFactory) FindByDispensaryMenu(dispensary, menuId string) (repository.Repository, error) {
 	return findMenu(dispensary, menuId)
 }
 

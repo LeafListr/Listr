@@ -27,7 +27,7 @@ func TestWorkflow_AllProducts(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			f := factoryfakes.FakeRepositoryFactory{}
-			f.FindRepositoryReturns(tt.fields.r, nil)
+			f.FindByDispensaryReturns(tt.fields.r, nil)
 			w := &Workflow{
 				f: &f,
 			}
@@ -63,7 +63,7 @@ func TestWorkflow_AllProductsForCategory(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			f := factoryfakes.FakeRepositoryFactory{}
-			f.FindRepositoryReturns(tt.fields.r, nil)
+			f.FindByDispensaryReturns(tt.fields.r, nil)
 			w := &Workflow{
 				f: &f,
 			}
@@ -98,7 +98,7 @@ func TestWorkflow_Categories(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			f := factoryfakes.FakeRepositoryFactory{}
-			f.FindRepositoryReturns(tt.fields.r, nil)
+			f.FindByDispensaryReturns(tt.fields.r, nil)
 			w := &Workflow{
 				f: &f,
 			}
@@ -133,7 +133,7 @@ func TestWorkflow_Offers(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			f := factoryfakes.FakeRepositoryFactory{}
-			f.FindRepositoryReturns(tt.fields.r, nil)
+			f.FindByDispensaryReturns(tt.fields.r, nil)
 			w := &Workflow{
 				f: &f,
 			}
@@ -169,7 +169,7 @@ func TestWorkflow_Product(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			f := factoryfakes.FakeRepositoryFactory{}
-			f.FindRepositoryReturns(tt.fields.r, nil)
+			f.FindByDispensaryReturns(tt.fields.r, nil)
 			w := &Workflow{
 				f: &f,
 			}
@@ -204,7 +204,7 @@ func TestWorkflow_Terpenes(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			f := factoryfakes.FakeRepositoryFactory{}
-			f.FindRepositoryReturns(tt.fields.r, nil)
+			f.FindByDispensaryReturns(tt.fields.r, nil)
 			w := &Workflow{
 				f: &f,
 			}

@@ -8,6 +8,6 @@ import (
 
 //counterfeiter:generate . RepositoryFactory
 type RepositoryFactory interface {
-	FindRepository(dispensary string) (repository.Repository, error)
-	FindMenu(dispensary, menuId string) (repository.Repository, error)
+	FindByDispensary(dispensary string) (repository.Repository, error)
+	FindByDispensaryMenu(dispensary, menuId string) (repository.Repository, error)
 }

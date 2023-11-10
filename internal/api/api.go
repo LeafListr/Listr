@@ -16,11 +16,11 @@ type API struct {
 	h http.Handler
 }
 
-func New(w workflow.Manager) *API {
+func New() *API {
 	r := chi.NewRouter()
 
 	a := &API{
-		w: w,
+		w: workflow.NewWorkflowManager(),
 	}
 
 	r.Get(v("/dispensaries"), a.handleDispensaryListing)
@@ -50,29 +50,29 @@ func v(path string) string {
 }
 
 func ListenAndServe(addr string) error {
-	a := New(workflow.NewWorkflowManager())
+	a := New()
 	fmt.Println("Listening on " + addr)
 	return http.ListenAndServe(addr, a.h)
 }
 
-func (a *API) writeJson(r http.ResponseWriter, data any, err error) {
+func (a *API) writeJson(r http.ResponseWriter, req *http.Request, data any, err error) {
 	if err != nil {
-		a.handleError(r, err)
+		a.handleError(r, req, err)
 		return
 	}
 	resp, marshalErr := json.Marshal(&data)
 	if marshalErr != nil {
-		a.handleError(r, marshalErr)
+		a.handleError(r, req, marshalErr)
 	}
 	r.Header().Set("Content-Type", "application/json")
 	_, err = r.Write(resp)
 	if err != nil {
-		a.handleError(r, err)
+		a.handleError(r, req, err)
 	}
 }
 
-func (a *API) handleError(r http.ResponseWriter, err error) {
-	a.w.LogError(err)
+func (a *API) handleError(r http.ResponseWriter, req *http.Request, err error) {
+	a.w.LogError(err, req.Context())
 	r.WriteHeader(http.StatusInternalServerError)
 }
 
@@ -80,17 +80,17 @@ func (a *API) handleDispensary(r http.ResponseWriter, _ *http.Request) {
 	supportedPages := []string{
 		"menus",
 	}
-	a.writeJson(r, supportedPages, nil)
+	a.writeJson(r, nil, supportedPages, nil)
 }
 
 func (a *API) handleDispensaryListing(r http.ResponseWriter, _ *http.Request) {
 	supportedDispensaries := []string{
 		"curaleaf",
 	}
-	a.writeJson(r, supportedDispensaries, nil)
+	a.writeJson(r, nil, supportedDispensaries, nil)
 }
 
-func (a *API) handleMenu(r http.ResponseWriter, _ *http.Request) {
+func (a *API) handleMenu(r http.ResponseWriter, req *http.Request) {
 	// do we need to abstract this out? might be something to look into
 	supportedMenuOptions := []string{
 		"products",
@@ -99,49 +99,49 @@ func (a *API) handleMenu(r http.ResponseWriter, _ *http.Request) {
 		"cannabinoids",
 		"categories",
 	}
-	a.writeJson(r, supportedMenuOptions, nil)
+	a.writeJson(r, req, supportedMenuOptions, nil)
 }
 
 func (a *API) handleMenuListing(r http.ResponseWriter, req *http.Request) {
 	dispensary, _, _ := params(req, "")
 	menus, err := a.w.Menus(dispensary)
-	a.writeJson(r, menus, err)
+	a.writeJson(r, req, menus, err)
 }
 
 func (a *API) handleProduct(r http.ResponseWriter, req *http.Request) {
 	dispensary, menuId, productId := params(req, "productId")
 	product, err := a.w.Product(dispensary, menuId, productId)
-	a.writeJson(r, product, err)
+	a.writeJson(r, req, product, err)
 }
 
 func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 	dispensary, menuId, _ := params(req, "")
 	products, err := a.w.Products(dispensary, menuId)
-	a.writeJson(r, products, err)
+	a.writeJson(r, req, products, err)
 }
 
 func (a *API) handleOfferListing(r http.ResponseWriter, req *http.Request) {
 	dispensary, menuId, _ := params(req, "")
 	offers, err := a.w.Offers(dispensary, menuId)
-	a.writeJson(r, offers, err)
+	a.writeJson(r, req, offers, err)
 }
 
 func (a *API) handleCategoryListing(r http.ResponseWriter, req *http.Request) {
 	dispensary, menuId, _ := params(req, "")
 	categories, err := a.w.Categories(dispensary, menuId)
-	a.writeJson(r, categories, err)
+	a.writeJson(r, req, categories, err)
 }
 
 func (a *API) handleTerpeneListing(r http.ResponseWriter, req *http.Request) {
 	dispensary, menuId, _ := params(req, "")
 	terpenes, err := a.w.Terpenes(dispensary, menuId)
-	a.writeJson(r, terpenes, err)
+	a.writeJson(r, req, terpenes, err)
 }
 
 func (a *API) handleCannabinoidListing(r http.ResponseWriter, req *http.Request) {
 	dispensary, menuId, _ := params(req, "")
 	cannabinoids, err := a.w.Cannabinoids(dispensary, menuId)
-	a.writeJson(r, cannabinoids, err)
+	a.writeJson(r, req, cannabinoids, err)
 }
 
 func params(req *http.Request, resource string) (dispensary, menuId, resourceId string) {

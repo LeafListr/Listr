@@ -174,7 +174,21 @@ func (r *Repository) getTerpenes(menuId string) ([]*models.Terpene, error) {
 		return nil, err
 	}
 
-	return r.T.TranslateTerpenes(cResp.Data.DispensaryMenu.Products), nil
+	terpeneMap := make(map[string]*models.Terpene)
+	for _, product := range cResp.Data.DispensaryMenu.Products {
+		for _, terpene := range product.LabResults.Terpenes {
+			if _, exists := terpeneMap[terpene.Terpene.Name]; !exists {
+				terpeneMap[terpene.Terpene.Name] = r.T.TranslateTerpene(&terpene)
+			}
+		}
+	}
+
+	var ts []*models.Terpene
+	for _, t := range terpeneMap {
+		ts = append(ts, t)
+	}
+
+	return ts, nil
 }
 
 func (r *Repository) getCannabinoids(menuId string) ([]*models.Cannabinoid, error) {
@@ -190,12 +204,18 @@ func (r *Repository) getCannabinoids(menuId string) ([]*models.Cannabinoid, erro
 		return nil, err
 	}
 
-	// TODO solve duplicate cannabinoids
-	var cbs []*models.Cannabinoid
+	cannabinoidMap := make(map[string]*models.Cannabinoid)
 	for _, product := range cResp.Data.DispensaryMenu.Products {
 		for _, cannabinoid := range product.LabResults.Cannabinoids {
-			cbs = append(cbs, r.T.TranslateCannabinoid(&cannabinoid))
+			if _, exists := cannabinoidMap[cannabinoid.Cannabinoid.Name]; !exists {
+				cannabinoidMap[cannabinoid.Cannabinoid.Name] = r.T.TranslateCannabinoid(&cannabinoid)
+			}
 		}
+	}
+
+	var cbs []*models.Cannabinoid
+	for _, cb := range cannabinoidMap {
+		cbs = append(cbs, cb)
 	}
 	return cbs, nil
 }

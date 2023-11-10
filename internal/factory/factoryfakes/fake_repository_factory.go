@@ -9,30 +9,30 @@ import (
 )
 
 type FakeRepositoryFactory struct {
-	FindMenuStub        func(string, string) (repository.Repository, error)
-	findMenuMutex       sync.RWMutex
-	findMenuArgsForCall []struct {
+	FindByDispensaryStub        func(string) (repository.Repository, error)
+	findByDispensaryMutex       sync.RWMutex
+	findByDispensaryArgsForCall []struct {
+		arg1 string
+	}
+	findByDispensaryReturns struct {
+		result1 repository.Repository
+		result2 error
+	}
+	findByDispensaryReturnsOnCall map[int]struct {
+		result1 repository.Repository
+		result2 error
+	}
+	FindByDispensaryMenuStub        func(string, string) (repository.Repository, error)
+	findByDispensaryMenuMutex       sync.RWMutex
+	findByDispensaryMenuArgsForCall []struct {
 		arg1 string
 		arg2 string
 	}
-	findMenuReturns struct {
+	findByDispensaryMenuReturns struct {
 		result1 repository.Repository
 		result2 error
 	}
-	findMenuReturnsOnCall map[int]struct {
-		result1 repository.Repository
-		result2 error
-	}
-	FindRepositoryStub        func(string) (repository.Repository, error)
-	findRepositoryMutex       sync.RWMutex
-	findRepositoryArgsForCall []struct {
-		arg1 string
-	}
-	findRepositoryReturns struct {
-		result1 repository.Repository
-		result2 error
-	}
-	findRepositoryReturnsOnCall map[int]struct {
+	findByDispensaryMenuReturnsOnCall map[int]struct {
 		result1 repository.Repository
 		result2 error
 	}
@@ -40,81 +40,16 @@ type FakeRepositoryFactory struct {
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeRepositoryFactory) FindMenu(arg1 string, arg2 string) (repository.Repository, error) {
-	fake.findMenuMutex.Lock()
-	ret, specificReturn := fake.findMenuReturnsOnCall[len(fake.findMenuArgsForCall)]
-	fake.findMenuArgsForCall = append(fake.findMenuArgsForCall, struct {
-		arg1 string
-		arg2 string
-	}{arg1, arg2})
-	stub := fake.FindMenuStub
-	fakeReturns := fake.findMenuReturns
-	fake.recordInvocation("FindMenu", []interface{}{arg1, arg2})
-	fake.findMenuMutex.Unlock()
-	if stub != nil {
-		return stub(arg1, arg2)
-	}
-	if specificReturn {
-		return ret.result1, ret.result2
-	}
-	return fakeReturns.result1, fakeReturns.result2
-}
-
-func (fake *FakeRepositoryFactory) FindMenuCallCount() int {
-	fake.findMenuMutex.RLock()
-	defer fake.findMenuMutex.RUnlock()
-	return len(fake.findMenuArgsForCall)
-}
-
-func (fake *FakeRepositoryFactory) FindMenuCalls(stub func(string, string) (repository.Repository, error)) {
-	fake.findMenuMutex.Lock()
-	defer fake.findMenuMutex.Unlock()
-	fake.FindMenuStub = stub
-}
-
-func (fake *FakeRepositoryFactory) FindMenuArgsForCall(i int) (string, string) {
-	fake.findMenuMutex.RLock()
-	defer fake.findMenuMutex.RUnlock()
-	argsForCall := fake.findMenuArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2
-}
-
-func (fake *FakeRepositoryFactory) FindMenuReturns(result1 repository.Repository, result2 error) {
-	fake.findMenuMutex.Lock()
-	defer fake.findMenuMutex.Unlock()
-	fake.FindMenuStub = nil
-	fake.findMenuReturns = struct {
-		result1 repository.Repository
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeRepositoryFactory) FindMenuReturnsOnCall(i int, result1 repository.Repository, result2 error) {
-	fake.findMenuMutex.Lock()
-	defer fake.findMenuMutex.Unlock()
-	fake.FindMenuStub = nil
-	if fake.findMenuReturnsOnCall == nil {
-		fake.findMenuReturnsOnCall = make(map[int]struct {
-			result1 repository.Repository
-			result2 error
-		})
-	}
-	fake.findMenuReturnsOnCall[i] = struct {
-		result1 repository.Repository
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeRepositoryFactory) FindRepository(arg1 string) (repository.Repository, error) {
-	fake.findRepositoryMutex.Lock()
-	ret, specificReturn := fake.findRepositoryReturnsOnCall[len(fake.findRepositoryArgsForCall)]
-	fake.findRepositoryArgsForCall = append(fake.findRepositoryArgsForCall, struct {
+func (fake *FakeRepositoryFactory) FindByDispensary(arg1 string) (repository.Repository, error) {
+	fake.findByDispensaryMutex.Lock()
+	ret, specificReturn := fake.findByDispensaryReturnsOnCall[len(fake.findByDispensaryArgsForCall)]
+	fake.findByDispensaryArgsForCall = append(fake.findByDispensaryArgsForCall, struct {
 		arg1 string
 	}{arg1})
-	stub := fake.FindRepositoryStub
-	fakeReturns := fake.findRepositoryReturns
-	fake.recordInvocation("FindRepository", []interface{}{arg1})
-	fake.findRepositoryMutex.Unlock()
+	stub := fake.FindByDispensaryStub
+	fakeReturns := fake.findByDispensaryReturns
+	fake.recordInvocation("FindByDispensary", []interface{}{arg1})
+	fake.findByDispensaryMutex.Unlock()
 	if stub != nil {
 		return stub(arg1)
 	}
@@ -124,46 +59,111 @@ func (fake *FakeRepositoryFactory) FindRepository(arg1 string) (repository.Repos
 	return fakeReturns.result1, fakeReturns.result2
 }
 
-func (fake *FakeRepositoryFactory) FindRepositoryCallCount() int {
-	fake.findRepositoryMutex.RLock()
-	defer fake.findRepositoryMutex.RUnlock()
-	return len(fake.findRepositoryArgsForCall)
+func (fake *FakeRepositoryFactory) FindByDispensaryCallCount() int {
+	fake.findByDispensaryMutex.RLock()
+	defer fake.findByDispensaryMutex.RUnlock()
+	return len(fake.findByDispensaryArgsForCall)
 }
 
-func (fake *FakeRepositoryFactory) FindRepositoryCalls(stub func(string) (repository.Repository, error)) {
-	fake.findRepositoryMutex.Lock()
-	defer fake.findRepositoryMutex.Unlock()
-	fake.FindRepositoryStub = stub
+func (fake *FakeRepositoryFactory) FindByDispensaryCalls(stub func(string) (repository.Repository, error)) {
+	fake.findByDispensaryMutex.Lock()
+	defer fake.findByDispensaryMutex.Unlock()
+	fake.FindByDispensaryStub = stub
 }
 
-func (fake *FakeRepositoryFactory) FindRepositoryArgsForCall(i int) string {
-	fake.findRepositoryMutex.RLock()
-	defer fake.findRepositoryMutex.RUnlock()
-	argsForCall := fake.findRepositoryArgsForCall[i]
+func (fake *FakeRepositoryFactory) FindByDispensaryArgsForCall(i int) string {
+	fake.findByDispensaryMutex.RLock()
+	defer fake.findByDispensaryMutex.RUnlock()
+	argsForCall := fake.findByDispensaryArgsForCall[i]
 	return argsForCall.arg1
 }
 
-func (fake *FakeRepositoryFactory) FindRepositoryReturns(result1 repository.Repository, result2 error) {
-	fake.findRepositoryMutex.Lock()
-	defer fake.findRepositoryMutex.Unlock()
-	fake.FindRepositoryStub = nil
-	fake.findRepositoryReturns = struct {
+func (fake *FakeRepositoryFactory) FindByDispensaryReturns(result1 repository.Repository, result2 error) {
+	fake.findByDispensaryMutex.Lock()
+	defer fake.findByDispensaryMutex.Unlock()
+	fake.FindByDispensaryStub = nil
+	fake.findByDispensaryReturns = struct {
 		result1 repository.Repository
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *FakeRepositoryFactory) FindRepositoryReturnsOnCall(i int, result1 repository.Repository, result2 error) {
-	fake.findRepositoryMutex.Lock()
-	defer fake.findRepositoryMutex.Unlock()
-	fake.FindRepositoryStub = nil
-	if fake.findRepositoryReturnsOnCall == nil {
-		fake.findRepositoryReturnsOnCall = make(map[int]struct {
+func (fake *FakeRepositoryFactory) FindByDispensaryReturnsOnCall(i int, result1 repository.Repository, result2 error) {
+	fake.findByDispensaryMutex.Lock()
+	defer fake.findByDispensaryMutex.Unlock()
+	fake.FindByDispensaryStub = nil
+	if fake.findByDispensaryReturnsOnCall == nil {
+		fake.findByDispensaryReturnsOnCall = make(map[int]struct {
 			result1 repository.Repository
 			result2 error
 		})
 	}
-	fake.findRepositoryReturnsOnCall[i] = struct {
+	fake.findByDispensaryReturnsOnCall[i] = struct {
+		result1 repository.Repository
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeRepositoryFactory) FindByDispensaryMenu(arg1 string, arg2 string) (repository.Repository, error) {
+	fake.findByDispensaryMenuMutex.Lock()
+	ret, specificReturn := fake.findByDispensaryMenuReturnsOnCall[len(fake.findByDispensaryMenuArgsForCall)]
+	fake.findByDispensaryMenuArgsForCall = append(fake.findByDispensaryMenuArgsForCall, struct {
+		arg1 string
+		arg2 string
+	}{arg1, arg2})
+	stub := fake.FindByDispensaryMenuStub
+	fakeReturns := fake.findByDispensaryMenuReturns
+	fake.recordInvocation("FindByDispensaryMenu", []interface{}{arg1, arg2})
+	fake.findByDispensaryMenuMutex.Unlock()
+	if stub != nil {
+		return stub(arg1, arg2)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fakeReturns.result1, fakeReturns.result2
+}
+
+func (fake *FakeRepositoryFactory) FindByDispensaryMenuCallCount() int {
+	fake.findByDispensaryMenuMutex.RLock()
+	defer fake.findByDispensaryMenuMutex.RUnlock()
+	return len(fake.findByDispensaryMenuArgsForCall)
+}
+
+func (fake *FakeRepositoryFactory) FindByDispensaryMenuCalls(stub func(string, string) (repository.Repository, error)) {
+	fake.findByDispensaryMenuMutex.Lock()
+	defer fake.findByDispensaryMenuMutex.Unlock()
+	fake.FindByDispensaryMenuStub = stub
+}
+
+func (fake *FakeRepositoryFactory) FindByDispensaryMenuArgsForCall(i int) (string, string) {
+	fake.findByDispensaryMenuMutex.RLock()
+	defer fake.findByDispensaryMenuMutex.RUnlock()
+	argsForCall := fake.findByDispensaryMenuArgsForCall[i]
+	return argsForCall.arg1, argsForCall.arg2
+}
+
+func (fake *FakeRepositoryFactory) FindByDispensaryMenuReturns(result1 repository.Repository, result2 error) {
+	fake.findByDispensaryMenuMutex.Lock()
+	defer fake.findByDispensaryMenuMutex.Unlock()
+	fake.FindByDispensaryMenuStub = nil
+	fake.findByDispensaryMenuReturns = struct {
+		result1 repository.Repository
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeRepositoryFactory) FindByDispensaryMenuReturnsOnCall(i int, result1 repository.Repository, result2 error) {
+	fake.findByDispensaryMenuMutex.Lock()
+	defer fake.findByDispensaryMenuMutex.Unlock()
+	fake.FindByDispensaryMenuStub = nil
+	if fake.findByDispensaryMenuReturnsOnCall == nil {
+		fake.findByDispensaryMenuReturnsOnCall = make(map[int]struct {
+			result1 repository.Repository
+			result2 error
+		})
+	}
+	fake.findByDispensaryMenuReturnsOnCall[i] = struct {
 		result1 repository.Repository
 		result2 error
 	}{result1, result2}
@@ -172,10 +172,10 @@ func (fake *FakeRepositoryFactory) FindRepositoryReturnsOnCall(i int, result1 re
 func (fake *FakeRepositoryFactory) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
-	fake.findMenuMutex.RLock()
-	defer fake.findMenuMutex.RUnlock()
-	fake.findRepositoryMutex.RLock()
-	defer fake.findRepositoryMutex.RUnlock()
+	fake.findByDispensaryMutex.RLock()
+	defer fake.findByDispensaryMutex.RUnlock()
+	fake.findByDispensaryMenuMutex.RLock()
+	defer fake.findByDispensaryMenuMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
 	for key, value := range fake.invocations {
 		copiedInvocations[key] = value

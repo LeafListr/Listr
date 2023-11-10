@@ -1,9 +1,10 @@
 package workflow
 
 import (
+	"context"
 	"github.com/Linkinlog/LeafList/internal/factory"
 	"github.com/Linkinlog/LeafList/internal/models"
-	"log"
+	"log/slog"
 )
 
 //go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate
@@ -47,7 +48,7 @@ type OfferManager interface {
 }
 
 type ErrorManager interface {
-	LogError(err error)
+	LogError(err error, context context.Context)
 }
 
 type Workflow struct {
@@ -61,7 +62,7 @@ func NewWorkflowManager() Manager {
 }
 
 func (w *Workflow) Menu(dispensary, menuId string) (*models.Dispensary, error) {
-	repo, err := w.f.FindRepository(dispensary)
+	repo, err := w.f.FindByDispensary(dispensary)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +70,7 @@ func (w *Workflow) Menu(dispensary, menuId string) (*models.Dispensary, error) {
 }
 
 func (w *Workflow) Menus(dispensary string) ([]*models.Dispensary, error) {
-	repo, err := w.f.FindRepository(dispensary)
+	repo, err := w.f.FindByDispensary(dispensary)
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +78,7 @@ func (w *Workflow) Menus(dispensary string) ([]*models.Dispensary, error) {
 }
 
 func (w *Workflow) Product(dispensary, menuId, productId string) (*models.Product, error) {
-	repo, err := w.f.FindMenu(dispensary, menuId)
+	repo, err := w.f.FindByDispensaryMenu(dispensary, menuId)
 	if err != nil {
 		return nil, err
 	}
@@ -85,7 +86,7 @@ func (w *Workflow) Product(dispensary, menuId, productId string) (*models.Produc
 }
 
 func (w *Workflow) Products(dispensary, menuId string) ([]*models.Product, error) {
-	repo, err := w.f.FindMenu(dispensary, menuId)
+	repo, err := w.f.FindByDispensaryMenu(dispensary, menuId)
 	if err != nil {
 		return nil, err
 	}
@@ -93,7 +94,7 @@ func (w *Workflow) Products(dispensary, menuId string) ([]*models.Product, error
 }
 
 func (w *Workflow) ProductsForCategory(dispensary, menuId string, category models.Category) ([]*models.Product, error) {
-	repo, err := w.f.FindMenu(dispensary, menuId)
+	repo, err := w.f.FindByDispensaryMenu(dispensary, menuId)
 	if err != nil {
 		return nil, err
 	}
@@ -101,7 +102,7 @@ func (w *Workflow) ProductsForCategory(dispensary, menuId string, category model
 }
 
 func (w *Workflow) Categories(dispensary, menuId string) ([]*models.Category, error) {
-	repo, err := w.f.FindMenu(dispensary, menuId)
+	repo, err := w.f.FindByDispensaryMenu(dispensary, menuId)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +110,7 @@ func (w *Workflow) Categories(dispensary, menuId string) ([]*models.Category, er
 }
 
 func (w *Workflow) Terpenes(dispensary, menuId string) ([]*models.Terpene, error) {
-	repo, err := w.f.FindMenu(dispensary, menuId)
+	repo, err := w.f.FindByDispensaryMenu(dispensary, menuId)
 	if err != nil {
 		return nil, err
 	}
@@ -117,7 +118,7 @@ func (w *Workflow) Terpenes(dispensary, menuId string) ([]*models.Terpene, error
 }
 
 func (w *Workflow) Cannabinoids(dispensary, menuId string) ([]*models.Cannabinoid, error) {
-	repo, err := w.f.FindMenu(dispensary, menuId)
+	repo, err := w.f.FindByDispensaryMenu(dispensary, menuId)
 	if err != nil {
 		return nil, err
 	}
@@ -125,13 +126,13 @@ func (w *Workflow) Cannabinoids(dispensary, menuId string) ([]*models.Cannabinoi
 }
 
 func (w *Workflow) Offers(dispensary, menuId string) ([]*models.Offer, error) {
-	repo, err := w.f.FindMenu(dispensary, menuId)
+	repo, err := w.f.FindByDispensaryMenu(dispensary, menuId)
 	if err != nil {
 		return nil, err
 	}
 	return repo.GetOffers(menuId)
 }
 
-func (w *Workflow) LogError(err error) {
-	log.Printf("error: %v", err)
+func (w *Workflow) LogError(err error, context context.Context) {
+	slog.ErrorContext(context, err.Error())
 }

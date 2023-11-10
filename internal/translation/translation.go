@@ -10,7 +10,7 @@ type Translatable interface {
 	TranslateProduct(*curaleaf.Product) *models.Product
 	TranslateProducts([]*curaleaf.Product) []*models.Product
 	TranslateCategories([]*curaleaf.Category) []*models.Category
-	TranslateTerpenes([]*curaleaf.Product) []*models.Terpene
+	TranslateTerpene(*curaleaf.TerpeneObj) *models.Terpene
 	TranslateCannabinoid(cannabinoid *curaleaf.CannabinoidObj) *models.Cannabinoid
 	TranslateOffers([]*curaleaf.Offer) []*models.Offer
 }
@@ -103,23 +103,16 @@ func (t *Translator) TranslateCategories(cs []*curaleaf.Category) []*models.Cate
 	return categories
 }
 
-func (t *Translator) TranslateTerpenes(products []*curaleaf.Product) []*models.Terpene {
-	// TODO accept terpenes not products
-	var terpenes []*models.Terpene
-	for _, product := range products {
-		if product == nil {
-			return terpenes
-		}
-		for _, terp := range product.LabResults.Terpenes {
-			tempTerp := &models.Terpene{
-				Name:        terp.Terpene.Name,
-				Description: terp.Terpene.Description,
-				Value:       terp.Value,
-			}
-			terpenes = append(terpenes, tempTerp)
-		}
+func (t *Translator) TranslateTerpene(terp *curaleaf.TerpeneObj) *models.Terpene {
+	if terp == nil {
+		return &models.Terpene{}
 	}
-	return terpenes
+
+	return &models.Terpene{
+		Name:        terp.Terpene.Name,
+		Description: terp.Terpene.Description,
+		Value:       terp.Value,
+	}
 }
 
 func (t *Translator) TranslateCannabinoid(c *curaleaf.CannabinoidObj) *models.Cannabinoid {

@@ -2,6 +2,7 @@
 package workflowfakes
 
 import (
+	"context"
 	"sync"
 
 	"github.com/Linkinlog/LeafList/internal/models"
@@ -37,10 +38,11 @@ type FakeManager struct {
 		result1 []*models.Category
 		result2 error
 	}
-	LogErrorStub        func(error)
+	LogErrorStub        func(error, context.Context)
 	logErrorMutex       sync.RWMutex
 	logErrorArgsForCall []struct {
 		arg1 error
+		arg2 context.Context
 	}
 	MenuStub        func(string, string) (*models.Dispensary, error)
 	menuMutex       sync.RWMutex
@@ -275,16 +277,17 @@ func (fake *FakeManager) CategoriesReturnsOnCall(i int, result1 []*models.Catego
 	}{result1, result2}
 }
 
-func (fake *FakeManager) LogError(arg1 error) {
+func (fake *FakeManager) LogError(arg1 error, arg2 context.Context) {
 	fake.logErrorMutex.Lock()
 	fake.logErrorArgsForCall = append(fake.logErrorArgsForCall, struct {
 		arg1 error
-	}{arg1})
+		arg2 context.Context
+	}{arg1, arg2})
 	stub := fake.LogErrorStub
-	fake.recordInvocation("LogError", []interface{}{arg1})
+	fake.recordInvocation("LogError", []interface{}{arg1, arg2})
 	fake.logErrorMutex.Unlock()
 	if stub != nil {
-		fake.LogErrorStub(arg1)
+		fake.LogErrorStub(arg1, arg2)
 	}
 }
 
@@ -294,17 +297,17 @@ func (fake *FakeManager) LogErrorCallCount() int {
 	return len(fake.logErrorArgsForCall)
 }
 
-func (fake *FakeManager) LogErrorCalls(stub func(error)) {
+func (fake *FakeManager) LogErrorCalls(stub func(error, context.Context)) {
 	fake.logErrorMutex.Lock()
 	defer fake.logErrorMutex.Unlock()
 	fake.LogErrorStub = stub
 }
 
-func (fake *FakeManager) LogErrorArgsForCall(i int) error {
+func (fake *FakeManager) LogErrorArgsForCall(i int) (error, context.Context) {
 	fake.logErrorMutex.RLock()
 	defer fake.logErrorMutex.RUnlock()
 	argsForCall := fake.logErrorArgsForCall[i]
-	return argsForCall.arg1
+	return argsForCall.arg1, argsForCall.arg2
 }
 
 func (fake *FakeManager) Menu(arg1 string, arg2 string) (*models.Dispensary, error) {
