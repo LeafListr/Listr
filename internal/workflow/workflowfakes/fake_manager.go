@@ -38,38 +38,38 @@ type FakeManager struct {
 		result1 []*models.Category
 		result2 error
 	}
+	LocationStub        func(string, string) (*models.Location, error)
+	locationMutex       sync.RWMutex
+	locationArgsForCall []struct {
+		arg1 string
+		arg2 string
+	}
+	locationReturns struct {
+		result1 *models.Location
+		result2 error
+	}
+	locationReturnsOnCall map[int]struct {
+		result1 *models.Location
+		result2 error
+	}
+	LocationsStub        func(string) ([]*models.Location, error)
+	locationsMutex       sync.RWMutex
+	locationsArgsForCall []struct {
+		arg1 string
+	}
+	locationsReturns struct {
+		result1 []*models.Location
+		result2 error
+	}
+	locationsReturnsOnCall map[int]struct {
+		result1 []*models.Location
+		result2 error
+	}
 	LogErrorStub        func(error, context.Context)
 	logErrorMutex       sync.RWMutex
 	logErrorArgsForCall []struct {
 		arg1 error
 		arg2 context.Context
-	}
-	MenuStub        func(string, string) (*models.Dispensary, error)
-	menuMutex       sync.RWMutex
-	menuArgsForCall []struct {
-		arg1 string
-		arg2 string
-	}
-	menuReturns struct {
-		result1 *models.Dispensary
-		result2 error
-	}
-	menuReturnsOnCall map[int]struct {
-		result1 *models.Dispensary
-		result2 error
-	}
-	MenusStub        func(string) ([]*models.Dispensary, error)
-	menusMutex       sync.RWMutex
-	menusArgsForCall []struct {
-		arg1 string
-	}
-	menusReturns struct {
-		result1 []*models.Dispensary
-		result2 error
-	}
-	menusReturnsOnCall map[int]struct {
-		result1 []*models.Dispensary
-		result2 error
 	}
 	OffersStub        func(string, string) ([]*models.Offer, error)
 	offersMutex       sync.RWMutex
@@ -277,6 +277,135 @@ func (fake *FakeManager) CategoriesReturnsOnCall(i int, result1 []*models.Catego
 	}{result1, result2}
 }
 
+func (fake *FakeManager) Location(arg1 string, arg2 string) (*models.Location, error) {
+	fake.locationMutex.Lock()
+	ret, specificReturn := fake.locationReturnsOnCall[len(fake.locationArgsForCall)]
+	fake.locationArgsForCall = append(fake.locationArgsForCall, struct {
+		arg1 string
+		arg2 string
+	}{arg1, arg2})
+	stub := fake.LocationStub
+	fakeReturns := fake.locationReturns
+	fake.recordInvocation("Location", []interface{}{arg1, arg2})
+	fake.locationMutex.Unlock()
+	if stub != nil {
+		return stub(arg1, arg2)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fakeReturns.result1, fakeReturns.result2
+}
+
+func (fake *FakeManager) LocationCallCount() int {
+	fake.locationMutex.RLock()
+	defer fake.locationMutex.RUnlock()
+	return len(fake.locationArgsForCall)
+}
+
+func (fake *FakeManager) LocationCalls(stub func(string, string) (*models.Location, error)) {
+	fake.locationMutex.Lock()
+	defer fake.locationMutex.Unlock()
+	fake.LocationStub = stub
+}
+
+func (fake *FakeManager) LocationArgsForCall(i int) (string, string) {
+	fake.locationMutex.RLock()
+	defer fake.locationMutex.RUnlock()
+	argsForCall := fake.locationArgsForCall[i]
+	return argsForCall.arg1, argsForCall.arg2
+}
+
+func (fake *FakeManager) LocationReturns(result1 *models.Location, result2 error) {
+	fake.locationMutex.Lock()
+	defer fake.locationMutex.Unlock()
+	fake.LocationStub = nil
+	fake.locationReturns = struct {
+		result1 *models.Location
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeManager) LocationReturnsOnCall(i int, result1 *models.Location, result2 error) {
+	fake.locationMutex.Lock()
+	defer fake.locationMutex.Unlock()
+	fake.LocationStub = nil
+	if fake.locationReturnsOnCall == nil {
+		fake.locationReturnsOnCall = make(map[int]struct {
+			result1 *models.Location
+			result2 error
+		})
+	}
+	fake.locationReturnsOnCall[i] = struct {
+		result1 *models.Location
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeManager) Locations(arg1 string) ([]*models.Location, error) {
+	fake.locationsMutex.Lock()
+	ret, specificReturn := fake.locationsReturnsOnCall[len(fake.locationsArgsForCall)]
+	fake.locationsArgsForCall = append(fake.locationsArgsForCall, struct {
+		arg1 string
+	}{arg1})
+	stub := fake.LocationsStub
+	fakeReturns := fake.locationsReturns
+	fake.recordInvocation("Locations", []interface{}{arg1})
+	fake.locationsMutex.Unlock()
+	if stub != nil {
+		return stub(arg1)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fakeReturns.result1, fakeReturns.result2
+}
+
+func (fake *FakeManager) LocationsCallCount() int {
+	fake.locationsMutex.RLock()
+	defer fake.locationsMutex.RUnlock()
+	return len(fake.locationsArgsForCall)
+}
+
+func (fake *FakeManager) LocationsCalls(stub func(string) ([]*models.Location, error)) {
+	fake.locationsMutex.Lock()
+	defer fake.locationsMutex.Unlock()
+	fake.LocationsStub = stub
+}
+
+func (fake *FakeManager) LocationsArgsForCall(i int) string {
+	fake.locationsMutex.RLock()
+	defer fake.locationsMutex.RUnlock()
+	argsForCall := fake.locationsArgsForCall[i]
+	return argsForCall.arg1
+}
+
+func (fake *FakeManager) LocationsReturns(result1 []*models.Location, result2 error) {
+	fake.locationsMutex.Lock()
+	defer fake.locationsMutex.Unlock()
+	fake.LocationsStub = nil
+	fake.locationsReturns = struct {
+		result1 []*models.Location
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeManager) LocationsReturnsOnCall(i int, result1 []*models.Location, result2 error) {
+	fake.locationsMutex.Lock()
+	defer fake.locationsMutex.Unlock()
+	fake.LocationsStub = nil
+	if fake.locationsReturnsOnCall == nil {
+		fake.locationsReturnsOnCall = make(map[int]struct {
+			result1 []*models.Location
+			result2 error
+		})
+	}
+	fake.locationsReturnsOnCall[i] = struct {
+		result1 []*models.Location
+		result2 error
+	}{result1, result2}
+}
+
 func (fake *FakeManager) LogError(arg1 error, arg2 context.Context) {
 	fake.logErrorMutex.Lock()
 	fake.logErrorArgsForCall = append(fake.logErrorArgsForCall, struct {
@@ -308,135 +437,6 @@ func (fake *FakeManager) LogErrorArgsForCall(i int) (error, context.Context) {
 	defer fake.logErrorMutex.RUnlock()
 	argsForCall := fake.logErrorArgsForCall[i]
 	return argsForCall.arg1, argsForCall.arg2
-}
-
-func (fake *FakeManager) Menu(arg1 string, arg2 string) (*models.Dispensary, error) {
-	fake.menuMutex.Lock()
-	ret, specificReturn := fake.menuReturnsOnCall[len(fake.menuArgsForCall)]
-	fake.menuArgsForCall = append(fake.menuArgsForCall, struct {
-		arg1 string
-		arg2 string
-	}{arg1, arg2})
-	stub := fake.MenuStub
-	fakeReturns := fake.menuReturns
-	fake.recordInvocation("Menu", []interface{}{arg1, arg2})
-	fake.menuMutex.Unlock()
-	if stub != nil {
-		return stub(arg1, arg2)
-	}
-	if specificReturn {
-		return ret.result1, ret.result2
-	}
-	return fakeReturns.result1, fakeReturns.result2
-}
-
-func (fake *FakeManager) MenuCallCount() int {
-	fake.menuMutex.RLock()
-	defer fake.menuMutex.RUnlock()
-	return len(fake.menuArgsForCall)
-}
-
-func (fake *FakeManager) MenuCalls(stub func(string, string) (*models.Dispensary, error)) {
-	fake.menuMutex.Lock()
-	defer fake.menuMutex.Unlock()
-	fake.MenuStub = stub
-}
-
-func (fake *FakeManager) MenuArgsForCall(i int) (string, string) {
-	fake.menuMutex.RLock()
-	defer fake.menuMutex.RUnlock()
-	argsForCall := fake.menuArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2
-}
-
-func (fake *FakeManager) MenuReturns(result1 *models.Dispensary, result2 error) {
-	fake.menuMutex.Lock()
-	defer fake.menuMutex.Unlock()
-	fake.MenuStub = nil
-	fake.menuReturns = struct {
-		result1 *models.Dispensary
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeManager) MenuReturnsOnCall(i int, result1 *models.Dispensary, result2 error) {
-	fake.menuMutex.Lock()
-	defer fake.menuMutex.Unlock()
-	fake.MenuStub = nil
-	if fake.menuReturnsOnCall == nil {
-		fake.menuReturnsOnCall = make(map[int]struct {
-			result1 *models.Dispensary
-			result2 error
-		})
-	}
-	fake.menuReturnsOnCall[i] = struct {
-		result1 *models.Dispensary
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeManager) Menus(arg1 string) ([]*models.Dispensary, error) {
-	fake.menusMutex.Lock()
-	ret, specificReturn := fake.menusReturnsOnCall[len(fake.menusArgsForCall)]
-	fake.menusArgsForCall = append(fake.menusArgsForCall, struct {
-		arg1 string
-	}{arg1})
-	stub := fake.MenusStub
-	fakeReturns := fake.menusReturns
-	fake.recordInvocation("Menus", []interface{}{arg1})
-	fake.menusMutex.Unlock()
-	if stub != nil {
-		return stub(arg1)
-	}
-	if specificReturn {
-		return ret.result1, ret.result2
-	}
-	return fakeReturns.result1, fakeReturns.result2
-}
-
-func (fake *FakeManager) MenusCallCount() int {
-	fake.menusMutex.RLock()
-	defer fake.menusMutex.RUnlock()
-	return len(fake.menusArgsForCall)
-}
-
-func (fake *FakeManager) MenusCalls(stub func(string) ([]*models.Dispensary, error)) {
-	fake.menusMutex.Lock()
-	defer fake.menusMutex.Unlock()
-	fake.MenusStub = stub
-}
-
-func (fake *FakeManager) MenusArgsForCall(i int) string {
-	fake.menusMutex.RLock()
-	defer fake.menusMutex.RUnlock()
-	argsForCall := fake.menusArgsForCall[i]
-	return argsForCall.arg1
-}
-
-func (fake *FakeManager) MenusReturns(result1 []*models.Dispensary, result2 error) {
-	fake.menusMutex.Lock()
-	defer fake.menusMutex.Unlock()
-	fake.MenusStub = nil
-	fake.menusReturns = struct {
-		result1 []*models.Dispensary
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeManager) MenusReturnsOnCall(i int, result1 []*models.Dispensary, result2 error) {
-	fake.menusMutex.Lock()
-	defer fake.menusMutex.Unlock()
-	fake.MenusStub = nil
-	if fake.menusReturnsOnCall == nil {
-		fake.menusReturnsOnCall = make(map[int]struct {
-			result1 []*models.Dispensary
-			result2 error
-		})
-	}
-	fake.menusReturnsOnCall[i] = struct {
-		result1 []*models.Dispensary
-		result2 error
-	}{result1, result2}
 }
 
 func (fake *FakeManager) Offers(arg1 string, arg2 string) ([]*models.Offer, error) {
@@ -773,12 +773,12 @@ func (fake *FakeManager) Invocations() map[string][][]interface{} {
 	defer fake.cannabinoidsMutex.RUnlock()
 	fake.categoriesMutex.RLock()
 	defer fake.categoriesMutex.RUnlock()
+	fake.locationMutex.RLock()
+	defer fake.locationMutex.RUnlock()
+	fake.locationsMutex.RLock()
+	defer fake.locationsMutex.RUnlock()
 	fake.logErrorMutex.RLock()
 	defer fake.logErrorMutex.RUnlock()
-	fake.menuMutex.RLock()
-	defer fake.menuMutex.RUnlock()
-	fake.menusMutex.RLock()
-	defer fake.menusMutex.RUnlock()
 	fake.offersMutex.RLock()
 	defer fake.offersMutex.RUnlock()
 	fake.productMutex.RLock()

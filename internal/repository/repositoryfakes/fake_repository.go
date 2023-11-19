@@ -35,33 +35,6 @@ type FakeRepository struct {
 		result1 []*models.Category
 		result2 error
 	}
-	GetMenuStub        func(string) (*models.Dispensary, error)
-	getMenuMutex       sync.RWMutex
-	getMenuArgsForCall []struct {
-		arg1 string
-	}
-	getMenuReturns struct {
-		result1 *models.Dispensary
-		result2 error
-	}
-	getMenuReturnsOnCall map[int]struct {
-		result1 *models.Dispensary
-		result2 error
-	}
-	GetMenusStub        func(float64, float64) ([]*models.Dispensary, error)
-	getMenusMutex       sync.RWMutex
-	getMenusArgsForCall []struct {
-		arg1 float64
-		arg2 float64
-	}
-	getMenusReturns struct {
-		result1 []*models.Dispensary
-		result2 error
-	}
-	getMenusReturnsOnCall map[int]struct {
-		result1 []*models.Dispensary
-		result2 error
-	}
 	GetOffersStub        func(string) ([]*models.Offer, error)
 	getOffersMutex       sync.RWMutex
 	getOffersArgsForCall []struct {
@@ -127,6 +100,33 @@ type FakeRepository struct {
 	}
 	getTerpenesReturnsOnCall map[int]struct {
 		result1 []*models.Terpene
+		result2 error
+	}
+	LocationStub        func(string) (*models.Location, error)
+	locationMutex       sync.RWMutex
+	locationArgsForCall []struct {
+		arg1 string
+	}
+	locationReturns struct {
+		result1 *models.Location
+		result2 error
+	}
+	locationReturnsOnCall map[int]struct {
+		result1 *models.Location
+		result2 error
+	}
+	LocationsStub        func(float64, float64) ([]*models.Location, error)
+	locationsMutex       sync.RWMutex
+	locationsArgsForCall []struct {
+		arg1 float64
+		arg2 float64
+	}
+	locationsReturns struct {
+		result1 []*models.Location
+		result2 error
+	}
+	locationsReturnsOnCall map[int]struct {
+		result1 []*models.Location
 		result2 error
 	}
 	invocations      map[string][][]interface{}
@@ -257,135 +257,6 @@ func (fake *FakeRepository) GetCategoriesReturnsOnCall(i int, result1 []*models.
 	}
 	fake.getCategoriesReturnsOnCall[i] = struct {
 		result1 []*models.Category
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeRepository) GetMenu(arg1 string) (*models.Dispensary, error) {
-	fake.getMenuMutex.Lock()
-	ret, specificReturn := fake.getMenuReturnsOnCall[len(fake.getMenuArgsForCall)]
-	fake.getMenuArgsForCall = append(fake.getMenuArgsForCall, struct {
-		arg1 string
-	}{arg1})
-	stub := fake.GetMenuStub
-	fakeReturns := fake.getMenuReturns
-	fake.recordInvocation("GetMenu", []interface{}{arg1})
-	fake.getMenuMutex.Unlock()
-	if stub != nil {
-		return stub(arg1)
-	}
-	if specificReturn {
-		return ret.result1, ret.result2
-	}
-	return fakeReturns.result1, fakeReturns.result2
-}
-
-func (fake *FakeRepository) GetMenuCallCount() int {
-	fake.getMenuMutex.RLock()
-	defer fake.getMenuMutex.RUnlock()
-	return len(fake.getMenuArgsForCall)
-}
-
-func (fake *FakeRepository) GetMenuCalls(stub func(string) (*models.Dispensary, error)) {
-	fake.getMenuMutex.Lock()
-	defer fake.getMenuMutex.Unlock()
-	fake.GetMenuStub = stub
-}
-
-func (fake *FakeRepository) GetMenuArgsForCall(i int) string {
-	fake.getMenuMutex.RLock()
-	defer fake.getMenuMutex.RUnlock()
-	argsForCall := fake.getMenuArgsForCall[i]
-	return argsForCall.arg1
-}
-
-func (fake *FakeRepository) GetMenuReturns(result1 *models.Dispensary, result2 error) {
-	fake.getMenuMutex.Lock()
-	defer fake.getMenuMutex.Unlock()
-	fake.GetMenuStub = nil
-	fake.getMenuReturns = struct {
-		result1 *models.Dispensary
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeRepository) GetMenuReturnsOnCall(i int, result1 *models.Dispensary, result2 error) {
-	fake.getMenuMutex.Lock()
-	defer fake.getMenuMutex.Unlock()
-	fake.GetMenuStub = nil
-	if fake.getMenuReturnsOnCall == nil {
-		fake.getMenuReturnsOnCall = make(map[int]struct {
-			result1 *models.Dispensary
-			result2 error
-		})
-	}
-	fake.getMenuReturnsOnCall[i] = struct {
-		result1 *models.Dispensary
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeRepository) GetMenus(arg1 float64, arg2 float64) ([]*models.Dispensary, error) {
-	fake.getMenusMutex.Lock()
-	ret, specificReturn := fake.getMenusReturnsOnCall[len(fake.getMenusArgsForCall)]
-	fake.getMenusArgsForCall = append(fake.getMenusArgsForCall, struct {
-		arg1 float64
-		arg2 float64
-	}{arg1, arg2})
-	stub := fake.GetMenusStub
-	fakeReturns := fake.getMenusReturns
-	fake.recordInvocation("GetMenus", []interface{}{arg1, arg2})
-	fake.getMenusMutex.Unlock()
-	if stub != nil {
-		return stub(arg1, arg2)
-	}
-	if specificReturn {
-		return ret.result1, ret.result2
-	}
-	return fakeReturns.result1, fakeReturns.result2
-}
-
-func (fake *FakeRepository) GetMenusCallCount() int {
-	fake.getMenusMutex.RLock()
-	defer fake.getMenusMutex.RUnlock()
-	return len(fake.getMenusArgsForCall)
-}
-
-func (fake *FakeRepository) GetMenusCalls(stub func(float64, float64) ([]*models.Dispensary, error)) {
-	fake.getMenusMutex.Lock()
-	defer fake.getMenusMutex.Unlock()
-	fake.GetMenusStub = stub
-}
-
-func (fake *FakeRepository) GetMenusArgsForCall(i int) (float64, float64) {
-	fake.getMenusMutex.RLock()
-	defer fake.getMenusMutex.RUnlock()
-	argsForCall := fake.getMenusArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2
-}
-
-func (fake *FakeRepository) GetMenusReturns(result1 []*models.Dispensary, result2 error) {
-	fake.getMenusMutex.Lock()
-	defer fake.getMenusMutex.Unlock()
-	fake.GetMenusStub = nil
-	fake.getMenusReturns = struct {
-		result1 []*models.Dispensary
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeRepository) GetMenusReturnsOnCall(i int, result1 []*models.Dispensary, result2 error) {
-	fake.getMenusMutex.Lock()
-	defer fake.getMenusMutex.Unlock()
-	fake.GetMenusStub = nil
-	if fake.getMenusReturnsOnCall == nil {
-		fake.getMenusReturnsOnCall = make(map[int]struct {
-			result1 []*models.Dispensary
-			result2 error
-		})
-	}
-	fake.getMenusReturnsOnCall[i] = struct {
-		result1 []*models.Dispensary
 		result2 error
 	}{result1, result2}
 }
@@ -712,6 +583,135 @@ func (fake *FakeRepository) GetTerpenesReturnsOnCall(i int, result1 []*models.Te
 	}{result1, result2}
 }
 
+func (fake *FakeRepository) Location(arg1 string) (*models.Location, error) {
+	fake.locationMutex.Lock()
+	ret, specificReturn := fake.locationReturnsOnCall[len(fake.locationArgsForCall)]
+	fake.locationArgsForCall = append(fake.locationArgsForCall, struct {
+		arg1 string
+	}{arg1})
+	stub := fake.LocationStub
+	fakeReturns := fake.locationReturns
+	fake.recordInvocation("Location", []interface{}{arg1})
+	fake.locationMutex.Unlock()
+	if stub != nil {
+		return stub(arg1)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fakeReturns.result1, fakeReturns.result2
+}
+
+func (fake *FakeRepository) LocationCallCount() int {
+	fake.locationMutex.RLock()
+	defer fake.locationMutex.RUnlock()
+	return len(fake.locationArgsForCall)
+}
+
+func (fake *FakeRepository) LocationCalls(stub func(string) (*models.Location, error)) {
+	fake.locationMutex.Lock()
+	defer fake.locationMutex.Unlock()
+	fake.LocationStub = stub
+}
+
+func (fake *FakeRepository) LocationArgsForCall(i int) string {
+	fake.locationMutex.RLock()
+	defer fake.locationMutex.RUnlock()
+	argsForCall := fake.locationArgsForCall[i]
+	return argsForCall.arg1
+}
+
+func (fake *FakeRepository) LocationReturns(result1 *models.Location, result2 error) {
+	fake.locationMutex.Lock()
+	defer fake.locationMutex.Unlock()
+	fake.LocationStub = nil
+	fake.locationReturns = struct {
+		result1 *models.Location
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeRepository) LocationReturnsOnCall(i int, result1 *models.Location, result2 error) {
+	fake.locationMutex.Lock()
+	defer fake.locationMutex.Unlock()
+	fake.LocationStub = nil
+	if fake.locationReturnsOnCall == nil {
+		fake.locationReturnsOnCall = make(map[int]struct {
+			result1 *models.Location
+			result2 error
+		})
+	}
+	fake.locationReturnsOnCall[i] = struct {
+		result1 *models.Location
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeRepository) Locations(arg1 float64, arg2 float64) ([]*models.Location, error) {
+	fake.locationsMutex.Lock()
+	ret, specificReturn := fake.locationsReturnsOnCall[len(fake.locationsArgsForCall)]
+	fake.locationsArgsForCall = append(fake.locationsArgsForCall, struct {
+		arg1 float64
+		arg2 float64
+	}{arg1, arg2})
+	stub := fake.LocationsStub
+	fakeReturns := fake.locationsReturns
+	fake.recordInvocation("Locations", []interface{}{arg1, arg2})
+	fake.locationsMutex.Unlock()
+	if stub != nil {
+		return stub(arg1, arg2)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fakeReturns.result1, fakeReturns.result2
+}
+
+func (fake *FakeRepository) LocationsCallCount() int {
+	fake.locationsMutex.RLock()
+	defer fake.locationsMutex.RUnlock()
+	return len(fake.locationsArgsForCall)
+}
+
+func (fake *FakeRepository) LocationsCalls(stub func(float64, float64) ([]*models.Location, error)) {
+	fake.locationsMutex.Lock()
+	defer fake.locationsMutex.Unlock()
+	fake.LocationsStub = stub
+}
+
+func (fake *FakeRepository) LocationsArgsForCall(i int) (float64, float64) {
+	fake.locationsMutex.RLock()
+	defer fake.locationsMutex.RUnlock()
+	argsForCall := fake.locationsArgsForCall[i]
+	return argsForCall.arg1, argsForCall.arg2
+}
+
+func (fake *FakeRepository) LocationsReturns(result1 []*models.Location, result2 error) {
+	fake.locationsMutex.Lock()
+	defer fake.locationsMutex.Unlock()
+	fake.LocationsStub = nil
+	fake.locationsReturns = struct {
+		result1 []*models.Location
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeRepository) LocationsReturnsOnCall(i int, result1 []*models.Location, result2 error) {
+	fake.locationsMutex.Lock()
+	defer fake.locationsMutex.Unlock()
+	fake.LocationsStub = nil
+	if fake.locationsReturnsOnCall == nil {
+		fake.locationsReturnsOnCall = make(map[int]struct {
+			result1 []*models.Location
+			result2 error
+		})
+	}
+	fake.locationsReturnsOnCall[i] = struct {
+		result1 []*models.Location
+		result2 error
+	}{result1, result2}
+}
+
 func (fake *FakeRepository) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
@@ -719,10 +719,6 @@ func (fake *FakeRepository) Invocations() map[string][][]interface{} {
 	defer fake.getCannabinoidsMutex.RUnlock()
 	fake.getCategoriesMutex.RLock()
 	defer fake.getCategoriesMutex.RUnlock()
-	fake.getMenuMutex.RLock()
-	defer fake.getMenuMutex.RUnlock()
-	fake.getMenusMutex.RLock()
-	defer fake.getMenusMutex.RUnlock()
 	fake.getOffersMutex.RLock()
 	defer fake.getOffersMutex.RUnlock()
 	fake.getProductMutex.RLock()
@@ -733,6 +729,10 @@ func (fake *FakeRepository) Invocations() map[string][][]interface{} {
 	defer fake.getProductsForCategoryMutex.RUnlock()
 	fake.getTerpenesMutex.RLock()
 	defer fake.getTerpenesMutex.RUnlock()
+	fake.locationMutex.RLock()
+	defer fake.locationMutex.RUnlock()
+	fake.locationsMutex.RLock()
+	defer fake.locationsMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
 	for key, value := range fake.invocations {
 		copiedInvocations[key] = value

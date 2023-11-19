@@ -1,0 +1,22 @@
+linters:
+  enable:
+    - errchkjson
+    - gosimple
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    - godot
+    - gofumpt
+    - misspell
+    - tagalign
+    - whitespace
+    - importas
+linters-settings:
+  govet:
+    check-shadowing: true
+    settings:
+      shadow:
+        strict: true
+  importas:
+    no-unaliased: true

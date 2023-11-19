@@ -1,11 +1,14 @@
-package workflow
+package workflow_test
 
 import (
 	"reflect"
 	"testing"
 
-	"github.com/Linkinlog/LeafListr/internal/factory/factoryfakes"
 	"github.com/Linkinlog/LeafListr/internal/models"
+
+	"github.com/Linkinlog/LeafListr/internal/workflow/workflowfakes"
+
+	"github.com/Linkinlog/LeafListr/internal/factory/factoryfakes"
 	"github.com/Linkinlog/LeafListr/internal/repository"
 )
 
@@ -29,9 +32,7 @@ func TestWorkflow_AllProducts(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			f := factoryfakes.FakeRepositoryFactory{}
 			f.FindByDispensaryReturns(tt.fields.r, nil)
-			w := &Workflow{
-				f: &f,
-			}
+			w := &workflowfakes.FakeManager{}
 			got, err := w.Products("", tt.args.menuId)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Products() error = %v, wantErr %v", err, tt.wantErr)
@@ -65,9 +66,7 @@ func TestWorkflow_AllProductsForCategory(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			f := factoryfakes.FakeRepositoryFactory{}
 			f.FindByDispensaryReturns(tt.fields.r, nil)
-			w := &Workflow{
-				f: &f,
-			}
+			w := &workflowfakes.FakeManager{}
 			got, err := w.ProductsForCategory("", tt.args.menuId, tt.args.category)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("ProductsForCategory() error = %v, wantErr %v", err, tt.wantErr)
@@ -100,9 +99,7 @@ func TestWorkflow_Categories(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			f := factoryfakes.FakeRepositoryFactory{}
 			f.FindByDispensaryReturns(tt.fields.r, nil)
-			w := &Workflow{
-				f: &f,
-			}
+			w := &workflowfakes.FakeManager{}
 			got, err := w.Categories("", tt.args.menuId)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Categories() error = %v, wantErr %v", err, tt.wantErr)
@@ -135,9 +132,7 @@ func TestWorkflow_Offers(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			f := factoryfakes.FakeRepositoryFactory{}
 			f.FindByDispensaryReturns(tt.fields.r, nil)
-			w := &Workflow{
-				f: &f,
-			}
+			w := &workflowfakes.FakeManager{}
 			got, err := w.Offers("", tt.args.menuId)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Offers() error = %v, wantErr %v", err, tt.wantErr)
@@ -171,9 +166,7 @@ func TestWorkflow_Product(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			f := factoryfakes.FakeRepositoryFactory{}
 			f.FindByDispensaryReturns(tt.fields.r, nil)
-			w := &Workflow{
-				f: &f,
-			}
+			w := &workflowfakes.FakeManager{}
 			got, err := w.Product("", tt.args.menuId, tt.args.productId)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Product() error = %v, wantErr %v", err, tt.wantErr)
@@ -206,9 +199,7 @@ func TestWorkflow_Terpenes(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			f := factoryfakes.FakeRepositoryFactory{}
 			f.FindByDispensaryReturns(tt.fields.r, nil)
-			w := &Workflow{
-				f: &f,
-			}
+			w := &workflowfakes.FakeManager{}
 			got, err := w.Terpenes("", tt.args.menuId)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Terpenes() error = %v, wantErr %v", err, tt.wantErr)

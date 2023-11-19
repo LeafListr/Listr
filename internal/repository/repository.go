@@ -17,8 +17,8 @@ type Repository interface {
 }
 
 type MenuRepository interface {
-	GetMenu(menuId string) (*models.Dispensary, error)
-	GetMenus(longitude, latitude float64) ([]*models.Dispensary, error)
+	Location(menuId string) (*models.Location, error)
+	Locations(longitude, latitude float64) ([]*models.Location, error)
 }
 
 type ProductRepository interface {

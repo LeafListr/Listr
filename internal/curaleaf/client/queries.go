@@ -1,4 +1,4 @@
-package curaleaf
+package client
 
 import "fmt"
 

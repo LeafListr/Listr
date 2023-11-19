@@ -3,9 +3,12 @@ package factory
 import (
 	"errors"
 
-	"github.com/Linkinlog/LeafListr/internal/client"
+	"github.com/Linkinlog/LeafListr/internal/curaleaf/client"
+	curarepo "github.com/Linkinlog/LeafListr/internal/curaleaf/repository"
+	"github.com/Linkinlog/LeafListr/internal/curaleaf/translation"
+	"github.com/Linkinlog/LeafListr/internal/factory"
+
 	"github.com/Linkinlog/LeafListr/internal/repository"
-	curarepo "github.com/Linkinlog/LeafListr/internal/repository/curaleaf"
 )
 
 const (
@@ -15,7 +18,7 @@ const (
 
 type DefaultRepositoryFactory struct{}
 
-func NewRepoFactory() RepositoryFactory {
+func NewRepoFactory() factory.RepositoryFactory {
 	return &DefaultRepositoryFactory{}
 }
 
@@ -33,7 +36,7 @@ func findMenu(dispensary string, menuId string) (repository.Repository, error) {
 		return nil, err
 	}
 
-	menu, locationErr := repo.GetMenu(menuId)
+	menu, locationErr := repo.Location(menuId)
 	if locationErr != nil {
 		return nil, locationErr
 	} else if menu == nil {
@@ -55,7 +58,7 @@ func findRepository(dispensary string) (repository.Repository, error) {
 			curarepo.GqlEndpoint,
 			curarepo.Headers,
 		)
-		repo = curarepo.NewRepository(c)
+		repo = curarepo.NewRepository(c, translation.NewClientTranslator())
 	default:
 		err = errors.New("unsupported dispensary")
 	}

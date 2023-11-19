@@ -1,9 +1,8 @@
 package models
 
 type Price struct {
-	Variant         string
 	Total           float64
-	DiscountedTotal float64 `json:"DiscountedTotal,omitempty"`
+	DiscountedTotal float64
 }
 
 type Cannabinoid struct {
@@ -20,13 +19,18 @@ type Terpene struct {
 
 type Category string
 
+type Variant struct {
+	Name  string
+	Price *Price
+}
+
 type Product struct {
-	Id   string         `json:"Id,omitempty"`
-	Name string         `json:"Name,omitempty"`
-	Ctg  Category       `json:"Category,omitempty"`
-	P    []*Price       `json:"Price,omitempty"`
-	C    []*Cannabinoid `json:"Cannabinoids,omitempty"`
-	T    []*Terpene     `json:"Terpenes,omitempty"`
+	Id   string
+	Name string
+	Ctg  Category
+	V    []*Variant
+	C    []*Cannabinoid
+	T    []*Terpene
 }
 
 type Offer struct {
@@ -35,23 +39,22 @@ type Offer struct {
 }
 
 type Dispensary struct {
-	UniqueId   string   `json:"Id"`
-	Name       string   `json:"name"`
-	OrderTypes []string `json:"orderTypes"`
-	MenuTypes  []string `json:"menuTypes"`
-	IsOpened   bool     `json:"isOpened"`
-	Location   Location `json:"location"`
+	Name      string
+	Locations []*Location
+}
+
+type Menu struct {
+	Products     []*Product
+	Offers       []*Offer
+	Categories   []*Category
+	Terpenes     []*Terpene
+	Cannabinoids []*Cannabinoid
 }
 
 type Location struct {
-	Coordinates Coordinates `json:"coordinates"`
-	Address     string      `json:"address"`
-	City        string      `json:"city"`
-	State       string      `json:"state"`
-	ZipCode     string      `json:"zipCode"`
-}
-
-type Coordinates struct {
-	Latitude  float64 `json:"latitude"`
-	Longitude float64 `json:"longitude"`
+	Name    string
+	Address string
+	City    string
+	State   string
+	ZipCode string
 }

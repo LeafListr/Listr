@@ -9,6 +9,8 @@ import (
 	"time"
 )
 
+type Endpoint string
+
 type HttpClient struct {
 	hC *http.Client
 	hH http.Header

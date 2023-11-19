@@ -1,12 +1,15 @@
-package curaleaf
+package repository
 
 import (
 	"context"
 	"encoding/json"
+	"fmt"
+
+	"github.com/Linkinlog/LeafListr/internal/models"
+
+	curaClient "github.com/Linkinlog/LeafListr/internal/curaleaf/client"
 
 	"github.com/Linkinlog/LeafListr/internal/client"
-	"github.com/Linkinlog/LeafListr/internal/client/curaleaf"
-	"github.com/Linkinlog/LeafListr/internal/models"
 	"github.com/Linkinlog/LeafListr/internal/repository"
 	"github.com/Linkinlog/LeafListr/internal/translation"
 )
@@ -22,22 +25,22 @@ var Headers = map[string][]string{"authority": {Authority}}
 
 type Repository struct {
 	C client.Client
-	T translation.Translatable
+	T translation.ClientTranslatable
 }
 
-func NewRepository(c client.Client) repository.Repository {
+func NewRepository(c client.Client, translatable translation.ClientTranslatable) repository.Repository {
 	return &Repository{
 		C: c,
-		T: translation.NewTranslator(),
+		T: translatable,
 	}
 }
 
-func (r *Repository) GetMenu(menuId string) (*models.Dispensary, error) {
+func (r *Repository) Location(menuId string) (*models.Location, error) {
 	return r.getMenu(menuId)
 }
 
-func (r *Repository) GetMenus(longitude, latitude float64) ([]*models.Dispensary, error) {
-	return r.getMenus(longitude, latitude)
+func (r *Repository) Locations(longitude, latitude float64) ([]*models.Location, error) {
+	return r.getLocations(longitude, latitude)
 }
 
 func (r *Repository) GetProduct(menuId, productId string) (*models.Product, error) {
@@ -68,102 +71,102 @@ func (r *Repository) GetOffers(menuId string) ([]*models.Offer, error) {
 	return r.getOffers(menuId)
 }
 
-func (r *Repository) getMenu(menuId string) (*models.Dispensary, error) {
-	var disp *models.Dispensary
-	disps, err := r.getMenus(0, 0)
+func (r *Repository) getMenu(menuId string) (*models.Location, error) {
+	var location *models.Location
+	locs, err := r.getLocations(0, 0)
 	if err != nil {
 		return nil, err
 	}
-	for _, l := range disps {
-		if l.UniqueId == menuId {
-			disp = l
+	for _, l := range locs {
+		if l.Name == menuId {
+			location = l
 		}
 	}
-	return disp, nil
+	return location, nil
 }
 
-func (r *Repository) getMenus(longitude, latitude float64) ([]*models.Dispensary, error) {
-	locationResp, err := r.C.Query(context.Background(), curaleaf.AllLocationsQuery(longitude, latitude), "POST")
+func (r *Repository) getLocations(longitude, latitude float64) ([]*models.Location, error) {
+	locationResp, err := r.C.Query(context.Background(), curaClient.AllLocationsQuery(longitude, latitude), "POST")
 	if err != nil {
 		return nil, err
 	}
 
-	cResp := curaleaf.Response{}
+	cResp := curaClient.Response{}
 	err = json.Unmarshal(locationResp, &cResp)
 	if err != nil {
 		return nil, err
 	}
 
-	return r.T.TranslateLocations(cResp.Data.Dispensaries), nil
+	return r.T.TranslateClientLocations(cResp.Data.Dispensaries), nil
 }
 
 func (r *Repository) getProduct(menuId, productId string) (*models.Product, error) {
-	productResp, err := r.C.Query(context.Background(), curaleaf.ProductQuery(menuId, productId, "MEDICAL"), "POST")
+	productResp, err := r.C.Query(context.Background(), curaClient.ProductQuery(menuId, productId, "MEDICAL"), "POST")
 	if err != nil {
 		return nil, err
 	}
 
-	cResp := curaleaf.Response{}
+	cResp := curaClient.Response{}
 	err = json.Unmarshal(productResp, &cResp)
 	if err != nil {
 		return nil, err
 	}
 
-	return r.T.TranslateProduct(cResp.Data.Product.Product), nil
+	return r.T.TranslateClientProduct(cResp.Data.Product.Product), nil
 }
 
 func (r *Repository) getProducts(menuId string) ([]*models.Product, error) {
-	allProdResp, err := r.C.Query(context.Background(), curaleaf.AllProductQuery(menuId, "MEDICAL"), "POST")
+	allProdResp, err := r.C.Query(context.Background(), curaClient.AllProductQuery(menuId, "MEDICAL"), "POST")
 	if err != nil {
 		return nil, err
 	}
 
-	cResp := curaleaf.Response{}
+	cResp := curaClient.Response{}
 	err = json.Unmarshal(allProdResp, &cResp)
 	if err != nil {
 		return nil, err
 	}
 
-	return r.T.TranslateProducts(cResp.Data.DispensaryMenu.Products), nil
+	return r.T.TranslateClientProducts(cResp.Data.DispensaryMenu.Products), nil
 }
 
 func (r *Repository) getProductsForCategory(menuId string, category models.Category) ([]*models.Product, error) {
-	allProdForCatResp, err := r.C.Query(context.Background(), curaleaf.AllProductForCategoryQuery(menuId, "MEDICAL", string(category)), "POST")
+	allProdForCatResp, err := r.C.Query(context.Background(), curaClient.AllProductForCategoryQuery(menuId, "MEDICAL", string(category)), "POST")
 	if err != nil {
 		return nil, err
 	}
 
-	cResp := curaleaf.Response{}
+	cResp := curaClient.Response{}
 	err = json.Unmarshal(allProdForCatResp, &cResp)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("could not get products for category: %s, menu=%s. Err=%v", category, menuId, err)
 	}
 
-	return r.T.TranslateProducts(cResp.Data.DispensaryMenu.Products), nil
+	return r.T.TranslateClientProducts(cResp.Data.DispensaryMenu.Products), nil
 }
 
 func (r *Repository) getCategories(menuId string) ([]*models.Category, error) {
-	allCatsResp, err := r.C.Query(context.Background(), curaleaf.AllCategoriesQuery(menuId, "MEDICAL"), "POST")
+	allCatsResp, err := r.C.Query(context.Background(), curaClient.AllCategoriesQuery(menuId, "MEDICAL"), "POST")
 	if err != nil {
 		return nil, err
 	}
 
-	cResp := curaleaf.Response{}
+	cResp := curaClient.Response{}
 	err = json.Unmarshal(allCatsResp, &cResp)
 	if err != nil {
 		return nil, err
 	}
 
-	return r.T.TranslateCategories(cResp.Data.DispensaryMenu.AllFilters.Categories), nil
+	return r.T.TranslateClientCategories(cResp.Data.DispensaryMenu.AllFilters.Categories), nil
 }
 
 func (r *Repository) getTerpenes(menuId string) ([]*models.Terpene, error) {
-	allProdResp, err := r.C.Query(context.Background(), curaleaf.AllProductQuery(menuId, "MEDICAL"), "POST")
+	allProdResp, err := r.C.Query(context.Background(), curaClient.AllProductQuery(menuId, "MEDICAL"), "POST")
 	if err != nil {
 		return nil, err
 	}
 
-	cResp := curaleaf.Response{}
+	cResp := curaClient.Response{}
 
 	err = json.Unmarshal(allProdResp, &cResp)
 	if err != nil {
@@ -174,7 +177,7 @@ func (r *Repository) getTerpenes(menuId string) ([]*models.Terpene, error) {
 	for _, product := range cResp.Data.DispensaryMenu.Products {
 		for _, terpene := range product.LabResults.Terpenes {
 			if _, exists := terpeneMap[terpene.Terpene.Name]; !exists {
-				terpeneMap[terpene.Terpene.Name] = r.T.TranslateTerpene(&terpene)
+				terpeneMap[terpene.Terpene.Name] = r.T.TranslateClientTerpene(&terpene)
 			}
 		}
 	}
@@ -188,12 +191,12 @@ func (r *Repository) getTerpenes(menuId string) ([]*models.Terpene, error) {
 }
 
 func (r *Repository) getCannabinoids(menuId string) ([]*models.Cannabinoid, error) {
-	allProdResp, err := r.C.Query(context.Background(), curaleaf.AllProductQuery(menuId, "MEDICAL"), "POST")
+	allProdResp, err := r.C.Query(context.Background(), curaClient.AllProductQuery(menuId, "MEDICAL"), "POST")
 	if err != nil {
 		return nil, err
 	}
 
-	cResp := curaleaf.Response{}
+	cResp := curaClient.Response{}
 
 	err = json.Unmarshal(allProdResp, &cResp)
 	if err != nil {
@@ -204,7 +207,7 @@ func (r *Repository) getCannabinoids(menuId string) ([]*models.Cannabinoid, erro
 	for _, product := range cResp.Data.DispensaryMenu.Products {
 		for _, cannabinoid := range product.LabResults.Cannabinoids {
 			if _, exists := cannabinoidMap[cannabinoid.Cannabinoid.Name]; !exists {
-				cannabinoidMap[cannabinoid.Cannabinoid.Name] = r.T.TranslateCannabinoid(&cannabinoid)
+				cannabinoidMap[cannabinoid.Cannabinoid.Name] = r.T.TranslateClientCannabinoid(&cannabinoid)
 			}
 		}
 	}
@@ -217,17 +220,17 @@ func (r *Repository) getCannabinoids(menuId string) ([]*models.Cannabinoid, erro
 }
 
 func (r *Repository) getOffers(menuId string) ([]*models.Offer, error) {
-	allOfferResp, err := r.C.Query(context.Background(), curaleaf.AllOffersQuery(menuId, "MEDICAL"), "POST")
+	allOfferResp, err := r.C.Query(context.Background(), curaClient.AllOffersQuery(menuId, "MEDICAL"), "POST")
 	if err != nil {
 		return nil, err
 	}
 
-	cResp := curaleaf.Response{}
+	cResp := curaClient.Response{}
 
 	err = json.Unmarshal(allOfferResp, &cResp)
 	if err != nil {
 		return nil, err
 	}
 
-	return r.T.TranslateOffers(cResp.Data.DispensaryMenu.Offers), nil
+	return r.T.TranslateClientOffers(cResp.Data.DispensaryMenu.Offers), nil
 }

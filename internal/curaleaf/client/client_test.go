@@ -1,4 +1,4 @@
-package curaleaf_test
+package client_test
 
 import (
 	"context"
@@ -6,11 +6,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/Linkinlog/LeafListr/internal/client/curaleaf"
-
-	curaRepo "github.com/Linkinlog/LeafListr/internal/repository/curaleaf"
-
-	"github.com/Linkinlog/LeafListr/internal/client"
+	"github.com/Linkinlog/LeafListr/internal/curaleaf/client"
+	"github.com/Linkinlog/LeafListr/internal/curaleaf/repository"
 )
 
 func TestSend(t *testing.T) {
@@ -35,43 +32,43 @@ func TestSend(t *testing.T) {
 		},
 		"curaleaf - all products": {
 			ctx:      context.Background(),
-			endpoint: curaRepo.GqlEndpoint,
-			query:    curaleaf.AllProductQuery(curaRepo.GbgId, curaRepo.MenuType),
-			response: &curaleaf.Response{},
+			endpoint: repository.GqlEndpoint,
+			query:    client.AllProductQuery(repository.GbgId, repository.MenuType),
+			response: &client.Response{},
 		},
 		"curaleaf - all vaporizer products": {
 			ctx:      context.Background(),
-			endpoint: curaRepo.GqlEndpoint,
-			headers:  map[string][]string{"authority": {curaRepo.Authority}},
-			query:    curaleaf.AllProductForCategoryQuery(curaRepo.GbgId, curaRepo.MenuType, "VAPORIZERS"),
-			response: &curaleaf.Response{},
+			endpoint: repository.GqlEndpoint,
+			headers:  map[string][]string{"authority": {repository.Authority}},
+			query:    client.AllProductForCategoryQuery(repository.GbgId, repository.MenuType, "VAPORIZERS"),
+			response: &client.Response{},
 		},
 		"curaleaf - all offers": {
 			ctx:      context.Background(),
-			endpoint: curaRepo.GqlEndpoint,
-			headers:  map[string][]string{"authority": {curaRepo.Authority}},
-			query:    curaleaf.AllOffersQuery(curaRepo.GbgId, curaRepo.MenuType),
-			response: &curaleaf.Response{},
+			endpoint: repository.GqlEndpoint,
+			headers:  map[string][]string{"authority": {repository.Authority}},
+			query:    client.AllOffersQuery(repository.GbgId, repository.MenuType),
+			response: &client.Response{},
 		},
 		"curaleaf - all categories": {
 			ctx:      context.Background(),
-			endpoint: curaRepo.GqlEndpoint,
-			headers:  map[string][]string{"authority": {curaRepo.Authority}},
-			query:    curaleaf.AllCategoriesQuery(curaRepo.GbgId, curaRepo.MenuType),
-			response: &curaleaf.Response{},
+			endpoint: repository.GqlEndpoint,
+			headers:  map[string][]string{"authority": {repository.Authority}},
+			query:    client.AllCategoriesQuery(repository.GbgId, repository.MenuType),
+			response: &client.Response{},
 		},
 		"curaleaf - all locations": {
 			ctx:      context.Background(),
-			endpoint: curaRepo.GqlEndpoint,
-			headers:  map[string][]string{"authority": {curaRepo.Authority}},
-			query:    curaleaf.AllLocationsQuery(-79.5389, 40.3015),
-			response: &curaleaf.Response{},
+			endpoint: repository.GqlEndpoint,
+			headers:  map[string][]string{"authority": {repository.Authority}},
+			query:    client.AllLocationsQuery(-79.5389, 40.3015),
+			response: &client.Response{},
 		},
 		"curaleaf - invalid menu": {
 			ctx:           context.Background(),
-			endpoint:      curaRepo.GqlEndpoint,
-			query:         curaleaf.AllProductQuery("foo", curaRepo.MenuType),
-			response:      &curaleaf.Response{},
+			endpoint:      repository.GqlEndpoint,
+			query:         client.AllProductQuery("foo", repository.MenuType),
+			response:      &client.Response{},
 			expectedError: true,
 		},
 	}
@@ -91,7 +88,7 @@ func TestSend(t *testing.T) {
 				if jsonErr != nil {
 					t.Fatal(jsonErr)
 				}
-				if responseObj, ok := tt.response.(*curaleaf.Response); ok {
+				if responseObj, ok := tt.response.(*client.Response); ok {
 					if responseObj.ErrorObj != nil && !tt.expectedError {
 						t.Fatal(responseObj.Errors[0].Message)
 					}
