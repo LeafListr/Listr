@@ -1,9 +1,10 @@
 package factory_test
 
 import (
+	"testing"
+
 	"github.com/Linkinlog/LeafListr/internal/curaleaf/factory"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestFindByDispensary(t *testing.T) {

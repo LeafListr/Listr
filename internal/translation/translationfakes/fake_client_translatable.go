@@ -21,16 +21,16 @@ type FakeClientTranslatable struct {
 	translateClientCannabinoidReturnsOnCall map[int]struct {
 		result1 *models.Cannabinoid
 	}
-	TranslateClientCannabinoidsStub        func([]client.CannabinoidObj) *models.Cannabinoid
+	TranslateClientCannabinoidsStub        func([]client.CannabinoidObj) []*models.Cannabinoid
 	translateClientCannabinoidsMutex       sync.RWMutex
 	translateClientCannabinoidsArgsForCall []struct {
 		arg1 []client.CannabinoidObj
 	}
 	translateClientCannabinoidsReturns struct {
-		result1 *models.Cannabinoid
+		result1 []*models.Cannabinoid
 	}
 	translateClientCannabinoidsReturnsOnCall map[int]struct {
-		result1 *models.Cannabinoid
+		result1 []*models.Cannabinoid
 	}
 	TranslateClientCategoriesStub        func([]client.Category) []*models.Category
 	translateClientCategoriesMutex       sync.RWMutex
@@ -43,16 +43,16 @@ type FakeClientTranslatable struct {
 	translateClientCategoriesReturnsOnCall map[int]struct {
 		result1 []*models.Category
 	}
-	TranslateClientCategoryStub        func(client.Category) []*models.Category
+	TranslateClientCategoryStub        func(client.Category) *models.Category
 	translateClientCategoryMutex       sync.RWMutex
 	translateClientCategoryArgsForCall []struct {
 		arg1 client.Category
 	}
 	translateClientCategoryReturns struct {
-		result1 []*models.Category
+		result1 *models.Category
 	}
 	translateClientCategoryReturnsOnCall map[int]struct {
-		result1 []*models.Category
+		result1 *models.Category
 	}
 	TranslateClientLocationStub        func(client.Location) *models.Location
 	translateClientLocationMutex       sync.RWMutex
@@ -76,16 +76,16 @@ type FakeClientTranslatable struct {
 	translateClientLocationsReturnsOnCall map[int]struct {
 		result1 []*models.Location
 	}
-	TranslateClientOfferStub        func(client.Offer) []*models.Offer
+	TranslateClientOfferStub        func(client.Offer) *models.Offer
 	translateClientOfferMutex       sync.RWMutex
 	translateClientOfferArgsForCall []struct {
 		arg1 client.Offer
 	}
 	translateClientOfferReturns struct {
-		result1 []*models.Offer
+		result1 *models.Offer
 	}
 	translateClientOfferReturnsOnCall map[int]struct {
-		result1 []*models.Offer
+		result1 *models.Offer
 	}
 	TranslateClientOffersStub        func([]client.Offer) []*models.Offer
 	translateClientOffersMutex       sync.RWMutex
@@ -131,16 +131,16 @@ type FakeClientTranslatable struct {
 	translateClientTerpeneReturnsOnCall map[int]struct {
 		result1 *models.Terpene
 	}
-	TranslateClientTerpenesStub        func([]client.TerpeneObj) *models.Terpene
+	TranslateClientTerpenesStub        func([]client.TerpeneObj) []*models.Terpene
 	translateClientTerpenesMutex       sync.RWMutex
 	translateClientTerpenesArgsForCall []struct {
 		arg1 []client.TerpeneObj
 	}
 	translateClientTerpenesReturns struct {
-		result1 *models.Terpene
+		result1 []*models.Terpene
 	}
 	translateClientTerpenesReturnsOnCall map[int]struct {
-		result1 *models.Terpene
+		result1 []*models.Terpene
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
@@ -207,7 +207,7 @@ func (fake *FakeClientTranslatable) TranslateClientCannabinoidReturnsOnCall(i in
 	}{result1}
 }
 
-func (fake *FakeClientTranslatable) TranslateClientCannabinoids(arg1 []client.CannabinoidObj) *models.Cannabinoid {
+func (fake *FakeClientTranslatable) TranslateClientCannabinoids(arg1 []client.CannabinoidObj) []*models.Cannabinoid {
 	var arg1Copy []client.CannabinoidObj
 	if arg1 != nil {
 		arg1Copy = make([]client.CannabinoidObj, len(arg1))
@@ -237,7 +237,7 @@ func (fake *FakeClientTranslatable) TranslateClientCannabinoidsCallCount() int {
 	return len(fake.translateClientCannabinoidsArgsForCall)
 }
 
-func (fake *FakeClientTranslatable) TranslateClientCannabinoidsCalls(stub func([]client.CannabinoidObj) *models.Cannabinoid) {
+func (fake *FakeClientTranslatable) TranslateClientCannabinoidsCalls(stub func([]client.CannabinoidObj) []*models.Cannabinoid) {
 	fake.translateClientCannabinoidsMutex.Lock()
 	defer fake.translateClientCannabinoidsMutex.Unlock()
 	fake.TranslateClientCannabinoidsStub = stub
@@ -250,26 +250,26 @@ func (fake *FakeClientTranslatable) TranslateClientCannabinoidsArgsForCall(i int
 	return argsForCall.arg1
 }
 
-func (fake *FakeClientTranslatable) TranslateClientCannabinoidsReturns(result1 *models.Cannabinoid) {
+func (fake *FakeClientTranslatable) TranslateClientCannabinoidsReturns(result1 []*models.Cannabinoid) {
 	fake.translateClientCannabinoidsMutex.Lock()
 	defer fake.translateClientCannabinoidsMutex.Unlock()
 	fake.TranslateClientCannabinoidsStub = nil
 	fake.translateClientCannabinoidsReturns = struct {
-		result1 *models.Cannabinoid
+		result1 []*models.Cannabinoid
 	}{result1}
 }
 
-func (fake *FakeClientTranslatable) TranslateClientCannabinoidsReturnsOnCall(i int, result1 *models.Cannabinoid) {
+func (fake *FakeClientTranslatable) TranslateClientCannabinoidsReturnsOnCall(i int, result1 []*models.Cannabinoid) {
 	fake.translateClientCannabinoidsMutex.Lock()
 	defer fake.translateClientCannabinoidsMutex.Unlock()
 	fake.TranslateClientCannabinoidsStub = nil
 	if fake.translateClientCannabinoidsReturnsOnCall == nil {
 		fake.translateClientCannabinoidsReturnsOnCall = make(map[int]struct {
-			result1 *models.Cannabinoid
+			result1 []*models.Cannabinoid
 		})
 	}
 	fake.translateClientCannabinoidsReturnsOnCall[i] = struct {
-		result1 *models.Cannabinoid
+		result1 []*models.Cannabinoid
 	}{result1}
 }
 
@@ -339,7 +339,7 @@ func (fake *FakeClientTranslatable) TranslateClientCategoriesReturnsOnCall(i int
 	}{result1}
 }
 
-func (fake *FakeClientTranslatable) TranslateClientCategory(arg1 client.Category) []*models.Category {
+func (fake *FakeClientTranslatable) TranslateClientCategory(arg1 client.Category) *models.Category {
 	fake.translateClientCategoryMutex.Lock()
 	ret, specificReturn := fake.translateClientCategoryReturnsOnCall[len(fake.translateClientCategoryArgsForCall)]
 	fake.translateClientCategoryArgsForCall = append(fake.translateClientCategoryArgsForCall, struct {
@@ -364,7 +364,7 @@ func (fake *FakeClientTranslatable) TranslateClientCategoryCallCount() int {
 	return len(fake.translateClientCategoryArgsForCall)
 }
 
-func (fake *FakeClientTranslatable) TranslateClientCategoryCalls(stub func(client.Category) []*models.Category) {
+func (fake *FakeClientTranslatable) TranslateClientCategoryCalls(stub func(client.Category) *models.Category) {
 	fake.translateClientCategoryMutex.Lock()
 	defer fake.translateClientCategoryMutex.Unlock()
 	fake.TranslateClientCategoryStub = stub
@@ -377,26 +377,26 @@ func (fake *FakeClientTranslatable) TranslateClientCategoryArgsForCall(i int) cl
 	return argsForCall.arg1
 }
 
-func (fake *FakeClientTranslatable) TranslateClientCategoryReturns(result1 []*models.Category) {
+func (fake *FakeClientTranslatable) TranslateClientCategoryReturns(result1 *models.Category) {
 	fake.translateClientCategoryMutex.Lock()
 	defer fake.translateClientCategoryMutex.Unlock()
 	fake.TranslateClientCategoryStub = nil
 	fake.translateClientCategoryReturns = struct {
-		result1 []*models.Category
+		result1 *models.Category
 	}{result1}
 }
 
-func (fake *FakeClientTranslatable) TranslateClientCategoryReturnsOnCall(i int, result1 []*models.Category) {
+func (fake *FakeClientTranslatable) TranslateClientCategoryReturnsOnCall(i int, result1 *models.Category) {
 	fake.translateClientCategoryMutex.Lock()
 	defer fake.translateClientCategoryMutex.Unlock()
 	fake.TranslateClientCategoryStub = nil
 	if fake.translateClientCategoryReturnsOnCall == nil {
 		fake.translateClientCategoryReturnsOnCall = make(map[int]struct {
-			result1 []*models.Category
+			result1 *models.Category
 		})
 	}
 	fake.translateClientCategoryReturnsOnCall[i] = struct {
-		result1 []*models.Category
+		result1 *models.Category
 	}{result1}
 }
 
@@ -527,7 +527,7 @@ func (fake *FakeClientTranslatable) TranslateClientLocationsReturnsOnCall(i int,
 	}{result1}
 }
 
-func (fake *FakeClientTranslatable) TranslateClientOffer(arg1 client.Offer) []*models.Offer {
+func (fake *FakeClientTranslatable) TranslateClientOffer(arg1 client.Offer) *models.Offer {
 	fake.translateClientOfferMutex.Lock()
 	ret, specificReturn := fake.translateClientOfferReturnsOnCall[len(fake.translateClientOfferArgsForCall)]
 	fake.translateClientOfferArgsForCall = append(fake.translateClientOfferArgsForCall, struct {
@@ -552,7 +552,7 @@ func (fake *FakeClientTranslatable) TranslateClientOfferCallCount() int {
 	return len(fake.translateClientOfferArgsForCall)
 }
 
-func (fake *FakeClientTranslatable) TranslateClientOfferCalls(stub func(client.Offer) []*models.Offer) {
+func (fake *FakeClientTranslatable) TranslateClientOfferCalls(stub func(client.Offer) *models.Offer) {
 	fake.translateClientOfferMutex.Lock()
 	defer fake.translateClientOfferMutex.Unlock()
 	fake.TranslateClientOfferStub = stub
@@ -565,26 +565,26 @@ func (fake *FakeClientTranslatable) TranslateClientOfferArgsForCall(i int) clien
 	return argsForCall.arg1
 }
 
-func (fake *FakeClientTranslatable) TranslateClientOfferReturns(result1 []*models.Offer) {
+func (fake *FakeClientTranslatable) TranslateClientOfferReturns(result1 *models.Offer) {
 	fake.translateClientOfferMutex.Lock()
 	defer fake.translateClientOfferMutex.Unlock()
 	fake.TranslateClientOfferStub = nil
 	fake.translateClientOfferReturns = struct {
-		result1 []*models.Offer
+		result1 *models.Offer
 	}{result1}
 }
 
-func (fake *FakeClientTranslatable) TranslateClientOfferReturnsOnCall(i int, result1 []*models.Offer) {
+func (fake *FakeClientTranslatable) TranslateClientOfferReturnsOnCall(i int, result1 *models.Offer) {
 	fake.translateClientOfferMutex.Lock()
 	defer fake.translateClientOfferMutex.Unlock()
 	fake.TranslateClientOfferStub = nil
 	if fake.translateClientOfferReturnsOnCall == nil {
 		fake.translateClientOfferReturnsOnCall = make(map[int]struct {
-			result1 []*models.Offer
+			result1 *models.Offer
 		})
 	}
 	fake.translateClientOfferReturnsOnCall[i] = struct {
-		result1 []*models.Offer
+		result1 *models.Offer
 	}{result1}
 }
 
@@ -842,7 +842,7 @@ func (fake *FakeClientTranslatable) TranslateClientTerpeneReturnsOnCall(i int, r
 	}{result1}
 }
 
-func (fake *FakeClientTranslatable) TranslateClientTerpenes(arg1 []client.TerpeneObj) *models.Terpene {
+func (fake *FakeClientTranslatable) TranslateClientTerpenes(arg1 []client.TerpeneObj) []*models.Terpene {
 	var arg1Copy []client.TerpeneObj
 	if arg1 != nil {
 		arg1Copy = make([]client.TerpeneObj, len(arg1))
@@ -872,7 +872,7 @@ func (fake *FakeClientTranslatable) TranslateClientTerpenesCallCount() int {
 	return len(fake.translateClientTerpenesArgsForCall)
 }
 
-func (fake *FakeClientTranslatable) TranslateClientTerpenesCalls(stub func([]client.TerpeneObj) *models.Terpene) {
+func (fake *FakeClientTranslatable) TranslateClientTerpenesCalls(stub func([]client.TerpeneObj) []*models.Terpene) {
 	fake.translateClientTerpenesMutex.Lock()
 	defer fake.translateClientTerpenesMutex.Unlock()
 	fake.TranslateClientTerpenesStub = stub
@@ -885,26 +885,26 @@ func (fake *FakeClientTranslatable) TranslateClientTerpenesArgsForCall(i int) []
 	return argsForCall.arg1
 }
 
-func (fake *FakeClientTranslatable) TranslateClientTerpenesReturns(result1 *models.Terpene) {
+func (fake *FakeClientTranslatable) TranslateClientTerpenesReturns(result1 []*models.Terpene) {
 	fake.translateClientTerpenesMutex.Lock()
 	defer fake.translateClientTerpenesMutex.Unlock()
 	fake.TranslateClientTerpenesStub = nil
 	fake.translateClientTerpenesReturns = struct {
-		result1 *models.Terpene
+		result1 []*models.Terpene
 	}{result1}
 }
 
-func (fake *FakeClientTranslatable) TranslateClientTerpenesReturnsOnCall(i int, result1 *models.Terpene) {
+func (fake *FakeClientTranslatable) TranslateClientTerpenesReturnsOnCall(i int, result1 []*models.Terpene) {
 	fake.translateClientTerpenesMutex.Lock()
 	defer fake.translateClientTerpenesMutex.Unlock()
 	fake.TranslateClientTerpenesStub = nil
 	if fake.translateClientTerpenesReturnsOnCall == nil {
 		fake.translateClientTerpenesReturnsOnCall = make(map[int]struct {
-			result1 *models.Terpene
+			result1 []*models.Terpene
 		})
 	}
 	fake.translateClientTerpenesReturnsOnCall[i] = struct {
-		result1 *models.Terpene
+		result1 []*models.Terpene
 	}{result1}
 }
 

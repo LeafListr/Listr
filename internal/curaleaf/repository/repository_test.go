@@ -751,6 +751,7 @@ func locationSample() client.Location {
 	loc.Location.ZipCode = "12345"
 	return loc
 }
+
 func responseSample() *client.Response {
 	return client.NewResponse([]client.Product{productSample()}, []client.Offer{offerSample()}, []client.Category{categorySample()}, []client.Location{locationSample()})
 }

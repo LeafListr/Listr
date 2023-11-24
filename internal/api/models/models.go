@@ -50,11 +50,3 @@ type Location struct {
 	State   string `json:"state"`
 	ZipCode string `json:"zipCode"`
 }
-
-type Menu struct {
-	Products     []*Product     `json:"products,omitempty"`
-	Offers       []*Offer       `json:"offers,omitempty"`
-	Categories   []*Category    `json:"categories,omitempty"`
-	Terpenes     []*Terpene     `json:"terpenes,omitempty"`
-	Cannabinoids []*Cannabinoid `json:"cannabinoids,omitempty"`
-}

@@ -3,9 +3,11 @@ run:
 test:
 	go test ./...
 gen:
+	swag init -g internal/api/api.go
 	go generate ./...
 lint:
 	gofumpt -d -w .
 	golangci-lint run
+	swag fmt
 
 .PHONY: gen test run

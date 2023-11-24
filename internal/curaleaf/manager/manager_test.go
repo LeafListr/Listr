@@ -2,12 +2,13 @@ package manager_test
 
 import (
 	"errors"
+	"testing"
+
 	"github.com/Linkinlog/LeafListr/internal/curaleaf/manager"
 	"github.com/Linkinlog/LeafListr/internal/factory/factoryfakes"
 	"github.com/Linkinlog/LeafListr/internal/models"
 	"github.com/Linkinlog/LeafListr/internal/repository/repositoryfakes"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestManager_Location(t *testing.T) {
@@ -29,6 +30,7 @@ func TestManager_Location(t *testing.T) {
 	}
 
 	for name, tt := range tests {
+		tt := tt
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 			m := manager.NewWorkflowManager()
@@ -60,6 +62,7 @@ func TestManager_Locations(t *testing.T) {
 	}
 
 	for name, tt := range tests {
+		tt := tt
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 			m := manager.NewWorkflowManager()

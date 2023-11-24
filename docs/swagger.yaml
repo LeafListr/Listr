@@ -1,0 +1,356 @@
+basePath: /api/v1
+definitions:
+  api.supportedDispensary:
+    enum:
+    - curaleaf
+    type: string
+    x-enum-varnames:
+    - Curaleaf
+  api.supportedDispensaryOptions:
+    enum:
+    - locations
+    type: string
+    x-enum-varnames:
+    - Locations
+  github_com_Linkinlog_LeafListr_internal_api_models.Cannabinoid:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+      value:
+        type: number
+    type: object
+  github_com_Linkinlog_LeafListr_internal_api_models.Location:
+    properties:
+      address:
+        type: string
+      city:
+        type: string
+      name:
+        type: string
+      state:
+        type: string
+      zipCode:
+        type: string
+    type: object
+  github_com_Linkinlog_LeafListr_internal_api_models.Offer:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+    type: object
+  github_com_Linkinlog_LeafListr_internal_api_models.Price:
+    properties:
+      discountedTotal:
+        type: number
+      total:
+        type: number
+    type: object
+  github_com_Linkinlog_LeafListr_internal_api_models.Product:
+    properties:
+      cannabinoids:
+        items:
+          $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Cannabinoid'
+        type: array
+      category:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      terpenes:
+        items:
+          $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Terpene'
+        type: array
+      variant:
+        items:
+          $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Variant'
+        type: array
+    type: object
+  github_com_Linkinlog_LeafListr_internal_api_models.Terpene:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+      value:
+        type: number
+    type: object
+  github_com_Linkinlog_LeafListr_internal_api_models.Variant:
+    properties:
+      Name:
+        type: string
+      Price:
+        $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Price'
+    type: object
+info:
+  contact: {}
+  description: This is the Listr server for dispensary management.
+  title: Listr API
+  version: 0.1.0
+paths:
+  /dispensaries:
+    get:
+      consumes:
+      - application/json
+      description: Returns a list of supported dispensaries
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of supported dispensaries
+          schema:
+            items:
+              $ref: '#/definitions/api.supportedDispensary'
+            type: array
+      summary: List supported dispensaries
+      tags:
+      - dispensaries
+  /dispensaries/{dispensaryId}:
+    get:
+      consumes:
+      - application/json
+      description: Returns details of a specific dispensary
+      parameters:
+      - description: Dispensary ID
+        in: path
+        name: dispensaryId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Dispensary details
+          schema:
+            items:
+              $ref: '#/definitions/api.supportedDispensaryOptions'
+            type: array
+      summary: Get dispensary details
+      tags:
+      - dispensaries
+  /dispensaries/{dispensaryId}/locations:
+    get:
+      consumes:
+      - application/json
+      description: Returns a list of locations for a specific dispensary
+      parameters:
+      - description: Dispensary ID
+        in: path
+        name: dispensaryId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of locations
+          schema:
+            items:
+              $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Location'
+            type: array
+      summary: List locations for a dispensary
+      tags:
+      - locations
+  /dispensaries/{dispensaryId}/locations/{locationId}:
+    get:
+      consumes:
+      - application/json
+      description: Returns details of a specific location
+      parameters:
+      - description: Dispensary ID
+        in: path
+        name: dispensaryId
+        required: true
+        type: string
+      - description: Location ID
+        in: path
+        name: locationId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Location details
+          schema:
+            items:
+              type: string
+            type: array
+      summary: Get location details
+      tags:
+      - locations
+  /dispensaries/{dispensaryId}/locations/{locationId}/cannabinoids:
+    get:
+      consumes:
+      - application/json
+      description: Returns a list of cannabinoids for a specific location
+      parameters:
+      - description: Dispensary ID
+        in: path
+        name: dispensaryId
+        required: true
+        type: string
+      - description: Location ID
+        in: path
+        name: locationId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of cannabinoids
+          schema:
+            items:
+              $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Cannabinoid'
+            type: array
+      summary: List cannabinoids for a location
+      tags:
+      - cannabinoids
+  /dispensaries/{dispensaryId}/locations/{locationId}/categories:
+    get:
+      consumes:
+      - application/json
+      description: Returns a list of categories for a specific location
+      parameters:
+      - description: Dispensary ID
+        in: path
+        name: dispensaryId
+        required: true
+        type: string
+      - description: Location ID
+        in: path
+        name: locationId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of categories
+          schema:
+            items:
+              type: string
+            type: array
+      summary: List categories for a location
+      tags:
+      - categories
+  /dispensaries/{dispensaryId}/locations/{locationId}/offers:
+    get:
+      consumes:
+      - application/json
+      description: Returns a list of offers for a specific location
+      parameters:
+      - description: Dispensary ID
+        in: path
+        name: dispensaryId
+        required: true
+        type: string
+      - description: Location ID
+        in: path
+        name: locationId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of offers
+          schema:
+            items:
+              $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Offer'
+            type: array
+      summary: List offers for a location
+      tags:
+      - offers
+  /dispensaries/{dispensaryId}/locations/{locationId}/products:
+    get:
+      consumes:
+      - application/json
+      description: Returns a list of products for a specific location
+      parameters:
+      - description: Dispensary ID
+        in: path
+        name: dispensaryId
+        required: true
+        type: string
+      - description: Location ID
+        in: path
+        name: locationId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of products
+          schema:
+            items:
+              $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Product'
+            type: array
+      summary: List products for a location
+      tags:
+      - products
+  /dispensaries/{dispensaryId}/locations/{locationId}/products/{productId}:
+    get:
+      consumes:
+      - application/json
+      description: Returns details of a specific product
+      parameters:
+      - description: Dispensary ID
+        in: path
+        name: dispensaryId
+        required: true
+        type: string
+      - description: Location ID
+        in: path
+        name: locationId
+        required: true
+        type: string
+      - description: Product ID
+        in: path
+        name: productId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product details
+          schema:
+            $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Product'
+      summary: Get product details
+      tags:
+      - products
+  /dispensaries/{dispensaryId}/locations/{locationId}/terpenes:
+    get:
+      consumes:
+      - application/json
+      description: Returns a list of terpenes for a specific location
+      parameters:
+      - description: Dispensary ID
+        in: path
+        name: dispensaryId
+        required: true
+        type: string
+      - description: Location ID
+        in: path
+        name: locationId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of terpenes
+          schema:
+            items:
+              $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Terpene'
+            type: array
+      summary: List terpenes for a location
+      tags:
+      - terpenes
+swagger: "2.0"

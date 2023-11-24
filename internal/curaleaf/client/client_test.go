@@ -64,7 +64,7 @@ func TestSend(t *testing.T) {
 			query:    client.AllLocationsQuery(-79.5389, 40.3015),
 			response: &client.Response{},
 		},
-		"curaleaf - invalid menu": {
+		"curaleaf - invalid location": {
 			ctx:           context.Background(),
 			endpoint:      repository.GqlEndpoint,
 			query:         client.AllProductQuery("foo", repository.MenuType),
