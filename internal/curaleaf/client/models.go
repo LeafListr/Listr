@@ -99,34 +99,38 @@ type Product struct {
 	CardDescription string      `json:"cardDescription,omitempty"`
 }
 
+type Coordinates struct {
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
+}
+
+type LocationDetails struct {
+	Coordinates       Coordinates `json:"coordinates"`
+	Address           string      `json:"address"`
+	City              string      `json:"city"`
+	Distance          float64     `json:"distance"`
+	DistanceFormatted string      `json:"distanceFormatted"`
+	State             string      `json:"state"`
+	StateAbbreviation string      `json:"stateAbbreviation"`
+	StateSlug         string      `json:"stateSlug"`
+	ZipCode           string      `json:"zipCode"`
+}
+
 type Location struct {
-	UniqueId   string   `json:"uniqueId"`
-	Name       string   `json:"name"`
-	Slug       string   `json:"slug"`
-	OrderTypes []string `json:"orderTypes"`
-	MenuTypes  []string `json:"menuTypes"`
-	IsOpened   bool     `json:"isOpened"`
-	Location   struct {
-		Coordinates struct {
-			Latitude  float64 `json:"latitude"`
-			Longitude float64 `json:"longitude"`
-		} `json:"coordinates"`
-		Address           string  `json:"address"`
-		City              string  `json:"city"`
-		Distance          float64 `json:"distance"`
-		DistanceFormatted string  `json:"distanceFormatted"`
-		State             string  `json:"state"`
-		StateAbbreviation string  `json:"stateAbbreviation"`
-		StateSlug         string  `json:"stateSlug"`
-		ZipCode           string  `json:"zipCode"`
-	} `json:"location"`
-	NextTime         string `json:"nextTime"`
-	ValidForDelivery bool   `json:"validForDelivery"`
+	UniqueId         string          `json:"uniqueId"`
+	Name             string          `json:"name"`
+	Slug             string          `json:"slug"`
+	OrderTypes       []string        `json:"orderTypes"`
+	MenuTypes        []string        `json:"menuTypes"`
+	IsOpened         bool            `json:"isOpened"`
+	Location         LocationDetails `json:"location"`
+	NextTime         string          `json:"nextTime"`
+	ValidForDelivery bool            `json:"validForDelivery"`
 }
 
 type Response struct {
-	*DataObj
-	*ErrorObj
+	DataObj
+	ErrorObj
 }
 
 type ErrorObj struct {
@@ -148,72 +152,72 @@ type ErrorObj struct {
 
 type DataObj struct {
 	Data struct {
-		Dispensaries []*Location `json:"dispensaries,omitempty"`
-		*DispensaryMenuObj
-		*ProductObj
+		Dispensaries []Location `json:"dispensaries,omitempty"`
+		DispensaryMenuObj
+		ProductObj
 	} `json:"data,omitempty"`
 }
 
 type ProductObj struct {
 	Product struct {
-		Product *Product `json:"product"`
+		Product Product `json:"product"`
 	} `json:"product,omitempty"`
 }
 
 type DispensaryMenuObj struct {
 	DispensaryMenu struct {
-		Offers   []*Offer   `json:"offers"`
-		Products []*Product `json:"products"`
-		*AllFiltersObj
+		Offers   []Offer   `json:"offers"`
+		Products []Product `json:"products"`
+		AllFiltersObj
 	} `json:"dispensaryMenu,omitempty"`
 }
 
 type AllFiltersObj struct {
 	AllFilters struct {
-		Categories []*Category `json:"categories"`
+		Categories []Category `json:"categories"`
 	} `json:"allFilters,omitempty"`
 }
 
-func NewResponse(products []*Product, offers []*Offer, categories []*Category) *Response {
-	var product *Product
+func NewResponse(products []Product, offers []Offer, categories []Category, locations []Location) *Response {
+	var product Product
 	if len(products) >= 1 {
 		product = products[0]
 	}
 	return &Response{
-		DataObj: &DataObj{
+		DataObj: DataObj{
 			Data: struct {
-				Dispensaries []*Location `json:"dispensaries,omitempty"`
-				*DispensaryMenuObj
-				*ProductObj
+				Dispensaries []Location `json:"dispensaries,omitempty"`
+				DispensaryMenuObj
+				ProductObj
 			}{
-				Dispensaries: []*Location{},
-				DispensaryMenuObj: &DispensaryMenuObj{
+				Dispensaries: locations,
+				DispensaryMenuObj: DispensaryMenuObj{
 					DispensaryMenu: struct {
-						Offers   []*Offer   `json:"offers"`
-						Products []*Product `json:"products"`
-						*AllFiltersObj
+						Offers   []Offer   `json:"offers"`
+						Products []Product `json:"products"`
+						AllFiltersObj
 					}{
 						Offers:   offers,
 						Products: products,
-						AllFiltersObj: &AllFiltersObj{
+						AllFiltersObj: AllFiltersObj{
 							AllFilters: struct {
-								Categories []*Category `json:"categories"`
+								Categories []Category `json:"categories"`
 							}{
 								Categories: categories,
 							},
 						},
 					},
 				},
-				ProductObj: &ProductObj{
+				ProductObj: ProductObj{
 					Product: struct {
-						Product *Product `json:"product"`
+						Product Product `json:"product"`
 					}{
 						Product: product,
 					},
 				},
 			},
 		},
-		ErrorObj: &ErrorObj{
+		ErrorObj: ErrorObj{
 			Errors: []struct {
 				Message   string `json:"message"`
 				Locations []struct {

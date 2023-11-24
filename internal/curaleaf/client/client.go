@@ -32,7 +32,7 @@ func (c *HttpClient) Query(ctx context.Context, body string, method string) ([]b
 func (c *HttpClient) do(ctx context.Context, method string, body []byte) ([]byte, error) {
 	req, err := http.NewRequestWithContext(ctx, method, string(c.e), bytes.NewBuffer(body))
 	if err != nil {
-		return nil, err
+		return []byte{}, err
 	}
 
 	req.Header = c.hH
@@ -40,17 +40,17 @@ func (c *HttpClient) do(ctx context.Context, method string, body []byte) ([]byte
 
 	resp, hCErr := c.hC.Do(req)
 	if hCErr != nil {
-		return nil, hCErr
+		return []byte{}, hCErr
 	}
 	defer resp.Body.Close()
 
 	respBytes, readErr := io.ReadAll(resp.Body)
 	if readErr != nil {
-		return nil, readErr
+		return []byte{}, readErr
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("unexpected status code: %d\n response: %s", resp.StatusCode, string(respBytes))
+		return []byte{}, fmt.Errorf("unexpected status code: %d\n response: %s", resp.StatusCode, string(respBytes))
 	}
 
 	return respBytes, nil

@@ -89,7 +89,7 @@ func TestSend(t *testing.T) {
 					t.Fatal(jsonErr)
 				}
 				if responseObj, ok := tt.response.(*client.Response); ok {
-					if responseObj.ErrorObj != nil && !tt.expectedError {
+					if responseObj.ErrorObj.Errors != nil && !tt.expectedError {
 						t.Fatal(responseObj.Errors[0].Message)
 					}
 				}

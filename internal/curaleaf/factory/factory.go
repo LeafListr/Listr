@@ -39,7 +39,7 @@ func findMenu(dispensary string, menuId string) (repository.Repository, error) {
 	menu, locationErr := repo.Location(menuId)
 	if locationErr != nil {
 		return nil, locationErr
-	} else if menu == nil {
+	} else if menu == nil || menu.Name != menuId {
 		return nil, errors.New(MenuNotFoundError)
 	} else if repo == nil {
 		return nil, errors.New(RepoNotFoundError)

@@ -8,7 +8,7 @@ import (
 
 //counterfeiter:generate . Repository
 type Repository interface {
-	MenuRepository
+	LocationRepository
 	ProductRepository
 	CategoryRepository
 	CannabinoidRepository
@@ -16,7 +16,7 @@ type Repository interface {
 	OfferRepository
 }
 
-type MenuRepository interface {
+type LocationRepository interface {
 	Location(menuId string) (*models.Location, error)
 	Locations(longitude, latitude float64) ([]*models.Location, error)
 }

@@ -10,18 +10,18 @@ import (
 
 //counterfeiter:generate . ClientTranslatable
 type ClientTranslatable interface {
-	TranslateClientLocation(*client.Location) *models.Location
-	TranslateClientLocations([]*client.Location) []*models.Location
-	TranslateClientProduct(*client.Product) *models.Product
-	TranslateClientProducts([]*client.Product) []*models.Product
-	TranslateClientCategory(*client.Category) []*models.Category
-	TranslateClientCategories([]*client.Category) []*models.Category
-	TranslateClientTerpene(*client.TerpeneObj) *models.Terpene
-	TranslateClientTerpenes(*[]client.TerpeneObj) *models.Terpene
-	TranslateClientCannabinoid(*client.CannabinoidObj) *models.Cannabinoid
-	TranslateClientCannabinoids(*[]client.CannabinoidObj) *models.Cannabinoid
-	TranslateClientOffer(*client.Offer) []*models.Offer
-	TranslateClientOffers([]*client.Offer) []*models.Offer
+	TranslateClientLocation(client.Location) *models.Location
+	TranslateClientLocations([]client.Location) []*models.Location
+	TranslateClientProduct(client.Product) *models.Product
+	TranslateClientProducts([]client.Product) []*models.Product
+	TranslateClientCategory(client.Category) *models.Category
+	TranslateClientCategories([]client.Category) []*models.Category
+	TranslateClientTerpene(client.TerpeneObj) *models.Terpene
+	TranslateClientTerpenes([]client.TerpeneObj) []*models.Terpene
+	TranslateClientCannabinoid(client.CannabinoidObj) *models.Cannabinoid
+	TranslateClientCannabinoids([]client.CannabinoidObj) []*models.Cannabinoid
+	TranslateClientOffer(client.Offer) *models.Offer
+	TranslateClientOffers([]client.Offer) []*models.Offer
 }
 
 //counterfeiter:generate . APITranslatable

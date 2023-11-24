@@ -25,7 +25,7 @@ func NewWorkflowManager() workflow.Manager {
 func (w *Manager) Location(dispensary, menuId string) (*models.Location, error) {
 	repo, err := w.F.FindByDispensary(dispensary)
 	if err != nil {
-		return nil, fmt.Errorf("couldn't find dispensary by menu for location. Dispensary=%s, MenuId=%s. Err: %v", dispensary, menuId, err)
+		return &models.Location{}, fmt.Errorf("couldn't find dispensary by menu for location. Dispensary=%s, MenuId=%s. Err: %v", dispensary, menuId, err)
 	}
 	return repo.Location(menuId)
 }
@@ -33,7 +33,7 @@ func (w *Manager) Location(dispensary, menuId string) (*models.Location, error) 
 func (w *Manager) Locations(dispensary string) ([]*models.Location, error) {
 	repo, err := w.F.FindByDispensary(dispensary)
 	if err != nil {
-		return nil, fmt.Errorf("couldn't find dispensary by menu for locations. Dispensary=%s. Err: %v", dispensary, err)
+		return []*models.Location{}, fmt.Errorf("couldn't find dispensary by menu for locations. Dispensary=%s. Err: %v", dispensary, err)
 	}
 	return repo.Locations(0, 0)
 }
@@ -41,7 +41,7 @@ func (w *Manager) Locations(dispensary string) ([]*models.Location, error) {
 func (w *Manager) Product(dispensary, menuId, productId string) (*models.Product, error) {
 	repo, err := w.F.FindByDispensaryMenu(dispensary, menuId)
 	if err != nil {
-		return nil, fmt.Errorf("couldn't find dispensary by menu for product. Dispensary=%s, Location=%s. Err: %v", dispensary, menuId, err)
+		return &models.Product{}, fmt.Errorf("couldn't find dispensary by menu for product. Dispensary=%s, Location=%s. Err: %v", dispensary, menuId, err)
 	}
 	return repo.GetProduct(menuId, productId)
 }
@@ -49,7 +49,7 @@ func (w *Manager) Product(dispensary, menuId, productId string) (*models.Product
 func (w *Manager) Products(dispensary, menuId string) ([]*models.Product, error) {
 	repo, err := w.F.FindByDispensaryMenu(dispensary, menuId)
 	if err != nil {
-		return nil, fmt.Errorf("couldn't find dispensary by menu for products. Dispensary=%s, Location=%s. Err: %v", dispensary, menuId, err)
+		return []*models.Product{}, fmt.Errorf("couldn't find dispensary by menu for products. Dispensary=%s, Location=%s. Err: %v", dispensary, menuId, err)
 	}
 	return repo.GetProducts(menuId)
 }
@@ -57,7 +57,7 @@ func (w *Manager) Products(dispensary, menuId string) ([]*models.Product, error)
 func (w *Manager) ProductsForCategory(dispensary, menuId string, category models.Category) ([]*models.Product, error) {
 	repo, err := w.F.FindByDispensaryMenu(dispensary, menuId)
 	if err != nil {
-		return nil, fmt.Errorf("couldn't find dispensary by menu for products for category. Dispensary=%s, Location=%s. Err: %v", dispensary, menuId, err)
+		return []*models.Product{}, fmt.Errorf("couldn't find dispensary by menu for products for category. Dispensary=%s, Location=%s. Err: %v", dispensary, menuId, err)
 	}
 	return repo.GetProductsForCategory(menuId, category)
 }
@@ -65,7 +65,7 @@ func (w *Manager) ProductsForCategory(dispensary, menuId string, category models
 func (w *Manager) Categories(dispensary, menuId string) ([]*models.Category, error) {
 	repo, err := w.F.FindByDispensaryMenu(dispensary, menuId)
 	if err != nil {
-		return nil, fmt.Errorf("couldn't find dispensary by menu for categories. Dispensary=%s, MenuId=%s. Err: %v", dispensary, menuId, err)
+		return []*models.Category{}, fmt.Errorf("couldn't find dispensary by menu for categories. Dispensary=%s, MenuId=%s. Err: %v", dispensary, menuId, err)
 	}
 	return repo.GetCategories(menuId)
 }
@@ -73,7 +73,7 @@ func (w *Manager) Categories(dispensary, menuId string) ([]*models.Category, err
 func (w *Manager) Terpenes(dispensary, menuId string) ([]*models.Terpene, error) {
 	repo, err := w.F.FindByDispensaryMenu(dispensary, menuId)
 	if err != nil {
-		return nil, fmt.Errorf("couldn't find dispensary by menu for terpenes. Dispensary=%s, MenuId=%s. Err: %v", dispensary, menuId, err)
+		return []*models.Terpene{}, fmt.Errorf("couldn't find dispensary by menu for terpenes. Dispensary=%s, MenuId=%s. Err: %v", dispensary, menuId, err)
 	}
 	return repo.GetTerpenes(menuId)
 }
@@ -81,7 +81,7 @@ func (w *Manager) Terpenes(dispensary, menuId string) ([]*models.Terpene, error)
 func (w *Manager) Cannabinoids(dispensary, menuId string) ([]*models.Cannabinoid, error) {
 	repo, err := w.F.FindByDispensaryMenu(dispensary, menuId)
 	if err != nil {
-		return nil, fmt.Errorf("couldn't find dispensary by menu for cannabinoids. Dispensary=%s, MenuId=%s. Err: %v", dispensary, menuId, err)
+		return []*models.Cannabinoid{}, fmt.Errorf("couldn't find dispensary by menu for cannabinoids. Dispensary=%s, MenuId=%s. Err: %v", dispensary, menuId, err)
 	}
 	return repo.GetCannabinoids(menuId)
 }
@@ -89,7 +89,7 @@ func (w *Manager) Cannabinoids(dispensary, menuId string) ([]*models.Cannabinoid
 func (w *Manager) Offers(dispensary, menuId string) ([]*models.Offer, error) {
 	repo, err := w.F.FindByDispensaryMenu(dispensary, menuId)
 	if err != nil {
-		return nil, fmt.Errorf("couldn't find dispensary by menu for offers. Dispensary=%s, MenuId=%s. Err: %v", dispensary, menuId, err)
+		return []*models.Offer{}, fmt.Errorf("couldn't find dispensary by menu for offers. Dispensary=%s, MenuId=%s. Err: %v", dispensary, menuId, err)
 	}
 	return repo.GetOffers(menuId)
 }
