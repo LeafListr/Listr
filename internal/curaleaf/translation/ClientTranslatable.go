@@ -67,6 +67,9 @@ func (cT *ClientTranslator) TranslateClientProduct(p client.Product) *models.Pro
 		}
 		product.C = append(product.C, tempCanna)
 	}
+	for _, i := range p.Images {
+		product.Images = append(product.Images, i.URL)
+	}
 	return product
 }
 

@@ -25,12 +25,13 @@ type Variant struct {
 }
 
 type Product struct {
-	Id   string
-	Name string
-	Ctg  Category
-	V    []*Variant
-	C    []*Cannabinoid
-	T    []*Terpene
+	Id     string
+	Name   string
+	Ctg    Category
+	Images []string
+	V      []*Variant
+	C      []*Cannabinoid
+	T      []*Terpene
 }
 
 type Offer struct {

@@ -25,12 +25,13 @@ type Variant struct {
 }
 
 type Product struct {
-	Id   string         `json:"id,omitempty"`
-	Name string         `json:"name,omitempty"`
-	Ctg  Category       `json:"category,omitempty"`
-	V    []*Variant     `json:"variant,omitempty"`
-	C    []*Cannabinoid `json:"cannabinoids,omitempty"`
-	T    []*Terpene     `json:"terpenes,omitempty"`
+	Id     string         `json:"id,omitempty"`
+	Name   string         `json:"name,omitempty"`
+	Ctg    Category       `json:"category,omitempty"`
+	Images []string       `json:"images"`
+	V      []*Variant     `json:"variant,omitempty"`
+	C      []*Cannabinoid `json:"cannabinoids,omitempty"`
+	T      []*Terpene     `json:"terpenes,omitempty"`
 }
 
 type Offer struct {
