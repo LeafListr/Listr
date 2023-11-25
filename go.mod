@@ -5,6 +5,7 @@ go 1.21.0
 require (
 	github.com/go-chi/chi/v5 v5.0.10
 	github.com/maxbrunsfeld/counterfeiter/v6 v6.7.0
+	github.com/rs/cors v1.10.1
 	github.com/stretchr/testify v1.8.4
 	github.com/swaggo/http-swagger v1.3.4
 	github.com/swaggo/swag v1.16.2
