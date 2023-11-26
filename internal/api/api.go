@@ -3,6 +3,7 @@ package api
 import (
 	"encoding/json"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"time"
 
@@ -71,6 +72,7 @@ func New(manager workflow.Manager) *API {
 		MaxAge:         300,
 	})
 	router.Use(c.Handler)
+	router.Use(RequestLogger)
 
 	router.Get("/swagger/*", httpSwagger.WrapHandler)
 
@@ -107,7 +109,7 @@ func ListenAndServe(addr string, timeout int64) error {
 		Handler:           a.h,
 		ReadHeaderTimeout: time.Duration(timeout) * time.Second,
 	}
-	fmt.Println("Listening on " + addr)
+	slog.Debug("Listening on " + addr)
 	return h.ListenAndServe()
 }
 
@@ -273,6 +275,18 @@ func (a *API) handleCannabinoidListing(r http.ResponseWriter, req *http.Request)
 	dispensary, locationId, _ := params(req, "")
 	cannabinoids, err := a.w.Cannabinoids(dispensary, locationId)
 	a.writeJson(r, req, a.t.TranslateAPICannabinoids(cannabinoids), err)
+}
+
+func RequestLogger(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
+		slog.InfoContext(ctx, "HIT",
+		"method", r.Method,
+		"url", r.URL.String(),
+		)
+
+		next.ServeHTTP(w, r)
+	})
 }
 
 func params(req *http.Request, resource string) (dispensary, locationId, resourceId string) {

@@ -20,7 +20,7 @@ type Terpene struct {
 type Category string
 
 type Variant struct {
-	Name  string `json:"name,omitempty"`
+	Name  string `json:"name"`
 	Price *Price `json:"price,omitempty"`
 }
 
@@ -29,9 +29,9 @@ type Product struct {
 	Name   string         `json:"name"`
 	Ctg    Category       `json:"category"`
 	Images []string       `json:"images"`
-	V      []*Variant     `json:"variants"`
-	C      []*Cannabinoid `json:"cannabinoids"`
-	T      []*Terpene     `json:"terpenes"`
+	V      []*Variant     `json:"variants,omitempty"`
+	C      []*Cannabinoid `json:"cannabinoids,omitempty"`
+	T      []*Terpene     `json:"terpenes,omitempty"`
 }
 
 type Offer struct {
@@ -41,7 +41,7 @@ type Offer struct {
 
 type Dispensary struct {
 	Name      string      `json:"name"`
-	Locations []*Location `json:"locations"`
+	Locations []*Location `json:"locations,omitempty"`
 }
 
 type Location struct {
