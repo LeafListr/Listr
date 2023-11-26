@@ -17,6 +17,7 @@ func TestClientTranslator_TranslateClientLocation(t *testing.T) {
 		"Translate Valid Location": {
 			input: client.Location{
 				UniqueId: "TestLocation",
+				Name:     "TestName",
 				Location: client.LocationDetails{
 					Address: "123 Test St",
 					City:    "TestCity",
@@ -25,7 +26,8 @@ func TestClientTranslator_TranslateClientLocation(t *testing.T) {
 				},
 			},
 			expected: &models.Location{
-				Name:    "TestLocation",
+				Name:    "TestName",
+				Id:      "TestLocation",
 				Address: "123 Test St",
 				City:    "TestCity",
 				State:   "TestState",
@@ -52,6 +54,7 @@ func TestClientTranslator_TranslateClientLocations(t *testing.T) {
 		"Translate Multiple Locations": {
 			input: []client.Location{
 				{
+					Name:     "Name1",
 					UniqueId: "Location1",
 					Location: client.LocationDetails{
 						Address: "123 Location St",
@@ -61,6 +64,7 @@ func TestClientTranslator_TranslateClientLocations(t *testing.T) {
 					},
 				},
 				{
+					Name:     "Name2",
 					UniqueId: "Location2",
 					Location: client.LocationDetails{
 						Address: "456 Location Ave",
@@ -72,14 +76,16 @@ func TestClientTranslator_TranslateClientLocations(t *testing.T) {
 			},
 			expected: []*models.Location{
 				{
-					Name:    "Location1",
+					Name:    "Name1",
+					Id:      "Location1",
 					Address: "123 Location St",
 					City:    "LocationCity",
 					State:   "LocationState",
 					ZipCode: "54321",
 				},
 				{
-					Name:    "Location2",
+					Name:    "Name2",
+					Id:      "Location2",
 					Address: "456 Location Ave",
 					City:    "AnotherCity",
 					State:   "AnotherState",

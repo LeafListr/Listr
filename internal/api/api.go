@@ -8,9 +8,9 @@ import (
 	"time"
 
 	_ "github.com/Linkinlog/LeafListr/docs"
-	_ "github.com/Linkinlog/LeafListr/internal/api/models"
 	apiTranslator "github.com/Linkinlog/LeafListr/internal/api/translation"
 	"github.com/Linkinlog/LeafListr/internal/curaleaf/manager"
+	"github.com/Linkinlog/LeafListr/internal/models"
 	"github.com/Linkinlog/LeafListr/internal/translation"
 	"github.com/rs/cors"
 
@@ -109,7 +109,7 @@ func ListenAndServe(addr string, timeout int64) error {
 		Handler:           a.h,
 		ReadHeaderTimeout: time.Duration(timeout) * time.Second,
 	}
-	slog.Debug("Listening on " + addr)
+	slog.Info("Listening on " + addr)
 	return h.ListenAndServe()
 }
 
@@ -213,6 +213,11 @@ func (a *API) handleProduct(r http.ResponseWriter, req *http.Request) {
 // @Router			/dispensaries/{dispensaryId}/locations/{locationId}/products [get].
 func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 	dispensary, locationId, _ := params(req, "")
+	if category := req.URL.Query().Get("category"); category != "" {
+		products, err := a.w.ProductsForCategory(dispensary, locationId, models.Category(category))
+		a.writeJson(r, req, a.t.TranslateAPIProducts(products), err)
+		return
+	}
 	products, err := a.w.Products(dispensary, locationId)
 	a.writeJson(r, req, a.t.TranslateAPIProducts(products), err)
 }
@@ -281,8 +286,8 @@ func RequestLogger(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 		slog.InfoContext(ctx, "HIT",
-		"method", r.Method,
-		"url", r.URL.String(),
+			"method", r.Method,
+			"url", r.URL.String(),
 		)
 
 		next.ServeHTTP(w, r)

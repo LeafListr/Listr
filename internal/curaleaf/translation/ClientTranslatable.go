@@ -10,7 +10,8 @@ type ClientTranslator struct{}
 
 func (cT *ClientTranslator) TranslateClientLocation(l client.Location) *models.Location {
 	return &models.Location{
-		Name:    l.UniqueId,
+		Id:      l.UniqueId,
+		Name:    l.Name,
 		Address: l.Location.Address,
 		City:    l.Location.City,
 		State:   l.Location.State,

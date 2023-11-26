@@ -53,6 +53,7 @@ type Menu struct {
 }
 
 type Location struct {
+	Id      string
 	Name    string
 	Address string
 	City    string

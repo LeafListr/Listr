@@ -79,7 +79,7 @@ func (r *Repository) getLocation(locationId string) (*models.Location, error) {
 		return location, err
 	}
 	for _, l := range locs {
-		if l.Name == locationId {
+		if l.Id == locationId {
 			location = l
 		}
 	}

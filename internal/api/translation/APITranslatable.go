@@ -10,6 +10,7 @@ type APITranslator struct{}
 
 func (aT *APITranslator) TranslateAPILocation(l *models.Location) *apiModels.Location {
 	return &apiModels.Location{
+		Id:      l.Id,
 		Name:    l.Name,
 		Address: l.Address,
 		City:    l.City,

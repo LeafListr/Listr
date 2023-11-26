@@ -35,7 +35,7 @@ func TestGetLocation(t *testing.T) {
 
 				expectedLoc := expectedLocs[0]
 
-				assert.Equal(t, expectedLoc.UniqueId, loc.Name)
+				assert.Equal(t, expectedLoc.UniqueId, loc.Id)
 				assert.Equal(t, expectedLoc.Location.ZipCode, loc.ZipCode)
 			},
 		},
@@ -94,7 +94,7 @@ func TestGetLocations(t *testing.T) {
 				for i, loc := range ls {
 					expectedLoc := expectedLocations[i]
 
-					assert.Equal(t, expectedLoc.UniqueId, loc.Name)
+					assert.Equal(t, expectedLoc.UniqueId, loc.Id)
 					assert.Equal(t, expectedLoc.Location.ZipCode, loc.ZipCode)
 				}
 			},
