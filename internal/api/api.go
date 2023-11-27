@@ -3,10 +3,17 @@ package api
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"log/slog"
 	"net/http"
-	`strings`
+	"strings"
 	"time"
+
+	"github.com/honeycombio/honeycomb-opentelemetry-go"
+	"github.com/honeycombio/otel-config-go/otelconfig"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/trace"
 
 	_ "github.com/Linkinlog/LeafListr/docs"
 	apiTranslator "github.com/Linkinlog/LeafListr/internal/api/translation"
@@ -59,6 +66,15 @@ type API struct {
 func New(manager workflow.Manager) *API {
 	router := chi.NewRouter()
 
+	bsp := honeycomb.NewBaggageSpanProcessor()
+
+	_, err := otelconfig.ConfigureOpenTelemetry(
+		otelconfig.WithSpanProcessor(bsp),
+	)
+	if err != nil {
+		log.Fatalf("error setting up OTel SDK - %e", err)
+	}
+
 	api := &API{
 		w:                     manager,
 		h:                     router,
@@ -110,6 +126,7 @@ func ListenAndServe(addr string, timeout int64) error {
 		Handler:           a.h,
 		ReadHeaderTimeout: time.Duration(timeout) * time.Second,
 	}
+
 	slog.Info("Listening on " + addr)
 	return h.ListenAndServe()
 }
@@ -285,13 +302,27 @@ func (a *API) handleCannabinoidListing(r http.ResponseWriter, req *http.Request)
 
 func RequestLogger(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
+		tr := otel.Tracer("LeafListr-API")
+		ctx, span := tr.Start(ctx, "HTTPRequest",
+			trace.WithAttributes(
+				attribute.String("url", r.URL.String()),
+				attribute.String("client_ip", r.RemoteAddr),
+				attribute.String("http_method", r.Method),
+				attribute.String("referer", r.Referer()),
+			),
+		)
+		defer span.End()
+
 		headers := make([]slog.Attr, len(r.Header))
 		idx := 0
 		for k, v := range r.Header {
-			headers[idx] = slog.String(k, strings.Join(v, ","))
-			idx = idx + 1
+			if len(v) > 0 {
+				span.SetAttributes(attribute.String(fmt.Sprintf("http.header.%s", k), strings.Join(v, ", ")))
+				headers[idx] = slog.String(k, strings.Join(v, ","))
+				idx = idx + 1
+			}
 		}
-		ctx := r.Context()
 		slog.InfoContext(ctx, "request received",
 			slog.Group("req",
 				slog.String("URL", r.URL.String()),
@@ -301,7 +332,6 @@ func RequestLogger(next http.Handler) http.Handler {
 				slog.Attr{Key: "Header", Value: slog.GroupValue(headers...)},
 			),
 		)
-
 		next.ServeHTTP(w, r)
 	})
 }
