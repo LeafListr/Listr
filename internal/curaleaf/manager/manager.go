@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	`os`
 
 	"github.com/Linkinlog/LeafListr/internal/models"
 
@@ -17,6 +18,9 @@ type Manager struct {
 }
 
 func NewWorkflowManager() workflow.Manager {
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}))
+	slog.SetDefault(logger)
+
 	return &Manager{
 		F: curaFactory.NewRepoFactory(),
 	}
@@ -95,5 +99,5 @@ func (w *Manager) Offers(dispensary, menuId string) ([]*models.Offer, error) {
 }
 
 func (w *Manager) LogError(err error, context context.Context) {
-	slog.ErrorContext(context, err.Error())
+	slog.InfoContext(context, err.Error())
 }

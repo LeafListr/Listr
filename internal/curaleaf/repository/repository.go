@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"sync"
 
 	"github.com/Linkinlog/LeafListr/internal/models"
 
@@ -197,12 +198,15 @@ func (r *Repository) getTerpenes(menuId string) ([]*models.Terpene, error) {
 		return []*models.Terpene{}, err
 	}
 
+	var mu sync.Mutex
 	terpeneMap := make(map[string]*models.Terpene)
 	for _, product := range cResp.Data.DispensaryMenu.Products {
 		for _, terpene := range product.LabResults.Terpenes {
+			mu.Lock()
 			if _, exists := terpeneMap[terpene.Terpene.Name]; !exists {
 				terpeneMap[terpene.Terpene.Name] = r.T.TranslateClientTerpene(terpene)
 			}
+			mu.Unlock()
 		}
 	}
 
@@ -231,12 +235,16 @@ func (r *Repository) getCannabinoids(menuId string) ([]*models.Cannabinoid, erro
 		return []*models.Cannabinoid{}, err
 	}
 
+	var mu sync.Mutex
+
 	cannabinoidMap := make(map[string]*models.Cannabinoid)
 	for _, product := range cResp.Data.DispensaryMenu.Products {
 		for _, cannabinoid := range product.LabResults.Cannabinoids {
+			mu.Lock()
 			if _, exists := cannabinoidMap[cannabinoid.Cannabinoid.Name]; !exists {
 				cannabinoidMap[cannabinoid.Cannabinoid.Name] = r.T.TranslateClientCannabinoid(cannabinoid)
 			}
+			mu.Unlock()
 		}
 	}
 

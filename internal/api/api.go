@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	`strings`
 	"time"
 
 	_ "github.com/Linkinlog/LeafListr/docs"
@@ -284,10 +285,21 @@ func (a *API) handleCannabinoidListing(r http.ResponseWriter, req *http.Request)
 
 func RequestLogger(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		headers := make([]slog.Attr, len(r.Header))
+		idx := 0
+		for k, v := range r.Header {
+			headers[idx] = slog.String(k, strings.Join(v, ","))
+			idx = idx + 1
+		}
 		ctx := r.Context()
-		slog.InfoContext(ctx, "HIT",
-			"method", r.Method,
-			"url", r.URL.String(),
+		slog.InfoContext(ctx, "request received",
+			slog.Group("req",
+				slog.String("URL", r.URL.String()),
+				slog.String("ClientIp", r.RemoteAddr),
+				slog.String("HTTPMethod", r.Method),
+				slog.String("Referer", r.Referer()),
+				slog.Attr{Key: "Header", Value: slog.GroupValue(headers...)},
+			),
 		)
 
 		next.ServeHTTP(w, r)
