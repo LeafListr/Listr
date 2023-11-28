@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
-	"os"
 
+	"github.com/Linkinlog/LeafListr/internal/curaleaf/cache"
 	"github.com/Linkinlog/LeafListr/internal/models"
 
 	curaFactory "github.com/Linkinlog/LeafListr/internal/curaleaf/factory"
@@ -18,11 +18,8 @@ type Manager struct {
 }
 
 func NewWorkflowManager() workflow.Manager {
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}))
-	slog.SetDefault(logger)
-
 	return &Manager{
-		F: curaFactory.NewRepoFactory(),
+		F: curaFactory.NewRepoFactory(cache.NewCache()),
 	}
 }
 

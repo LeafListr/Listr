@@ -1,7 +1,14 @@
 package repository
 
 import (
+	"errors"
+
 	"github.com/Linkinlog/LeafListr/internal/models"
+)
+
+var (
+	InvalidJSONError = errors.New("invalid json")
+	ResourceNotFound = errors.New("resource not found")
 )
 
 //go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate

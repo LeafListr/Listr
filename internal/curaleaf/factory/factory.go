@@ -3,6 +3,7 @@ package factory
 import (
 	"errors"
 
+	"github.com/Linkinlog/LeafListr/internal/cache"
 	"github.com/Linkinlog/LeafListr/internal/curaleaf/client"
 	curarepo "github.com/Linkinlog/LeafListr/internal/curaleaf/repository"
 	"github.com/Linkinlog/LeafListr/internal/curaleaf/translation"
@@ -16,22 +17,26 @@ const (
 	MenuNotFoundError = "menu not found"
 )
 
-type DefaultRepositoryFactory struct{}
+type DefaultRepositoryFactory struct{
+	memCache cache.Cacher
+}
 
-func NewRepoFactory() factory.RepositoryFactory {
-	return &DefaultRepositoryFactory{}
+func NewRepoFactory(mC cache.Cacher) factory.RepositoryFactory {
+	return &DefaultRepositoryFactory{
+		memCache: mC,
+	}
 }
 
 func (rf *DefaultRepositoryFactory) FindByDispensary(dispensary string) (repository.Repository, error) {
-	return findRepository(dispensary)
+	return findRepository(dispensary, rf.memCache)
 }
 
 func (rf *DefaultRepositoryFactory) FindByDispensaryMenu(dispensary, menuId string) (repository.Repository, error) {
-	return findMenu(dispensary, menuId)
+	return findMenu(dispensary, menuId, rf.memCache)
 }
 
-func findMenu(dispensary string, menuId string) (repository.Repository, error) {
-	repo, err := findRepository(dispensary)
+func findMenu(dispensary string, menuId string, mc cache.Cacher) (repository.Repository, error) {
+	repo, err := findRepository(dispensary, mc)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +53,7 @@ func findMenu(dispensary string, menuId string) (repository.Repository, error) {
 	return repo, nil
 }
 
-func findRepository(dispensary string) (repository.Repository, error) {
+func findRepository(dispensary string, mc cache.Cacher) (repository.Repository, error) {
 	var repo repository.Repository
 	var err error
 
@@ -58,7 +63,7 @@ func findRepository(dispensary string) (repository.Repository, error) {
 			curarepo.GqlEndpoint,
 			curarepo.Headers,
 		)
-		repo = curarepo.NewRepository(c, translation.NewClientTranslator())
+		repo = curarepo.NewRepository(c, translation.NewClientTranslator(), mc)
 	default:
 		err = errors.New("unsupported dispensary")
 	}

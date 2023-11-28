@@ -2,10 +2,12 @@ package api
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"log"
 	"log/slog"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
@@ -120,6 +122,21 @@ func v(path string) string {
 }
 
 func ListenAndServe(addr string, timeout int64) error {
+	var verbose bool
+	flag.BoolVar(&verbose, "v", false, "enable verbose logging")
+	flag.Parse()
+
+	logLevel := slog.LevelInfo
+	if verbose {
+		logLevel = slog.LevelDebug
+	}
+
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+		Level: logLevel,
+	}))
+
+	slog.SetDefault(logger)
+
 	a := New(manager.NewWorkflowManager())
 	h := http.Server{
 		Addr:              addr,
@@ -323,7 +340,7 @@ func RequestLogger(next http.Handler) http.Handler {
 				idx = idx + 1
 			}
 		}
-		slog.InfoContext(ctx, "request received",
+		slog.DebugContext(ctx, "request received",
 			slog.Group("req",
 				slog.String("URL", r.URL.String()),
 				slog.String("ClientIp", r.RemoteAddr),

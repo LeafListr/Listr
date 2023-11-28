@@ -13,14 +13,12 @@ type Endpoint string
 
 type HttpClient struct {
 	hC *http.Client
-	hH http.Header
 	e  Endpoint
 }
 
 func NewHTTPClient(endpoint Endpoint, headers http.Header) *HttpClient {
 	return &HttpClient{
 		hC: &http.Client{Timeout: 30 * time.Second},
-		hH: headers,
 		e:  endpoint,
 	}
 }
@@ -29,13 +27,14 @@ func (c *HttpClient) Query(ctx context.Context, body string, method string) ([]b
 	return c.do(ctx, method, []byte(body))
 }
 
+// c.hH.Set("Content-Type", "application/json")
+// req.Header = c.hH
 func (c *HttpClient) do(ctx context.Context, method string, body []byte) ([]byte, error) {
 	req, err := http.NewRequestWithContext(ctx, method, string(c.e), bytes.NewBuffer(body))
 	if err != nil {
 		return []byte{}, err
 	}
 
-	req.Header = c.hH
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, hCErr := c.hC.Do(req)

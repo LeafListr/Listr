@@ -5,7 +5,9 @@ import (
 	"testing"
 
 	"github.com/Linkinlog/LeafListr/internal/models"
+	repo "github.com/Linkinlog/LeafListr/internal/repository"
 
+	"github.com/Linkinlog/LeafListr/internal/curaleaf/cache"
 	"github.com/Linkinlog/LeafListr/internal/curaleaf/client"
 	"github.com/Linkinlog/LeafListr/internal/curaleaf/repository"
 	"github.com/Linkinlog/LeafListr/internal/curaleaf/translation"
@@ -45,7 +47,7 @@ func TestGetLocation(t *testing.T) {
 			},
 			assertions: func(t *testing.T, loc *models.Location, err error) {
 				assert.Equal(t, &models.Location{}, loc)
-				assert.ErrorContains(t, err, "getLocations: invalid JSON")
+				assert.ErrorIs(t, err, repo.InvalidJSONError)
 			},
 		},
 		"invalid request - valid json / invalid expected response, empty product": {
@@ -64,7 +66,7 @@ func TestGetLocation(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator())
+			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache())
 			ls, getErr := cr.Location("ASDF123")
 			tt.assertions(t, ls, getErr)
 		})
@@ -105,7 +107,7 @@ func TestGetLocations(t *testing.T) {
 			},
 			assertions: func(t *testing.T, ls []*models.Location, err error) {
 				assert.Equal(t, []*models.Location{}, ls)
-				assert.ErrorContains(t, err, "getLocations: invalid JSON")
+				assert.ErrorIs(t, err, repo.InvalidJSONError)
 			},
 		},
 		"invalid request - valid json / invalid expected response, empty products": {
@@ -124,7 +126,7 @@ func TestGetLocations(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator())
+			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache())
 			ls, getErr := cr.Locations(0, 0)
 			tt.assertions(t, ls, getErr)
 		})
@@ -186,7 +188,7 @@ func TestGetProduct(t *testing.T) {
 			},
 			assertions: func(t *testing.T, prod *models.Product, err error) {
 				assert.Equal(t, &models.Product{}, prod)
-				assert.ErrorContains(t, err, "getProduct: invalid JSON")
+				assert.ErrorIs(t, err, repo.InvalidJSONError)
 			},
 		},
 		"invalid request - valid json / invalid expected response, empty product": {
@@ -205,7 +207,7 @@ func TestGetProduct(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator())
+			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache())
 			ps, getErr := cr.GetProduct("foo", "bar")
 			tt.assertions(t, ps, getErr)
 		})
@@ -270,7 +272,7 @@ func TestGetProducts(t *testing.T) {
 			},
 			assertions: func(t *testing.T, ps []*models.Product, err error) {
 				assert.Equal(t, []*models.Product{}, ps)
-				assert.ErrorContains(t, err, "getProducts: invalid JSON")
+				assert.ErrorIs(t, err, repo.InvalidJSONError)
 			},
 		},
 		"invalid request - valid json / invalid expected response, empty products": {
@@ -289,7 +291,7 @@ func TestGetProducts(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator())
+			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache())
 			ps, getErr := cr.GetProducts("foo")
 			tt.assertions(t, ps, getErr)
 		})
@@ -354,7 +356,7 @@ func TestGetProductsForCategory(t *testing.T) {
 			},
 			assertions: func(t *testing.T, ps []*models.Product, err error) {
 				assert.Equal(t, []*models.Product{}, ps)
-				assert.ErrorContains(t, err, "getProductsForCategory: invalid JSON")
+				assert.ErrorIs(t, err, repo.InvalidJSONError)
 			},
 		},
 		"invalid request - valid json / invalid expected response, empty products": {
@@ -373,7 +375,7 @@ func TestGetProductsForCategory(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator())
+			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache())
 			ps, getErr := cr.GetProductsForCategory("foo", "bar")
 			tt.assertions(t, ps, getErr)
 		})
@@ -413,7 +415,7 @@ func TestGetCategories(t *testing.T) {
 			},
 			assertions: func(t *testing.T, cs []*models.Category, err error) {
 				assert.Equal(t, []*models.Category{}, cs)
-				assert.ErrorContains(t, err, "getCategories: invalid JSON")
+				assert.ErrorIs(t, err, repo.InvalidJSONError)
 			},
 		},
 		"invalid request - valid json / invalid expected response, empty products": {
@@ -432,7 +434,7 @@ func TestGetCategories(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator())
+			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache())
 			cs, getErr := cr.GetCategories("foo")
 			tt.assertions(t, cs, getErr)
 		})
@@ -475,7 +477,7 @@ func TestGetTerpenes(t *testing.T) {
 			},
 			assertions: func(t *testing.T, ts []*models.Terpene, err error) {
 				assert.Equal(t, []*models.Terpene{}, ts)
-				assert.ErrorContains(t, err, "getTerpenes: invalid JSON")
+				assert.ErrorIs(t, err, repo.InvalidJSONError)
 			},
 		},
 		"invalid request - valid json / invalid expected response, empty products": {
@@ -494,7 +496,7 @@ func TestGetTerpenes(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator())
+			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache())
 			ts, getErr := cr.GetTerpenes("foo")
 			tt.assertions(t, ts, getErr)
 		})
@@ -537,7 +539,7 @@ func TestGetCannabinoids(t *testing.T) {
 			},
 			assertions: func(t *testing.T, cs []*models.Cannabinoid, err error) {
 				assert.Equal(t, []*models.Cannabinoid{}, cs)
-				assert.ErrorContains(t, err, "getCannabinoids: invalid JSON")
+				assert.ErrorIs(t, err, repo.InvalidJSONError)
 			},
 		},
 		"invalid request - valid json / invalid expected response, empty products": {
@@ -556,7 +558,7 @@ func TestGetCannabinoids(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator())
+			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache())
 			cs, getErr := cr.GetCannabinoids("foo")
 			tt.assertions(t, cs, getErr)
 		})
@@ -596,7 +598,7 @@ func TestGetOffers(t *testing.T) {
 				fc.QueryReturns(nil, nil)
 			},
 			assertions: func(t *testing.T, os []*models.Offer, err error) {
-				assert.ErrorContains(t, err, "getOffers: invalid JSON")
+				assert.ErrorIs(t, err, repo.InvalidJSONError)
 
 				assert.Equal(t, []*models.Offer{}, os)
 			},
@@ -617,7 +619,7 @@ func TestGetOffers(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator())
+			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache())
 			os, getErr := cr.GetOffers("foo")
 			tt.assertions(t, os, getErr)
 		})

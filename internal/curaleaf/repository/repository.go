@@ -3,10 +3,10 @@ package repository
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"sync"
 
+	"github.com/Linkinlog/LeafListr/internal/cache"
 	"github.com/Linkinlog/LeafListr/internal/models"
 
 	curaClient "github.com/Linkinlog/LeafListr/internal/curaleaf/client"
@@ -26,14 +26,16 @@ const (
 var Headers = map[string][]string{"authority": {Authority}}
 
 type Repository struct {
-	C client.Client
-	T translation.ClientTranslatable
+	C  client.Client
+	T  translation.ClientTranslatable
+	MC cache.Cacher
 }
 
-func NewRepository(c client.Client, translatable translation.ClientTranslatable) repository.Repository {
+func NewRepository(c client.Client, translatable translation.ClientTranslatable, mc cache.Cacher) repository.Repository {
 	return &Repository{
-		C: c,
-		T: translatable,
+		C:  c,
+		T:  translatable,
+		MC: mc,
 	}
 }
 
@@ -42,40 +44,120 @@ func (r *Repository) Location(menuId string) (*models.Location, error) {
 }
 
 func (r *Repository) Locations(longitude, latitude float64) ([]*models.Location, error) {
-	return r.getLocations(longitude, latitude)
+	query := curaClient.AllLocationsQuery(longitude, latitude)
+	queryKey := fmt.Sprintf("locations-%f-%f", longitude, latitude)
+
+	locations, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
+		return r.getLocations(query)
+	})
+	if err != nil {
+		return []*models.Location{}, err
+	}
+
+	return locations.([]*models.Location), nil
 }
 
 func (r *Repository) GetProduct(menuId, productId string) (*models.Product, error) {
-	return r.getProduct(menuId, productId)
+	query := curaClient.ProductQuery(menuId, productId, "MEDICAL")
+	queryKey := fmt.Sprintf("product-%s-%s", menuId, productId)
+
+	product, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
+		return r.getProduct(query)
+	})
+	if err != nil {
+		return &models.Product{}, err
+	}
+
+	return product.(*models.Product), nil
 }
 
 func (r *Repository) GetProducts(menuId string) ([]*models.Product, error) {
-	return r.getProducts(menuId)
+	query := curaClient.AllProductQuery(menuId, "MEDICAL")
+	queryKey := fmt.Sprintf("products-%s", menuId)
+
+	products, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
+		return r.getProducts(query)
+	})
+	if err != nil {
+		return []*models.Product{}, err
+	}
+
+	return products.([]*models.Product), nil
 }
 
 func (r *Repository) GetProductsForCategory(menuId string, category models.Category) ([]*models.Product, error) {
-	return r.getProductsForCategory(menuId, category)
+	query := curaClient.AllProductForCategoryQuery(menuId, "MEDICAL", string(category))
+	queryKey := fmt.Sprintf("products-%s-%s", menuId, string(category))
+
+	products, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
+		return r.getProductsForCategory(query)
+	})
+	if err != nil {
+		return []*models.Product{}, err
+	}
+
+	return products.([]*models.Product), nil
 }
 
 func (r *Repository) GetCategories(menuId string) ([]*models.Category, error) {
-	return r.getCategories(menuId)
+	query := curaClient.AllCategoriesQuery(menuId, "MEDICAL")
+	queryKey := fmt.Sprintf("categories-%s", menuId)
+
+	categories, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
+		return r.getCategories(query)
+	})
+	if err != nil {
+		return []*models.Category{}, err
+	}
+
+	return categories.([]*models.Category), nil
 }
 
 func (r *Repository) GetTerpenes(menuId string) ([]*models.Terpene, error) {
-	return r.getTerpenes(menuId)
+	query := curaClient.AllProductQuery(menuId, "MEDICAL")
+	queryKey := fmt.Sprintf("terpenes-%s", menuId)
+
+	terpenes, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
+		return r.getTerpenes(query)
+	})
+	if err != nil {
+		return []*models.Terpene{}, err
+	}
+
+	return terpenes.([]*models.Terpene), nil
 }
 
 func (r *Repository) GetCannabinoids(menuId string) ([]*models.Cannabinoid, error) {
-	return r.getCannabinoids(menuId)
+	query := curaClient.AllProductQuery(menuId, "MEDICAL")
+	queryKey := fmt.Sprintf("cannabinoids-%s", menuId)
+
+	cannabinoids, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
+		return r.getCannabinoids(query)
+	})
+	if err != nil {
+		return []*models.Cannabinoid{}, err
+	}
+
+	return cannabinoids.([]*models.Cannabinoid), nil
 }
 
 func (r *Repository) GetOffers(menuId string) ([]*models.Offer, error) {
-	return r.getOffers(menuId)
+	query := curaClient.AllOffersQuery(menuId, "MEDICAL")
+	queryKey := fmt.Sprintf("offers-%s", menuId)
+
+	offers, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
+		return r.getOffers(query)
+	})
+	if err != nil {
+		return []*models.Offer{}, err
+	}
+
+	return offers.([]*models.Offer), nil
 }
 
 func (r *Repository) getLocation(locationId string) (*models.Location, error) {
 	location := &models.Location{}
-	locs, err := r.getLocations(0, 0)
+	locs, err := r.getLocations(curaClient.AllLocationsQuery(0, 0))
 	if err != nil {
 		return location, err
 	}
@@ -87,120 +169,61 @@ func (r *Repository) getLocation(locationId string) (*models.Location, error) {
 	return location, nil
 }
 
-func (r *Repository) getLocations(longitude, latitude float64) ([]*models.Location, error) {
-	locationResp, err := r.C.Query(context.Background(), curaClient.AllLocationsQuery(longitude, latitude), "POST")
+func (r *Repository) getLocations(query string) ([]*models.Location, error) {
+	locationResp, err := r.getResponse(query)
 	if err != nil {
 		return []*models.Location{}, err
 	}
 
-	if !json.Valid(locationResp) {
-		return []*models.Location{}, errors.New("getLocations: invalid JSON")
-	}
-	cResp := curaClient.Response{}
-	err = json.Unmarshal(locationResp, &cResp)
-	if err != nil {
-		return []*models.Location{}, err
-	}
-
-	return r.T.TranslateClientLocations(cResp.Data.Dispensaries), nil
+	return r.T.TranslateClientLocations(locationResp.Data.Dispensaries), nil
 }
 
-func (r *Repository) getProduct(menuId, productId string) (*models.Product, error) {
-	productResp, err := r.C.Query(context.Background(), curaClient.ProductQuery(menuId, productId, "MEDICAL"), "POST")
+func (r *Repository) getProduct(query string) (*models.Product, error) {
+	productResp, err := r.getResponse(query)
 	if err != nil {
 		return &models.Product{}, err
 	}
 
-	if !json.Valid(productResp) {
-		return &models.Product{}, errors.New("getProduct: invalid JSON")
-	}
-	cResp := curaClient.Response{}
-	err = json.Unmarshal(productResp, &cResp)
-	if err != nil {
-		return &models.Product{}, err
-	} else if cResp.Data.Product.Product.ID == "" {
-		return &models.Product{}, errors.New("product not found")
+	if productResp.Data.Product.Product.ID == "" {
+		return &models.Product{}, repository.ResourceNotFound
 	}
 
-	return r.T.TranslateClientProduct(cResp.Data.Product.Product), nil
+	return r.T.TranslateClientProduct(productResp.Data.Product.Product), nil
 }
 
-func (r *Repository) getProducts(menuId string) ([]*models.Product, error) {
-	allProdResp, err := r.C.Query(context.Background(), curaClient.AllProductQuery(menuId, "MEDICAL"), "POST")
+func (r *Repository) getProducts(query string) ([]*models.Product, error) {
+	allProdResp, err := r.getResponse(query)
 	if err != nil {
 		return []*models.Product{}, err
 	}
 
-	if !json.Valid(allProdResp) {
-		return []*models.Product{}, errors.New("getProducts: invalid JSON")
-	}
-	cResp := curaClient.Response{}
-	err = json.Unmarshal(allProdResp, &cResp)
+	return r.T.TranslateClientProducts(allProdResp.Data.DispensaryMenu.Products), nil
+}
+
+func (r *Repository) getProductsForCategory(query string) ([]*models.Product, error) {
+	allProdForCatResp, err := r.getResponse(query)
 	if err != nil {
 		return []*models.Product{}, err
 	}
-
-	return r.T.TranslateClientProducts(cResp.Data.DispensaryMenu.Products), nil
+	return r.T.TranslateClientProducts(allProdForCatResp.Data.DispensaryMenu.Products), nil
 }
 
-func (r *Repository) getProductsForCategory(menuId string, category models.Category) ([]*models.Product, error) {
-	allProdForCatResp, err := r.C.Query(context.Background(), curaClient.AllProductForCategoryQuery(menuId, "MEDICAL", string(category)), "POST")
-	if err != nil {
-		return []*models.Product{}, err
-	}
-
-	if !json.Valid(allProdForCatResp) {
-		return []*models.Product{}, errors.New("getProductsForCategory: invalid JSON")
-	}
-
-	cResp := curaClient.Response{}
-	err = json.Unmarshal(allProdForCatResp, &cResp)
-	if err != nil {
-		return []*models.Product{}, fmt.Errorf("could not get products for category: %s, menu=%s. Err=%v", category, menuId, err)
-	}
-
-	return r.T.TranslateClientProducts(cResp.Data.DispensaryMenu.Products), nil
-}
-
-func (r *Repository) getCategories(menuId string) ([]*models.Category, error) {
-	allCatsResp, err := r.C.Query(context.Background(), curaClient.AllCategoriesQuery(menuId, "MEDICAL"), "POST")
+func (r *Repository) getCategories(query string) ([]*models.Category, error) {
+	allCatsResp, err := r.getResponse(query)
 	if err != nil {
 		return []*models.Category{}, err
 	}
-
-	if !json.Valid(allCatsResp) {
-		return []*models.Category{}, errors.New("getCategories: invalid JSON")
-	}
-
-	cResp := curaClient.Response{}
-	err = json.Unmarshal(allCatsResp, &cResp)
-	if err != nil {
-		return []*models.Category{}, err
-	}
-
-	return r.T.TranslateClientCategories(cResp.Data.DispensaryMenu.AllFilters.Categories), nil
+	return r.T.TranslateClientCategories(allCatsResp.Data.DispensaryMenu.AllFilters.Categories), nil
 }
 
-func (r *Repository) getTerpenes(menuId string) ([]*models.Terpene, error) {
-	allProdResp, err := r.C.Query(context.Background(), curaClient.AllProductQuery(menuId, "MEDICAL"), "POST")
+func (r *Repository) getTerpenes(query string) ([]*models.Terpene, error) {
+	allProdResp, err := r.getResponse(query)
 	if err != nil {
 		return []*models.Terpene{}, err
 	}
-
-	if !json.Valid(allProdResp) {
-		return []*models.Terpene{}, errors.New("getTerpenes: invalid JSON")
-	}
-
-	cResp := curaClient.Response{}
-
-	err = json.Unmarshal(allProdResp, &cResp)
-	if err != nil {
-		return []*models.Terpene{}, err
-	}
-
 	var mu sync.Mutex
 	terpeneMap := make(map[string]*models.Terpene)
-	for _, product := range cResp.Data.DispensaryMenu.Products {
+	for _, product := range allProdResp.Data.DispensaryMenu.Products {
 		for _, terpene := range product.LabResults.Terpenes {
 			mu.Lock()
 			if _, exists := terpeneMap[terpene.Terpene.Name]; !exists {
@@ -218,27 +241,15 @@ func (r *Repository) getTerpenes(menuId string) ([]*models.Terpene, error) {
 	return ts, nil
 }
 
-func (r *Repository) getCannabinoids(menuId string) ([]*models.Cannabinoid, error) {
-	allProdResp, err := r.C.Query(context.Background(), curaClient.AllProductQuery(menuId, "MEDICAL"), "POST")
+func (r *Repository) getCannabinoids(query string) ([]*models.Cannabinoid, error) {
+	allProdResp, err := r.getResponse(query)
 	if err != nil {
 		return []*models.Cannabinoid{}, err
 	}
-
-	if !json.Valid(allProdResp) {
-		return []*models.Cannabinoid{}, errors.New("getCannabinoids: invalid JSON")
-	}
-
-	cResp := curaClient.Response{}
-
-	err = json.Unmarshal(allProdResp, &cResp)
-	if err != nil {
-		return []*models.Cannabinoid{}, err
-	}
-
 	var mu sync.Mutex
 
 	cannabinoidMap := make(map[string]*models.Cannabinoid)
-	for _, product := range cResp.Data.DispensaryMenu.Products {
+	for _, product := range allProdResp.Data.DispensaryMenu.Products {
 		for _, cannabinoid := range product.LabResults.Cannabinoids {
 			mu.Lock()
 			if _, exists := cannabinoidMap[cannabinoid.Cannabinoid.Name]; !exists {
@@ -255,22 +266,29 @@ func (r *Repository) getCannabinoids(menuId string) ([]*models.Cannabinoid, erro
 	return cbs, nil
 }
 
-func (r *Repository) getOffers(menuId string) ([]*models.Offer, error) {
-	allOfferResp, err := r.C.Query(context.Background(), curaClient.AllOffersQuery(menuId, "MEDICAL"), "POST")
+func (r *Repository) getOffers(query string) ([]*models.Offer, error) {
+	allOfferResp, err := r.getResponse(query)
 	if err != nil {
 		return []*models.Offer{}, err
 	}
+	return r.T.TranslateClientOffers(allOfferResp.Data.DispensaryMenu.Offers), nil
+}
 
-	if !json.Valid(allOfferResp) {
-		return []*models.Offer{}, errors.New("getOffers: invalid JSON")
+func (r *Repository) getResponse(query string) (curaClient.Response, error) {
+	resp, err := r.C.Query(context.Background(), query, "POST")
+	if err != nil {
+		return curaClient.Response{}, err
+	}
+
+	if !json.Valid(resp) {
+		return curaClient.Response{}, repository.InvalidJSONError
 	}
 
 	cResp := curaClient.Response{}
-
-	err = json.Unmarshal(allOfferResp, &cResp)
+	err = json.Unmarshal(resp, &cResp)
 	if err != nil {
-		return []*models.Offer{}, err
+		return curaClient.Response{}, err
 	}
 
-	return r.T.TranslateClientOffers(cResp.Data.DispensaryMenu.Offers), nil
+	return cResp, nil
 }
