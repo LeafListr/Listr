@@ -17,7 +17,7 @@ const (
 	MenuNotFoundError = "menu not found"
 )
 
-type DefaultRepositoryFactory struct{
+type DefaultRepositoryFactory struct {
 	memCache cache.Cacher
 }
 

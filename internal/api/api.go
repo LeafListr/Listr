@@ -8,6 +8,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -30,7 +31,7 @@ import (
 )
 
 //	@title			Listr API
-//	@version		0.1.0
+//	@version		0.1.1
 //	@description	This is the Listr server for dispensary management.
 //	@BasePath		/api/v1
 
@@ -244,16 +245,61 @@ func (a *API) handleProduct(r http.ResponseWriter, req *http.Request) {
 // @Produce		json
 // @Param			dispensaryId	path	string			true	"Dispensary ID"
 // @Param			locationId		path	string			true	"Location ID"
+// @Param			category		query	string			false	"Category"
+// @Param			sub				query	string			false	"Sub Category"
+// @Param			min_price		query	number			false	"Minimum price"
+// @Param			max_price		query	number			false	"Maximum price"
+// @Param			brands			query	string			false	"Brands to include"
+// @Param			not_brands		query	string			false	"Brands to exclude"
 // @Success		200				{array}	models.Product	"List of products"
 // @Router			/dispensaries/{dispensaryId}/locations/{locationId}/products [get].
 func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
+	var products []*models.Product
+	var err error
 	dispensary, locationId, _ := params(req, "")
+
 	if category := req.URL.Query().Get("category"); category != "" {
-		products, err := a.w.ProductsForCategory(dispensary, locationId, models.Category(category))
-		a.writeJson(r, req, a.t.TranslateAPIProducts(products), err)
-		return
+		products, err = a.w.ProductsForCategory(dispensary, locationId, models.Category(category))
+		if err != nil {
+			a.handleError(r, req, err)
+			return
+		}
 	}
-	products, err := a.w.Products(dispensary, locationId)
+	if subCategory := subCategoryFilter(req); subCategory != "" {
+		products, err = a.w.ProductsForSubCategory(dispensary, locationId, products, subCategory)
+		if err != nil {
+			a.handleError(r, req, err)
+			return
+		}
+	}
+	if minPrice, maxPrice := priceFilters(req); maxPrice != 0 {
+		products, err = a.w.ProductsForPriceRange(dispensary, locationId, products, minPrice, maxPrice)
+		if err != nil {
+			a.handleError(r, req, err)
+			return
+		}
+	}
+	if brands := brandFilters(req); brands != "" {
+		products, err = a.w.ProductsForBrands(dispensary, locationId, products, strings.Split(brands, ","))
+		if err != nil {
+			a.handleError(r, req, err)
+			return
+		}
+	}
+	if notBrands := notBrandFilters(req); notBrands != "" {
+		products, err = a.w.ProductsExcludingBrands(dispensary, locationId, products, strings.Split(notBrands, ","))
+		if err != nil {
+			a.handleError(r, req, err)
+			return
+		}
+	}
+	if products == nil {
+		products, err = a.w.Products(dispensary, locationId)
+		if err != nil {
+			a.handleError(r, req, err)
+			return
+		}
+	}
 	a.writeJson(r, req, a.t.TranslateAPIProducts(products), err)
 }
 
@@ -360,4 +406,34 @@ func params(req *http.Request, resource string) (dispensary, locationId, resourc
 		resourceId = chi.URLParam(req, resource)
 	}
 	return dispensary, locationId, resourceId
+}
+
+func subCategoryFilter(req *http.Request) string {
+	return req.URL.Query().Get("sub")
+}
+
+func priceFilters(req *http.Request) (float64, float64) {
+	var min, max float64
+	var err error
+	if minStr := req.URL.Query().Get("min_price"); minStr != "" {
+		min, err = strconv.ParseFloat(minStr, 64)
+		if err != nil {
+			return 0, 0
+		}
+	}
+	if maxStr := req.URL.Query().Get("max_price"); maxStr != "" {
+		max, err = strconv.ParseFloat(maxStr, 64)
+		if err != nil {
+			return 0, 0
+		}
+	}
+	return min, max
+}
+
+func brandFilters(req *http.Request) string {
+	return req.URL.Query().Get("brands")
+}
+
+func notBrandFilters(req *http.Request) string {
+	return req.URL.Query().Get("not_brands")
 }

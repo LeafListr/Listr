@@ -27,8 +27,6 @@ func (c *HttpClient) Query(ctx context.Context, body string, method string) ([]b
 	return c.do(ctx, method, []byte(body))
 }
 
-// c.hH.Set("Content-Type", "application/json")
-// req.Header = c.hH
 func (c *HttpClient) do(ctx context.Context, method string, body []byte) ([]byte, error) {
 	req, err := http.NewRequestWithContext(ctx, method, string(c.e), bytes.NewBuffer(body))
 	if err != nil {

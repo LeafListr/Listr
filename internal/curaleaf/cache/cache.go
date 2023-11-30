@@ -14,14 +14,14 @@ type cacheItem struct {
 }
 
 type inMemCache struct {
-	mu sync.RWMutex
-	m  map[string]cacheItem
+	mu  sync.RWMutex
+	m   map[string]cacheItem
 	ttl time.Duration
 }
 
 func NewCache() cache.Cacher {
 	return &inMemCache{
-		m: make(map[string]cacheItem),
+		m:   make(map[string]cacheItem),
 		ttl: time.Minute * 5,
 	}
 }
@@ -46,7 +46,7 @@ func (c *inMemCache) Get(key string) (any, error) {
 	value, ok := c.m[key]
 	if !ok {
 		return nil, cache.ErrKeyNotFound
-	} else if time.Now().UnixNano() - value.timeStamp > int64(c.ttl) {
+	} else if time.Now().UnixNano()-value.timeStamp > int64(c.ttl) {
 		return nil, cache.ErrKeyExpired
 	}
 	slog.Debug("cache hit", slog.String("key", key))

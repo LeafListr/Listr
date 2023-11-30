@@ -104,7 +104,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Location"
+                                "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_models.Location"
                             }
                         }
                     }
@@ -188,7 +188,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Cannabinoid"
+                                "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_models.Cannabinoid"
                             }
                         }
                     }
@@ -272,7 +272,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Offer"
+                                "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_models.Offer"
                             }
                         }
                     }
@@ -306,6 +306,42 @@ const docTemplate = `{
                         "name": "locationId",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Category",
+                        "name": "category",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sub Category",
+                        "name": "sub",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Minimum price",
+                        "name": "min_price",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Maximum price",
+                        "name": "max_price",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Brands to include",
+                        "name": "brands",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Brands to exclude",
+                        "name": "not_brands",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -314,7 +350,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Product"
+                                "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_models.Product"
                             }
                         }
                     }
@@ -361,7 +397,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Product details",
                         "schema": {
-                            "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Product"
+                            "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_models.Product"
                         }
                     }
                 }
@@ -402,7 +438,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Terpene"
+                                "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_models.Terpene"
                             }
                         }
                     }
@@ -429,7 +465,7 @@ const docTemplate = `{
                 "Locations"
             ]
         },
-        "github_com_Linkinlog_LeafListr_internal_api_models.Cannabinoid": {
+        "github_com_Linkinlog_LeafListr_internal_models.Cannabinoid": {
             "type": "object",
             "properties": {
                 "description": {
@@ -443,13 +479,16 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_Linkinlog_LeafListr_internal_api_models.Location": {
+        "github_com_Linkinlog_LeafListr_internal_models.Location": {
             "type": "object",
             "properties": {
                 "address": {
                     "type": "string"
                 },
                 "city": {
+                    "type": "string"
+                },
+                "id": {
                     "type": "string"
                 },
                 "name": {
@@ -463,7 +502,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_Linkinlog_LeafListr_internal_api_models.Offer": {
+        "github_com_Linkinlog_LeafListr_internal_models.Offer": {
             "type": "object",
             "properties": {
                 "description": {
@@ -474,7 +513,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_Linkinlog_LeafListr_internal_api_models.Price": {
+        "github_com_Linkinlog_LeafListr_internal_models.Price": {
             "type": "object",
             "properties": {
                 "discountedTotal": {
@@ -485,39 +524,51 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_Linkinlog_LeafListr_internal_api_models.Product": {
+        "github_com_Linkinlog_LeafListr_internal_models.Product": {
             "type": "object",
             "properties": {
-                "cannabinoids": {
+                "brand": {
+                    "type": "string"
+                },
+                "c": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Cannabinoid"
+                        "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_models.Cannabinoid"
                     }
                 },
-                "category": {
+                "ctg": {
                     "type": "string"
                 },
                 "id": {
                     "type": "string"
                 },
+                "images": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "name": {
                     "type": "string"
                 },
-                "terpenes": {
+                "subCtg": {
+                    "type": "string"
+                },
+                "t": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Terpene"
+                        "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_models.Terpene"
                     }
                 },
-                "variant": {
+                "v": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Variant"
+                        "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_models.Variant"
                     }
                 }
             }
         },
-        "github_com_Linkinlog_LeafListr_internal_api_models.Terpene": {
+        "github_com_Linkinlog_LeafListr_internal_models.Terpene": {
             "type": "object",
             "properties": {
                 "description": {
@@ -531,14 +582,14 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_Linkinlog_LeafListr_internal_api_models.Variant": {
+        "github_com_Linkinlog_LeafListr_internal_models.Variant": {
             "type": "object",
             "properties": {
-                "Name": {
+                "name": {
                     "type": "string"
                 },
-                "Price": {
-                    "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Price"
+                "price": {
+                    "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_models.Price"
                 }
             }
         }
@@ -547,7 +598,7 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "0.1.0",
+	Version:          "0.1.1",
 	Host:             "",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},

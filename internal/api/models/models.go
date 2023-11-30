@@ -26,8 +26,10 @@ type Variant struct {
 
 type Product struct {
 	Id     string         `json:"id"`
+	Brand  string         `json:"brand"`
 	Name   string         `json:"name"`
 	Ctg    Category       `json:"category"`
+	SubCtg string         `json:"subcategory"`
 	Images []string       `json:"images"`
 	V      []*Variant     `json:"variants,omitempty"`
 	C      []*Cannabinoid `json:"cannabinoids,omitempty"`

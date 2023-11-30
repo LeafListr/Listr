@@ -20,7 +20,11 @@ func TestSet(t *testing.T) {
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
 			cache := cache.NewCache()
-			cache.Set(tc.key, tc.value)
+			err := cache.Set(tc.key, tc.value)
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+
 			result, err := cache.Get(tc.key)
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)

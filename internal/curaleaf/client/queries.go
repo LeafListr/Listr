@@ -1,6 +1,9 @@
 package client
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 func ProductQuery(menuId, productId, menuType string) string {
 	return fmt.Sprintf(`
@@ -34,7 +37,7 @@ func AllProductForCategoryQuery(menuId, menuType, category string) string {
         "menuType": "%s",
         "categoryType": "%s"
     }
-}`, menuId, menuType, category)
+}`, menuId, menuType, strings.ToUpper(category))
 }
 
 func AllOffersQuery(menuId, menuType string) string {

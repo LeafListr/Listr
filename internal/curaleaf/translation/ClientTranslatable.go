@@ -37,9 +37,11 @@ func (cT *ClientTranslator) TranslateClientProducts(ps []client.Product) []*mode
 
 func (cT *ClientTranslator) TranslateClientProduct(p client.Product) *models.Product {
 	product := &models.Product{
-		Id:   p.ID,
-		Name: p.Name,
-		Ctg:  models.Category(p.Category.Key),
+		Id:     p.ID,
+		Brand:  p.Brand.Name,
+		Name:   p.Name,
+		Ctg:    models.Category(p.Category.Key),
+		SubCtg: p.Subcategory.Key,
 	}
 	for _, v := range p.Variants {
 		tempPrice := &models.Price{

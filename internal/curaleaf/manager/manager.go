@@ -7,19 +7,23 @@ import (
 
 	"github.com/Linkinlog/LeafListr/internal/curaleaf/cache"
 	"github.com/Linkinlog/LeafListr/internal/models"
+	"github.com/Linkinlog/LeafListr/internal/transformation"
 
 	curaFactory "github.com/Linkinlog/LeafListr/internal/curaleaf/factory"
+	curaTransformer "github.com/Linkinlog/LeafListr/internal/curaleaf/transformation"
 	"github.com/Linkinlog/LeafListr/internal/factory"
 	"github.com/Linkinlog/LeafListr/internal/workflow"
 )
 
 type Manager struct {
-	F factory.RepositoryFactory
+	F  factory.RepositoryFactory
+	TF transformation.Filterer
 }
 
 func NewWorkflowManager() workflow.Manager {
 	return &Manager{
-		F: curaFactory.NewRepoFactory(cache.NewCache()),
+		F:  curaFactory.NewRepoFactory(cache.NewCache()),
+		TF: curaTransformer.NewFilterer(),
 	}
 }
 
@@ -61,6 +65,22 @@ func (w *Manager) ProductsForCategory(dispensary, menuId string, category models
 		return []*models.Product{}, fmt.Errorf("couldn't find dispensary by menu for products for category. Dispensary=%s, Location=%s. Err: %v", dispensary, menuId, err)
 	}
 	return repo.GetProductsForCategory(menuId, category)
+}
+
+func (w *Manager) ProductsForSubCategory(dispensary, menuId string, products []*models.Product, subCategory string) ([]*models.Product, error) {
+	return w.TF.SubCategory(subCategory, products), nil
+}
+
+func (w *Manager) ProductsExcludingBrands(dispensary, menuId string, products []*models.Product, brands []string) ([]*models.Product, error) {
+	return w.TF.NotBrands(brands, products), nil
+}
+
+func (w *Manager) ProductsForBrands(dispensary, menuId string, products []*models.Product, brands []string) ([]*models.Product, error) {
+	return w.TF.Brands(brands, products), nil
+}
+
+func (w *Manager) ProductsForPriceRange(dispensary, menuId string, products []*models.Product, min, max float64) ([]*models.Product, error) {
+	return w.TF.Price(min, max, products), nil
 }
 
 func (w *Manager) Categories(dispensary, menuId string) ([]*models.Category, error) {

@@ -53,9 +53,11 @@ func (aT *APITranslator) TranslateAPIDispensaries(ds []*models.Dispensary) []*ap
 func (aT *APITranslator) TranslateAPIProduct(p *models.Product) *apiModels.Product {
 	apiP := &apiModels.Product{
 		Id:     p.Id,
+		Brand:  p.Brand,
 		Name:   p.Name,
 		Images: p.Images,
 		Ctg:    apiModels.Category(p.Ctg),
+		SubCtg: p.SubCtg,
 	}
 
 	for _, v := range p.V {

@@ -26,8 +26,10 @@ type Variant struct {
 
 type Product struct {
 	Id     string
+	Brand  string
 	Name   string
 	Ctg    Category
+	SubCtg string
 	Images []string
 	V      []*Variant
 	C      []*Cannabinoid

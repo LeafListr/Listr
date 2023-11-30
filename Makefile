@@ -9,5 +9,7 @@ lint:
 	gofumpt -d -w .
 	golangci-lint run
 	swag fmt
+validate: lint test
+done: gen validate
 
-.PHONY: gen test run
+.PHONY: run test gen lint validate done

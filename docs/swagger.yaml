@@ -12,7 +12,7 @@ definitions:
     type: string
     x-enum-varnames:
     - Locations
-  github_com_Linkinlog_LeafListr_internal_api_models.Cannabinoid:
+  github_com_Linkinlog_LeafListr_internal_models.Cannabinoid:
     properties:
       description:
         type: string
@@ -21,11 +21,13 @@ definitions:
       value:
         type: number
     type: object
-  github_com_Linkinlog_LeafListr_internal_api_models.Location:
+  github_com_Linkinlog_LeafListr_internal_models.Location:
     properties:
       address:
         type: string
       city:
+        type: string
+      id:
         type: string
       name:
         type: string
@@ -34,42 +36,50 @@ definitions:
       zipCode:
         type: string
     type: object
-  github_com_Linkinlog_LeafListr_internal_api_models.Offer:
+  github_com_Linkinlog_LeafListr_internal_models.Offer:
     properties:
       description:
         type: string
       id:
         type: string
     type: object
-  github_com_Linkinlog_LeafListr_internal_api_models.Price:
+  github_com_Linkinlog_LeafListr_internal_models.Price:
     properties:
       discountedTotal:
         type: number
       total:
         type: number
     type: object
-  github_com_Linkinlog_LeafListr_internal_api_models.Product:
+  github_com_Linkinlog_LeafListr_internal_models.Product:
     properties:
-      cannabinoids:
+      brand:
+        type: string
+      c:
         items:
-          $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Cannabinoid'
+          $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_models.Cannabinoid'
         type: array
-      category:
+      ctg:
         type: string
       id:
         type: string
+      images:
+        items:
+          type: string
+        type: array
       name:
         type: string
-      terpenes:
+      subCtg:
+        type: string
+      t:
         items:
-          $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Terpene'
+          $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_models.Terpene'
         type: array
-      variant:
+      v:
         items:
-          $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Variant'
+          $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_models.Variant'
         type: array
     type: object
-  github_com_Linkinlog_LeafListr_internal_api_models.Terpene:
+  github_com_Linkinlog_LeafListr_internal_models.Terpene:
     properties:
       description:
         type: string
@@ -78,18 +88,18 @@ definitions:
       value:
         type: number
     type: object
-  github_com_Linkinlog_LeafListr_internal_api_models.Variant:
+  github_com_Linkinlog_LeafListr_internal_models.Variant:
     properties:
-      Name:
+      name:
         type: string
-      Price:
-        $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Price'
+      price:
+        $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_models.Price'
     type: object
 info:
   contact: {}
   description: This is the Listr server for dispensary management.
   title: Listr API
-  version: 0.1.0
+  version: 0.1.1
 paths:
   /dispensaries:
     get:
@@ -149,7 +159,7 @@ paths:
           description: List of locations
           schema:
             items:
-              $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Location'
+              $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_models.Location'
             type: array
       summary: List locations for a dispensary
       tags:
@@ -205,7 +215,7 @@ paths:
           description: List of cannabinoids
           schema:
             items:
-              $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Cannabinoid'
+              $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_models.Cannabinoid'
             type: array
       summary: List cannabinoids for a location
       tags:
@@ -261,7 +271,7 @@ paths:
           description: List of offers
           schema:
             items:
-              $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Offer'
+              $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_models.Offer'
             type: array
       summary: List offers for a location
       tags:
@@ -282,6 +292,30 @@ paths:
         name: locationId
         required: true
         type: string
+      - description: Category
+        in: query
+        name: category
+        type: string
+      - description: Sub Category
+        in: query
+        name: sub
+        type: string
+      - description: Minimum price
+        in: query
+        name: min_price
+        type: number
+      - description: Maximum price
+        in: query
+        name: max_price
+        type: number
+      - description: Brands to include
+        in: query
+        name: brands
+        type: string
+      - description: Brands to exclude
+        in: query
+        name: not_brands
+        type: string
       produces:
       - application/json
       responses:
@@ -289,7 +323,7 @@ paths:
           description: List of products
           schema:
             items:
-              $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Product'
+              $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_models.Product'
             type: array
       summary: List products for a location
       tags:
@@ -321,7 +355,7 @@ paths:
         "200":
           description: Product details
           schema:
-            $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Product'
+            $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_models.Product'
       summary: Get product details
       tags:
       - products
@@ -348,7 +382,7 @@ paths:
           description: List of terpenes
           schema:
             items:
-              $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_api_models.Terpene'
+              $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_models.Terpene'
             type: array
       summary: List terpenes for a location
       tags:
