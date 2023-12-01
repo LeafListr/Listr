@@ -79,8 +79,20 @@ func (w *Manager) ProductsForBrands(dispensary, menuId string, products []*model
 	return w.TF.Brands(brands, products), nil
 }
 
+func (w *Manager) ProductsForVariants(dispensary, menuId string, products []*models.Product, variants []string) ([]*models.Product, error) {
+	return w.TF.Variants(variants, products), nil
+}
+
 func (w *Manager) ProductsForPriceRange(dispensary, menuId string, products []*models.Product, min, max float64) ([]*models.Product, error) {
 	return w.TF.Price(min, max, products), nil
+}
+
+func (w *Manager) SortProductsByPriceAsc(dispensary, menuId string, products []*models.Product) {
+	curaTransformer.NewSorterer().PriceAsc(products)
+}
+
+func (w *Manager) SortProductsByPriceDesc(dispensary, menuId string, products []*models.Product) {
+	curaTransformer.NewSorterer().PriceDesc(products)
 }
 
 func (w *Manager) Categories(dispensary, menuId string) ([]*models.Category, error) {

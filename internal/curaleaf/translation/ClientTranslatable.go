@@ -1,12 +1,18 @@
 package translation
 
 import (
+	"fmt"
+
 	"github.com/Linkinlog/LeafListr/internal/curaleaf/client"
 	"github.com/Linkinlog/LeafListr/internal/models"
 	"github.com/Linkinlog/LeafListr/internal/translation"
 )
 
 type ClientTranslator struct{}
+
+func NewClientTranslator() translation.ClientTranslatable {
+	return &ClientTranslator{}
+}
 
 func (cT *ClientTranslator) TranslateClientLocation(l client.Location) *models.Location {
 	return &models.Location{
@@ -29,9 +35,28 @@ func (cT *ClientTranslator) TranslateClientLocations(ls []client.Location) []*mo
 
 func (cT *ClientTranslator) TranslateClientProducts(ps []client.Product) []*models.Product {
 	products := make([]*models.Product, 0)
+
 	for _, p := range ps {
-		products = append(products, cT.TranslateClientProduct(p))
+		if len(p.Variants) == 0 {
+			baseProduct := cT.TranslateClientProduct(p)
+			products = append(products, baseProduct)
+			continue
+		}
+
+		for _, v := range p.Variants {
+			variantProduct := cT.TranslateClientProduct(p)
+			variantProduct.Id = v.Id
+			variantProduct.Name = fmt.Sprintf("%s - %s", p.Name, v.Option)
+			variantProduct.Price = &models.Price{
+				Total:           v.Price,
+				DiscountedTotal: v.SpecialPrice,
+			}
+			variantProduct.Variant = v.Option
+
+			products = append(products, variantProduct)
+		}
 	}
+
 	return products
 }
 
@@ -42,17 +67,6 @@ func (cT *ClientTranslator) TranslateClientProduct(p client.Product) *models.Pro
 		Name:   p.Name,
 		Ctg:    models.Category(p.Category.Key),
 		SubCtg: p.Subcategory.Key,
-	}
-	for _, v := range p.Variants {
-		tempPrice := &models.Price{
-			Total:           v.Price,
-			DiscountedTotal: v.SpecialPrice,
-		}
-		tempVariant := &models.Variant{
-			Name:  v.Option,
-			Price: tempPrice,
-		}
-		product.V = append(product.V, tempVariant)
 	}
 	for _, t := range p.LabResults.Terpenes {
 		tempTerp := &models.Terpene{
@@ -134,8 +148,4 @@ func (cT *ClientTranslator) TranslateClientOffer(offer client.Offer) *models.Off
 		Id:          offer.Id,
 		Description: offer.Title,
 	}
-}
-
-func NewClientTranslator() translation.ClientTranslatable {
-	return &ClientTranslator{}
 }

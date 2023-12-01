@@ -17,6 +17,8 @@ type Manager interface {
 	CannabinoidManager
 	OfferManager
 	ErrorManager
+	ProductFilter
+	ProductSorter
 }
 
 type LocationManager interface {
@@ -27,11 +29,20 @@ type LocationManager interface {
 type ProductManager interface {
 	Product(dispensary, menuId, productId string) (*models.Product, error)
 	Products(dispensary, menuId string) ([]*models.Product, error)
+}
+
+type ProductFilter interface {
 	ProductsForCategory(dispensary, menuId string, category models.Category) ([]*models.Product, error)
 	ProductsForSubCategory(dispensary, menuId string, products []*models.Product, subCategory string) ([]*models.Product, error)
 	ProductsForBrands(dispensary, menuId string, products []*models.Product, brands []string) ([]*models.Product, error)
 	ProductsExcludingBrands(dispensary, menuId string, products []*models.Product, brands []string) ([]*models.Product, error)
+	ProductsForVariants(dispensary, menuId string, products []*models.Product, variants []string) ([]*models.Product, error)
 	ProductsForPriceRange(dispensary, menuId string, products []*models.Product, min, max float64) ([]*models.Product, error)
+}
+
+type ProductSorter interface {
+	SortProductsByPriceAsc(dispensary, menuId string, products []*models.Product)
+	SortProductsByPriceDesc(dispensary, menuId string, products []*models.Product)
 }
 
 type CategoryManager interface {

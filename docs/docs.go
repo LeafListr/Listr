@@ -342,6 +342,22 @@ const docTemplate = `{
                         "description": "Brands to exclude",
                         "name": "not_brands",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Variants to include",
+                        "name": "variants",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "price_asc",
+                            "price_desc"
+                        ],
+                        "type": "string",
+                        "description": "Sort products",
+                        "name": "sort",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -551,6 +567,9 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
+                "price": {
+                    "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_models.Price"
+                },
                 "subCtg": {
                     "type": "string"
                 },
@@ -560,11 +579,8 @@ const docTemplate = `{
                         "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_models.Terpene"
                     }
                 },
-                "v": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_models.Variant"
-                    }
+                "variant": {
+                    "type": "string"
                 }
             }
         },
@@ -579,17 +595,6 @@ const docTemplate = `{
                 },
                 "value": {
                     "type": "number"
-                }
-            }
-        },
-        "github_com_Linkinlog_LeafListr_internal_models.Variant": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "price": {
-                    "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_models.Price"
                 }
             }
         }

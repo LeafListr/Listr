@@ -27,7 +27,6 @@ func TestSubCategory(t *testing.T) {
 					Ctg:    "test category",
 					SubCtg: "test sub category",
 					Images: []string{},
-					V:      []*models.Variant{},
 					C:      []*models.Cannabinoid{},
 					T:      []*models.Terpene{},
 				},
@@ -37,7 +36,6 @@ func TestSubCategory(t *testing.T) {
 					Ctg:    "test category 2",
 					SubCtg: "test sub category 2",
 					Images: []string{},
-					V:      []*models.Variant{},
 					C:      []*models.Cannabinoid{},
 					T:      []*models.Terpene{},
 				},
@@ -53,7 +51,6 @@ func TestSubCategory(t *testing.T) {
 					Ctg:    "test category",
 					SubCtg: "test sub category",
 					Images: []string{},
-					V:      []*models.Variant{},
 					C:      []*models.Cannabinoid{},
 					T:      []*models.Terpene{},
 				},
@@ -63,7 +60,6 @@ func TestSubCategory(t *testing.T) {
 					Ctg:    "test category 2",
 					SubCtg: "test sub category 2",
 					Images: []string{},
-					V:      []*models.Variant{},
 					C:      []*models.Cannabinoid{},
 					T:      []*models.Terpene{},
 				},
@@ -75,7 +71,6 @@ func TestSubCategory(t *testing.T) {
 					Ctg:    "test category",
 					SubCtg: "test sub category",
 					Images: []string{},
-					V:      []*models.Variant{},
 					C:      []*models.Cannabinoid{},
 					T:      []*models.Terpene{},
 				},
@@ -122,13 +117,8 @@ func TestPrice(t *testing.T) {
 					Ctg:    "test category",
 					SubCtg: "test sub category",
 					Images: []string{},
-					V: []*models.Variant{
-						{
-							Name: "test variant",
-							Price: &models.Price{
-								Total: 15,
-							},
-						},
+					Price: &models.Price{
+						Total: 15,
 					},
 					C: []*models.Cannabinoid{},
 					T: []*models.Terpene{},
@@ -139,13 +129,8 @@ func TestPrice(t *testing.T) {
 					Ctg:    "test category 2",
 					SubCtg: "test sub category 2",
 					Images: []string{},
-					V: []*models.Variant{
-						{
-							Name: "test variant 2",
-							Price: &models.Price{
-								Total: 25,
-							},
-						},
+					Price: &models.Price{
+						Total: 25,
 					},
 					C: []*models.Cannabinoid{},
 					T: []*models.Terpene{},
@@ -158,13 +143,8 @@ func TestPrice(t *testing.T) {
 					Ctg:    "test category",
 					SubCtg: "test sub category",
 					Images: []string{},
-					V: []*models.Variant{
-						{
-							Name: "test variant",
-							Price: &models.Price{
-								Total: 15,
-							},
-						},
+					Price: &models.Price{
+						Total: 15,
 					},
 					C: []*models.Cannabinoid{},
 					T: []*models.Terpene{},
@@ -181,13 +161,8 @@ func TestPrice(t *testing.T) {
 					Ctg:    "test category",
 					SubCtg: "test sub category",
 					Images: []string{},
-					V: []*models.Variant{
-						{
-							Name: "test variant",
-							Price: &models.Price{
-								Total: 15,
-							},
-						},
+					Price: &models.Price{
+						Total: 15,
 					},
 					C: []*models.Cannabinoid{},
 					T: []*models.Terpene{},
@@ -233,7 +208,6 @@ func TestBrand(t *testing.T) {
 					Ctg:    "test category",
 					SubCtg: "test sub category",
 					Images: []string{},
-					V:      []*models.Variant{},
 					C:      []*models.Cannabinoid{},
 					T:      []*models.Terpene{},
 				},
@@ -243,7 +217,6 @@ func TestBrand(t *testing.T) {
 					Ctg:    "test category 2",
 					SubCtg: "test sub category 2",
 					Images: []string{},
-					V:      []*models.Variant{},
 					C:      []*models.Cannabinoid{},
 					T:      []*models.Terpene{},
 				},
@@ -260,7 +233,6 @@ func TestBrand(t *testing.T) {
 					Ctg:    "test category",
 					SubCtg: "test sub category",
 					Images: []string{},
-					V:      []*models.Variant{},
 					C:      []*models.Cannabinoid{},
 					T:      []*models.Terpene{},
 				},
@@ -271,7 +243,6 @@ func TestBrand(t *testing.T) {
 					Ctg:    "test category 2",
 					SubCtg: "test sub category 2",
 					Images: []string{},
-					V:      []*models.Variant{},
 					C:      []*models.Cannabinoid{},
 					T:      []*models.Terpene{},
 				},
@@ -284,7 +255,6 @@ func TestBrand(t *testing.T) {
 					Ctg:    "test category",
 					SubCtg: "test sub category",
 					Images: []string{},
-					V:      []*models.Variant{},
 					C:      []*models.Cannabinoid{},
 					T:      []*models.Terpene{},
 				},

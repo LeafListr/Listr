@@ -251,6 +251,8 @@ func (a *API) handleProduct(r http.ResponseWriter, req *http.Request) {
 // @Param			max_price		query	number			false	"Maximum price"
 // @Param			brands			query	string			false	"Brands to include"
 // @Param			not_brands		query	string			false	"Brands to exclude"
+// @Param			variants		query	string			false	"Variants to include"
+// @Param			sort			query	string			false	"Sort products"	Enums(price_asc, price_desc)
 // @Success		200				{array}	models.Product	"List of products"
 // @Router			/dispensaries/{dispensaryId}/locations/{locationId}/products [get].
 func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
@@ -293,6 +295,14 @@ func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 			return
 		}
 	}
+	if variants := variantFilters(req); variants != "" {
+		products, err = a.w.ProductsForVariants(dispensary, locationId, products, strings.Split(variants, ","))
+		if err != nil {
+			a.handleError(r, req, err)
+			return
+		}
+	}
+
 	if products == nil {
 		products, err = a.w.Products(dispensary, locationId)
 		if err != nil {
@@ -300,6 +310,16 @@ func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 			return
 		}
 	}
+
+	if sortPriceAsc(req) {
+		slog.Debug("Sorting products by price asc")
+		a.w.SortProductsByPriceAsc(dispensary, locationId, products)
+	}
+	if sortPriceDesc(req) {
+		slog.Debug("Sorting products by price desc")
+		a.w.SortProductsByPriceDesc(dispensary, locationId, products)
+	}
+
 	a.writeJson(r, req, a.t.TranslateAPIProducts(products), err)
 }
 
@@ -436,4 +456,16 @@ func brandFilters(req *http.Request) string {
 
 func notBrandFilters(req *http.Request) string {
 	return req.URL.Query().Get("not_brands")
+}
+
+func variantFilters(req *http.Request) string {
+	return req.URL.Query().Get("variants")
+}
+
+func sortPriceAsc(req *http.Request) bool {
+	return req.URL.Query().Get("sort") == "price_asc"
+}
+
+func sortPriceDesc(req *http.Request) bool {
+	return req.URL.Query().Get("sort") == "price_desc"
 }

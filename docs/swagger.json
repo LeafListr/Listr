@@ -335,6 +335,22 @@
                         "description": "Brands to exclude",
                         "name": "not_brands",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Variants to include",
+                        "name": "variants",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "price_asc",
+                            "price_desc"
+                        ],
+                        "type": "string",
+                        "description": "Sort products",
+                        "name": "sort",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -544,6 +560,9 @@
                 "name": {
                     "type": "string"
                 },
+                "price": {
+                    "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_models.Price"
+                },
                 "subCtg": {
                     "type": "string"
                 },
@@ -553,11 +572,8 @@
                         "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_models.Terpene"
                     }
                 },
-                "v": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_models.Variant"
-                    }
+                "variant": {
+                    "type": "string"
                 }
             }
         },
@@ -572,17 +588,6 @@
                 },
                 "value": {
                     "type": "number"
-                }
-            }
-        },
-        "github_com_Linkinlog_LeafListr_internal_models.Variant": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "price": {
-                    "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_models.Price"
                 }
             }
         }

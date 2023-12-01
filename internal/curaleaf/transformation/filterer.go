@@ -26,14 +26,12 @@ func (f *filterer) SubCategory(subCategoryName string, products []*models.Produc
 func (f *filterer) Price(min, max float64, products []*models.Product) []*models.Product {
 	filteredProducts := make([]*models.Product, 0)
 	for _, product := range products {
-		for _, variant := range product.V {
-			if variant.Price.DiscountedTotal > 0 && variant.Price.DiscountedTotal >= min && variant.Price.DiscountedTotal <= max {
-				filteredProducts = append(filteredProducts, product)
-				break
-			} else if variant.Price.Total > 0 && variant.Price.Total >= min && variant.Price.Total <= max {
-				filteredProducts = append(filteredProducts, product)
-				break
-			}
+		if product.Price.DiscountedTotal > 0 && product.Price.DiscountedTotal >= min && product.Price.DiscountedTotal <= max {
+			filteredProducts = append(filteredProducts, product)
+			break
+		} else if product.Price.Total > 0 && product.Price.Total >= min && product.Price.Total <= max {
+			filteredProducts = append(filteredProducts, product)
+			break
 		}
 	}
 	return filteredProducts
@@ -56,6 +54,18 @@ func (f *filterer) NotBrands(brandNames []string, products []*models.Product) []
 	for _, product := range products {
 		for _, brandName := range brandNames {
 			if brandName != "" && !strings.EqualFold(product.Brand, brandName) {
+				filteredProducts = append(filteredProducts, product)
+			}
+		}
+	}
+	return filteredProducts
+}
+
+func (f *filterer) Variants(variantNames []string, products []*models.Product) []*models.Product {
+	filteredProducts := make([]*models.Product, 0)
+	for _, product := range products {
+		for _, variantName := range variantNames {
+			if variantName != "" && strings.EqualFold(product.Variant, variantName) {
 				filteredProducts = append(filteredProducts, product)
 			}
 		}

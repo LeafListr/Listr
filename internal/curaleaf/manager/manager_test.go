@@ -124,7 +124,6 @@ func TestManager_Product(t *testing.T) {
 				Id:   tt.productId,
 				Name: "Rizzer",
 				Ctg:  "",
-				V:    nil,
 				C:    nil,
 				T:    nil,
 			}

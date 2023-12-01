@@ -52,22 +52,17 @@ func (aT *APITranslator) TranslateAPIDispensaries(ds []*models.Dispensary) []*ap
 
 func (aT *APITranslator) TranslateAPIProduct(p *models.Product) *apiModels.Product {
 	apiP := &apiModels.Product{
-		Id:     p.Id,
-		Brand:  p.Brand,
-		Name:   p.Name,
-		Images: p.Images,
-		Ctg:    apiModels.Category(p.Ctg),
-		SubCtg: p.SubCtg,
-	}
-
-	for _, v := range p.V {
-		apiP.V = append(apiP.V, &apiModels.Variant{
-			Name: v.Name,
-			Price: &apiModels.Price{
-				Total:           v.Price.Total,
-				DiscountedTotal: v.Price.DiscountedTotal,
-			},
-		})
+		Id:      p.Id,
+		Brand:   p.Brand,
+		Name:    p.Name,
+		Images:  p.Images,
+		Ctg:     apiModels.Category(p.Ctg),
+		SubCtg:  p.SubCtg,
+		Variant: p.Variant,
+		Price: &apiModels.Price{
+			Total:           p.Price.Total,
+			DiscountedTotal: p.Price.DiscountedTotal,
+		},
 	}
 
 	for _, c := range p.C {

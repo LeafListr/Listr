@@ -19,21 +19,17 @@ type Terpene struct {
 
 type Category string
 
-type Variant struct {
-	Name  string
-	Price *Price
-}
-
 type Product struct {
-	Id     string
-	Brand  string
-	Name   string
-	Ctg    Category
-	SubCtg string
-	Images []string
-	V      []*Variant
-	C      []*Cannabinoid
-	T      []*Terpene
+	Id      string
+	Brand   string
+	Name    string
+	SubCtg  string
+	Images  []string
+	Variant string
+	Ctg     Category
+	Price   *Price
+	C       []*Cannabinoid
+	T       []*Terpene
 }
 
 type Offer struct {

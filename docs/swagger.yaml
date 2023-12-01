@@ -68,16 +68,16 @@ definitions:
         type: array
       name:
         type: string
+      price:
+        $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_models.Price'
       subCtg:
         type: string
       t:
         items:
           $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_models.Terpene'
         type: array
-      v:
-        items:
-          $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_models.Variant'
-        type: array
+      variant:
+        type: string
     type: object
   github_com_Linkinlog_LeafListr_internal_models.Terpene:
     properties:
@@ -87,13 +87,6 @@ definitions:
         type: string
       value:
         type: number
-    type: object
-  github_com_Linkinlog_LeafListr_internal_models.Variant:
-    properties:
-      name:
-        type: string
-      price:
-        $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_models.Price'
     type: object
 info:
   contact: {}
@@ -315,6 +308,17 @@ paths:
       - description: Brands to exclude
         in: query
         name: not_brands
+        type: string
+      - description: Variants to include
+        in: query
+        name: variants
+        type: string
+      - description: Sort products
+        enum:
+        - price_asc
+        - price_desc
+        in: query
+        name: sort
         type: string
       produces:
       - application/json
