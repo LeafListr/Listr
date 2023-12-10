@@ -1,8 +1,8 @@
 package translation
 
 import (
-	"fmt"
 	"log/slog"
+	"strings"
 
 	"github.com/Linkinlog/LeafListr/internal/curaleaf/client"
 	"github.com/Linkinlog/LeafListr/internal/models"
@@ -48,7 +48,6 @@ func (cT *ClientTranslator) TranslateClientProducts(ps []client.Product) []*mode
 		for _, v := range p.Variants {
 			variantProduct := cT.TranslateClientProduct(p)
 			variantProduct.Id = v.Id
-			variantProduct.Name = fmt.Sprintf("%s - %s", p.Name, v.Option)
 			variantProduct.Price = &models.Price{
 				Total:           v.Price,
 				DiscountedTotal: v.SpecialPrice,
@@ -68,7 +67,7 @@ func (cT *ClientTranslator) TranslateClientProduct(p client.Product) *models.Pro
 		Brand:  p.Brand.Name,
 		Name:   p.Name,
 		Ctg:    models.Category(p.Category.Key),
-		SubCtg: p.Subcategory.Key,
+		SubCtg: strings.ToLower(p.Subcategory.Key),
 	}
 	for _, t := range p.LabResults.Terpenes {
 		tempTerp := &models.Terpene{

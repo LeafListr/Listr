@@ -40,7 +40,15 @@ func NewRepository(c client.Client, translatable translation.ClientTranslatable,
 }
 
 func (r *Repository) Location(menuId string) (*models.Location, error) {
-	return r.getLocation(menuId)
+	queryKey := fmt.Sprintf("location-%s", menuId)
+	location, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
+		return r.getLocation(menuId)
+	})
+	if err != nil {
+		return &models.Location{}, err
+	}
+
+	return location.(*models.Location), nil
 }
 
 func (r *Repository) Locations(longitude, latitude float64) ([]*models.Location, error) {
