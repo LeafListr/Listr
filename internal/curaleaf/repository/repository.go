@@ -227,6 +227,7 @@ func (r *Repository) getTerpenes(query string) ([]*models.Terpene, error) {
 		for _, terpene := range product.LabResults.Terpenes {
 			mu.Lock()
 			if _, exists := terpeneMap[terpene.Terpene.Name]; !exists {
+				terpene.Value = 0
 				terpeneMap[terpene.Terpene.Name] = r.T.TranslateClientTerpene(terpene)
 			}
 			mu.Unlock()

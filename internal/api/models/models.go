@@ -14,7 +14,7 @@ type Cannabinoid struct {
 type Terpene struct {
 	Name        string  `json:"name"`
 	Description string  `json:"description"`
-	Value       float64 `json:"value"`
+	Value       float64 `json:"value,omitempty"`
 }
 
 type Category string
