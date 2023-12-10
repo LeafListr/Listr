@@ -92,7 +92,7 @@ info:
   contact: {}
   description: This is the Listr server for dispensary management.
   title: Listr API
-  version: 0.1.1
+  version: 0.1.2
 paths:
   /dispensaries:
     get:

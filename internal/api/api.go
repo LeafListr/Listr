@@ -31,7 +31,7 @@ import (
 )
 
 //	@title			Listr API
-//	@version		0.1.1
+//	@version		0.1.2
 //	@description	This is the Listr server for dispensary management.
 //	@BasePath		/api/v1
 

@@ -2,6 +2,7 @@ package translation
 
 import (
 	"fmt"
+	"log/slog"
 
 	"github.com/Linkinlog/LeafListr/internal/curaleaf/client"
 	"github.com/Linkinlog/LeafListr/internal/models"
@@ -40,6 +41,7 @@ func (cT *ClientTranslator) TranslateClientProducts(ps []client.Product) []*mode
 		if len(p.Variants) == 0 {
 			baseProduct := cT.TranslateClientProduct(p)
 			products = append(products, baseProduct)
+			slog.Debug("no variants for product", slog.String("product name", p.Name))
 			continue
 		}
 
