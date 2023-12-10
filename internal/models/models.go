@@ -3,6 +3,7 @@ package models
 type Price struct {
 	Total           float64
 	DiscountedTotal float64
+	IsDiscounted    bool
 }
 
 type Cannabinoid struct {

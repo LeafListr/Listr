@@ -51,6 +51,7 @@ func (cT *ClientTranslator) TranslateClientProducts(ps []client.Product) []*mode
 			variantProduct.Price = &models.Price{
 				Total:           v.Price,
 				DiscountedTotal: v.SpecialPrice,
+				IsDiscounted:    v.IsSpecial,
 			}
 			variantProduct.Variant = v.Option
 

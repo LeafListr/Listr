@@ -112,42 +112,27 @@ func TestPrice(t *testing.T) {
 			max: 20,
 			products: []*models.Product{
 				{
-					Id:     "test",
-					Name:   "test name",
-					Ctg:    "test category",
-					SubCtg: "test sub category",
-					Images: []string{},
+					Id: "test",
 					Price: &models.Price{
-						Total: 15,
+						Total:        15,
+						IsDiscounted: false,
 					},
-					C: []*models.Cannabinoid{},
-					T: []*models.Terpene{},
 				},
 				{
-					Id:     "test 2",
-					Name:   "test name 2",
-					Ctg:    "test category 2",
-					SubCtg: "test sub category 2",
-					Images: []string{},
+					Id: "test 2",
 					Price: &models.Price{
-						Total: 25,
+						Total:        25,
+						IsDiscounted: false,
 					},
-					C: []*models.Cannabinoid{},
-					T: []*models.Terpene{},
 				},
 			},
 			expectedProducts: []*models.Product{
 				{
-					Id:     "test",
-					Name:   "test name",
-					Ctg:    "test category",
-					SubCtg: "test sub category",
-					Images: []string{},
+					Id: "test",
 					Price: &models.Price{
-						Total: 15,
+						Total:        15,
+						IsDiscounted: false,
 					},
-					C: []*models.Cannabinoid{},
-					T: []*models.Terpene{},
 				},
 			},
 		},
@@ -156,19 +141,110 @@ func TestPrice(t *testing.T) {
 			max: 0,
 			products: []*models.Product{
 				{
-					Id:     "test",
-					Name:   "test name",
-					Ctg:    "test category",
-					SubCtg: "test sub category",
-					Images: []string{},
+					Id: "test",
 					Price: &models.Price{
-						Total: 15,
+						Total:        15,
+						IsDiscounted: false,
 					},
-					C: []*models.Cannabinoid{},
-					T: []*models.Terpene{},
 				},
 			},
 			expectedProducts: []*models.Product{},
+		},
+		"valid max price": {
+			min: 0,
+			max: 20,
+			products: []*models.Product{
+				{
+					Id: "test",
+					Price: &models.Price{
+						Total:           15,
+						DiscountedTotal: 5,
+						IsDiscounted:    true,
+					},
+				},
+				{
+					Id: "test 2",
+					Price: &models.Price{
+						Total:           25,
+						DiscountedTotal: 21,
+						IsDiscounted:    true,
+					},
+				},
+				{
+					Id: "test 3",
+					Price: &models.Price{
+						Total:           35,
+						DiscountedTotal: 15,
+						IsDiscounted:    true,
+					},
+				},
+			},
+			expectedProducts: []*models.Product{
+				{
+					Id: "test",
+					Price: &models.Price{
+						Total:           15,
+						DiscountedTotal: 5,
+						IsDiscounted:    true,
+					},
+				},
+				{
+					Id: "test 3",
+					Price: &models.Price{
+						Total:           35,
+						DiscountedTotal: 15,
+						IsDiscounted:    true,
+					},
+				},
+			},
+		},
+		"valid min price": {
+			min: 10,
+			max: 0,
+			products: []*models.Product{
+				{
+					Id: "test",
+					Price: &models.Price{
+						Total:           15,
+						DiscountedTotal: 5,
+						IsDiscounted:    true,
+					},
+				},
+				{
+					Id: "test 2",
+					Price: &models.Price{
+						Total:           25,
+						DiscountedTotal: 21,
+						IsDiscounted:    true,
+					},
+				},
+				{
+					Id: "test 3",
+					Price: &models.Price{
+						Total:           35,
+						DiscountedTotal: 15,
+						IsDiscounted:    true,
+					},
+				},
+			},
+			expectedProducts: []*models.Product{
+				{
+					Id: "test 2",
+					Price: &models.Price{
+						Total:           25,
+						DiscountedTotal: 21,
+						IsDiscounted:    true,
+					},
+				},
+				{
+					Id: "test 3",
+					Price: &models.Price{
+						Total:           35,
+						DiscountedTotal: 15,
+						IsDiscounted:    true,
+					},
+				},
+			},
 		},
 	}
 
@@ -177,7 +253,7 @@ func TestPrice(t *testing.T) {
 			filterer := transformation.NewFilterer()
 			filteredProducts := filterer.Price(test.min, test.max, test.products)
 			if len(filteredProducts) != len(test.expectedProducts) {
-				t.Errorf("expected %d products, got %d", len(test.expectedProducts), len(filteredProducts))
+				t.Fatalf("expected %d products, got %d", len(test.expectedProducts), len(filteredProducts))
 			}
 			for i := range filteredProducts {
 				if filteredProducts[i].Id != test.expectedProducts[i].Id {

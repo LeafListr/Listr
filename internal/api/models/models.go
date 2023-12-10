@@ -2,7 +2,8 @@ package models
 
 type Price struct {
 	Total           float64 `json:"total"`
-	DiscountedTotal float64 `json:"discountedTotal,omitempty"`
+	DiscountedTotal float64 `json:"discountedTotal"`
+	IsDiscounted    bool    `json:"isDiscounted"`
 }
 
 type Cannabinoid struct {

@@ -277,7 +277,8 @@ func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 			return
 		}
 	}
-	if minPrice, maxPrice := priceFilters(req); maxPrice != 0 {
+	if hasPriceFilters(req) {
+		minPrice, maxPrice := priceFilters(req)
 		products, err = a.w.ProductsForPriceRange(dispensary, locationId, products, minPrice, maxPrice)
 		if err != nil {
 			a.handleError(r, req, err)
@@ -440,18 +441,24 @@ func subCategoryFilter(req *http.Request) string {
 	return req.URL.Query().Get("sub")
 }
 
+func hasPriceFilters(req *http.Request) bool {
+	return req.URL.Query().Get("min_price") != "" || req.URL.Query().Get("max_price") != ""
+}
+
 func priceFilters(req *http.Request) (float64, float64) {
 	var min, max float64
 	var err error
 	if minStr := req.URL.Query().Get("min_price"); minStr != "" {
 		min, err = strconv.ParseFloat(minStr, 64)
 		if err != nil {
+			slog.Debug("Error parsing min price", err)
 			return 0, 0
 		}
 	}
 	if maxStr := req.URL.Query().Get("max_price"); maxStr != "" {
 		max, err = strconv.ParseFloat(maxStr, 64)
 		if err != nil {
+			slog.Debug("Error parsing min price", err)
 			return 0, 0
 		}
 	}

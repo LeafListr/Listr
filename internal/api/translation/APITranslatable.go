@@ -62,6 +62,7 @@ func (aT *APITranslator) TranslateAPIProduct(p *models.Product) *apiModels.Produ
 		Price: &apiModels.Price{
 			Total:           p.Price.Total,
 			DiscountedTotal: p.Price.DiscountedTotal,
+			IsDiscounted:    p.Price.IsDiscounted,
 		},
 	}
 
