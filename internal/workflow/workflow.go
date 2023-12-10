@@ -43,6 +43,7 @@ type ProductFilter interface {
 type ProductSorter interface {
 	SortProductsByPriceAsc(dispensary, menuId string, products []*models.Product)
 	SortProductsByPriceDesc(dispensary, menuId string, products []*models.Product)
+	SortProductsByTop3Terps(dispensary, menuId string, products []*models.Product, terps [3]string)
 }
 
 type CategoryManager interface {

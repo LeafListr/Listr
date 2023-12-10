@@ -95,6 +95,10 @@ func (w *Manager) SortProductsByPriceDesc(dispensary, menuId string, products []
 	curaTransformer.NewSorterer().PriceDesc(products)
 }
 
+func (w *Manager) SortProductsByTop3Terps(dispensary, menuId string, products []*models.Product, terps [3]string) {
+	curaTransformer.NewSorterer().Top3Terps(products, terps)
+}
+
 func (w *Manager) Categories(dispensary, menuId string) ([]*models.Category, error) {
 	repo, err := w.F.FindByDispensaryMenu(dispensary, menuId)
 	if err != nil {

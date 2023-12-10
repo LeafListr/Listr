@@ -224,6 +224,14 @@ type FakeManager struct {
 		arg2 string
 		arg3 []*models.Product
 	}
+	SortProductsByTop3TerpsStub        func(string, string, []*models.Product, [3]string)
+	sortProductsByTop3TerpsMutex       sync.RWMutex
+	sortProductsByTop3TerpsArgsForCall []struct {
+		arg1 string
+		arg2 string
+		arg3 []*models.Product
+		arg4 [3]string
+	}
 	TerpenesStub        func(string, string) ([]*models.Terpene, error)
 	terpenesMutex       sync.RWMutex
 	terpenesArgsForCall []struct {
@@ -1250,6 +1258,46 @@ func (fake *FakeManager) SortProductsByPriceDescArgsForCall(i int) (string, stri
 	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
 }
 
+func (fake *FakeManager) SortProductsByTop3Terps(arg1 string, arg2 string, arg3 []*models.Product, arg4 [3]string) {
+	var arg3Copy []*models.Product
+	if arg3 != nil {
+		arg3Copy = make([]*models.Product, len(arg3))
+		copy(arg3Copy, arg3)
+	}
+	fake.sortProductsByTop3TerpsMutex.Lock()
+	fake.sortProductsByTop3TerpsArgsForCall = append(fake.sortProductsByTop3TerpsArgsForCall, struct {
+		arg1 string
+		arg2 string
+		arg3 []*models.Product
+		arg4 [3]string
+	}{arg1, arg2, arg3Copy, arg4})
+	stub := fake.SortProductsByTop3TerpsStub
+	fake.recordInvocation("SortProductsByTop3Terps", []interface{}{arg1, arg2, arg3Copy, arg4})
+	fake.sortProductsByTop3TerpsMutex.Unlock()
+	if stub != nil {
+		fake.SortProductsByTop3TerpsStub(arg1, arg2, arg3, arg4)
+	}
+}
+
+func (fake *FakeManager) SortProductsByTop3TerpsCallCount() int {
+	fake.sortProductsByTop3TerpsMutex.RLock()
+	defer fake.sortProductsByTop3TerpsMutex.RUnlock()
+	return len(fake.sortProductsByTop3TerpsArgsForCall)
+}
+
+func (fake *FakeManager) SortProductsByTop3TerpsCalls(stub func(string, string, []*models.Product, [3]string)) {
+	fake.sortProductsByTop3TerpsMutex.Lock()
+	defer fake.sortProductsByTop3TerpsMutex.Unlock()
+	fake.SortProductsByTop3TerpsStub = stub
+}
+
+func (fake *FakeManager) SortProductsByTop3TerpsArgsForCall(i int) (string, string, []*models.Product, [3]string) {
+	fake.sortProductsByTop3TerpsMutex.RLock()
+	defer fake.sortProductsByTop3TerpsMutex.RUnlock()
+	argsForCall := fake.sortProductsByTop3TerpsArgsForCall[i]
+	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3, argsForCall.arg4
+}
+
 func (fake *FakeManager) Terpenes(arg1 string, arg2 string) ([]*models.Terpene, error) {
 	fake.terpenesMutex.Lock()
 	ret, specificReturn := fake.terpenesReturnsOnCall[len(fake.terpenesArgsForCall)]
@@ -1350,6 +1398,8 @@ func (fake *FakeManager) Invocations() map[string][][]interface{} {
 	defer fake.sortProductsByPriceAscMutex.RUnlock()
 	fake.sortProductsByPriceDescMutex.RLock()
 	defer fake.sortProductsByPriceDescMutex.RUnlock()
+	fake.sortProductsByTop3TerpsMutex.RLock()
+	defer fake.sortProductsByTop3TerpsMutex.RUnlock()
 	fake.terpenesMutex.RLock()
 	defer fake.terpenesMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}

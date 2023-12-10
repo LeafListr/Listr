@@ -311,7 +311,8 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Category",
                         "name": "category",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
@@ -357,6 +358,24 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Sort products",
                         "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Most important terpene",
+                        "name": "terp1",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Second most important terpene",
+                        "name": "terp2",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Third most important terpene",
+                        "name": "terp3",
                         "in": "query"
                     }
                 ],

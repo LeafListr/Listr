@@ -245,7 +245,7 @@ func (a *API) handleProduct(r http.ResponseWriter, req *http.Request) {
 // @Produce		json
 // @Param			dispensaryId	path	string			true	"Dispensary ID"
 // @Param			locationId		path	string			true	"Location ID"
-// @Param			category		query	string			false	"Category"
+// @Param			category		query	string			true	"Category"
 // @Param			sub				query	string			false	"Sub Category"
 // @Param			min_price		query	number			false	"Minimum price"
 // @Param			max_price		query	number			false	"Maximum price"
@@ -253,6 +253,9 @@ func (a *API) handleProduct(r http.ResponseWriter, req *http.Request) {
 // @Param			not_brands		query	string			false	"Brands to exclude"
 // @Param			variants		query	string			false	"Variants to include"
 // @Param			sort			query	string			false	"Sort products"	Enums(price_asc, price_desc)
+// @Param			terp1			query	string			false	"Most important terpene"
+// @Param			terp2			query	string			false	"Second most important terpene"
+// @Param			terp3			query	string			false	"Third most important terpene"
 // @Success		200				{array}	models.Product	"List of products"
 // @Router			/dispensaries/{dispensaryId}/locations/{locationId}/products [get].
 func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
@@ -318,6 +321,11 @@ func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 	if sortPriceDesc(req) {
 		slog.Debug("Sorting products by price desc")
 		a.w.SortProductsByPriceDesc(dispensary, locationId, products)
+	}
+
+	if sortTop3Terps(req) {
+		slog.Debug("Sorting products by top 3 terps")
+		a.w.SortProductsByTop3Terps(dispensary, locationId, products, top3Terps(req))
 	}
 
 	a.writeJson(r, req, a.t.TranslateAPIProducts(products), err)
@@ -468,4 +476,22 @@ func sortPriceAsc(req *http.Request) bool {
 
 func sortPriceDesc(req *http.Request) bool {
 	return req.URL.Query().Get("sort") == "price_desc"
+}
+
+func top3Terps(req *http.Request) [3]string {
+	var terps [3]string
+	if terp1 := req.URL.Query().Get("terp1"); terp1 != "" {
+		terps[0] = terp1
+	}
+	if terp2 := req.URL.Query().Get("terp2"); terp2 != "" {
+		terps[1] = terp2
+	}
+	if terp3 := req.URL.Query().Get("terp3"); terp3 != "" {
+		terps[2] = terp3
+	}
+	return terps
+}
+
+func sortTop3Terps(req *http.Request) bool {
+	return top3Terps(req) != [3]string{}
 }

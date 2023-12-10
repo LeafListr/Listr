@@ -288,6 +288,7 @@ paths:
       - description: Category
         in: query
         name: category
+        required: true
         type: string
       - description: Sub Category
         in: query
@@ -319,6 +320,18 @@ paths:
         - price_desc
         in: query
         name: sort
+        type: string
+      - description: Most important terpene
+        in: query
+        name: terp1
+        type: string
+      - description: Second most important terpene
+        in: query
+        name: terp2
+        type: string
+      - description: Third most important terpene
+        in: query
+        name: terp3
         type: string
       produces:
       - application/json
