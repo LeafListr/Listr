@@ -65,7 +65,7 @@ func (cT *ClientTranslator) TranslateClientProducts(ps []client.Product) []*mode
 func (cT *ClientTranslator) TranslateClientProduct(p client.Product) *models.Product {
 	product := &models.Product{
 		Id:     p.ID,
-		Brand:  p.Brand.Name,
+		Brand:  strings.TrimSpace(p.Brand.Name),
 		Name:   p.Name,
 		Ctg:    models.Category(p.Category.Key),
 		SubCtg: strings.ToLower(p.Subcategory.Key),
