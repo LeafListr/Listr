@@ -52,10 +52,11 @@ type Menu struct {
 }
 
 type Location struct {
-	Id      string
-	Name    string
-	Address string
-	City    string
-	State   string
-	ZipCode string
+	Id            string
+	LocationTypes []string
+	Name          string
+	Address       string
+	City          string
+	State         string
+	ZipCode       string
 }

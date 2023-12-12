@@ -17,12 +17,13 @@ func NewClientTranslator() translation.ClientTranslatable {
 
 func (cT *ClientTranslator) TranslateClientLocation(l client.Location) *models.Location {
 	return &models.Location{
-		Id:      l.UniqueId,
-		Name:    l.Name,
-		Address: l.Location.Address,
-		City:    l.Location.City,
-		State:   l.Location.State,
-		ZipCode: l.Location.ZipCode,
+		Id:            l.UniqueId,
+		Name:          l.Name,
+		Address:       l.Location.Address,
+		City:          l.Location.City,
+		State:         l.Location.State,
+		ZipCode:       l.Location.ZipCode,
+		LocationTypes: l.MenuTypes,
 	}
 }
 

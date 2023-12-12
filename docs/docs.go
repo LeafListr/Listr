@@ -96,6 +96,13 @@ const docTemplate = `{
                         "name": "dispensaryId",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Menu type",
+                        "name": "menu_type",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -180,6 +187,13 @@ const docTemplate = `{
                         "name": "locationId",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Menu type",
+                        "name": "menu_type",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -221,6 +235,13 @@ const docTemplate = `{
                         "description": "Location ID",
                         "name": "locationId",
                         "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Menu type",
+                        "name": "menu_type",
+                        "in": "query",
                         "required": true
                     }
                 ],
@@ -264,6 +285,13 @@ const docTemplate = `{
                         "name": "locationId",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Menu type",
+                        "name": "menu_type",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -305,6 +333,13 @@ const docTemplate = `{
                         "description": "Location ID",
                         "name": "locationId",
                         "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Menu type",
+                        "name": "menu_type",
+                        "in": "query",
                         "required": true
                     },
                     {
@@ -422,6 +457,13 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
+                        "description": "Menu type",
+                        "name": "menu_type",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
                         "description": "Product ID",
                         "name": "productId",
                         "in": "path",
@@ -464,6 +506,13 @@ const docTemplate = `{
                         "description": "Location ID",
                         "name": "locationId",
                         "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Menu type",
+                        "name": "menu_type",
+                        "in": "query",
                         "required": true
                     }
                 ],
@@ -526,6 +575,12 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
+                "locationTypes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "name": {
                     "type": "string"
                 },
@@ -553,6 +608,9 @@ const docTemplate = `{
             "properties": {
                 "discountedTotal": {
                     "type": "number"
+                },
+                "isDiscounted": {
+                    "type": "boolean"
                 },
                 "total": {
                     "type": "number"

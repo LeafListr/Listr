@@ -15,6 +15,7 @@ import (
 const (
 	RepoNotFoundError = "repository not found"
 	MenuNotFoundError = "menu not found"
+	MenuTypeMismatch  = "menu type mismatch"
 )
 
 type DefaultRepositoryFactory struct {
@@ -27,16 +28,16 @@ func NewRepoFactory(mC cache.Cacher) factory.RepositoryFactory {
 	}
 }
 
-func (rf *DefaultRepositoryFactory) FindByDispensary(dispensary string) (repository.Repository, error) {
-	return findRepository(dispensary, rf.memCache)
+func (rf *DefaultRepositoryFactory) FindByDispensary(dispensary, menuType string) (repository.Repository, error) {
+	return findRepository(dispensary, menuType, rf.memCache)
 }
 
-func (rf *DefaultRepositoryFactory) FindByDispensaryMenu(dispensary, menuId string) (repository.Repository, error) {
-	return findMenu(dispensary, menuId, rf.memCache)
+func (rf *DefaultRepositoryFactory) FindByDispensaryMenu(dispensary, menuId, menuType string) (repository.Repository, error) {
+	return findRepositoryForMenu(dispensary, menuId, menuType, rf.memCache)
 }
 
-func findMenu(dispensary string, menuId string, mc cache.Cacher) (repository.Repository, error) {
-	repo, err := findRepository(dispensary, mc)
+func findRepositoryForMenu(dispensary string, menuId, menuType string, mc cache.Cacher) (repository.Repository, error) {
+	repo, err := findRepository(dispensary, menuType, mc)
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +54,7 @@ func findMenu(dispensary string, menuId string, mc cache.Cacher) (repository.Rep
 	return repo, nil
 }
 
-func findRepository(dispensary string, mc cache.Cacher) (repository.Repository, error) {
+func findRepository(dispensary, menuType string, mc cache.Cacher) (repository.Repository, error) {
 	var repo repository.Repository
 	var err error
 
@@ -63,7 +64,7 @@ func findRepository(dispensary string, mc cache.Cacher) (repository.Repository, 
 			curarepo.GqlEndpoint,
 			curarepo.Headers,
 		)
-		repo = curarepo.NewRepository(c, translation.NewClientTranslator(), mc)
+		repo = curarepo.NewRepository(c, translation.NewClientTranslator(), mc, menuType)
 	default:
 		err = errors.New("unsupported dispensary")
 	}

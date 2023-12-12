@@ -66,7 +66,7 @@ func TestGetLocation(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache())
+			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache(), "MEDICAL")
 			ls, getErr := cr.Location("ASDF123")
 			tt.assertions(t, ls, getErr)
 		})
@@ -126,7 +126,7 @@ func TestGetLocations(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache())
+			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache(), "MEDICAL")
 			ls, getErr := cr.Locations(0, 0)
 			tt.assertions(t, ls, getErr)
 		})
@@ -199,7 +199,7 @@ func TestGetProduct(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache())
+			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache(), "MEDICAL")
 			ps, getErr := cr.GetProduct("foo", "bar")
 			tt.assertions(t, ps, getErr)
 		})
@@ -283,7 +283,7 @@ func TestGetProducts(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache())
+			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache(), "MEDICAL")
 			ps, getErr := cr.GetProducts("foo")
 			tt.assertions(t, ps, getErr)
 		})
@@ -367,7 +367,7 @@ func TestGetProductsForCategory(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache())
+			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache(), "MEDICAL")
 			ps, getErr := cr.GetProductsForCategory("foo", "bar")
 			tt.assertions(t, ps, getErr)
 		})
@@ -426,7 +426,7 @@ func TestGetCategories(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache())
+			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache(), "MEDICAL")
 			cs, getErr := cr.GetCategories("foo")
 			tt.assertions(t, cs, getErr)
 		})
@@ -488,7 +488,7 @@ func TestGetTerpenes(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache())
+			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache(), "MEDICAL")
 			ts, getErr := cr.GetTerpenes("foo")
 			tt.assertions(t, ts, getErr)
 		})
@@ -550,7 +550,7 @@ func TestGetCannabinoids(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache())
+			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache(), "MEDICAL")
 			cs, getErr := cr.GetCannabinoids("foo")
 			tt.assertions(t, cs, getErr)
 		})
@@ -611,7 +611,7 @@ func TestGetOffers(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache())
+			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache(), "MEDICAL")
 			os, getErr := cr.GetOffers("foo")
 			tt.assertions(t, os, getErr)
 		})
@@ -738,9 +738,10 @@ func categorySample() client.Category {
 
 func locationSample() client.Location {
 	loc := client.Location{
-		UniqueId: "ASDF123",
-		Name:     "Cool Location",
-		Slug:     "cool-location",
+		UniqueId:  "ASDF123",
+		Name:      "Cool Location",
+		Slug:      "cool-location",
+		MenuTypes: []string{"MEDICAL", "RECREATIONAL"},
 	}
 	loc.Location.ZipCode = "12345"
 	return loc

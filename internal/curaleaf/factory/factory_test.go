@@ -11,16 +11,19 @@ import (
 func TestFindByDispensary(t *testing.T) {
 	tests := map[string]struct {
 		dispensary string
+		menuType   string
 		wantErr    bool
 		errorMsg   string
 	}{
 		"invalid dispensary": {
 			dispensary: "Delta9",
+			menuType:   "medical",
 			wantErr:    true,
 			errorMsg:   "unsupported dispensary",
 		},
 		"valid dispensary": {
 			dispensary: "Curaleaf",
+			menuType:   "medical",
 		},
 	}
 	for name, tt := range tests {
@@ -28,7 +31,7 @@ func TestFindByDispensary(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 			repoFactory := factory.NewRepoFactory(cache.NewCache())
-			repo, err := repoFactory.FindByDispensary(tt.dispensary)
+			repo, err := repoFactory.FindByDispensary(tt.dispensary, tt.menuType)
 			if tt.wantErr {
 				assert.Error(t, err)
 				assert.Equal(t, tt.errorMsg, err.Error())
@@ -45,23 +48,27 @@ func TestFindByDispensaryMenu(t *testing.T) {
 	tests := map[string]struct {
 		dispensary string
 		location   string
+		menuType   string
 		wantErr    bool
 		errorMsg   string
 	}{
 		"invalid dispensary": {
 			dispensary: "Delta9",
+			menuType:   "medical",
 			wantErr:    true,
 			errorMsg:   "unsupported dispensary",
 		},
 		"invalid location": {
 			dispensary: "Curaleaf",
 			location:   "Banana",
+			menuType:   "medical",
 			wantErr:    true,
 			errorMsg:   "menu not found",
 		},
 		"valid dispensary": {
 			dispensary: "Curaleaf",
 			location:   "LMR070",
+			menuType:   "medical",
 		},
 	}
 	for name, tt := range tests {
@@ -69,7 +76,7 @@ func TestFindByDispensaryMenu(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 			repoFactory := factory.NewRepoFactory(cache.NewCache())
-			repo, err := repoFactory.FindByDispensaryMenu(tt.dispensary, tt.location)
+			repo, err := repoFactory.FindByDispensaryMenu(tt.dispensary, tt.location, tt.menuType)
 			if tt.wantErr {
 				assert.Error(t, err)
 				assert.Equal(t, tt.errorMsg, err.Error())

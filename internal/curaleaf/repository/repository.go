@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
 	"sync"
 
 	"github.com/Linkinlog/LeafListr/internal/cache"
@@ -18,31 +19,37 @@ import (
 
 const (
 	GqlEndpoint = "https://graph.curaleaf.com/api/curaql"
-	GbgId       = "LMR124"
 	Authority   = "graph.curaleaf.com"
-	MenuType    = "MEDICAL"
 )
 
 var Headers = map[string][]string{"authority": {Authority}}
 
 type Repository struct {
-	C  client.Client
-	T  translation.ClientTranslatable
-	MC cache.Cacher
+	C        client.Client
+	T        translation.ClientTranslatable
+	MC       cache.Cacher
+	menuType string
 }
 
-func NewRepository(c client.Client, translatable translation.ClientTranslatable, mc cache.Cacher) repository.Repository {
+func NewRepository(c client.Client, translatable translation.ClientTranslatable, mc cache.Cacher, menuType string) repository.Repository {
+	if strings.EqualFold(menuType, "recreational") || strings.EqualFold(menuType, "medical") {
+		menuType = strings.ToUpper(menuType)
+	} else {
+		menuType = "MEDICAL"
+	}
 	return &Repository{
-		C:  c,
-		T:  translatable,
-		MC: mc,
+		C:        c,
+		T:        translatable,
+		MC:       mc,
+		menuType: menuType,
 	}
 }
 
 func (r *Repository) Location(menuId string) (*models.Location, error) {
-	queryKey := fmt.Sprintf("location-%s", menuId)
+	query := curaClient.AllLocationsQuery(0, 0)
+	queryKey := fmt.Sprintf("location-%s-%s", menuId, r.menuType)
 	location, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
-		return r.getLocation(menuId)
+		return r.getLocation(query, menuId)
 	})
 	if err != nil {
 		return &models.Location{}, err
@@ -53,7 +60,7 @@ func (r *Repository) Location(menuId string) (*models.Location, error) {
 
 func (r *Repository) Locations(longitude, latitude float64) ([]*models.Location, error) {
 	query := curaClient.AllLocationsQuery(longitude, latitude)
-	queryKey := fmt.Sprintf("locations-%f-%f", longitude, latitude)
+	queryKey := fmt.Sprintf("locations-%f-%f-%s", longitude, latitude, r.menuType)
 
 	locations, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
 		return r.getLocations(query)
@@ -66,8 +73,8 @@ func (r *Repository) Locations(longitude, latitude float64) ([]*models.Location,
 }
 
 func (r *Repository) GetProduct(menuId, productId string) (*models.Product, error) {
-	query := curaClient.ProductQuery(menuId, productId, "MEDICAL")
-	queryKey := fmt.Sprintf("product-%s-%s", menuId, productId)
+	query := curaClient.ProductQuery(menuId, productId, r.menuType)
+	queryKey := fmt.Sprintf("product-%s-%s-%s", menuId, productId, r.menuType)
 
 	product, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
 		return r.getProduct(query)
@@ -80,8 +87,8 @@ func (r *Repository) GetProduct(menuId, productId string) (*models.Product, erro
 }
 
 func (r *Repository) GetProducts(menuId string) ([]*models.Product, error) {
-	query := curaClient.AllProductQuery(menuId, "MEDICAL")
-	queryKey := fmt.Sprintf("products-%s", menuId)
+	query := curaClient.AllProductQuery(menuId, r.menuType)
+	queryKey := fmt.Sprintf("products-%s-%s", menuId, r.menuType)
 
 	products, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
 		return r.getProducts(query)
@@ -94,8 +101,8 @@ func (r *Repository) GetProducts(menuId string) ([]*models.Product, error) {
 }
 
 func (r *Repository) GetProductsForCategory(menuId string, category models.Category) ([]*models.Product, error) {
-	query := curaClient.AllProductForCategoryQuery(menuId, "MEDICAL", string(category))
-	queryKey := fmt.Sprintf("products-%s-%s", menuId, string(category))
+	query := curaClient.AllProductForCategoryQuery(menuId, r.menuType, string(category))
+	queryKey := fmt.Sprintf("products-%s-%s-%s", menuId, string(category), r.menuType)
 
 	products, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
 		return r.getProductsForCategory(query)
@@ -108,8 +115,8 @@ func (r *Repository) GetProductsForCategory(menuId string, category models.Categ
 }
 
 func (r *Repository) GetCategories(menuId string) ([]*models.Category, error) {
-	query := curaClient.AllCategoriesQuery(menuId, "MEDICAL")
-	queryKey := fmt.Sprintf("categories-%s", menuId)
+	query := curaClient.AllCategoriesQuery(menuId, r.menuType)
+	queryKey := fmt.Sprintf("categories-%s-%s", menuId, r.menuType)
 
 	categories, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
 		return r.getCategories(query)
@@ -122,8 +129,8 @@ func (r *Repository) GetCategories(menuId string) ([]*models.Category, error) {
 }
 
 func (r *Repository) GetTerpenes(menuId string) ([]*models.Terpene, error) {
-	query := curaClient.AllProductQuery(menuId, "MEDICAL")
-	queryKey := fmt.Sprintf("terpenes-%s", menuId)
+	query := curaClient.AllProductQuery(menuId, r.menuType)
+	queryKey := fmt.Sprintf("terpenes-%s-%s", menuId, r.menuType)
 
 	terpenes, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
 		return r.getTerpenes(query)
@@ -136,8 +143,8 @@ func (r *Repository) GetTerpenes(menuId string) ([]*models.Terpene, error) {
 }
 
 func (r *Repository) GetCannabinoids(menuId string) ([]*models.Cannabinoid, error) {
-	query := curaClient.AllProductQuery(menuId, "MEDICAL")
-	queryKey := fmt.Sprintf("cannabinoids-%s", menuId)
+	query := curaClient.AllProductQuery(menuId, r.menuType)
+	queryKey := fmt.Sprintf("cannabinoids-%s-%s", menuId, r.menuType)
 
 	cannabinoids, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
 		return r.getCannabinoids(query)
@@ -150,8 +157,8 @@ func (r *Repository) GetCannabinoids(menuId string) ([]*models.Cannabinoid, erro
 }
 
 func (r *Repository) GetOffers(menuId string) ([]*models.Offer, error) {
-	query := curaClient.AllOffersQuery(menuId, "MEDICAL")
-	queryKey := fmt.Sprintf("offers-%s", menuId)
+	query := curaClient.AllOffersQuery(menuId, r.menuType)
+	queryKey := fmt.Sprintf("offers-%s-%s", menuId, r.menuType)
 
 	offers, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
 		return r.getOffers(query)
@@ -163,14 +170,14 @@ func (r *Repository) GetOffers(menuId string) ([]*models.Offer, error) {
 	return offers.([]*models.Offer), nil
 }
 
-func (r *Repository) getLocation(locationId string) (*models.Location, error) {
+func (r *Repository) getLocation(query, locationId string) (*models.Location, error) {
 	location := &models.Location{}
-	locs, err := r.getLocations(curaClient.AllLocationsQuery(0, 0))
+	locs, err := r.getLocations(query)
 	if err != nil {
 		return location, err
 	}
 	for _, l := range locs {
-		if l.Id == locationId {
+		if l.Id == locationId && contains(l.LocationTypes, r.menuType) {
 			location = l
 		}
 	}
@@ -178,12 +185,28 @@ func (r *Repository) getLocation(locationId string) (*models.Location, error) {
 }
 
 func (r *Repository) getLocations(query string) ([]*models.Location, error) {
+	locs := make([]*models.Location, 0)
 	locationResp, err := r.getResponse(query)
 	if err != nil {
 		return []*models.Location{}, err
 	}
 
-	return r.T.TranslateClientLocations(locationResp.Data.Dispensaries), nil
+	for _, l := range r.T.TranslateClientLocations(locationResp.Data.Dispensaries) {
+		if contains(l.LocationTypes, r.menuType) {
+			locs = append(locs, l)
+		}
+	}
+
+	return locs, nil
+}
+
+func contains(s []string, e string) bool {
+	for _, a := range s {
+		if strings.EqualFold(a, e) {
+			return true
+		}
+	}
+	return false
 }
 
 func (r *Repository) getProduct(query string) (*models.Product, error) {

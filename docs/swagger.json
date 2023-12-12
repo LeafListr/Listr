@@ -89,6 +89,13 @@
                         "name": "dispensaryId",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Menu type",
+                        "name": "menu_type",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -173,6 +180,13 @@
                         "name": "locationId",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Menu type",
+                        "name": "menu_type",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -214,6 +228,13 @@
                         "description": "Location ID",
                         "name": "locationId",
                         "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Menu type",
+                        "name": "menu_type",
+                        "in": "query",
                         "required": true
                     }
                 ],
@@ -257,6 +278,13 @@
                         "name": "locationId",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Menu type",
+                        "name": "menu_type",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -298,6 +326,13 @@
                         "description": "Location ID",
                         "name": "locationId",
                         "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Menu type",
+                        "name": "menu_type",
+                        "in": "query",
                         "required": true
                     },
                     {
@@ -415,6 +450,13 @@
                     },
                     {
                         "type": "string",
+                        "description": "Menu type",
+                        "name": "menu_type",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
                         "description": "Product ID",
                         "name": "productId",
                         "in": "path",
@@ -457,6 +499,13 @@
                         "description": "Location ID",
                         "name": "locationId",
                         "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Menu type",
+                        "name": "menu_type",
+                        "in": "query",
                         "required": true
                     }
                 ],
@@ -519,6 +568,12 @@
                 "id": {
                     "type": "string"
                 },
+                "locationTypes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "name": {
                     "type": "string"
                 },
@@ -546,6 +601,9 @@
             "properties": {
                 "discountedTotal": {
                     "type": "number"
+                },
+                "isDiscounted": {
+                    "type": "boolean"
                 },
                 "total": {
                     "type": "number"

@@ -29,6 +29,10 @@ definitions:
         type: string
       id:
         type: string
+      locationTypes:
+        items:
+          type: string
+        type: array
       name:
         type: string
       state:
@@ -47,6 +51,8 @@ definitions:
     properties:
       discountedTotal:
         type: number
+      isDiscounted:
+        type: boolean
       total:
         type: number
     type: object
@@ -145,6 +151,11 @@ paths:
         name: dispensaryId
         required: true
         type: string
+      - description: Menu type
+        in: query
+        name: menu_type
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -201,6 +212,11 @@ paths:
         name: locationId
         required: true
         type: string
+      - description: Menu type
+        in: query
+        name: menu_type
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -227,6 +243,11 @@ paths:
       - description: Location ID
         in: path
         name: locationId
+        required: true
+        type: string
+      - description: Menu type
+        in: query
+        name: menu_type
         required: true
         type: string
       produces:
@@ -257,6 +278,11 @@ paths:
         name: locationId
         required: true
         type: string
+      - description: Menu type
+        in: query
+        name: menu_type
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -283,6 +309,11 @@ paths:
       - description: Location ID
         in: path
         name: locationId
+        required: true
+        type: string
+      - description: Menu type
+        in: query
+        name: menu_type
         required: true
         type: string
       - description: Category
@@ -361,6 +392,11 @@ paths:
         name: locationId
         required: true
         type: string
+      - description: Menu type
+        in: query
+        name: menu_type
+        required: true
+        type: string
       - description: Product ID
         in: path
         name: productId
@@ -390,6 +426,11 @@ paths:
       - description: Location ID
         in: path
         name: locationId
+        required: true
+        type: string
+      - description: Menu type
+        in: query
+        name: menu_type
         required: true
         type: string
       produces:

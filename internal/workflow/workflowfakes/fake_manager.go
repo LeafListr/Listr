@@ -10,11 +10,12 @@ import (
 )
 
 type FakeManager struct {
-	CannabinoidsStub        func(string, string) ([]*models.Cannabinoid, error)
+	CannabinoidsStub        func(string, string, string) ([]*models.Cannabinoid, error)
 	cannabinoidsMutex       sync.RWMutex
 	cannabinoidsArgsForCall []struct {
 		arg1 string
 		arg2 string
+		arg3 string
 	}
 	cannabinoidsReturns struct {
 		result1 []*models.Cannabinoid
@@ -24,11 +25,12 @@ type FakeManager struct {
 		result1 []*models.Cannabinoid
 		result2 error
 	}
-	CategoriesStub        func(string, string) ([]*models.Category, error)
+	CategoriesStub        func(string, string, string) ([]*models.Category, error)
 	categoriesMutex       sync.RWMutex
 	categoriesArgsForCall []struct {
 		arg1 string
 		arg2 string
+		arg3 string
 	}
 	categoriesReturns struct {
 		result1 []*models.Category
@@ -38,11 +40,12 @@ type FakeManager struct {
 		result1 []*models.Category
 		result2 error
 	}
-	LocationStub        func(string, string) (*models.Location, error)
+	LocationStub        func(string, string, string) (*models.Location, error)
 	locationMutex       sync.RWMutex
 	locationArgsForCall []struct {
 		arg1 string
 		arg2 string
+		arg3 string
 	}
 	locationReturns struct {
 		result1 *models.Location
@@ -52,10 +55,11 @@ type FakeManager struct {
 		result1 *models.Location
 		result2 error
 	}
-	LocationsStub        func(string) ([]*models.Location, error)
+	LocationsStub        func(string, string) ([]*models.Location, error)
 	locationsMutex       sync.RWMutex
 	locationsArgsForCall []struct {
 		arg1 string
+		arg2 string
 	}
 	locationsReturns struct {
 		result1 []*models.Location
@@ -71,11 +75,12 @@ type FakeManager struct {
 		arg1 error
 		arg2 context.Context
 	}
-	OffersStub        func(string, string) ([]*models.Offer, error)
+	OffersStub        func(string, string, string) ([]*models.Offer, error)
 	offersMutex       sync.RWMutex
 	offersArgsForCall []struct {
 		arg1 string
 		arg2 string
+		arg3 string
 	}
 	offersReturns struct {
 		result1 []*models.Offer
@@ -85,12 +90,13 @@ type FakeManager struct {
 		result1 []*models.Offer
 		result2 error
 	}
-	ProductStub        func(string, string, string) (*models.Product, error)
+	ProductStub        func(string, string, string, string) (*models.Product, error)
 	productMutex       sync.RWMutex
 	productArgsForCall []struct {
 		arg1 string
 		arg2 string
 		arg3 string
+		arg4 string
 	}
 	productReturns struct {
 		result1 *models.Product
@@ -100,11 +106,12 @@ type FakeManager struct {
 		result1 *models.Product
 		result2 error
 	}
-	ProductsStub        func(string, string) ([]*models.Product, error)
+	ProductsStub        func(string, string, string) ([]*models.Product, error)
 	productsMutex       sync.RWMutex
 	productsArgsForCall []struct {
 		arg1 string
 		arg2 string
+		arg3 string
 	}
 	productsReturns struct {
 		result1 []*models.Product
@@ -114,13 +121,14 @@ type FakeManager struct {
 		result1 []*models.Product
 		result2 error
 	}
-	ProductsExcludingBrandsStub        func(string, string, []*models.Product, []string) ([]*models.Product, error)
+	ProductsExcludingBrandsStub        func(string, string, string, []*models.Product, []string) ([]*models.Product, error)
 	productsExcludingBrandsMutex       sync.RWMutex
 	productsExcludingBrandsArgsForCall []struct {
 		arg1 string
 		arg2 string
-		arg3 []*models.Product
-		arg4 []string
+		arg3 string
+		arg4 []*models.Product
+		arg5 []string
 	}
 	productsExcludingBrandsReturns struct {
 		result1 []*models.Product
@@ -130,13 +138,14 @@ type FakeManager struct {
 		result1 []*models.Product
 		result2 error
 	}
-	ProductsForBrandsStub        func(string, string, []*models.Product, []string) ([]*models.Product, error)
+	ProductsForBrandsStub        func(string, string, string, []*models.Product, []string) ([]*models.Product, error)
 	productsForBrandsMutex       sync.RWMutex
 	productsForBrandsArgsForCall []struct {
 		arg1 string
 		arg2 string
-		arg3 []*models.Product
-		arg4 []string
+		arg3 string
+		arg4 []*models.Product
+		arg5 []string
 	}
 	productsForBrandsReturns struct {
 		result1 []*models.Product
@@ -146,12 +155,13 @@ type FakeManager struct {
 		result1 []*models.Product
 		result2 error
 	}
-	ProductsForCategoryStub        func(string, string, models.Category) ([]*models.Product, error)
+	ProductsForCategoryStub        func(string, string, string, models.Category) ([]*models.Product, error)
 	productsForCategoryMutex       sync.RWMutex
 	productsForCategoryArgsForCall []struct {
 		arg1 string
 		arg2 string
-		arg3 models.Category
+		arg3 string
+		arg4 models.Category
 	}
 	productsForCategoryReturns struct {
 		result1 []*models.Product
@@ -161,14 +171,15 @@ type FakeManager struct {
 		result1 []*models.Product
 		result2 error
 	}
-	ProductsForPriceRangeStub        func(string, string, []*models.Product, float64, float64) ([]*models.Product, error)
+	ProductsForPriceRangeStub        func(string, string, string, []*models.Product, float64, float64) ([]*models.Product, error)
 	productsForPriceRangeMutex       sync.RWMutex
 	productsForPriceRangeArgsForCall []struct {
 		arg1 string
 		arg2 string
-		arg3 []*models.Product
-		arg4 float64
+		arg3 string
+		arg4 []*models.Product
 		arg5 float64
+		arg6 float64
 	}
 	productsForPriceRangeReturns struct {
 		result1 []*models.Product
@@ -178,13 +189,14 @@ type FakeManager struct {
 		result1 []*models.Product
 		result2 error
 	}
-	ProductsForSubCategoryStub        func(string, string, []*models.Product, string) ([]*models.Product, error)
+	ProductsForSubCategoryStub        func(string, string, string, []*models.Product, string) ([]*models.Product, error)
 	productsForSubCategoryMutex       sync.RWMutex
 	productsForSubCategoryArgsForCall []struct {
 		arg1 string
 		arg2 string
-		arg3 []*models.Product
-		arg4 string
+		arg3 string
+		arg4 []*models.Product
+		arg5 string
 	}
 	productsForSubCategoryReturns struct {
 		result1 []*models.Product
@@ -194,13 +206,14 @@ type FakeManager struct {
 		result1 []*models.Product
 		result2 error
 	}
-	ProductsForVariantsStub        func(string, string, []*models.Product, []string) ([]*models.Product, error)
+	ProductsForVariantsStub        func(string, string, string, []*models.Product, []string) ([]*models.Product, error)
 	productsForVariantsMutex       sync.RWMutex
 	productsForVariantsArgsForCall []struct {
 		arg1 string
 		arg2 string
-		arg3 []*models.Product
-		arg4 []string
+		arg3 string
+		arg4 []*models.Product
+		arg5 []string
 	}
 	productsForVariantsReturns struct {
 		result1 []*models.Product
@@ -210,33 +223,37 @@ type FakeManager struct {
 		result1 []*models.Product
 		result2 error
 	}
-	SortProductsByPriceAscStub        func(string, string, []*models.Product)
+	SortProductsByPriceAscStub        func(string, string, string, []*models.Product)
 	sortProductsByPriceAscMutex       sync.RWMutex
 	sortProductsByPriceAscArgsForCall []struct {
 		arg1 string
 		arg2 string
-		arg3 []*models.Product
+		arg3 string
+		arg4 []*models.Product
 	}
-	SortProductsByPriceDescStub        func(string, string, []*models.Product)
+	SortProductsByPriceDescStub        func(string, string, string, []*models.Product)
 	sortProductsByPriceDescMutex       sync.RWMutex
 	sortProductsByPriceDescArgsForCall []struct {
 		arg1 string
 		arg2 string
-		arg3 []*models.Product
+		arg3 string
+		arg4 []*models.Product
 	}
-	SortProductsByTop3TerpsStub        func(string, string, []*models.Product, [3]string)
+	SortProductsByTop3TerpsStub        func(string, string, string, []*models.Product, [3]string)
 	sortProductsByTop3TerpsMutex       sync.RWMutex
 	sortProductsByTop3TerpsArgsForCall []struct {
 		arg1 string
 		arg2 string
-		arg3 []*models.Product
-		arg4 [3]string
+		arg3 string
+		arg4 []*models.Product
+		arg5 [3]string
 	}
-	TerpenesStub        func(string, string) ([]*models.Terpene, error)
+	TerpenesStub        func(string, string, string) ([]*models.Terpene, error)
 	terpenesMutex       sync.RWMutex
 	terpenesArgsForCall []struct {
 		arg1 string
 		arg2 string
+		arg3 string
 	}
 	terpenesReturns struct {
 		result1 []*models.Terpene
@@ -250,19 +267,20 @@ type FakeManager struct {
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeManager) Cannabinoids(arg1 string, arg2 string) ([]*models.Cannabinoid, error) {
+func (fake *FakeManager) Cannabinoids(arg1 string, arg2 string, arg3 string) ([]*models.Cannabinoid, error) {
 	fake.cannabinoidsMutex.Lock()
 	ret, specificReturn := fake.cannabinoidsReturnsOnCall[len(fake.cannabinoidsArgsForCall)]
 	fake.cannabinoidsArgsForCall = append(fake.cannabinoidsArgsForCall, struct {
 		arg1 string
 		arg2 string
-	}{arg1, arg2})
+		arg3 string
+	}{arg1, arg2, arg3})
 	stub := fake.CannabinoidsStub
 	fakeReturns := fake.cannabinoidsReturns
-	fake.recordInvocation("Cannabinoids", []interface{}{arg1, arg2})
+	fake.recordInvocation("Cannabinoids", []interface{}{arg1, arg2, arg3})
 	fake.cannabinoidsMutex.Unlock()
 	if stub != nil {
-		return stub(arg1, arg2)
+		return stub(arg1, arg2, arg3)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
@@ -276,17 +294,17 @@ func (fake *FakeManager) CannabinoidsCallCount() int {
 	return len(fake.cannabinoidsArgsForCall)
 }
 
-func (fake *FakeManager) CannabinoidsCalls(stub func(string, string) ([]*models.Cannabinoid, error)) {
+func (fake *FakeManager) CannabinoidsCalls(stub func(string, string, string) ([]*models.Cannabinoid, error)) {
 	fake.cannabinoidsMutex.Lock()
 	defer fake.cannabinoidsMutex.Unlock()
 	fake.CannabinoidsStub = stub
 }
 
-func (fake *FakeManager) CannabinoidsArgsForCall(i int) (string, string) {
+func (fake *FakeManager) CannabinoidsArgsForCall(i int) (string, string, string) {
 	fake.cannabinoidsMutex.RLock()
 	defer fake.cannabinoidsMutex.RUnlock()
 	argsForCall := fake.cannabinoidsArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2
+	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
 }
 
 func (fake *FakeManager) CannabinoidsReturns(result1 []*models.Cannabinoid, result2 error) {
@@ -315,19 +333,20 @@ func (fake *FakeManager) CannabinoidsReturnsOnCall(i int, result1 []*models.Cann
 	}{result1, result2}
 }
 
-func (fake *FakeManager) Categories(arg1 string, arg2 string) ([]*models.Category, error) {
+func (fake *FakeManager) Categories(arg1 string, arg2 string, arg3 string) ([]*models.Category, error) {
 	fake.categoriesMutex.Lock()
 	ret, specificReturn := fake.categoriesReturnsOnCall[len(fake.categoriesArgsForCall)]
 	fake.categoriesArgsForCall = append(fake.categoriesArgsForCall, struct {
 		arg1 string
 		arg2 string
-	}{arg1, arg2})
+		arg3 string
+	}{arg1, arg2, arg3})
 	stub := fake.CategoriesStub
 	fakeReturns := fake.categoriesReturns
-	fake.recordInvocation("Categories", []interface{}{arg1, arg2})
+	fake.recordInvocation("Categories", []interface{}{arg1, arg2, arg3})
 	fake.categoriesMutex.Unlock()
 	if stub != nil {
-		return stub(arg1, arg2)
+		return stub(arg1, arg2, arg3)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
@@ -341,17 +360,17 @@ func (fake *FakeManager) CategoriesCallCount() int {
 	return len(fake.categoriesArgsForCall)
 }
 
-func (fake *FakeManager) CategoriesCalls(stub func(string, string) ([]*models.Category, error)) {
+func (fake *FakeManager) CategoriesCalls(stub func(string, string, string) ([]*models.Category, error)) {
 	fake.categoriesMutex.Lock()
 	defer fake.categoriesMutex.Unlock()
 	fake.CategoriesStub = stub
 }
 
-func (fake *FakeManager) CategoriesArgsForCall(i int) (string, string) {
+func (fake *FakeManager) CategoriesArgsForCall(i int) (string, string, string) {
 	fake.categoriesMutex.RLock()
 	defer fake.categoriesMutex.RUnlock()
 	argsForCall := fake.categoriesArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2
+	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
 }
 
 func (fake *FakeManager) CategoriesReturns(result1 []*models.Category, result2 error) {
@@ -380,19 +399,20 @@ func (fake *FakeManager) CategoriesReturnsOnCall(i int, result1 []*models.Catego
 	}{result1, result2}
 }
 
-func (fake *FakeManager) Location(arg1 string, arg2 string) (*models.Location, error) {
+func (fake *FakeManager) Location(arg1 string, arg2 string, arg3 string) (*models.Location, error) {
 	fake.locationMutex.Lock()
 	ret, specificReturn := fake.locationReturnsOnCall[len(fake.locationArgsForCall)]
 	fake.locationArgsForCall = append(fake.locationArgsForCall, struct {
 		arg1 string
 		arg2 string
-	}{arg1, arg2})
+		arg3 string
+	}{arg1, arg2, arg3})
 	stub := fake.LocationStub
 	fakeReturns := fake.locationReturns
-	fake.recordInvocation("Location", []interface{}{arg1, arg2})
+	fake.recordInvocation("Location", []interface{}{arg1, arg2, arg3})
 	fake.locationMutex.Unlock()
 	if stub != nil {
-		return stub(arg1, arg2)
+		return stub(arg1, arg2, arg3)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
@@ -406,17 +426,17 @@ func (fake *FakeManager) LocationCallCount() int {
 	return len(fake.locationArgsForCall)
 }
 
-func (fake *FakeManager) LocationCalls(stub func(string, string) (*models.Location, error)) {
+func (fake *FakeManager) LocationCalls(stub func(string, string, string) (*models.Location, error)) {
 	fake.locationMutex.Lock()
 	defer fake.locationMutex.Unlock()
 	fake.LocationStub = stub
 }
 
-func (fake *FakeManager) LocationArgsForCall(i int) (string, string) {
+func (fake *FakeManager) LocationArgsForCall(i int) (string, string, string) {
 	fake.locationMutex.RLock()
 	defer fake.locationMutex.RUnlock()
 	argsForCall := fake.locationArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2
+	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
 }
 
 func (fake *FakeManager) LocationReturns(result1 *models.Location, result2 error) {
@@ -445,18 +465,19 @@ func (fake *FakeManager) LocationReturnsOnCall(i int, result1 *models.Location, 
 	}{result1, result2}
 }
 
-func (fake *FakeManager) Locations(arg1 string) ([]*models.Location, error) {
+func (fake *FakeManager) Locations(arg1 string, arg2 string) ([]*models.Location, error) {
 	fake.locationsMutex.Lock()
 	ret, specificReturn := fake.locationsReturnsOnCall[len(fake.locationsArgsForCall)]
 	fake.locationsArgsForCall = append(fake.locationsArgsForCall, struct {
 		arg1 string
-	}{arg1})
+		arg2 string
+	}{arg1, arg2})
 	stub := fake.LocationsStub
 	fakeReturns := fake.locationsReturns
-	fake.recordInvocation("Locations", []interface{}{arg1})
+	fake.recordInvocation("Locations", []interface{}{arg1, arg2})
 	fake.locationsMutex.Unlock()
 	if stub != nil {
-		return stub(arg1)
+		return stub(arg1, arg2)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
@@ -470,17 +491,17 @@ func (fake *FakeManager) LocationsCallCount() int {
 	return len(fake.locationsArgsForCall)
 }
 
-func (fake *FakeManager) LocationsCalls(stub func(string) ([]*models.Location, error)) {
+func (fake *FakeManager) LocationsCalls(stub func(string, string) ([]*models.Location, error)) {
 	fake.locationsMutex.Lock()
 	defer fake.locationsMutex.Unlock()
 	fake.LocationsStub = stub
 }
 
-func (fake *FakeManager) LocationsArgsForCall(i int) string {
+func (fake *FakeManager) LocationsArgsForCall(i int) (string, string) {
 	fake.locationsMutex.RLock()
 	defer fake.locationsMutex.RUnlock()
 	argsForCall := fake.locationsArgsForCall[i]
-	return argsForCall.arg1
+	return argsForCall.arg1, argsForCall.arg2
 }
 
 func (fake *FakeManager) LocationsReturns(result1 []*models.Location, result2 error) {
@@ -542,19 +563,20 @@ func (fake *FakeManager) LogErrorArgsForCall(i int) (error, context.Context) {
 	return argsForCall.arg1, argsForCall.arg2
 }
 
-func (fake *FakeManager) Offers(arg1 string, arg2 string) ([]*models.Offer, error) {
+func (fake *FakeManager) Offers(arg1 string, arg2 string, arg3 string) ([]*models.Offer, error) {
 	fake.offersMutex.Lock()
 	ret, specificReturn := fake.offersReturnsOnCall[len(fake.offersArgsForCall)]
 	fake.offersArgsForCall = append(fake.offersArgsForCall, struct {
 		arg1 string
 		arg2 string
-	}{arg1, arg2})
+		arg3 string
+	}{arg1, arg2, arg3})
 	stub := fake.OffersStub
 	fakeReturns := fake.offersReturns
-	fake.recordInvocation("Offers", []interface{}{arg1, arg2})
+	fake.recordInvocation("Offers", []interface{}{arg1, arg2, arg3})
 	fake.offersMutex.Unlock()
 	if stub != nil {
-		return stub(arg1, arg2)
+		return stub(arg1, arg2, arg3)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
@@ -568,17 +590,17 @@ func (fake *FakeManager) OffersCallCount() int {
 	return len(fake.offersArgsForCall)
 }
 
-func (fake *FakeManager) OffersCalls(stub func(string, string) ([]*models.Offer, error)) {
+func (fake *FakeManager) OffersCalls(stub func(string, string, string) ([]*models.Offer, error)) {
 	fake.offersMutex.Lock()
 	defer fake.offersMutex.Unlock()
 	fake.OffersStub = stub
 }
 
-func (fake *FakeManager) OffersArgsForCall(i int) (string, string) {
+func (fake *FakeManager) OffersArgsForCall(i int) (string, string, string) {
 	fake.offersMutex.RLock()
 	defer fake.offersMutex.RUnlock()
 	argsForCall := fake.offersArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2
+	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
 }
 
 func (fake *FakeManager) OffersReturns(result1 []*models.Offer, result2 error) {
@@ -607,20 +629,21 @@ func (fake *FakeManager) OffersReturnsOnCall(i int, result1 []*models.Offer, res
 	}{result1, result2}
 }
 
-func (fake *FakeManager) Product(arg1 string, arg2 string, arg3 string) (*models.Product, error) {
+func (fake *FakeManager) Product(arg1 string, arg2 string, arg3 string, arg4 string) (*models.Product, error) {
 	fake.productMutex.Lock()
 	ret, specificReturn := fake.productReturnsOnCall[len(fake.productArgsForCall)]
 	fake.productArgsForCall = append(fake.productArgsForCall, struct {
 		arg1 string
 		arg2 string
 		arg3 string
-	}{arg1, arg2, arg3})
+		arg4 string
+	}{arg1, arg2, arg3, arg4})
 	stub := fake.ProductStub
 	fakeReturns := fake.productReturns
-	fake.recordInvocation("Product", []interface{}{arg1, arg2, arg3})
+	fake.recordInvocation("Product", []interface{}{arg1, arg2, arg3, arg4})
 	fake.productMutex.Unlock()
 	if stub != nil {
-		return stub(arg1, arg2, arg3)
+		return stub(arg1, arg2, arg3, arg4)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
@@ -634,17 +657,17 @@ func (fake *FakeManager) ProductCallCount() int {
 	return len(fake.productArgsForCall)
 }
 
-func (fake *FakeManager) ProductCalls(stub func(string, string, string) (*models.Product, error)) {
+func (fake *FakeManager) ProductCalls(stub func(string, string, string, string) (*models.Product, error)) {
 	fake.productMutex.Lock()
 	defer fake.productMutex.Unlock()
 	fake.ProductStub = stub
 }
 
-func (fake *FakeManager) ProductArgsForCall(i int) (string, string, string) {
+func (fake *FakeManager) ProductArgsForCall(i int) (string, string, string, string) {
 	fake.productMutex.RLock()
 	defer fake.productMutex.RUnlock()
 	argsForCall := fake.productArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
+	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3, argsForCall.arg4
 }
 
 func (fake *FakeManager) ProductReturns(result1 *models.Product, result2 error) {
@@ -673,19 +696,20 @@ func (fake *FakeManager) ProductReturnsOnCall(i int, result1 *models.Product, re
 	}{result1, result2}
 }
 
-func (fake *FakeManager) Products(arg1 string, arg2 string) ([]*models.Product, error) {
+func (fake *FakeManager) Products(arg1 string, arg2 string, arg3 string) ([]*models.Product, error) {
 	fake.productsMutex.Lock()
 	ret, specificReturn := fake.productsReturnsOnCall[len(fake.productsArgsForCall)]
 	fake.productsArgsForCall = append(fake.productsArgsForCall, struct {
 		arg1 string
 		arg2 string
-	}{arg1, arg2})
+		arg3 string
+	}{arg1, arg2, arg3})
 	stub := fake.ProductsStub
 	fakeReturns := fake.productsReturns
-	fake.recordInvocation("Products", []interface{}{arg1, arg2})
+	fake.recordInvocation("Products", []interface{}{arg1, arg2, arg3})
 	fake.productsMutex.Unlock()
 	if stub != nil {
-		return stub(arg1, arg2)
+		return stub(arg1, arg2, arg3)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
@@ -699,17 +723,17 @@ func (fake *FakeManager) ProductsCallCount() int {
 	return len(fake.productsArgsForCall)
 }
 
-func (fake *FakeManager) ProductsCalls(stub func(string, string) ([]*models.Product, error)) {
+func (fake *FakeManager) ProductsCalls(stub func(string, string, string) ([]*models.Product, error)) {
 	fake.productsMutex.Lock()
 	defer fake.productsMutex.Unlock()
 	fake.ProductsStub = stub
 }
 
-func (fake *FakeManager) ProductsArgsForCall(i int) (string, string) {
+func (fake *FakeManager) ProductsArgsForCall(i int) (string, string, string) {
 	fake.productsMutex.RLock()
 	defer fake.productsMutex.RUnlock()
 	argsForCall := fake.productsArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2
+	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
 }
 
 func (fake *FakeManager) ProductsReturns(result1 []*models.Product, result2 error) {
@@ -738,31 +762,32 @@ func (fake *FakeManager) ProductsReturnsOnCall(i int, result1 []*models.Product,
 	}{result1, result2}
 }
 
-func (fake *FakeManager) ProductsExcludingBrands(arg1 string, arg2 string, arg3 []*models.Product, arg4 []string) ([]*models.Product, error) {
-	var arg3Copy []*models.Product
-	if arg3 != nil {
-		arg3Copy = make([]*models.Product, len(arg3))
-		copy(arg3Copy, arg3)
-	}
-	var arg4Copy []string
+func (fake *FakeManager) ProductsExcludingBrands(arg1 string, arg2 string, arg3 string, arg4 []*models.Product, arg5 []string) ([]*models.Product, error) {
+	var arg4Copy []*models.Product
 	if arg4 != nil {
-		arg4Copy = make([]string, len(arg4))
+		arg4Copy = make([]*models.Product, len(arg4))
 		copy(arg4Copy, arg4)
+	}
+	var arg5Copy []string
+	if arg5 != nil {
+		arg5Copy = make([]string, len(arg5))
+		copy(arg5Copy, arg5)
 	}
 	fake.productsExcludingBrandsMutex.Lock()
 	ret, specificReturn := fake.productsExcludingBrandsReturnsOnCall[len(fake.productsExcludingBrandsArgsForCall)]
 	fake.productsExcludingBrandsArgsForCall = append(fake.productsExcludingBrandsArgsForCall, struct {
 		arg1 string
 		arg2 string
-		arg3 []*models.Product
-		arg4 []string
-	}{arg1, arg2, arg3Copy, arg4Copy})
+		arg3 string
+		arg4 []*models.Product
+		arg5 []string
+	}{arg1, arg2, arg3, arg4Copy, arg5Copy})
 	stub := fake.ProductsExcludingBrandsStub
 	fakeReturns := fake.productsExcludingBrandsReturns
-	fake.recordInvocation("ProductsExcludingBrands", []interface{}{arg1, arg2, arg3Copy, arg4Copy})
+	fake.recordInvocation("ProductsExcludingBrands", []interface{}{arg1, arg2, arg3, arg4Copy, arg5Copy})
 	fake.productsExcludingBrandsMutex.Unlock()
 	if stub != nil {
-		return stub(arg1, arg2, arg3, arg4)
+		return stub(arg1, arg2, arg3, arg4, arg5)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
@@ -776,17 +801,17 @@ func (fake *FakeManager) ProductsExcludingBrandsCallCount() int {
 	return len(fake.productsExcludingBrandsArgsForCall)
 }
 
-func (fake *FakeManager) ProductsExcludingBrandsCalls(stub func(string, string, []*models.Product, []string) ([]*models.Product, error)) {
+func (fake *FakeManager) ProductsExcludingBrandsCalls(stub func(string, string, string, []*models.Product, []string) ([]*models.Product, error)) {
 	fake.productsExcludingBrandsMutex.Lock()
 	defer fake.productsExcludingBrandsMutex.Unlock()
 	fake.ProductsExcludingBrandsStub = stub
 }
 
-func (fake *FakeManager) ProductsExcludingBrandsArgsForCall(i int) (string, string, []*models.Product, []string) {
+func (fake *FakeManager) ProductsExcludingBrandsArgsForCall(i int) (string, string, string, []*models.Product, []string) {
 	fake.productsExcludingBrandsMutex.RLock()
 	defer fake.productsExcludingBrandsMutex.RUnlock()
 	argsForCall := fake.productsExcludingBrandsArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3, argsForCall.arg4
+	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3, argsForCall.arg4, argsForCall.arg5
 }
 
 func (fake *FakeManager) ProductsExcludingBrandsReturns(result1 []*models.Product, result2 error) {
@@ -815,31 +840,32 @@ func (fake *FakeManager) ProductsExcludingBrandsReturnsOnCall(i int, result1 []*
 	}{result1, result2}
 }
 
-func (fake *FakeManager) ProductsForBrands(arg1 string, arg2 string, arg3 []*models.Product, arg4 []string) ([]*models.Product, error) {
-	var arg3Copy []*models.Product
-	if arg3 != nil {
-		arg3Copy = make([]*models.Product, len(arg3))
-		copy(arg3Copy, arg3)
-	}
-	var arg4Copy []string
+func (fake *FakeManager) ProductsForBrands(arg1 string, arg2 string, arg3 string, arg4 []*models.Product, arg5 []string) ([]*models.Product, error) {
+	var arg4Copy []*models.Product
 	if arg4 != nil {
-		arg4Copy = make([]string, len(arg4))
+		arg4Copy = make([]*models.Product, len(arg4))
 		copy(arg4Copy, arg4)
+	}
+	var arg5Copy []string
+	if arg5 != nil {
+		arg5Copy = make([]string, len(arg5))
+		copy(arg5Copy, arg5)
 	}
 	fake.productsForBrandsMutex.Lock()
 	ret, specificReturn := fake.productsForBrandsReturnsOnCall[len(fake.productsForBrandsArgsForCall)]
 	fake.productsForBrandsArgsForCall = append(fake.productsForBrandsArgsForCall, struct {
 		arg1 string
 		arg2 string
-		arg3 []*models.Product
-		arg4 []string
-	}{arg1, arg2, arg3Copy, arg4Copy})
+		arg3 string
+		arg4 []*models.Product
+		arg5 []string
+	}{arg1, arg2, arg3, arg4Copy, arg5Copy})
 	stub := fake.ProductsForBrandsStub
 	fakeReturns := fake.productsForBrandsReturns
-	fake.recordInvocation("ProductsForBrands", []interface{}{arg1, arg2, arg3Copy, arg4Copy})
+	fake.recordInvocation("ProductsForBrands", []interface{}{arg1, arg2, arg3, arg4Copy, arg5Copy})
 	fake.productsForBrandsMutex.Unlock()
 	if stub != nil {
-		return stub(arg1, arg2, arg3, arg4)
+		return stub(arg1, arg2, arg3, arg4, arg5)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
@@ -853,17 +879,17 @@ func (fake *FakeManager) ProductsForBrandsCallCount() int {
 	return len(fake.productsForBrandsArgsForCall)
 }
 
-func (fake *FakeManager) ProductsForBrandsCalls(stub func(string, string, []*models.Product, []string) ([]*models.Product, error)) {
+func (fake *FakeManager) ProductsForBrandsCalls(stub func(string, string, string, []*models.Product, []string) ([]*models.Product, error)) {
 	fake.productsForBrandsMutex.Lock()
 	defer fake.productsForBrandsMutex.Unlock()
 	fake.ProductsForBrandsStub = stub
 }
 
-func (fake *FakeManager) ProductsForBrandsArgsForCall(i int) (string, string, []*models.Product, []string) {
+func (fake *FakeManager) ProductsForBrandsArgsForCall(i int) (string, string, string, []*models.Product, []string) {
 	fake.productsForBrandsMutex.RLock()
 	defer fake.productsForBrandsMutex.RUnlock()
 	argsForCall := fake.productsForBrandsArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3, argsForCall.arg4
+	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3, argsForCall.arg4, argsForCall.arg5
 }
 
 func (fake *FakeManager) ProductsForBrandsReturns(result1 []*models.Product, result2 error) {
@@ -892,20 +918,21 @@ func (fake *FakeManager) ProductsForBrandsReturnsOnCall(i int, result1 []*models
 	}{result1, result2}
 }
 
-func (fake *FakeManager) ProductsForCategory(arg1 string, arg2 string, arg3 models.Category) ([]*models.Product, error) {
+func (fake *FakeManager) ProductsForCategory(arg1 string, arg2 string, arg3 string, arg4 models.Category) ([]*models.Product, error) {
 	fake.productsForCategoryMutex.Lock()
 	ret, specificReturn := fake.productsForCategoryReturnsOnCall[len(fake.productsForCategoryArgsForCall)]
 	fake.productsForCategoryArgsForCall = append(fake.productsForCategoryArgsForCall, struct {
 		arg1 string
 		arg2 string
-		arg3 models.Category
-	}{arg1, arg2, arg3})
+		arg3 string
+		arg4 models.Category
+	}{arg1, arg2, arg3, arg4})
 	stub := fake.ProductsForCategoryStub
 	fakeReturns := fake.productsForCategoryReturns
-	fake.recordInvocation("ProductsForCategory", []interface{}{arg1, arg2, arg3})
+	fake.recordInvocation("ProductsForCategory", []interface{}{arg1, arg2, arg3, arg4})
 	fake.productsForCategoryMutex.Unlock()
 	if stub != nil {
-		return stub(arg1, arg2, arg3)
+		return stub(arg1, arg2, arg3, arg4)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
@@ -919,17 +946,17 @@ func (fake *FakeManager) ProductsForCategoryCallCount() int {
 	return len(fake.productsForCategoryArgsForCall)
 }
 
-func (fake *FakeManager) ProductsForCategoryCalls(stub func(string, string, models.Category) ([]*models.Product, error)) {
+func (fake *FakeManager) ProductsForCategoryCalls(stub func(string, string, string, models.Category) ([]*models.Product, error)) {
 	fake.productsForCategoryMutex.Lock()
 	defer fake.productsForCategoryMutex.Unlock()
 	fake.ProductsForCategoryStub = stub
 }
 
-func (fake *FakeManager) ProductsForCategoryArgsForCall(i int) (string, string, models.Category) {
+func (fake *FakeManager) ProductsForCategoryArgsForCall(i int) (string, string, string, models.Category) {
 	fake.productsForCategoryMutex.RLock()
 	defer fake.productsForCategoryMutex.RUnlock()
 	argsForCall := fake.productsForCategoryArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
+	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3, argsForCall.arg4
 }
 
 func (fake *FakeManager) ProductsForCategoryReturns(result1 []*models.Product, result2 error) {
@@ -958,27 +985,28 @@ func (fake *FakeManager) ProductsForCategoryReturnsOnCall(i int, result1 []*mode
 	}{result1, result2}
 }
 
-func (fake *FakeManager) ProductsForPriceRange(arg1 string, arg2 string, arg3 []*models.Product, arg4 float64, arg5 float64) ([]*models.Product, error) {
-	var arg3Copy []*models.Product
-	if arg3 != nil {
-		arg3Copy = make([]*models.Product, len(arg3))
-		copy(arg3Copy, arg3)
+func (fake *FakeManager) ProductsForPriceRange(arg1 string, arg2 string, arg3 string, arg4 []*models.Product, arg5 float64, arg6 float64) ([]*models.Product, error) {
+	var arg4Copy []*models.Product
+	if arg4 != nil {
+		arg4Copy = make([]*models.Product, len(arg4))
+		copy(arg4Copy, arg4)
 	}
 	fake.productsForPriceRangeMutex.Lock()
 	ret, specificReturn := fake.productsForPriceRangeReturnsOnCall[len(fake.productsForPriceRangeArgsForCall)]
 	fake.productsForPriceRangeArgsForCall = append(fake.productsForPriceRangeArgsForCall, struct {
 		arg1 string
 		arg2 string
-		arg3 []*models.Product
-		arg4 float64
+		arg3 string
+		arg4 []*models.Product
 		arg5 float64
-	}{arg1, arg2, arg3Copy, arg4, arg5})
+		arg6 float64
+	}{arg1, arg2, arg3, arg4Copy, arg5, arg6})
 	stub := fake.ProductsForPriceRangeStub
 	fakeReturns := fake.productsForPriceRangeReturns
-	fake.recordInvocation("ProductsForPriceRange", []interface{}{arg1, arg2, arg3Copy, arg4, arg5})
+	fake.recordInvocation("ProductsForPriceRange", []interface{}{arg1, arg2, arg3, arg4Copy, arg5, arg6})
 	fake.productsForPriceRangeMutex.Unlock()
 	if stub != nil {
-		return stub(arg1, arg2, arg3, arg4, arg5)
+		return stub(arg1, arg2, arg3, arg4, arg5, arg6)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
@@ -992,17 +1020,17 @@ func (fake *FakeManager) ProductsForPriceRangeCallCount() int {
 	return len(fake.productsForPriceRangeArgsForCall)
 }
 
-func (fake *FakeManager) ProductsForPriceRangeCalls(stub func(string, string, []*models.Product, float64, float64) ([]*models.Product, error)) {
+func (fake *FakeManager) ProductsForPriceRangeCalls(stub func(string, string, string, []*models.Product, float64, float64) ([]*models.Product, error)) {
 	fake.productsForPriceRangeMutex.Lock()
 	defer fake.productsForPriceRangeMutex.Unlock()
 	fake.ProductsForPriceRangeStub = stub
 }
 
-func (fake *FakeManager) ProductsForPriceRangeArgsForCall(i int) (string, string, []*models.Product, float64, float64) {
+func (fake *FakeManager) ProductsForPriceRangeArgsForCall(i int) (string, string, string, []*models.Product, float64, float64) {
 	fake.productsForPriceRangeMutex.RLock()
 	defer fake.productsForPriceRangeMutex.RUnlock()
 	argsForCall := fake.productsForPriceRangeArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3, argsForCall.arg4, argsForCall.arg5
+	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3, argsForCall.arg4, argsForCall.arg5, argsForCall.arg6
 }
 
 func (fake *FakeManager) ProductsForPriceRangeReturns(result1 []*models.Product, result2 error) {
@@ -1031,26 +1059,27 @@ func (fake *FakeManager) ProductsForPriceRangeReturnsOnCall(i int, result1 []*mo
 	}{result1, result2}
 }
 
-func (fake *FakeManager) ProductsForSubCategory(arg1 string, arg2 string, arg3 []*models.Product, arg4 string) ([]*models.Product, error) {
-	var arg3Copy []*models.Product
-	if arg3 != nil {
-		arg3Copy = make([]*models.Product, len(arg3))
-		copy(arg3Copy, arg3)
+func (fake *FakeManager) ProductsForSubCategory(arg1 string, arg2 string, arg3 string, arg4 []*models.Product, arg5 string) ([]*models.Product, error) {
+	var arg4Copy []*models.Product
+	if arg4 != nil {
+		arg4Copy = make([]*models.Product, len(arg4))
+		copy(arg4Copy, arg4)
 	}
 	fake.productsForSubCategoryMutex.Lock()
 	ret, specificReturn := fake.productsForSubCategoryReturnsOnCall[len(fake.productsForSubCategoryArgsForCall)]
 	fake.productsForSubCategoryArgsForCall = append(fake.productsForSubCategoryArgsForCall, struct {
 		arg1 string
 		arg2 string
-		arg3 []*models.Product
-		arg4 string
-	}{arg1, arg2, arg3Copy, arg4})
+		arg3 string
+		arg4 []*models.Product
+		arg5 string
+	}{arg1, arg2, arg3, arg4Copy, arg5})
 	stub := fake.ProductsForSubCategoryStub
 	fakeReturns := fake.productsForSubCategoryReturns
-	fake.recordInvocation("ProductsForSubCategory", []interface{}{arg1, arg2, arg3Copy, arg4})
+	fake.recordInvocation("ProductsForSubCategory", []interface{}{arg1, arg2, arg3, arg4Copy, arg5})
 	fake.productsForSubCategoryMutex.Unlock()
 	if stub != nil {
-		return stub(arg1, arg2, arg3, arg4)
+		return stub(arg1, arg2, arg3, arg4, arg5)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
@@ -1064,17 +1093,17 @@ func (fake *FakeManager) ProductsForSubCategoryCallCount() int {
 	return len(fake.productsForSubCategoryArgsForCall)
 }
 
-func (fake *FakeManager) ProductsForSubCategoryCalls(stub func(string, string, []*models.Product, string) ([]*models.Product, error)) {
+func (fake *FakeManager) ProductsForSubCategoryCalls(stub func(string, string, string, []*models.Product, string) ([]*models.Product, error)) {
 	fake.productsForSubCategoryMutex.Lock()
 	defer fake.productsForSubCategoryMutex.Unlock()
 	fake.ProductsForSubCategoryStub = stub
 }
 
-func (fake *FakeManager) ProductsForSubCategoryArgsForCall(i int) (string, string, []*models.Product, string) {
+func (fake *FakeManager) ProductsForSubCategoryArgsForCall(i int) (string, string, string, []*models.Product, string) {
 	fake.productsForSubCategoryMutex.RLock()
 	defer fake.productsForSubCategoryMutex.RUnlock()
 	argsForCall := fake.productsForSubCategoryArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3, argsForCall.arg4
+	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3, argsForCall.arg4, argsForCall.arg5
 }
 
 func (fake *FakeManager) ProductsForSubCategoryReturns(result1 []*models.Product, result2 error) {
@@ -1103,31 +1132,32 @@ func (fake *FakeManager) ProductsForSubCategoryReturnsOnCall(i int, result1 []*m
 	}{result1, result2}
 }
 
-func (fake *FakeManager) ProductsForVariants(arg1 string, arg2 string, arg3 []*models.Product, arg4 []string) ([]*models.Product, error) {
-	var arg3Copy []*models.Product
-	if arg3 != nil {
-		arg3Copy = make([]*models.Product, len(arg3))
-		copy(arg3Copy, arg3)
-	}
-	var arg4Copy []string
+func (fake *FakeManager) ProductsForVariants(arg1 string, arg2 string, arg3 string, arg4 []*models.Product, arg5 []string) ([]*models.Product, error) {
+	var arg4Copy []*models.Product
 	if arg4 != nil {
-		arg4Copy = make([]string, len(arg4))
+		arg4Copy = make([]*models.Product, len(arg4))
 		copy(arg4Copy, arg4)
+	}
+	var arg5Copy []string
+	if arg5 != nil {
+		arg5Copy = make([]string, len(arg5))
+		copy(arg5Copy, arg5)
 	}
 	fake.productsForVariantsMutex.Lock()
 	ret, specificReturn := fake.productsForVariantsReturnsOnCall[len(fake.productsForVariantsArgsForCall)]
 	fake.productsForVariantsArgsForCall = append(fake.productsForVariantsArgsForCall, struct {
 		arg1 string
 		arg2 string
-		arg3 []*models.Product
-		arg4 []string
-	}{arg1, arg2, arg3Copy, arg4Copy})
+		arg3 string
+		arg4 []*models.Product
+		arg5 []string
+	}{arg1, arg2, arg3, arg4Copy, arg5Copy})
 	stub := fake.ProductsForVariantsStub
 	fakeReturns := fake.productsForVariantsReturns
-	fake.recordInvocation("ProductsForVariants", []interface{}{arg1, arg2, arg3Copy, arg4Copy})
+	fake.recordInvocation("ProductsForVariants", []interface{}{arg1, arg2, arg3, arg4Copy, arg5Copy})
 	fake.productsForVariantsMutex.Unlock()
 	if stub != nil {
-		return stub(arg1, arg2, arg3, arg4)
+		return stub(arg1, arg2, arg3, arg4, arg5)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
@@ -1141,17 +1171,17 @@ func (fake *FakeManager) ProductsForVariantsCallCount() int {
 	return len(fake.productsForVariantsArgsForCall)
 }
 
-func (fake *FakeManager) ProductsForVariantsCalls(stub func(string, string, []*models.Product, []string) ([]*models.Product, error)) {
+func (fake *FakeManager) ProductsForVariantsCalls(stub func(string, string, string, []*models.Product, []string) ([]*models.Product, error)) {
 	fake.productsForVariantsMutex.Lock()
 	defer fake.productsForVariantsMutex.Unlock()
 	fake.ProductsForVariantsStub = stub
 }
 
-func (fake *FakeManager) ProductsForVariantsArgsForCall(i int) (string, string, []*models.Product, []string) {
+func (fake *FakeManager) ProductsForVariantsArgsForCall(i int) (string, string, string, []*models.Product, []string) {
 	fake.productsForVariantsMutex.RLock()
 	defer fake.productsForVariantsMutex.RUnlock()
 	argsForCall := fake.productsForVariantsArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3, argsForCall.arg4
+	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3, argsForCall.arg4, argsForCall.arg5
 }
 
 func (fake *FakeManager) ProductsForVariantsReturns(result1 []*models.Product, result2 error) {
@@ -1180,23 +1210,24 @@ func (fake *FakeManager) ProductsForVariantsReturnsOnCall(i int, result1 []*mode
 	}{result1, result2}
 }
 
-func (fake *FakeManager) SortProductsByPriceAsc(arg1 string, arg2 string, arg3 []*models.Product) {
-	var arg3Copy []*models.Product
-	if arg3 != nil {
-		arg3Copy = make([]*models.Product, len(arg3))
-		copy(arg3Copy, arg3)
+func (fake *FakeManager) SortProductsByPriceAsc(arg1 string, arg2 string, arg3 string, arg4 []*models.Product) {
+	var arg4Copy []*models.Product
+	if arg4 != nil {
+		arg4Copy = make([]*models.Product, len(arg4))
+		copy(arg4Copy, arg4)
 	}
 	fake.sortProductsByPriceAscMutex.Lock()
 	fake.sortProductsByPriceAscArgsForCall = append(fake.sortProductsByPriceAscArgsForCall, struct {
 		arg1 string
 		arg2 string
-		arg3 []*models.Product
-	}{arg1, arg2, arg3Copy})
+		arg3 string
+		arg4 []*models.Product
+	}{arg1, arg2, arg3, arg4Copy})
 	stub := fake.SortProductsByPriceAscStub
-	fake.recordInvocation("SortProductsByPriceAsc", []interface{}{arg1, arg2, arg3Copy})
+	fake.recordInvocation("SortProductsByPriceAsc", []interface{}{arg1, arg2, arg3, arg4Copy})
 	fake.sortProductsByPriceAscMutex.Unlock()
 	if stub != nil {
-		fake.SortProductsByPriceAscStub(arg1, arg2, arg3)
+		fake.SortProductsByPriceAscStub(arg1, arg2, arg3, arg4)
 	}
 }
 
@@ -1206,36 +1237,37 @@ func (fake *FakeManager) SortProductsByPriceAscCallCount() int {
 	return len(fake.sortProductsByPriceAscArgsForCall)
 }
 
-func (fake *FakeManager) SortProductsByPriceAscCalls(stub func(string, string, []*models.Product)) {
+func (fake *FakeManager) SortProductsByPriceAscCalls(stub func(string, string, string, []*models.Product)) {
 	fake.sortProductsByPriceAscMutex.Lock()
 	defer fake.sortProductsByPriceAscMutex.Unlock()
 	fake.SortProductsByPriceAscStub = stub
 }
 
-func (fake *FakeManager) SortProductsByPriceAscArgsForCall(i int) (string, string, []*models.Product) {
+func (fake *FakeManager) SortProductsByPriceAscArgsForCall(i int) (string, string, string, []*models.Product) {
 	fake.sortProductsByPriceAscMutex.RLock()
 	defer fake.sortProductsByPriceAscMutex.RUnlock()
 	argsForCall := fake.sortProductsByPriceAscArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
+	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3, argsForCall.arg4
 }
 
-func (fake *FakeManager) SortProductsByPriceDesc(arg1 string, arg2 string, arg3 []*models.Product) {
-	var arg3Copy []*models.Product
-	if arg3 != nil {
-		arg3Copy = make([]*models.Product, len(arg3))
-		copy(arg3Copy, arg3)
+func (fake *FakeManager) SortProductsByPriceDesc(arg1 string, arg2 string, arg3 string, arg4 []*models.Product) {
+	var arg4Copy []*models.Product
+	if arg4 != nil {
+		arg4Copy = make([]*models.Product, len(arg4))
+		copy(arg4Copy, arg4)
 	}
 	fake.sortProductsByPriceDescMutex.Lock()
 	fake.sortProductsByPriceDescArgsForCall = append(fake.sortProductsByPriceDescArgsForCall, struct {
 		arg1 string
 		arg2 string
-		arg3 []*models.Product
-	}{arg1, arg2, arg3Copy})
+		arg3 string
+		arg4 []*models.Product
+	}{arg1, arg2, arg3, arg4Copy})
 	stub := fake.SortProductsByPriceDescStub
-	fake.recordInvocation("SortProductsByPriceDesc", []interface{}{arg1, arg2, arg3Copy})
+	fake.recordInvocation("SortProductsByPriceDesc", []interface{}{arg1, arg2, arg3, arg4Copy})
 	fake.sortProductsByPriceDescMutex.Unlock()
 	if stub != nil {
-		fake.SortProductsByPriceDescStub(arg1, arg2, arg3)
+		fake.SortProductsByPriceDescStub(arg1, arg2, arg3, arg4)
 	}
 }
 
@@ -1245,37 +1277,38 @@ func (fake *FakeManager) SortProductsByPriceDescCallCount() int {
 	return len(fake.sortProductsByPriceDescArgsForCall)
 }
 
-func (fake *FakeManager) SortProductsByPriceDescCalls(stub func(string, string, []*models.Product)) {
+func (fake *FakeManager) SortProductsByPriceDescCalls(stub func(string, string, string, []*models.Product)) {
 	fake.sortProductsByPriceDescMutex.Lock()
 	defer fake.sortProductsByPriceDescMutex.Unlock()
 	fake.SortProductsByPriceDescStub = stub
 }
 
-func (fake *FakeManager) SortProductsByPriceDescArgsForCall(i int) (string, string, []*models.Product) {
+func (fake *FakeManager) SortProductsByPriceDescArgsForCall(i int) (string, string, string, []*models.Product) {
 	fake.sortProductsByPriceDescMutex.RLock()
 	defer fake.sortProductsByPriceDescMutex.RUnlock()
 	argsForCall := fake.sortProductsByPriceDescArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
+	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3, argsForCall.arg4
 }
 
-func (fake *FakeManager) SortProductsByTop3Terps(arg1 string, arg2 string, arg3 []*models.Product, arg4 [3]string) {
-	var arg3Copy []*models.Product
-	if arg3 != nil {
-		arg3Copy = make([]*models.Product, len(arg3))
-		copy(arg3Copy, arg3)
+func (fake *FakeManager) SortProductsByTop3Terps(arg1 string, arg2 string, arg3 string, arg4 []*models.Product, arg5 [3]string) {
+	var arg4Copy []*models.Product
+	if arg4 != nil {
+		arg4Copy = make([]*models.Product, len(arg4))
+		copy(arg4Copy, arg4)
 	}
 	fake.sortProductsByTop3TerpsMutex.Lock()
 	fake.sortProductsByTop3TerpsArgsForCall = append(fake.sortProductsByTop3TerpsArgsForCall, struct {
 		arg1 string
 		arg2 string
-		arg3 []*models.Product
-		arg4 [3]string
-	}{arg1, arg2, arg3Copy, arg4})
+		arg3 string
+		arg4 []*models.Product
+		arg5 [3]string
+	}{arg1, arg2, arg3, arg4Copy, arg5})
 	stub := fake.SortProductsByTop3TerpsStub
-	fake.recordInvocation("SortProductsByTop3Terps", []interface{}{arg1, arg2, arg3Copy, arg4})
+	fake.recordInvocation("SortProductsByTop3Terps", []interface{}{arg1, arg2, arg3, arg4Copy, arg5})
 	fake.sortProductsByTop3TerpsMutex.Unlock()
 	if stub != nil {
-		fake.SortProductsByTop3TerpsStub(arg1, arg2, arg3, arg4)
+		fake.SortProductsByTop3TerpsStub(arg1, arg2, arg3, arg4, arg5)
 	}
 }
 
@@ -1285,32 +1318,33 @@ func (fake *FakeManager) SortProductsByTop3TerpsCallCount() int {
 	return len(fake.sortProductsByTop3TerpsArgsForCall)
 }
 
-func (fake *FakeManager) SortProductsByTop3TerpsCalls(stub func(string, string, []*models.Product, [3]string)) {
+func (fake *FakeManager) SortProductsByTop3TerpsCalls(stub func(string, string, string, []*models.Product, [3]string)) {
 	fake.sortProductsByTop3TerpsMutex.Lock()
 	defer fake.sortProductsByTop3TerpsMutex.Unlock()
 	fake.SortProductsByTop3TerpsStub = stub
 }
 
-func (fake *FakeManager) SortProductsByTop3TerpsArgsForCall(i int) (string, string, []*models.Product, [3]string) {
+func (fake *FakeManager) SortProductsByTop3TerpsArgsForCall(i int) (string, string, string, []*models.Product, [3]string) {
 	fake.sortProductsByTop3TerpsMutex.RLock()
 	defer fake.sortProductsByTop3TerpsMutex.RUnlock()
 	argsForCall := fake.sortProductsByTop3TerpsArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3, argsForCall.arg4
+	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3, argsForCall.arg4, argsForCall.arg5
 }
 
-func (fake *FakeManager) Terpenes(arg1 string, arg2 string) ([]*models.Terpene, error) {
+func (fake *FakeManager) Terpenes(arg1 string, arg2 string, arg3 string) ([]*models.Terpene, error) {
 	fake.terpenesMutex.Lock()
 	ret, specificReturn := fake.terpenesReturnsOnCall[len(fake.terpenesArgsForCall)]
 	fake.terpenesArgsForCall = append(fake.terpenesArgsForCall, struct {
 		arg1 string
 		arg2 string
-	}{arg1, arg2})
+		arg3 string
+	}{arg1, arg2, arg3})
 	stub := fake.TerpenesStub
 	fakeReturns := fake.terpenesReturns
-	fake.recordInvocation("Terpenes", []interface{}{arg1, arg2})
+	fake.recordInvocation("Terpenes", []interface{}{arg1, arg2, arg3})
 	fake.terpenesMutex.Unlock()
 	if stub != nil {
-		return stub(arg1, arg2)
+		return stub(arg1, arg2, arg3)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
@@ -1324,17 +1358,17 @@ func (fake *FakeManager) TerpenesCallCount() int {
 	return len(fake.terpenesArgsForCall)
 }
 
-func (fake *FakeManager) TerpenesCalls(stub func(string, string) ([]*models.Terpene, error)) {
+func (fake *FakeManager) TerpenesCalls(stub func(string, string, string) ([]*models.Terpene, error)) {
 	fake.terpenesMutex.Lock()
 	defer fake.terpenesMutex.Unlock()
 	fake.TerpenesStub = stub
 }
 
-func (fake *FakeManager) TerpenesArgsForCall(i int) (string, string) {
+func (fake *FakeManager) TerpenesArgsForCall(i int) (string, string, string) {
 	fake.terpenesMutex.RLock()
 	defer fake.terpenesMutex.RUnlock()
 	argsForCall := fake.terpenesArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2
+	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
 }
 
 func (fake *FakeManager) TerpenesReturns(result1 []*models.Terpene, result2 error) {

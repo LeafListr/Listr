@@ -11,6 +11,8 @@ import (
 )
 
 func TestSend(t *testing.T) {
+	menuType := "MEDICAL"
+	gbgId := "LMR124"
 	tests := map[string]struct {
 		ctx           context.Context
 		query         string
@@ -33,28 +35,28 @@ func TestSend(t *testing.T) {
 		"curaleaf - all products": {
 			ctx:      context.Background(),
 			endpoint: repository.GqlEndpoint,
-			query:    client.AllProductQuery(repository.GbgId, repository.MenuType),
+			query:    client.AllProductQuery(gbgId, menuType),
 			response: &client.Response{},
 		},
 		"curaleaf - all vaporizer products": {
 			ctx:      context.Background(),
 			endpoint: repository.GqlEndpoint,
 			headers:  map[string][]string{"authority": {repository.Authority}},
-			query:    client.AllProductForCategoryQuery(repository.GbgId, repository.MenuType, "VAPORIZERS"),
+			query:    client.AllProductForCategoryQuery(gbgId, menuType, "VAPORIZERS"),
 			response: &client.Response{},
 		},
 		"curaleaf - all offers": {
 			ctx:      context.Background(),
 			endpoint: repository.GqlEndpoint,
 			headers:  map[string][]string{"authority": {repository.Authority}},
-			query:    client.AllOffersQuery(repository.GbgId, repository.MenuType),
+			query:    client.AllOffersQuery(gbgId, menuType),
 			response: &client.Response{},
 		},
 		"curaleaf - all categories": {
 			ctx:      context.Background(),
 			endpoint: repository.GqlEndpoint,
 			headers:  map[string][]string{"authority": {repository.Authority}},
-			query:    client.AllCategoriesQuery(repository.GbgId, repository.MenuType),
+			query:    client.AllCategoriesQuery(gbgId, menuType),
 			response: &client.Response{},
 		},
 		"curaleaf - all locations": {
@@ -67,7 +69,7 @@ func TestSend(t *testing.T) {
 		"curaleaf - invalid location": {
 			ctx:           context.Background(),
 			endpoint:      repository.GqlEndpoint,
-			query:         client.AllProductQuery("foo", repository.MenuType),
+			query:         client.AllProductQuery("foo", menuType),
 			response:      &client.Response{},
 			expectedError: true,
 		},

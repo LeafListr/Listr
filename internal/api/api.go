@@ -214,11 +214,12 @@ func (a *API) handleLocation(res http.ResponseWriter, req *http.Request) {
 // @Accept			json
 // @Produce		json
 // @Param			dispensaryId	path	string			true	"Dispensary ID"
+// @Param			menu_type		query	string			true	"Menu type"
 // @Success		200				{array}	models.Location	"List of locations"
 // @Router			/dispensaries/{dispensaryId}/locations [get].
 func (a *API) handleLocationListing(r http.ResponseWriter, req *http.Request) {
-	dispensary, _, _ := params(req, "")
-	locations, err := a.w.Locations(dispensary)
+	dispensary, _, menuType, _ := params(req, "")
+	locations, err := a.w.Locations(dispensary, menuType)
 	a.writeJson(r, req, a.t.TranslateAPILocations(locations), err)
 }
 
@@ -229,12 +230,13 @@ func (a *API) handleLocationListing(r http.ResponseWriter, req *http.Request) {
 // @Produce		json
 // @Param			dispensaryId	path		string			true	"Dispensary ID"
 // @Param			locationId		path		string			true	"Location ID"
+// @Param			menu_type		query		string			true	"Menu type"
 // @Param			productId		path		string			true	"Product ID"
 // @Success		200				{object}	models.Product	"Product details"
 // @Router			/dispensaries/{dispensaryId}/locations/{locationId}/products/{productId} [get].
 func (a *API) handleProduct(r http.ResponseWriter, req *http.Request) {
-	dispensary, locationId, productId := params(req, "productId")
-	product, err := a.w.Product(dispensary, locationId, productId)
+	dispensary, locationId, menuType, productId := params(req, "productId")
+	product, err := a.w.Product(dispensary, locationId, menuType, productId)
 	a.writeJson(r, req, a.t.TranslateAPIProduct(product), err)
 }
 
@@ -245,6 +247,7 @@ func (a *API) handleProduct(r http.ResponseWriter, req *http.Request) {
 // @Produce		json
 // @Param			dispensaryId	path	string			true	"Dispensary ID"
 // @Param			locationId		path	string			true	"Location ID"
+// @Param			menu_type		query	string			true	"Menu type"
 // @Param			category		query	string			true	"Category"
 // @Param			sub				query	string			false	"Sub Category"
 // @Param			min_price		query	number			false	"Minimum price"
@@ -261,17 +264,17 @@ func (a *API) handleProduct(r http.ResponseWriter, req *http.Request) {
 func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 	var products []*models.Product
 	var err error
-	dispensary, locationId, _ := params(req, "")
+	dispensary, locationId, menuType, _ := params(req, "")
 
 	if category := req.URL.Query().Get("category"); category != "" {
-		products, err = a.w.ProductsForCategory(dispensary, locationId, models.Category(category))
+		products, err = a.w.ProductsForCategory(dispensary, locationId, menuType, models.Category(category))
 		if err != nil {
 			a.handleError(r, req, err)
 			return
 		}
 	}
 	if subCategory := subCategoryFilter(req); subCategory != "" {
-		products, err = a.w.ProductsForSubCategory(dispensary, locationId, products, subCategory)
+		products, err = a.w.ProductsForSubCategory(dispensary, locationId, menuType, products, subCategory)
 		if err != nil {
 			a.handleError(r, req, err)
 			return
@@ -279,28 +282,28 @@ func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 	}
 	if hasPriceFilters(req) {
 		minPrice, maxPrice := priceFilters(req)
-		products, err = a.w.ProductsForPriceRange(dispensary, locationId, products, minPrice, maxPrice)
+		products, err = a.w.ProductsForPriceRange(dispensary, locationId, menuType, products, minPrice, maxPrice)
 		if err != nil {
 			a.handleError(r, req, err)
 			return
 		}
 	}
 	if brands := brandFilters(req); brands != "" {
-		products, err = a.w.ProductsForBrands(dispensary, locationId, products, strings.Split(brands, ","))
+		products, err = a.w.ProductsForBrands(dispensary, locationId, menuType, products, strings.Split(brands, ","))
 		if err != nil {
 			a.handleError(r, req, err)
 			return
 		}
 	}
 	if notBrands := notBrandFilters(req); notBrands != "" {
-		products, err = a.w.ProductsExcludingBrands(dispensary, locationId, products, strings.Split(notBrands, ","))
+		products, err = a.w.ProductsExcludingBrands(dispensary, locationId, menuType, products, strings.Split(notBrands, ","))
 		if err != nil {
 			a.handleError(r, req, err)
 			return
 		}
 	}
 	if variants := variantFilters(req); variants != "" {
-		products, err = a.w.ProductsForVariants(dispensary, locationId, products, strings.Split(variants, ","))
+		products, err = a.w.ProductsForVariants(dispensary, locationId, menuType, products, strings.Split(variants, ","))
 		if err != nil {
 			a.handleError(r, req, err)
 			return
@@ -308,7 +311,7 @@ func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 	}
 
 	if products == nil {
-		products, err = a.w.Products(dispensary, locationId)
+		products, err = a.w.Products(dispensary, locationId, menuType)
 		if err != nil {
 			a.handleError(r, req, err)
 			return
@@ -317,16 +320,16 @@ func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 
 	if sortPriceAsc(req) {
 		slog.Debug("Sorting products by price asc")
-		a.w.SortProductsByPriceAsc(dispensary, locationId, products)
+		a.w.SortProductsByPriceAsc(dispensary, locationId, menuType, products)
 	}
 	if sortPriceDesc(req) {
 		slog.Debug("Sorting products by price desc")
-		a.w.SortProductsByPriceDesc(dispensary, locationId, products)
+		a.w.SortProductsByPriceDesc(dispensary, locationId, menuType, products)
 	}
 
 	if sortTop3Terps(req) {
 		slog.Debug("Sorting products by top 3 terps")
-		a.w.SortProductsByTop3Terps(dispensary, locationId, products, top3Terps(req))
+		a.w.SortProductsByTop3Terps(dispensary, locationId, menuType, products, top3Terps(req))
 	}
 
 	a.writeJson(r, req, a.t.TranslateAPIProducts(products), err)
@@ -339,11 +342,12 @@ func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 // @Produce		json
 // @Param			dispensaryId	path	string			true	"Dispensary ID"
 // @Param			locationId		path	string			true	"Location ID"
+// @Param			menu_type		query	string			true	"Menu type"
 // @Success		200				{array}	models.Offer	"List of offers"
 // @Router			/dispensaries/{dispensaryId}/locations/{locationId}/offers [get].
 func (a *API) handleOfferListing(r http.ResponseWriter, req *http.Request) {
-	dispensary, locationId, _ := params(req, "")
-	offers, err := a.w.Offers(dispensary, locationId)
+	dispensary, locationId, menuType, _ := params(req, "")
+	offers, err := a.w.Offers(dispensary, locationId, menuType)
 	a.writeJson(r, req, a.t.TranslateAPIOffers(offers), err)
 }
 
@@ -354,11 +358,12 @@ func (a *API) handleOfferListing(r http.ResponseWriter, req *http.Request) {
 // @Produce		json
 // @Param			dispensaryId	path	string			true	"Dispensary ID"
 // @Param			locationId		path	string			true	"Location ID"
+// @Param			menu_type		query	string			true	"Menu type"
 // @Success		200				{array}	models.Category	"List of categories"
 // @Router			/dispensaries/{dispensaryId}/locations/{locationId}/categories [get].
 func (a *API) handleCategoryListing(r http.ResponseWriter, req *http.Request) {
-	dispensary, locationId, _ := params(req, "")
-	categories, err := a.w.Categories(dispensary, locationId)
+	dispensary, locationId, menuType, _ := params(req, "")
+	categories, err := a.w.Categories(dispensary, locationId, menuType)
 	a.writeJson(r, req, a.t.TranslateAPICategories(categories), err)
 }
 
@@ -369,11 +374,12 @@ func (a *API) handleCategoryListing(r http.ResponseWriter, req *http.Request) {
 // @Produce		json
 // @Param			dispensaryId	path	string			true	"Dispensary ID"
 // @Param			locationId		path	string			true	"Location ID"
+// @Param			menu_type		query	string			true	"Menu type"
 // @Success		200				{array}	models.Terpene	"List of terpenes"
 // @Router			/dispensaries/{dispensaryId}/locations/{locationId}/terpenes [get].
 func (a *API) handleTerpeneListing(r http.ResponseWriter, req *http.Request) {
-	dispensary, locationId, _ := params(req, "")
-	terpenes, err := a.w.Terpenes(dispensary, locationId)
+	dispensary, locationId, menuType, _ := params(req, "")
+	terpenes, err := a.w.Terpenes(dispensary, locationId, menuType)
 	a.writeJson(r, req, a.t.TranslateAPITerpenes(terpenes), err)
 }
 
@@ -384,11 +390,12 @@ func (a *API) handleTerpeneListing(r http.ResponseWriter, req *http.Request) {
 // @Produce		json
 // @Param			dispensaryId	path	string				true	"Dispensary ID"
 // @Param			locationId		path	string				true	"Location ID"
+// @Param			menu_type		query	string				true	"Menu type"
 // @Success		200				{array}	models.Cannabinoid	"List of cannabinoids"
 // @Router			/dispensaries/{dispensaryId}/locations/{locationId}/cannabinoids [get].
 func (a *API) handleCannabinoidListing(r http.ResponseWriter, req *http.Request) {
-	dispensary, locationId, _ := params(req, "")
-	cannabinoids, err := a.w.Cannabinoids(dispensary, locationId)
+	dispensary, locationId, menuType, _ := params(req, "")
+	cannabinoids, err := a.w.Cannabinoids(dispensary, locationId, menuType)
 	a.writeJson(r, req, a.t.TranslateAPICannabinoids(cannabinoids), err)
 }
 
@@ -428,13 +435,14 @@ func RequestLogger(next http.Handler) http.Handler {
 	})
 }
 
-func params(req *http.Request, resource string) (dispensary, locationId, resourceId string) {
+func params(req *http.Request, resource string) (dispensary, locationId, menuType, resourceId string) {
 	dispensary = chi.URLParam(req, "dispensaryId")
 	locationId = chi.URLParam(req, "locationId")
+	menuType = req.URL.Query().Get("menu_type")
 	if resource != "" {
 		resourceId = chi.URLParam(req, resource)
 	}
-	return dispensary, locationId, resourceId
+	return dispensary, locationId, menuType, resourceId
 }
 
 func subCategoryFilter(req *http.Request) string {

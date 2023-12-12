@@ -34,13 +34,12 @@ func TestManager_Location(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 			m := manager.NewWorkflowManager()
-			location, err := m.Location(tt.dispensary, tt.menuId)
+			location, err := m.Location(tt.dispensary, tt.menuId, "MEDICAL")
 			if tt.wantErr {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
 				assert.NotNil(t, location)
-				// Add more assertions as needed
 			}
 		})
 	}
@@ -66,13 +65,12 @@ func TestManager_Locations(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 			m := manager.NewWorkflowManager()
-			location, err := m.Locations(tt.dispensary)
+			location, err := m.Locations(tt.dispensary, "MEDICAL")
 			if tt.wantErr {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
 				assert.NotNil(t, location)
-				// Add more assertions as needed
 			}
 		})
 	}
@@ -82,6 +80,7 @@ func TestManager_Product(t *testing.T) {
 	tests := map[string]struct {
 		dispensary    string
 		menuId        string
+		menuType      string
 		productId     string
 		expectedError error
 		wantErr       bool
@@ -89,12 +88,14 @@ func TestManager_Product(t *testing.T) {
 		"Valid Product": {
 			dispensary: "curaleaf",
 			menuId:     "LMR070",
+			menuType:   "MEDICAL",
 			productId:  "654e3feeba407e0001ab1ab0",
 			wantErr:    false,
 		},
 		"Invalid Dispensary": {
 			dispensary:    "invalid",
 			menuId:        "LMR070",
+			menuType:      "MEDICAL",
 			productId:     "Rizz-Machine",
 			wantErr:       true,
 			expectedError: errors.New("invalid dispensary"),
@@ -102,6 +103,7 @@ func TestManager_Product(t *testing.T) {
 		"Invalid MenuId": {
 			dispensary:    "curaleaf",
 			menuId:        "Invalid",
+			menuType:      "MEDICAL",
 			productId:     "Rizz-Machine",
 			wantErr:       true,
 			expectedError: errors.New("invalid menu"),
@@ -109,6 +111,7 @@ func TestManager_Product(t *testing.T) {
 		"Invalid ProductId": {
 			dispensary:    "curaleaf",
 			menuId:        "LMR070",
+			menuType:      "MEDICAL",
 			productId:     "Invalid",
 			wantErr:       true,
 			expectedError: errors.New("invalid product"),
@@ -136,7 +139,7 @@ func TestManager_Product(t *testing.T) {
 
 			m := manager.Manager{F: f}
 
-			product, err := m.Product(tt.dispensary, tt.menuId, tt.productId)
+			product, err := m.Product(tt.dispensary, tt.menuId, tt.menuType, tt.productId)
 			if tt.wantErr {
 				assert.Error(t, err)
 			} else {
@@ -152,12 +155,14 @@ func TestManager_Products(t *testing.T) {
 	tests := map[string]struct {
 		dispensary    string
 		menuId        string
+		menuType      string
 		expectedError error
 		wantErr       bool
 	}{
 		"Valid Products Request": {
 			dispensary: "curaleaf",
 			menuId:     "LMR070",
+			menuType:   "MEDICAL",
 			wantErr:    false,
 		},
 	}
@@ -180,7 +185,7 @@ func TestManager_Products(t *testing.T) {
 
 			m := manager.Manager{F: f}
 
-			result, err := m.Products(tt.dispensary, tt.menuId)
+			result, err := m.Products(tt.dispensary, tt.menuId, tt.menuType)
 			if tt.wantErr {
 				assert.Error(t, err)
 			} else {
@@ -195,6 +200,7 @@ func TestManager_ProductsForCategory(t *testing.T) {
 	tests := map[string]struct {
 		dispensary    string
 		menuId        string
+		menuType      string
 		category      string
 		expectedError error
 		wantErr       bool
@@ -202,10 +208,10 @@ func TestManager_ProductsForCategory(t *testing.T) {
 		"Valid Category Request": {
 			dispensary: "curaleaf",
 			menuId:     "LMR070",
+			menuType:   "MEDICAL",
 			category:   "Edibles",
 			wantErr:    false,
 		},
-		// Add more test cases as needed
 	}
 
 	for name, tt := range tests {
@@ -226,7 +232,7 @@ func TestManager_ProductsForCategory(t *testing.T) {
 
 			m := manager.Manager{F: f}
 
-			result, err := m.ProductsForCategory(tt.dispensary, tt.menuId, models.Category(tt.category))
+			result, err := m.ProductsForCategory(tt.dispensary, tt.menuId, tt.menuType, models.Category(tt.category))
 			if tt.wantErr {
 				assert.Error(t, err)
 			} else {
@@ -241,15 +247,16 @@ func TestManager_Categories(t *testing.T) {
 	tests := map[string]struct {
 		dispensary    string
 		menuId        string
+		menuType      string
 		expectedError error
 		wantErr       bool
 	}{
 		"Valid Categories Request": {
 			dispensary: "curaleaf",
 			menuId:     "LMR070",
+			menuType:   "MEDICAL",
 			wantErr:    false,
 		},
-		// Add more test cases as needed
 	}
 
 	for name, tt := range tests {
@@ -270,7 +277,7 @@ func TestManager_Categories(t *testing.T) {
 
 			m := manager.Manager{F: f}
 
-			result, err := m.Categories(tt.dispensary, tt.menuId)
+			result, err := m.Categories(tt.dispensary, tt.menuId, tt.menuType)
 			if tt.wantErr {
 				assert.Error(t, err)
 			} else {
@@ -285,15 +292,16 @@ func TestManager_Terpenes(t *testing.T) {
 	tests := map[string]struct {
 		dispensary    string
 		menuId        string
+		menuType      string
 		expectedError error
 		wantErr       bool
 	}{
 		"Valid Terpenes Request": {
 			dispensary: "curaleaf",
 			menuId:     "LMR070",
+			menuType:   "MEDICAL",
 			wantErr:    false,
 		},
-		// Add more test cases as needed
 	}
 
 	for name, tt := range tests {
@@ -314,7 +322,7 @@ func TestManager_Terpenes(t *testing.T) {
 
 			m := manager.Manager{F: f}
 
-			result, err := m.Terpenes(tt.dispensary, tt.menuId)
+			result, err := m.Terpenes(tt.dispensary, tt.menuId, tt.menuType)
 			if tt.wantErr {
 				assert.Error(t, err)
 			} else {
@@ -329,15 +337,16 @@ func TestManager_Cannabinoids(t *testing.T) {
 	tests := map[string]struct {
 		dispensary    string
 		menuId        string
+		menuType      string
 		expectedError error
 		wantErr       bool
 	}{
 		"Valid Cannabinoids Request": {
 			dispensary: "curaleaf",
 			menuId:     "LMR070",
+			menuType:   "MEDICAL",
 			wantErr:    false,
 		},
-		// Add more test cases as needed
 	}
 
 	for name, tt := range tests {
@@ -358,7 +367,7 @@ func TestManager_Cannabinoids(t *testing.T) {
 
 			m := manager.Manager{F: f}
 
-			result, err := m.Cannabinoids(tt.dispensary, tt.menuId)
+			result, err := m.Cannabinoids(tt.dispensary, tt.menuId, tt.menuType)
 			if tt.wantErr {
 				assert.Error(t, err)
 			} else {
@@ -373,15 +382,16 @@ func TestManager_Offers(t *testing.T) {
 	tests := map[string]struct {
 		dispensary    string
 		menuId        string
+		menuType      string
 		expectedError error
 		wantErr       bool
 	}{
 		"Valid Offers Request": {
 			dispensary: "curaleaf",
 			menuId:     "LMR070",
+			menuType:   "MEDICAL",
 			wantErr:    false,
 		},
-		// Add more test cases as needed
 	}
 
 	for name, tt := range tests {
@@ -402,7 +412,7 @@ func TestManager_Offers(t *testing.T) {
 
 			m := manager.Manager{F: f}
 
-			result, err := m.Offers(tt.dispensary, tt.menuId)
+			result, err := m.Offers(tt.dispensary, tt.menuId, tt.menuType)
 			if tt.wantErr {
 				assert.Error(t, err)
 			} else {

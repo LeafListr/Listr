@@ -1,4 +1,4 @@
-run:
+dev:
 	go run .
 test:
 	go test ./...
@@ -9,7 +9,8 @@ lint:
 	gofumpt -d -w .
 	golangci-lint run
 	swag fmt
-validate: lint test
+validate: gen lint test
+
 done: gen validate
 
 .PHONY: run test gen lint validate done
