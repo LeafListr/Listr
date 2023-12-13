@@ -318,6 +318,12 @@ func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 		}
 	}
 
+	if sortTop3Terps(req) {
+		slog.Debug("Sorting products by top 3 terps")
+		a.w.SortProductsByTop3Terps(dispensary, locationId, menuType, products, top3Terps(req))
+	}
+
+
 	if sortPriceAsc(req) {
 		slog.Debug("Sorting products by price asc")
 		a.w.SortProductsByPriceAsc(dispensary, locationId, menuType, products)
@@ -325,11 +331,6 @@ func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 	if sortPriceDesc(req) {
 		slog.Debug("Sorting products by price desc")
 		a.w.SortProductsByPriceDesc(dispensary, locationId, menuType, products)
-	}
-
-	if sortTop3Terps(req) {
-		slog.Debug("Sorting products by top 3 terps")
-		a.w.SortProductsByTop3Terps(dispensary, locationId, menuType, products, top3Terps(req))
 	}
 
 	a.writeJson(r, req, a.t.TranslateAPIProducts(products), err)
