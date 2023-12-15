@@ -1,24 +1,24 @@
-package translation_test
+package curaleaf_test
 
 import (
 	"testing"
 
-	"github.com/Linkinlog/LeafListr/internal/curaleaf/client"
-	"github.com/Linkinlog/LeafListr/internal/curaleaf/translation"
+	"github.com/Linkinlog/LeafListr/internal/curaleaf"
+
 	"github.com/Linkinlog/LeafListr/internal/models"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestClientTranslator_TranslateClientLocation(t *testing.T) {
 	tests := map[string]struct {
-		input    client.Location
+		input    curaleaf.Location
 		expected *models.Location
 	}{
 		"Translate Valid Location": {
-			input: client.Location{
+			input: curaleaf.Location{
 				UniqueId: "TestLocation",
 				Name:     "TestName",
-				Location: client.LocationDetails{
+				Location: curaleaf.LocationDetails{
 					Address: "123 Test St",
 					City:    "TestCity",
 					State:   "TestState",
@@ -36,7 +36,7 @@ func TestClientTranslator_TranslateClientLocation(t *testing.T) {
 		},
 	}
 
-	translator := &translation.ClientTranslator{}
+	translator := &curaleaf.ClientTranslator{}
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
@@ -48,15 +48,15 @@ func TestClientTranslator_TranslateClientLocation(t *testing.T) {
 
 func TestClientTranslator_TranslateClientLocations(t *testing.T) {
 	tests := map[string]struct {
-		input    []client.Location
+		input    []curaleaf.Location
 		expected []*models.Location
 	}{
 		"Translate Multiple Locations": {
-			input: []client.Location{
+			input: []curaleaf.Location{
 				{
 					Name:     "Name1",
 					UniqueId: "Location1",
-					Location: client.LocationDetails{
+					Location: curaleaf.LocationDetails{
 						Address: "123 Location St",
 						City:    "LocationCity",
 						State:   "LocationState",
@@ -66,7 +66,7 @@ func TestClientTranslator_TranslateClientLocations(t *testing.T) {
 				{
 					Name:     "Name2",
 					UniqueId: "Location2",
-					Location: client.LocationDetails{
+					Location: curaleaf.LocationDetails{
 						Address: "456 Location Ave",
 						City:    "AnotherCity",
 						State:   "AnotherState",
@@ -95,7 +95,7 @@ func TestClientTranslator_TranslateClientLocations(t *testing.T) {
 		},
 	}
 
-	translator := &translation.ClientTranslator{}
+	translator := &curaleaf.ClientTranslator{}
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
@@ -107,11 +107,11 @@ func TestClientTranslator_TranslateClientLocations(t *testing.T) {
 
 func TestClientTranslator_TranslateClientProduct(t *testing.T) {
 	tests := map[string]struct {
-		input    client.Product
+		input    curaleaf.Product
 		expected *models.Product
 	}{
 		"Translate Valid Product": {
-			input: client.Product{
+			input: curaleaf.Product{
 				ID:   "Product1",
 				Name: "Test Product",
 			},
@@ -122,7 +122,7 @@ func TestClientTranslator_TranslateClientProduct(t *testing.T) {
 		},
 	}
 
-	translator := &translation.ClientTranslator{}
+	translator := &curaleaf.ClientTranslator{}
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
@@ -134,11 +134,11 @@ func TestClientTranslator_TranslateClientProduct(t *testing.T) {
 
 func TestClientTranslator_TranslateClientProducts(t *testing.T) {
 	tests := map[string]struct {
-		input    []client.Product
+		input    []curaleaf.Product
 		expected []*models.Product
 	}{
 		"Translate Multiple Products": {
-			input: []client.Product{
+			input: []curaleaf.Product{
 				{
 					ID:   "Product1",
 					Name: "Test Product 1",
@@ -161,7 +161,7 @@ func TestClientTranslator_TranslateClientProducts(t *testing.T) {
 		},
 	}
 
-	translator := &translation.ClientTranslator{}
+	translator := &curaleaf.ClientTranslator{}
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {

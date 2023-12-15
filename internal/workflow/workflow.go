@@ -8,8 +8,8 @@ import (
 
 //go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate
 
-//counterfeiter:generate . Manager
-type Manager interface {
+//counterfeiter:generate . Workflow
+type Workflow interface {
 	LocationManager
 	ProductManager
 	CategoryManager

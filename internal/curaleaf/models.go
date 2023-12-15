@@ -1,7 +1,7 @@
-package client
+package curaleaf
 
 const (
-	ProductCategoryVape   = "VAPORIZERS"
+	ProductCategoryVape = "VAPORIZERS"
 )
 
 type Image struct {

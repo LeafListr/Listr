@@ -1,6 +1,7 @@
-package cache
+package curaleaf
 
 import (
+	"errors"
 	"log/slog"
 	"sync"
 	"time"
@@ -28,7 +29,7 @@ func NewCache() cache.Cacher {
 
 func (c *inMemCache) GetOrRetrieve(key string, retriever func() (any, error)) (any, error) {
 	value, err := c.Get(key)
-	if err == cache.ErrKeyNotFound || err == cache.ErrKeyExpired {
+	if errors.Is(err, cache.ErrKeyNotFound) || errors.Is(err, cache.ErrKeyExpired) {
 		value, err = retriever()
 		if err != nil {
 			return nil, err

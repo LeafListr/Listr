@@ -1,4 +1,4 @@
-package repository
+package curaleaf
 
 import (
 	"context"
@@ -10,28 +10,22 @@ import (
 	"github.com/Linkinlog/LeafListr/internal/cache"
 	"github.com/Linkinlog/LeafListr/internal/models"
 
-	curaClient "github.com/Linkinlog/LeafListr/internal/curaleaf/client"
-
 	"github.com/Linkinlog/LeafListr/internal/client"
 	"github.com/Linkinlog/LeafListr/internal/repository"
-	"github.com/Linkinlog/LeafListr/internal/translation"
 )
 
 const (
 	GqlEndpoint = "https://graph.curaleaf.com/api/curaql"
-	Authority   = "graph.curaleaf.com"
 )
-
-var Headers = map[string][]string{"authority": {Authority}}
 
 type Repository struct {
 	C        client.Client
-	T        translation.ClientTranslatable
+	T        *ClientTranslator
 	MC       cache.Cacher
 	menuType string
 }
 
-func NewRepository(c client.Client, translatable translation.ClientTranslatable, mc cache.Cacher, menuType string) repository.Repository {
+func NewRepository(c client.Client, translator *ClientTranslator, mc cache.Cacher, menuType string) repository.Repository {
 	if strings.EqualFold(menuType, "recreational") || strings.EqualFold(menuType, "medical") {
 		menuType = strings.ToUpper(menuType)
 	} else {
@@ -39,14 +33,14 @@ func NewRepository(c client.Client, translatable translation.ClientTranslatable,
 	}
 	return &Repository{
 		C:        c,
-		T:        translatable,
+		T:        translator,
 		MC:       mc,
 		menuType: menuType,
 	}
 }
 
 func (r *Repository) Location(menuId string) (*models.Location, error) {
-	query := curaClient.AllLocationsQuery(0, 0)
+	query := AllLocationsQuery(0, 0)
 	queryKey := fmt.Sprintf("location-%s-%s", menuId, r.menuType)
 	location, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
 		return r.getLocation(query, menuId)
@@ -59,7 +53,7 @@ func (r *Repository) Location(menuId string) (*models.Location, error) {
 }
 
 func (r *Repository) Locations(longitude, latitude float64) ([]*models.Location, error) {
-	query := curaClient.AllLocationsQuery(longitude, latitude)
+	query := AllLocationsQuery(longitude, latitude)
 	queryKey := fmt.Sprintf("locations-%f-%f-%s", longitude, latitude, r.menuType)
 
 	locations, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
@@ -73,7 +67,7 @@ func (r *Repository) Locations(longitude, latitude float64) ([]*models.Location,
 }
 
 func (r *Repository) GetProduct(menuId, productId string) (*models.Product, error) {
-	query := curaClient.ProductQuery(menuId, productId, r.menuType)
+	query := ProductQuery(menuId, productId, r.menuType)
 	queryKey := fmt.Sprintf("product-%s-%s-%s", menuId, productId, r.menuType)
 
 	product, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
@@ -87,7 +81,7 @@ func (r *Repository) GetProduct(menuId, productId string) (*models.Product, erro
 }
 
 func (r *Repository) GetProducts(menuId string) ([]*models.Product, error) {
-	query := curaClient.AllProductQuery(menuId, r.menuType)
+	query := AllProductQuery(menuId, r.menuType)
 	queryKey := fmt.Sprintf("products-%s-%s", menuId, r.menuType)
 
 	products, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
@@ -101,7 +95,7 @@ func (r *Repository) GetProducts(menuId string) ([]*models.Product, error) {
 }
 
 func (r *Repository) GetProductsForCategory(menuId string, category models.Category) ([]*models.Product, error) {
-	query := curaClient.AllProductForCategoryQuery(menuId, r.menuType, string(category))
+	query := AllProductForCategoryQuery(menuId, r.menuType, string(category))
 	queryKey := fmt.Sprintf("products-%s-%s-%s", menuId, string(category), r.menuType)
 
 	products, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
@@ -115,7 +109,7 @@ func (r *Repository) GetProductsForCategory(menuId string, category models.Categ
 }
 
 func (r *Repository) GetCategories(menuId string) ([]*models.Category, error) {
-	query := curaClient.AllCategoriesQuery(menuId, r.menuType)
+	query := AllCategoriesQuery(menuId, r.menuType)
 	queryKey := fmt.Sprintf("categories-%s-%s", menuId, r.menuType)
 
 	categories, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
@@ -129,7 +123,7 @@ func (r *Repository) GetCategories(menuId string) ([]*models.Category, error) {
 }
 
 func (r *Repository) GetTerpenes(menuId string) ([]*models.Terpene, error) {
-	query := curaClient.AllProductQuery(menuId, r.menuType)
+	query := AllProductQuery(menuId, r.menuType)
 	queryKey := fmt.Sprintf("terpenes-%s-%s", menuId, r.menuType)
 
 	terpenes, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
@@ -143,7 +137,7 @@ func (r *Repository) GetTerpenes(menuId string) ([]*models.Terpene, error) {
 }
 
 func (r *Repository) GetCannabinoids(menuId string) ([]*models.Cannabinoid, error) {
-	query := curaClient.AllProductQuery(menuId, r.menuType)
+	query := AllProductQuery(menuId, r.menuType)
 	queryKey := fmt.Sprintf("cannabinoids-%s-%s", menuId, r.menuType)
 
 	cannabinoids, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
@@ -157,7 +151,7 @@ func (r *Repository) GetCannabinoids(menuId string) ([]*models.Cannabinoid, erro
 }
 
 func (r *Repository) GetOffers(menuId string) ([]*models.Offer, error) {
-	query := curaClient.AllOffersQuery(menuId, r.menuType)
+	query := AllOffersQuery(menuId, r.menuType)
 	queryKey := fmt.Sprintf("offers-%s-%s", menuId, r.menuType)
 
 	offers, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
@@ -306,20 +300,20 @@ func (r *Repository) getOffers(query string) ([]*models.Offer, error) {
 	return r.T.TranslateClientOffers(allOfferResp.Data.DispensaryMenu.Offers), nil
 }
 
-func (r *Repository) getResponse(query string) (curaClient.Response, error) {
+func (r *Repository) getResponse(query string) (Response, error) {
 	resp, err := r.C.Query(context.Background(), query, "POST")
 	if err != nil {
-		return curaClient.Response{}, err
+		return Response{}, err
 	}
 
 	if !json.Valid(resp) {
-		return curaClient.Response{}, repository.InvalidJSONError
+		return Response{}, repository.InvalidJSONError
 	}
 
-	cResp := curaClient.Response{}
+	cResp := Response{}
 	err = json.Unmarshal(resp, &cResp)
 	if err != nil {
-		return curaClient.Response{}, err
+		return Response{}, err
 	}
 
 	return cResp, nil

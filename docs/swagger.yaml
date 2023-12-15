@@ -82,7 +82,7 @@ definitions:
         items:
           $ref: '#/definitions/github_com_Linkinlog_LeafListr_internal_models.Terpene'
         type: array
-      variant:
+      weight:
         type: string
     type: object
   github_com_Linkinlog_LeafListr_internal_models.Terpene:

@@ -1,4 +1,4 @@
-package translation
+package curaleaf
 
 import (
 	"log/slog"
@@ -6,18 +6,16 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Linkinlog/LeafListr/internal/curaleaf/client"
 	"github.com/Linkinlog/LeafListr/internal/models"
-	"github.com/Linkinlog/LeafListr/internal/translation"
 )
 
 type ClientTranslator struct{}
 
-func NewClientTranslator() translation.ClientTranslatable {
+func NewClientTranslator() *ClientTranslator {
 	return &ClientTranslator{}
 }
 
-func (cT *ClientTranslator) TranslateClientLocation(l client.Location) *models.Location {
+func (cT *ClientTranslator) TranslateClientLocation(l Location) *models.Location {
 	return &models.Location{
 		Id:            l.UniqueId,
 		Name:          l.Name,
@@ -29,7 +27,7 @@ func (cT *ClientTranslator) TranslateClientLocation(l client.Location) *models.L
 	}
 }
 
-func (cT *ClientTranslator) TranslateClientLocations(ls []client.Location) []*models.Location {
+func (cT *ClientTranslator) TranslateClientLocations(ls []Location) []*models.Location {
 	locations := make([]*models.Location, 0)
 	for _, l := range ls {
 		locations = append(locations, cT.TranslateClientLocation(l))
@@ -37,7 +35,7 @@ func (cT *ClientTranslator) TranslateClientLocations(ls []client.Location) []*mo
 	return locations
 }
 
-func (cT *ClientTranslator) TranslateClientProducts(ps []client.Product) []*models.Product {
+func (cT *ClientTranslator) TranslateClientProducts(ps []Product) []*models.Product {
 	products := make([]*models.Product, 0)
 
 	for _, p := range ps {
@@ -56,9 +54,9 @@ func (cT *ClientTranslator) TranslateClientProducts(ps []client.Product) []*mode
 				DiscountedTotal: v.SpecialPrice,
 				IsDiscounted:    v.IsSpecial,
 			}
-			variantProduct.Variant = v.Option
+			variantProduct.Weight = v.Option
 
-			if variantProduct.Ctg == client.ProductCategoryVape {
+			if variantProduct.Ctg == ProductCategoryVape {
 				split := strings.Split(p.CardDescription, "•")
 
 				for j := range split {
@@ -87,7 +85,7 @@ func (cT *ClientTranslator) TranslateClientProducts(ps []client.Product) []*mode
 	return products
 }
 
-func (cT *ClientTranslator) TranslateClientProduct(p client.Product) *models.Product {
+func (cT *ClientTranslator) TranslateClientProduct(p Product) *models.Product {
 	product := &models.Product{
 		Id:     p.ID,
 		Brand:  strings.TrimSpace(p.Brand.Name),
@@ -117,12 +115,12 @@ func (cT *ClientTranslator) TranslateClientProduct(p client.Product) *models.Pro
 	return product
 }
 
-func (cT *ClientTranslator) TranslateClientCategory(category client.Category) *models.Category {
+func (cT *ClientTranslator) TranslateClientCategory(category Category) *models.Category {
 	c := models.Category(category.Key)
 	return &c
 }
 
-func (cT *ClientTranslator) TranslateClientCategories(cs []client.Category) []*models.Category {
+func (cT *ClientTranslator) TranslateClientCategories(cs []Category) []*models.Category {
 	categories := make([]*models.Category, 0)
 	for _, c := range cs {
 		categories = append(categories, cT.TranslateClientCategory(c))
@@ -130,7 +128,7 @@ func (cT *ClientTranslator) TranslateClientCategories(cs []client.Category) []*m
 	return categories
 }
 
-func (cT *ClientTranslator) TranslateClientTerpene(terp client.TerpeneObj) *models.Terpene {
+func (cT *ClientTranslator) TranslateClientTerpene(terp TerpeneObj) *models.Terpene {
 	return &models.Terpene{
 		Name:        terp.Terpene.Name,
 		Description: terp.Terpene.Description,
@@ -138,7 +136,7 @@ func (cT *ClientTranslator) TranslateClientTerpene(terp client.TerpeneObj) *mode
 	}
 }
 
-func (cT *ClientTranslator) TranslateClientTerpenes(i []client.TerpeneObj) []*models.Terpene {
+func (cT *ClientTranslator) TranslateClientTerpenes(i []TerpeneObj) []*models.Terpene {
 	ts := make([]*models.Terpene, 0)
 	for _, t := range i {
 		ts = append(ts, cT.TranslateClientTerpene(t))
@@ -146,7 +144,7 @@ func (cT *ClientTranslator) TranslateClientTerpenes(i []client.TerpeneObj) []*mo
 	return ts
 }
 
-func (cT *ClientTranslator) TranslateClientCannabinoid(c client.CannabinoidObj) *models.Cannabinoid {
+func (cT *ClientTranslator) TranslateClientCannabinoid(c CannabinoidObj) *models.Cannabinoid {
 	return &models.Cannabinoid{
 		Name:        c.Cannabinoid.Name,
 		Description: c.Cannabinoid.Description,
@@ -154,7 +152,7 @@ func (cT *ClientTranslator) TranslateClientCannabinoid(c client.CannabinoidObj) 
 	}
 }
 
-func (cT *ClientTranslator) TranslateClientCannabinoids(i []client.CannabinoidObj) []*models.Cannabinoid {
+func (cT *ClientTranslator) TranslateClientCannabinoids(i []CannabinoidObj) []*models.Cannabinoid {
 	cs := make([]*models.Cannabinoid, 0)
 	for _, c := range i {
 		cs = append(cs, cT.TranslateClientCannabinoid(c))
@@ -162,7 +160,7 @@ func (cT *ClientTranslator) TranslateClientCannabinoids(i []client.CannabinoidOb
 	return cs
 }
 
-func (cT *ClientTranslator) TranslateClientOffers(os []client.Offer) []*models.Offer {
+func (cT *ClientTranslator) TranslateClientOffers(os []Offer) []*models.Offer {
 	offers := make([]*models.Offer, 0)
 	for _, o := range os {
 		offers = append(offers, cT.TranslateClientOffer(o))
@@ -170,7 +168,7 @@ func (cT *ClientTranslator) TranslateClientOffers(os []client.Offer) []*models.O
 	return offers
 }
 
-func (cT *ClientTranslator) TranslateClientOffer(offer client.Offer) *models.Offer {
+func (cT *ClientTranslator) TranslateClientOffer(offer Offer) *models.Offer {
 	return &models.Offer{
 		Id:          offer.Id,
 		Description: offer.Title,

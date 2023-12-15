@@ -1,4 +1,4 @@
-package transformation
+package curaleaf
 
 import (
 	"strings"
@@ -68,7 +68,7 @@ func (f *filterer) Variants(variantNames []string, products []*models.Product) [
 	filteredProducts := make([]*models.Product, 0)
 	for _, product := range products {
 		for _, variantName := range variantNames {
-			if variantName != "" && strings.EqualFold(product.Variant, variantName) {
+			if variantName != "" && strings.EqualFold(product.Weight, variantName) {
 				filteredProducts = append(filteredProducts, product)
 			}
 		}

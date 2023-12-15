@@ -1,12 +1,10 @@
-package factory
+package curaleaf
 
 import (
 	"errors"
+	"net/http"
 
 	"github.com/Linkinlog/LeafListr/internal/cache"
-	"github.com/Linkinlog/LeafListr/internal/curaleaf/client"
-	curarepo "github.com/Linkinlog/LeafListr/internal/curaleaf/repository"
-	"github.com/Linkinlog/LeafListr/internal/curaleaf/translation"
 	"github.com/Linkinlog/LeafListr/internal/factory"
 
 	"github.com/Linkinlog/LeafListr/internal/repository"
@@ -60,11 +58,11 @@ func findRepository(dispensary, menuType string, mc cache.Cacher) (repository.Re
 
 	switch dispensary {
 	case "curaleaf", "Curaleaf":
-		c := client.NewHTTPClient(
-			curarepo.GqlEndpoint,
-			curarepo.Headers,
+		c := NewHTTPClient(
+			GqlEndpoint,
+			make(http.Header),
 		)
-		repo = curarepo.NewRepository(c, translation.NewClientTranslator(), mc, menuType)
+		repo = NewRepository(c, NewClientTranslator(), mc, menuType)
 	default:
 		err = errors.New("unsupported dispensary")
 	}

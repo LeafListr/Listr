@@ -1,10 +1,11 @@
-package manager_test
+package curaleaf_test
 
 import (
 	"errors"
 	"testing"
 
-	"github.com/Linkinlog/LeafListr/internal/curaleaf/manager"
+	"github.com/Linkinlog/LeafListr/internal/curaleaf"
+
 	"github.com/Linkinlog/LeafListr/internal/factory/factoryfakes"
 	"github.com/Linkinlog/LeafListr/internal/models"
 	"github.com/Linkinlog/LeafListr/internal/repository/repositoryfakes"
@@ -33,7 +34,7 @@ func TestManager_Location(t *testing.T) {
 		tt := tt
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
-			m := manager.NewWorkflowManager()
+			m := curaleaf.NewWorkflow()
 			location, err := m.Location(tt.dispensary, tt.menuId, "MEDICAL")
 			if tt.wantErr {
 				assert.Error(t, err)
@@ -64,7 +65,7 @@ func TestManager_Locations(t *testing.T) {
 		tt := tt
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
-			m := manager.NewWorkflowManager()
+			m := curaleaf.NewWorkflow()
 			location, err := m.Locations(tt.dispensary, "MEDICAL")
 			if tt.wantErr {
 				assert.Error(t, err)
@@ -137,7 +138,7 @@ func TestManager_Product(t *testing.T) {
 			f := &factoryfakes.FakeRepositoryFactory{}
 			f.FindByDispensaryMenuReturns(r, nil)
 
-			m := manager.Manager{F: f}
+			m := curaleaf.Workflow{F: f}
 
 			product, err := m.Product(tt.dispensary, tt.menuId, tt.menuType, tt.productId)
 			if tt.wantErr {
@@ -183,7 +184,7 @@ func TestManager_Products(t *testing.T) {
 			f := &factoryfakes.FakeRepositoryFactory{}
 			f.FindByDispensaryMenuReturns(r, nil)
 
-			m := manager.Manager{F: f}
+			m := curaleaf.Workflow{F: f}
 
 			result, err := m.Products(tt.dispensary, tt.menuId, tt.menuType)
 			if tt.wantErr {
@@ -230,7 +231,7 @@ func TestManager_ProductsForCategory(t *testing.T) {
 			f := &factoryfakes.FakeRepositoryFactory{}
 			f.FindByDispensaryMenuReturns(r, nil)
 
-			m := manager.Manager{F: f}
+			m := curaleaf.Workflow{F: f}
 
 			result, err := m.ProductsForCategory(tt.dispensary, tt.menuId, tt.menuType, models.Category(tt.category))
 			if tt.wantErr {
@@ -275,7 +276,7 @@ func TestManager_Categories(t *testing.T) {
 			f := &factoryfakes.FakeRepositoryFactory{}
 			f.FindByDispensaryMenuReturns(r, nil)
 
-			m := manager.Manager{F: f}
+			m := curaleaf.Workflow{F: f}
 
 			result, err := m.Categories(tt.dispensary, tt.menuId, tt.menuType)
 			if tt.wantErr {
@@ -320,7 +321,7 @@ func TestManager_Terpenes(t *testing.T) {
 			f := &factoryfakes.FakeRepositoryFactory{}
 			f.FindByDispensaryMenuReturns(r, nil)
 
-			m := manager.Manager{F: f}
+			m := curaleaf.Workflow{F: f}
 
 			result, err := m.Terpenes(tt.dispensary, tt.menuId, tt.menuType)
 			if tt.wantErr {
@@ -365,7 +366,7 @@ func TestManager_Cannabinoids(t *testing.T) {
 			f := &factoryfakes.FakeRepositoryFactory{}
 			f.FindByDispensaryMenuReturns(r, nil)
 
-			m := manager.Manager{F: f}
+			m := curaleaf.Workflow{F: f}
 
 			result, err := m.Cannabinoids(tt.dispensary, tt.menuId, tt.menuType)
 			if tt.wantErr {
@@ -410,7 +411,7 @@ func TestManager_Offers(t *testing.T) {
 			f := &factoryfakes.FakeRepositoryFactory{}
 			f.FindByDispensaryMenuReturns(r, nil)
 
-			m := manager.Manager{F: f}
+			m := curaleaf.Workflow{F: f}
 
 			result, err := m.Offers(tt.dispensary, tt.menuId, tt.menuType)
 			if tt.wantErr {
