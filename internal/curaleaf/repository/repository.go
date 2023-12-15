@@ -13,8 +13,8 @@ import (
 	curaClient "github.com/Linkinlog/LeafListr/internal/curaleaf/client"
 
 	"github.com/Linkinlog/LeafListr/internal/client"
+	"github.com/Linkinlog/LeafListr/internal/curaleaf/translation"
 	"github.com/Linkinlog/LeafListr/internal/repository"
-	"github.com/Linkinlog/LeafListr/internal/translation"
 )
 
 const (
@@ -26,12 +26,12 @@ var Headers = map[string][]string{"authority": {Authority}}
 
 type Repository struct {
 	C        client.Client
-	T        translation.ClientTranslatable
+	T        *translation.ClientTranslator
 	MC       cache.Cacher
 	menuType string
 }
 
-func NewRepository(c client.Client, translatable translation.ClientTranslatable, mc cache.Cacher, menuType string) repository.Repository {
+func NewRepository(c client.Client, translator *translation.ClientTranslator, mc cache.Cacher, menuType string) repository.Repository {
 	if strings.EqualFold(menuType, "recreational") || strings.EqualFold(menuType, "medical") {
 		menuType = strings.ToUpper(menuType)
 	} else {
@@ -39,7 +39,7 @@ func NewRepository(c client.Client, translatable translation.ClientTranslatable,
 	}
 	return &Repository{
 		C:        c,
-		T:        translatable,
+		T:        translator,
 		MC:       mc,
 		menuType: menuType,
 	}

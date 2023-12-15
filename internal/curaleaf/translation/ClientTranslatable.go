@@ -6,12 +6,11 @@ import (
 
 	"github.com/Linkinlog/LeafListr/internal/curaleaf/client"
 	"github.com/Linkinlog/LeafListr/internal/models"
-	"github.com/Linkinlog/LeafListr/internal/translation"
 )
 
 type ClientTranslator struct{}
 
-func NewClientTranslator() translation.ClientTranslatable {
+func NewClientTranslator() *ClientTranslator {
 	return &ClientTranslator{}
 }
 

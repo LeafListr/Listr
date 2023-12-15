@@ -323,7 +323,6 @@ func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 		a.w.SortProductsByTop3Terps(dispensary, locationId, menuType, products, top3Terps(req))
 	}
 
-
 	if sortPriceAsc(req) {
 		slog.Debug("Sorting products by price asc")
 		a.w.SortProductsByPriceAsc(dispensary, locationId, menuType, products)
