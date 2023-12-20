@@ -1,5 +1,9 @@
 package client
 
+const (
+	ProductCategoryVape   = "VAPORIZERS"
+)
+
 type Image struct {
 	URL string `json:"url"`
 }

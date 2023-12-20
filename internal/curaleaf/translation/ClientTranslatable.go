@@ -2,6 +2,8 @@ package translation
 
 import (
 	"log/slog"
+	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/Linkinlog/LeafListr/internal/curaleaf/client"
@@ -55,6 +57,28 @@ func (cT *ClientTranslator) TranslateClientProducts(ps []client.Product) []*mode
 				IsDiscounted:    v.IsSpecial,
 			}
 			variantProduct.Variant = v.Option
+
+			if variantProduct.Ctg == client.ProductCategoryVape {
+				split := strings.Split(p.CardDescription, "•")
+
+				for j := range split {
+					if strings.Contains(split[j], "THC") {
+						thcSplit := strings.Split(split[j], "-")
+						for k := range thcSplit {
+							floatRegex := regexp.MustCompile(`\d+\.\d+`)
+							thc := floatRegex.FindString(thcSplit[k])
+							thcVal, err := strconv.ParseFloat(thc, 64)
+							if err == nil {
+								variantProduct.C = append(variantProduct.C, &models.Cannabinoid{
+									Name:        "THC (Tetrahydrocannabinol)",
+									Description: "Tetrahydrocannabinol",
+									Value:       thcVal,
+								})
+							}
+						}
+					}
+				}
+			}
 
 			products = append(products, variantProduct)
 		}
