@@ -1,4 +1,4 @@
-package cache
+package curaleaf
 
 import (
 	"log/slog"

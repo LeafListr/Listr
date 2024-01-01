@@ -1,10 +1,10 @@
-package factory_test
+package curaleaf_test
 
 import (
 	"testing"
 
-	"github.com/Linkinlog/LeafListr/internal/curaleaf/cache"
-	"github.com/Linkinlog/LeafListr/internal/curaleaf/factory"
+	"github.com/Linkinlog/LeafListr/internal/curaleaf"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -30,7 +30,7 @@ func TestFindByDispensary(t *testing.T) {
 		tt := tt
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
-			repoFactory := factory.NewRepoFactory(cache.NewCache())
+			repoFactory := curaleaf.NewRepoFactory(curaleaf.NewCache())
 			repo, err := repoFactory.FindByDispensary(tt.dispensary, tt.menuType)
 			if tt.wantErr {
 				assert.Error(t, err)
@@ -75,7 +75,7 @@ func TestFindByDispensaryMenu(t *testing.T) {
 		tt := tt
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
-			repoFactory := factory.NewRepoFactory(cache.NewCache())
+			repoFactory := curaleaf.NewRepoFactory(curaleaf.NewCache())
 			repo, err := repoFactory.FindByDispensaryMenu(tt.dispensary, tt.location, tt.menuType)
 			if tt.wantErr {
 				assert.Error(t, err)

@@ -1,4 +1,4 @@
-package client
+package curaleaf
 
 type Image struct {
 	URL string `json:"url"`

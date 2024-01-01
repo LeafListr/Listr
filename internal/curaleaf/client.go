@@ -1,4 +1,4 @@
-package client
+package curaleaf
 
 import (
 	"bytes"
@@ -12,14 +12,16 @@ import (
 type Endpoint string
 
 type HttpClient struct {
-	hC *http.Client
-	e  Endpoint
+	hC      *http.Client
+	headers http.Header
+	e       Endpoint
 }
 
 func NewHTTPClient(endpoint Endpoint, headers http.Header) *HttpClient {
 	return &HttpClient{
-		hC: &http.Client{Timeout: 30 * time.Second},
-		e:  endpoint,
+		hC:      &http.Client{Timeout: 30 * time.Second},
+		headers: headers,
+		e:       endpoint,
 	}
 }
 

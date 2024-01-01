@@ -1,16 +1,13 @@
-package repository_test
+package curaleaf_test
 
 import (
 	"encoding/json"
 	"testing"
 
+	"github.com/Linkinlog/LeafListr/internal/curaleaf"
+
 	"github.com/Linkinlog/LeafListr/internal/models"
 	repo "github.com/Linkinlog/LeafListr/internal/repository"
-
-	"github.com/Linkinlog/LeafListr/internal/curaleaf/cache"
-	"github.com/Linkinlog/LeafListr/internal/curaleaf/client"
-	"github.com/Linkinlog/LeafListr/internal/curaleaf/repository"
-	"github.com/Linkinlog/LeafListr/internal/curaleaf/translation"
 
 	"github.com/Linkinlog/LeafListr/internal/client/clientfakes"
 	"github.com/stretchr/testify/assert"
@@ -66,7 +63,7 @@ func TestGetLocation(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache(), "MEDICAL")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), curaleaf.NewCache(), "MEDICAL")
 			ls, getErr := cr.Location("ASDF123")
 			tt.assertions(t, ls, getErr)
 		})
@@ -126,7 +123,7 @@ func TestGetLocations(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache(), "MEDICAL")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), curaleaf.NewCache(), "MEDICAL")
 			ls, getErr := cr.Locations(0, 0)
 			tt.assertions(t, ls, getErr)
 		})
@@ -199,7 +196,7 @@ func TestGetProduct(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache(), "MEDICAL")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), curaleaf.NewCache(), "MEDICAL")
 			ps, getErr := cr.GetProduct("foo", "bar")
 			tt.assertions(t, ps, getErr)
 		})
@@ -283,7 +280,7 @@ func TestGetProducts(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache(), "MEDICAL")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), curaleaf.NewCache(), "MEDICAL")
 			ps, getErr := cr.GetProducts("foo")
 			tt.assertions(t, ps, getErr)
 		})
@@ -367,7 +364,7 @@ func TestGetProductsForCategory(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache(), "MEDICAL")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), curaleaf.NewCache(), "MEDICAL")
 			ps, getErr := cr.GetProductsForCategory("foo", "bar")
 			tt.assertions(t, ps, getErr)
 		})
@@ -426,7 +423,7 @@ func TestGetCategories(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache(), "MEDICAL")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), curaleaf.NewCache(), "MEDICAL")
 			cs, getErr := cr.GetCategories("foo")
 			tt.assertions(t, cs, getErr)
 		})
@@ -450,7 +447,7 @@ func TestGetTerpenes(t *testing.T) {
 			assertions: func(t *testing.T, ts []*models.Terpene, err error) {
 				assert.Nil(t, err)
 				assert.NotNil(t, ts)
-				expectedTerps := []*client.Terpene{
+				expectedTerps := []*curaleaf.Terpene{
 					{
 						Description: "Big strong and here to sing along",
 						Name:        "B-Myrcene",
@@ -488,7 +485,7 @@ func TestGetTerpenes(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache(), "MEDICAL")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), curaleaf.NewCache(), "MEDICAL")
 			ts, getErr := cr.GetTerpenes("foo")
 			tt.assertions(t, ts, getErr)
 		})
@@ -512,7 +509,7 @@ func TestGetCannabinoids(t *testing.T) {
 			assertions: func(t *testing.T, cs []*models.Cannabinoid, err error) {
 				assert.Nil(t, err)
 				assert.NotNil(t, cs)
-				expectedCannabinoids := []*client.Cannabinoid{
+				expectedCannabinoids := []*curaleaf.Cannabinoid{
 					{
 						Description: "THC is a cannabinoid",
 						Name:        "THC",
@@ -550,7 +547,7 @@ func TestGetCannabinoids(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache(), "MEDICAL")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), curaleaf.NewCache(), "MEDICAL")
 			cs, getErr := cr.GetCannabinoids("foo")
 			tt.assertions(t, cs, getErr)
 		})
@@ -611,40 +608,40 @@ func TestGetOffers(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := repository.NewRepository(c, translation.NewClientTranslator(), cache.NewCache(), "MEDICAL")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), curaleaf.NewCache(), "MEDICAL")
 			os, getErr := cr.GetOffers("foo")
 			tt.assertions(t, os, getErr)
 		})
 	}
 }
 
-func productSample() client.Product {
-	product := client.Product{
-		Brand: client.Brand{
+func productSample() curaleaf.Product {
+	product := curaleaf.Product{
+		Brand: curaleaf.Brand{
 			Description: "Big Dispensary",
 			Id:          "brand-1",
-			Image: client.Image{
+			Image: curaleaf.Image{
 				URL: "https://example.com/image.png",
 			},
 			Name: "Super cool product",
 			Slug: "brand-slug",
 		},
-		Category: client.Category{
+		Category: curaleaf.Category{
 			DisplayName: "Outdoors",
 			Key:         "OUTDOORS",
 		},
 		DescriptionHtml: "",
 		Effects:         nil,
 		ID:              "abc121",
-		Images: []client.Image{
+		Images: []curaleaf.Image{
 			{
 				URL: "https://example.com/image",
 			},
 		},
-		LabResults: client.LabResult{
-			Cannabinoids: []client.CannabinoidObj{
+		LabResults: curaleaf.LabResult{
+			Cannabinoids: []curaleaf.CannabinoidObj{
 				{
-					Cannabinoid: client.Cannabinoid{
+					Cannabinoid: curaleaf.Cannabinoid{
 						Description: "THC is a cannabinoid",
 						Name:        "THC",
 					},
@@ -652,7 +649,7 @@ func productSample() client.Product {
 					Value: 4.20,
 				},
 				{
-					Cannabinoid: client.Cannabinoid{
+					Cannabinoid: curaleaf.Cannabinoid{
 						Description: "CBD is a cannabinoid",
 						Name:        "CBD",
 					},
@@ -660,9 +657,9 @@ func productSample() client.Product {
 					Value: 6.90,
 				},
 			},
-			Terpenes: []client.TerpeneObj{
+			Terpenes: []curaleaf.TerpeneObj{
 				{
-					Terpene: client.Terpene{
+					Terpene: curaleaf.Terpene{
 						Description: "Big strong and here to sing along",
 						Name:        "B-Myrcene",
 					},
@@ -670,7 +667,7 @@ func productSample() client.Product {
 					Value:      4.20,
 				},
 				{
-					Terpene: client.Terpene{
+					Terpene: curaleaf.Terpene{
 						Description: "A great way to get around",
 						Name:        "B-Pinene",
 					},
@@ -678,28 +675,28 @@ func productSample() client.Product {
 					Value:      6.90,
 				},
 			},
-			THC: client.THC{
+			THC: curaleaf.THC{
 				Formatted: "4.20%",
 				Range:     []float64{4.20},
 			},
 		},
 		Name: "Cheesey Wheezey",
-		Offers: []client.Offer{
+		Offers: []curaleaf.Offer{
 			{
 				Description: "A great deal",
 				Id:          "internal-offer-1",
 				Title:       "This is on the product",
 			},
 		},
-		Strain: client.Strain{
+		Strain: curaleaf.Strain{
 			Key:         "wisdom",
 			DisplayName: "hybrid",
 		},
-		Subcategory: client.Subcategory{
+		Subcategory: curaleaf.Subcategory{
 			Key:         "DISPOSABLES",
 			DisplayName: "Disposables",
 		},
-		Variants: []client.Variant{
+		Variants: []curaleaf.Variant{
 			{
 				Id:           "variant-1",
 				IsSpecial:    false,
@@ -721,23 +718,23 @@ func productSample() client.Product {
 	return product
 }
 
-func offerSample() client.Offer {
-	return client.Offer{
+func offerSample() curaleaf.Offer {
+	return curaleaf.Offer{
 		Description: "",
 		Id:          "6435a162da6e29000119f676",
 		Title:       "30% off Last Call",
 	}
 }
 
-func categorySample() client.Category {
-	return client.Category{
+func categorySample() curaleaf.Category {
+	return curaleaf.Category{
 		DisplayName: "Flower",
 		Key:         "FLOWER",
 	}
 }
 
-func locationSample() client.Location {
-	loc := client.Location{
+func locationSample() curaleaf.Location {
+	loc := curaleaf.Location{
 		UniqueId:  "ASDF123",
 		Name:      "Cool Location",
 		Slug:      "cool-location",
@@ -747,6 +744,6 @@ func locationSample() client.Location {
 	return loc
 }
 
-func responseSample() *client.Response {
-	return client.NewResponse([]client.Product{productSample()}, []client.Offer{offerSample()}, []client.Category{categorySample()}, []client.Location{locationSample()})
+func responseSample() *curaleaf.Response {
+	return curaleaf.NewResponse([]curaleaf.Product{productSample()}, []curaleaf.Offer{offerSample()}, []curaleaf.Category{categorySample()}, []curaleaf.Location{locationSample()})
 }

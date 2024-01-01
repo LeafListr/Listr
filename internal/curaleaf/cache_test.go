@@ -1,9 +1,9 @@
-package cache_test
+package curaleaf_test
 
 import (
 	"testing"
 
-	"github.com/Linkinlog/LeafListr/internal/curaleaf/cache"
+	"github.com/Linkinlog/LeafListr/internal/curaleaf"
 )
 
 func TestSet(t *testing.T) {
@@ -19,7 +19,7 @@ func TestSet(t *testing.T) {
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			cache := cache.NewCache()
+			cache := curaleaf.NewCache()
 			err := cache.Set(tc.key, tc.value)
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)

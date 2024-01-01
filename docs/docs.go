@@ -656,7 +656,7 @@ const docTemplate = `{
                         "$ref": "#/definitions/github_com_Linkinlog_LeafListr_internal_models.Terpene"
                     }
                 },
-                "variant": {
+                "weight": {
                     "type": "string"
                 }
             }

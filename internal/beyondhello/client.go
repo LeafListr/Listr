@@ -1,4 +1,4 @@
-package client
+package beyondhello
 
 import (
 	"bytes"
@@ -12,14 +12,16 @@ import (
 type Endpoint string
 
 type HttpClient struct {
-	hC *http.Client
-	e  Endpoint
+	hC      *http.Client
+	headers http.Header
+	e       Endpoint
 }
 
 func NewHTTPClient(endpoint Endpoint, headers http.Header) *HttpClient {
 	return &HttpClient{
-		hC: &http.Client{Timeout: 30 * time.Second},
-		e:  endpoint,
+		hC:      &http.Client{Timeout: 30 * time.Second},
+		headers: headers,
+		e:       endpoint,
 	}
 }
 
@@ -33,6 +35,7 @@ func (c *HttpClient) do(ctx context.Context, method string, body []byte) ([]byte
 		return []byte{}, err
 	}
 
+	req.Header = c.headers
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, hCErr := c.hC.Do(req)
