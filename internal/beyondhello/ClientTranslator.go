@@ -2,6 +2,7 @@ package beyondhello
 
 import (
 	"strconv"
+	"strings"
 
 	"github.com/Linkinlog/LeafListr/internal/models"
 )
@@ -9,20 +10,25 @@ import (
 func (r *Response) translateProducts() ([]*models.Product, error) {
 	products := make([]*models.Product, 0)
 	for _, p := range r.Hits {
-		for _, w := range p.InventoryPotencies {
+		if len(p.AvailableWeights) == 0 {
+			// if there are no weights, then the product is a single item
+			p.AvailableWeights = append(p.AvailableWeights, "each")
+		}
+		for _, w := range p.AvailableWeights {
+			weightId := strings.Replace(w, " ", "_", -1)
 			product := models.Product{
 				Id:     strconv.Itoa(p.ProductId),
 				Brand:  p.Brand,
 				Name:   p.Name,
 				SubCtg: p.KindSubtype,
 				Ctg:    models.Category(p.Kind),
-				Weight: w.PriceId,
-				Price:  p.translatePrice(w.PriceId),
-				C:      p.translateCannabinoids(w.PriceId),
-				T:      p.translateTerpenes(w.PriceId),
+				Weight: weightId,
+				Price:  p.translatePrice(weightId),
+				C:      p.translateCannabinoids(weightId),
+				T:      p.translateTerpenes(weightId),
 			}
-			for _, i := range p.Photos {
-				product.Images = append(product.Images, i.Urls.Medium)
+			for _, i := range p.ProductPhotos {
+				product.Images = append(product.Images, i.Id)
 			}
 			products = append(products, &product)
 		}
@@ -79,6 +85,9 @@ func (h *hit) translatePrice(weight string) *models.Price {
 	case "gram":
 		priceField = h.PriceGram
 		specialPriceField = h.DiscountedPriceGram
+	case "two_gram":
+		priceField = h.PriceTwoGram
+		specialPriceField = h.DiscountedPriceTwoGram
 	case "eighth_ounce":
 		priceField = h.PriceEighthOunce
 		specialPriceField = h.DiscountedPriceEighthOunce
@@ -91,9 +100,9 @@ func (h *hit) translatePrice(weight string) *models.Price {
 	case "ounce":
 		priceField = h.PriceOunce
 		specialPriceField = h.DiscountedPriceOunce
-	case "two_gram":
-		priceField = h.PriceTwoGram
-		specialPriceField = h.DiscountedPriceTwoGram
+	case "each":
+		priceField = h.PriceEach
+		specialPriceField = h.DiscountedPriceEach
 	}
 
 	price := &models.Price{}
