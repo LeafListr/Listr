@@ -1,10 +1,10 @@
-package curaleaf_test
+package transformation_test
 
 import (
 	"reflect"
 	"testing"
 
-	"github.com/Linkinlog/LeafListr/internal/curaleaf"
+	"github.com/Linkinlog/LeafListr/internal/transformation"
 
 	"github.com/Linkinlog/LeafListr/internal/models"
 )
@@ -70,7 +70,7 @@ func TestPriceAsc(t *testing.T) {
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			curaleaf.NewSorterer().PriceAsc(tc.products)
+			transformation.NewSorterer().PriceAsc(tc.products)
 			if !reflect.DeepEqual(tc.products, tc.want) {
 				t.Fatalf("got: %v, want: %v", tc.products, tc.want)
 			}
@@ -115,7 +115,7 @@ func TestPriceDesc(t *testing.T) {
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			curaleaf.NewSorterer().PriceDesc(tc.products)
+			transformation.NewSorterer().PriceDesc(tc.products)
 			if !reflect.DeepEqual(tc.products, tc.want) {
 				for _, p := range tc.products {
 					t.Logf("got: %+v", *p.Price)
@@ -252,7 +252,7 @@ func TestTop3Terps(t *testing.T) {
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			curaleaf.NewSorterer().Top3Terps(tc.products, tc.terps)
+			transformation.NewSorterer().Top3Terps(tc.products, tc.terps)
 			for i, p := range tc.products {
 				if p.Id != tc.want[i].Id {
 					t.Fatalf("got: %+v, want: %+v", p.Id, tc.want[i].Id)

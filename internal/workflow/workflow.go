@@ -47,7 +47,7 @@ type ProductSorter interface {
 }
 
 type CategoryManager interface {
-	Categories(dispensary, menuId, menuType string) ([]*models.Category, error)
+	Categories(dispensary, menuId, menuType string) ([]models.Category, error)
 }
 
 type TerpeneManager interface {

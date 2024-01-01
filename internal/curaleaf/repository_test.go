@@ -63,7 +63,7 @@ func TestGetLocation(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), curaleaf.NewCache(), "MEDICAL")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "MEDICAL")
 			ls, getErr := cr.Location("ASDF123")
 			tt.assertions(t, ls, getErr)
 		})
@@ -123,7 +123,7 @@ func TestGetLocations(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), curaleaf.NewCache(), "MEDICAL")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "MEDICAL")
 			ls, getErr := cr.Locations(0, 0)
 			tt.assertions(t, ls, getErr)
 		})
@@ -196,7 +196,7 @@ func TestGetProduct(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), curaleaf.NewCache(), "MEDICAL")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "MEDICAL")
 			ps, getErr := cr.GetProduct("foo", "bar")
 			tt.assertions(t, ps, getErr)
 		})
@@ -280,7 +280,7 @@ func TestGetProducts(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), curaleaf.NewCache(), "MEDICAL")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "MEDICAL")
 			ps, getErr := cr.GetProducts("foo")
 			tt.assertions(t, ps, getErr)
 		})
@@ -364,7 +364,7 @@ func TestGetProductsForCategory(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), curaleaf.NewCache(), "MEDICAL")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "MEDICAL")
 			ps, getErr := cr.GetProductsForCategory("foo", "bar")
 			tt.assertions(t, ps, getErr)
 		})
@@ -379,13 +379,13 @@ func TestGetCategories(t *testing.T) {
 	}
 	tests := map[string]struct {
 		setup      func(*clientfakes.FakeClient)
-		assertions func(*testing.T, []*models.Category, error)
+		assertions func(*testing.T, []models.Category, error)
 	}{
 		"valid request": {
 			setup: func(fc *clientfakes.FakeClient) {
 				fc.QueryReturns(bs, nil)
 			},
-			assertions: func(t *testing.T, cs []*models.Category, err error) {
+			assertions: func(t *testing.T, cs []models.Category, err error) {
 				assert.Nil(t, err)
 				assert.NotNil(t, cs)
 				expectedCategories := response.Data.DispensaryMenu.AllFilters.Categories
@@ -394,7 +394,7 @@ func TestGetCategories(t *testing.T) {
 				for i, cat := range cs {
 					expectedCategory := expectedCategories[i]
 
-					assert.Equal(t, models.Category(expectedCategory.Key), *cat)
+					assert.Equal(t, models.Category(expectedCategory.Key), cat)
 				}
 			},
 		},
@@ -402,8 +402,8 @@ func TestGetCategories(t *testing.T) {
 			setup: func(fc *clientfakes.FakeClient) {
 				fc.QueryReturns(nil, nil)
 			},
-			assertions: func(t *testing.T, cs []*models.Category, err error) {
-				assert.Equal(t, []*models.Category{}, cs)
+			assertions: func(t *testing.T, cs []models.Category, err error) {
+				assert.Equal(t, []models.Category{}, cs)
 				assert.ErrorIs(t, err, repo.InvalidJSONError)
 			},
 		},
@@ -411,8 +411,8 @@ func TestGetCategories(t *testing.T) {
 			setup: func(fc *clientfakes.FakeClient) {
 				fc.QueryReturns([]byte("{}"), nil)
 			},
-			assertions: func(t *testing.T, cs []*models.Category, err error) {
-				assert.Equal(t, []*models.Category{}, cs)
+			assertions: func(t *testing.T, cs []models.Category, err error) {
+				assert.Equal(t, []models.Category{}, cs)
 				assert.NoError(t, err)
 			},
 		},
@@ -423,7 +423,7 @@ func TestGetCategories(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), curaleaf.NewCache(), "MEDICAL")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "MEDICAL")
 			cs, getErr := cr.GetCategories("foo")
 			tt.assertions(t, cs, getErr)
 		})
@@ -485,7 +485,7 @@ func TestGetTerpenes(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), curaleaf.NewCache(), "MEDICAL")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "MEDICAL")
 			ts, getErr := cr.GetTerpenes("foo")
 			tt.assertions(t, ts, getErr)
 		})
@@ -547,7 +547,7 @@ func TestGetCannabinoids(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), curaleaf.NewCache(), "MEDICAL")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "MEDICAL")
 			cs, getErr := cr.GetCannabinoids("foo")
 			tt.assertions(t, cs, getErr)
 		})
@@ -608,7 +608,7 @@ func TestGetOffers(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), curaleaf.NewCache(), "MEDICAL")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "MEDICAL")
 			os, getErr := cr.GetOffers("foo")
 			tt.assertions(t, os, getErr)
 		})

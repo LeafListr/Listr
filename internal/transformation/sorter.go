@@ -1,16 +1,15 @@
-package curaleaf
+package transformation
 
 import (
 	"slices"
 	"strings"
 
 	"github.com/Linkinlog/LeafListr/internal/models"
-	"github.com/Linkinlog/LeafListr/internal/transformation"
 )
 
 type sorter struct{}
 
-func NewSorterer() transformation.Sorter {
+func NewSorterer() Sorter {
 	return &sorter{}
 }
 

@@ -115,13 +115,12 @@ func (cT *ClientTranslator) TranslateClientProduct(p Product) *models.Product {
 	return product
 }
 
-func (cT *ClientTranslator) TranslateClientCategory(category Category) *models.Category {
-	c := models.Category(category.Key)
-	return &c
+func (cT *ClientTranslator) TranslateClientCategory(category Category) models.Category {
+	return models.Category(category.Key)
 }
 
-func (cT *ClientTranslator) TranslateClientCategories(cs []Category) []*models.Category {
-	categories := make([]*models.Category, 0)
+func (cT *ClientTranslator) TranslateClientCategories(cs []Category) []models.Category {
+	categories := make([]models.Category, 0)
 	for _, c := range cs {
 		categories = append(categories, cT.TranslateClientCategory(c))
 	}

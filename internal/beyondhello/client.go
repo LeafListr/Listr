@@ -36,7 +36,6 @@ func (c *HttpClient) do(ctx context.Context, method string, body []byte) ([]byte
 	}
 
 	req.Header = c.headers
-	req.Header.Set("Content-Type", "application/json")
 
 	resp, hCErr := c.hC.Do(req)
 	if hCErr != nil {

@@ -15,8 +15,8 @@ type APITranslatable interface {
 	TranslateAPIDispensaries([]*models.Dispensary) []*apiModels.Dispensary
 	TranslateAPIProduct(*models.Product) *apiModels.Product
 	TranslateAPIProducts([]*models.Product) []*apiModels.Product
-	TranslateAPICategory(*models.Category) *apiModels.Category
-	TranslateAPICategories([]*models.Category) []*apiModels.Category
+	TranslateAPICategory(models.Category) apiModels.Category
+	TranslateAPICategories([]models.Category) []apiModels.Category
 	TranslateAPITerpene(*models.Terpene) *apiModels.Terpene
 	TranslateAPITerpenes([]*models.Terpene) []*apiModels.Terpene
 	TranslateAPICannabinoid(*models.Cannabinoid) *apiModels.Cannabinoid

@@ -22,17 +22,17 @@ type FakeRepository struct {
 		result1 []*models.Cannabinoid
 		result2 error
 	}
-	GetCategoriesStub        func(string) ([]*models.Category, error)
+	GetCategoriesStub        func(string) ([]models.Category, error)
 	getCategoriesMutex       sync.RWMutex
 	getCategoriesArgsForCall []struct {
 		arg1 string
 	}
 	getCategoriesReturns struct {
-		result1 []*models.Category
+		result1 []models.Category
 		result2 error
 	}
 	getCategoriesReturnsOnCall map[int]struct {
-		result1 []*models.Category
+		result1 []models.Category
 		result2 error
 	}
 	GetOffersStub        func(string) ([]*models.Offer, error)
@@ -197,7 +197,7 @@ func (fake *FakeRepository) GetCannabinoidsReturnsOnCall(i int, result1 []*model
 	}{result1, result2}
 }
 
-func (fake *FakeRepository) GetCategories(arg1 string) ([]*models.Category, error) {
+func (fake *FakeRepository) GetCategories(arg1 string) ([]models.Category, error) {
 	fake.getCategoriesMutex.Lock()
 	ret, specificReturn := fake.getCategoriesReturnsOnCall[len(fake.getCategoriesArgsForCall)]
 	fake.getCategoriesArgsForCall = append(fake.getCategoriesArgsForCall, struct {
@@ -222,7 +222,7 @@ func (fake *FakeRepository) GetCategoriesCallCount() int {
 	return len(fake.getCategoriesArgsForCall)
 }
 
-func (fake *FakeRepository) GetCategoriesCalls(stub func(string) ([]*models.Category, error)) {
+func (fake *FakeRepository) GetCategoriesCalls(stub func(string) ([]models.Category, error)) {
 	fake.getCategoriesMutex.Lock()
 	defer fake.getCategoriesMutex.Unlock()
 	fake.GetCategoriesStub = stub
@@ -235,28 +235,28 @@ func (fake *FakeRepository) GetCategoriesArgsForCall(i int) string {
 	return argsForCall.arg1
 }
 
-func (fake *FakeRepository) GetCategoriesReturns(result1 []*models.Category, result2 error) {
+func (fake *FakeRepository) GetCategoriesReturns(result1 []models.Category, result2 error) {
 	fake.getCategoriesMutex.Lock()
 	defer fake.getCategoriesMutex.Unlock()
 	fake.GetCategoriesStub = nil
 	fake.getCategoriesReturns = struct {
-		result1 []*models.Category
+		result1 []models.Category
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *FakeRepository) GetCategoriesReturnsOnCall(i int, result1 []*models.Category, result2 error) {
+func (fake *FakeRepository) GetCategoriesReturnsOnCall(i int, result1 []models.Category, result2 error) {
 	fake.getCategoriesMutex.Lock()
 	defer fake.getCategoriesMutex.Unlock()
 	fake.GetCategoriesStub = nil
 	if fake.getCategoriesReturnsOnCall == nil {
 		fake.getCategoriesReturnsOnCall = make(map[int]struct {
-			result1 []*models.Category
+			result1 []models.Category
 			result2 error
 		})
 	}
 	fake.getCategoriesReturnsOnCall[i] = struct {
-		result1 []*models.Category
+		result1 []models.Category
 		result2 error
 	}{result1, result2}
 }

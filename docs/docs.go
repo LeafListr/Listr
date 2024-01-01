@@ -534,10 +534,12 @@ const docTemplate = `{
         "api.supportedDispensary": {
             "type": "string",
             "enum": [
-                "curaleaf"
+                "Curaleaf",
+                "Beyond-Hello"
             ],
             "x-enum-varnames": [
-                "Curaleaf"
+                "Curaleaf",
+                "Beyond"
             ]
         },
         "api.supportedDispensaryOptions": {

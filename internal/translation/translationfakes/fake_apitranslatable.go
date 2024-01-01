@@ -32,27 +32,27 @@ type FakeAPITranslatable struct {
 	translateAPICannabinoidsReturnsOnCall map[int]struct {
 		result1 []*models.Cannabinoid
 	}
-	TranslateAPICategoriesStub        func([]*modelsa.Category) []*models.Category
+	TranslateAPICategoriesStub        func([]modelsa.Category) []models.Category
 	translateAPICategoriesMutex       sync.RWMutex
 	translateAPICategoriesArgsForCall []struct {
-		arg1 []*modelsa.Category
+		arg1 []modelsa.Category
 	}
 	translateAPICategoriesReturns struct {
-		result1 []*models.Category
+		result1 []models.Category
 	}
 	translateAPICategoriesReturnsOnCall map[int]struct {
-		result1 []*models.Category
+		result1 []models.Category
 	}
-	TranslateAPICategoryStub        func(*modelsa.Category) *models.Category
+	TranslateAPICategoryStub        func(modelsa.Category) models.Category
 	translateAPICategoryMutex       sync.RWMutex
 	translateAPICategoryArgsForCall []struct {
-		arg1 *modelsa.Category
+		arg1 modelsa.Category
 	}
 	translateAPICategoryReturns struct {
-		result1 *models.Category
+		result1 models.Category
 	}
 	translateAPICategoryReturnsOnCall map[int]struct {
-		result1 *models.Category
+		result1 models.Category
 	}
 	TranslateAPIDispensariesStub        func([]*modelsa.Dispensary) []*models.Dispensary
 	translateAPIDispensariesMutex       sync.RWMutex
@@ -295,16 +295,16 @@ func (fake *FakeAPITranslatable) TranslateAPICannabinoidsReturnsOnCall(i int, re
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICategories(arg1 []*modelsa.Category) []*models.Category {
-	var arg1Copy []*modelsa.Category
+func (fake *FakeAPITranslatable) TranslateAPICategories(arg1 []modelsa.Category) []models.Category {
+	var arg1Copy []modelsa.Category
 	if arg1 != nil {
-		arg1Copy = make([]*modelsa.Category, len(arg1))
+		arg1Copy = make([]modelsa.Category, len(arg1))
 		copy(arg1Copy, arg1)
 	}
 	fake.translateAPICategoriesMutex.Lock()
 	ret, specificReturn := fake.translateAPICategoriesReturnsOnCall[len(fake.translateAPICategoriesArgsForCall)]
 	fake.translateAPICategoriesArgsForCall = append(fake.translateAPICategoriesArgsForCall, struct {
-		arg1 []*modelsa.Category
+		arg1 []modelsa.Category
 	}{arg1Copy})
 	stub := fake.TranslateAPICategoriesStub
 	fakeReturns := fake.translateAPICategoriesReturns
@@ -325,47 +325,47 @@ func (fake *FakeAPITranslatable) TranslateAPICategoriesCallCount() int {
 	return len(fake.translateAPICategoriesArgsForCall)
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICategoriesCalls(stub func([]*modelsa.Category) []*models.Category) {
+func (fake *FakeAPITranslatable) TranslateAPICategoriesCalls(stub func([]modelsa.Category) []models.Category) {
 	fake.translateAPICategoriesMutex.Lock()
 	defer fake.translateAPICategoriesMutex.Unlock()
 	fake.TranslateAPICategoriesStub = stub
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICategoriesArgsForCall(i int) []*modelsa.Category {
+func (fake *FakeAPITranslatable) TranslateAPICategoriesArgsForCall(i int) []modelsa.Category {
 	fake.translateAPICategoriesMutex.RLock()
 	defer fake.translateAPICategoriesMutex.RUnlock()
 	argsForCall := fake.translateAPICategoriesArgsForCall[i]
 	return argsForCall.arg1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICategoriesReturns(result1 []*models.Category) {
+func (fake *FakeAPITranslatable) TranslateAPICategoriesReturns(result1 []models.Category) {
 	fake.translateAPICategoriesMutex.Lock()
 	defer fake.translateAPICategoriesMutex.Unlock()
 	fake.TranslateAPICategoriesStub = nil
 	fake.translateAPICategoriesReturns = struct {
-		result1 []*models.Category
+		result1 []models.Category
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICategoriesReturnsOnCall(i int, result1 []*models.Category) {
+func (fake *FakeAPITranslatable) TranslateAPICategoriesReturnsOnCall(i int, result1 []models.Category) {
 	fake.translateAPICategoriesMutex.Lock()
 	defer fake.translateAPICategoriesMutex.Unlock()
 	fake.TranslateAPICategoriesStub = nil
 	if fake.translateAPICategoriesReturnsOnCall == nil {
 		fake.translateAPICategoriesReturnsOnCall = make(map[int]struct {
-			result1 []*models.Category
+			result1 []models.Category
 		})
 	}
 	fake.translateAPICategoriesReturnsOnCall[i] = struct {
-		result1 []*models.Category
+		result1 []models.Category
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICategory(arg1 *modelsa.Category) *models.Category {
+func (fake *FakeAPITranslatable) TranslateAPICategory(arg1 modelsa.Category) models.Category {
 	fake.translateAPICategoryMutex.Lock()
 	ret, specificReturn := fake.translateAPICategoryReturnsOnCall[len(fake.translateAPICategoryArgsForCall)]
 	fake.translateAPICategoryArgsForCall = append(fake.translateAPICategoryArgsForCall, struct {
-		arg1 *modelsa.Category
+		arg1 modelsa.Category
 	}{arg1})
 	stub := fake.TranslateAPICategoryStub
 	fakeReturns := fake.translateAPICategoryReturns
@@ -386,39 +386,39 @@ func (fake *FakeAPITranslatable) TranslateAPICategoryCallCount() int {
 	return len(fake.translateAPICategoryArgsForCall)
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICategoryCalls(stub func(*modelsa.Category) *models.Category) {
+func (fake *FakeAPITranslatable) TranslateAPICategoryCalls(stub func(modelsa.Category) models.Category) {
 	fake.translateAPICategoryMutex.Lock()
 	defer fake.translateAPICategoryMutex.Unlock()
 	fake.TranslateAPICategoryStub = stub
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICategoryArgsForCall(i int) *modelsa.Category {
+func (fake *FakeAPITranslatable) TranslateAPICategoryArgsForCall(i int) modelsa.Category {
 	fake.translateAPICategoryMutex.RLock()
 	defer fake.translateAPICategoryMutex.RUnlock()
 	argsForCall := fake.translateAPICategoryArgsForCall[i]
 	return argsForCall.arg1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICategoryReturns(result1 *models.Category) {
+func (fake *FakeAPITranslatable) TranslateAPICategoryReturns(result1 models.Category) {
 	fake.translateAPICategoryMutex.Lock()
 	defer fake.translateAPICategoryMutex.Unlock()
 	fake.TranslateAPICategoryStub = nil
 	fake.translateAPICategoryReturns = struct {
-		result1 *models.Category
+		result1 models.Category
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICategoryReturnsOnCall(i int, result1 *models.Category) {
+func (fake *FakeAPITranslatable) TranslateAPICategoryReturnsOnCall(i int, result1 models.Category) {
 	fake.translateAPICategoryMutex.Lock()
 	defer fake.translateAPICategoryMutex.Unlock()
 	fake.TranslateAPICategoryStub = nil
 	if fake.translateAPICategoryReturnsOnCall == nil {
 		fake.translateAPICategoryReturnsOnCall = make(map[int]struct {
-			result1 *models.Category
+			result1 models.Category
 		})
 	}
 	fake.translateAPICategoryReturnsOnCall[i] = struct {
-		result1 *models.Category
+		result1 models.Category
 	}{result1}
 }
 

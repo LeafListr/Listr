@@ -1,9 +1,10 @@
-package curaleaf_test
+package cache_test
 
 import (
 	"testing"
+	"time"
 
-	"github.com/Linkinlog/LeafListr/internal/curaleaf"
+	"github.com/Linkinlog/LeafListr/internal/cache"
 )
 
 func TestSet(t *testing.T) {
@@ -19,15 +20,15 @@ func TestSet(t *testing.T) {
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			cache := curaleaf.NewCache()
-			err := cache.Set(tc.key, tc.value)
+			c := cache.NewCache()
+			err := c.Set(tc.key, time.Hour, tc.value)
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
 
-			result, err := cache.Get(tc.key)
-			if err != nil {
-				t.Fatalf("unexpected error: %v", err)
+			result, getErr := c.Get(tc.key)
+			if getErr != nil {
+				t.Fatalf("unexpected error: %v", getErr)
 			} else if result != tc.value {
 				t.Fatalf("expected %v, got %v", tc.value, result)
 			}

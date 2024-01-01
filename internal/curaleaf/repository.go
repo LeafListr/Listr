@@ -3,14 +3,13 @@ package curaleaf
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"strings"
 	"sync"
 
-	"github.com/Linkinlog/LeafListr/internal/cache"
+	"github.com/Linkinlog/LeafListr/internal/client"
+
 	"github.com/Linkinlog/LeafListr/internal/models"
 
-	"github.com/Linkinlog/LeafListr/internal/client"
 	"github.com/Linkinlog/LeafListr/internal/repository"
 )
 
@@ -21,11 +20,10 @@ const (
 type Repository struct {
 	C        client.Client
 	T        *ClientTranslator
-	MC       cache.Cacher
 	menuType string
 }
 
-func NewRepository(c client.Client, translator *ClientTranslator, mc cache.Cacher, menuType string) repository.Repository {
+func NewRepository(c client.Client, translator *ClientTranslator, menuType string) repository.Repository {
 	if strings.EqualFold(menuType, "recreational") || strings.EqualFold(menuType, "medical") {
 		menuType = strings.ToUpper(menuType)
 	} else {
@@ -34,134 +32,53 @@ func NewRepository(c client.Client, translator *ClientTranslator, mc cache.Cache
 	return &Repository{
 		C:        c,
 		T:        translator,
-		MC:       mc,
 		menuType: menuType,
 	}
 }
 
 func (r *Repository) Location(menuId string) (*models.Location, error) {
 	query := AllLocationsQuery(0, 0)
-	queryKey := fmt.Sprintf("location-%s-%s", menuId, r.menuType)
-	location, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
-		return r.getLocation(query, menuId)
-	})
-	if err != nil {
-		return &models.Location{}, err
-	}
-
-	return location.(*models.Location), nil
+	return r.getLocation(query, menuId)
 }
 
 func (r *Repository) Locations(longitude, latitude float64) ([]*models.Location, error) {
 	query := AllLocationsQuery(longitude, latitude)
-	queryKey := fmt.Sprintf("locations-%f-%f-%s", longitude, latitude, r.menuType)
-
-	locations, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
-		return r.getLocations(query)
-	})
-	if err != nil {
-		return []*models.Location{}, err
-	}
-
-	return locations.([]*models.Location), nil
+	return r.getLocations(query)
 }
 
 func (r *Repository) GetProduct(menuId, productId string) (*models.Product, error) {
 	query := ProductQuery(menuId, productId, r.menuType)
-	queryKey := fmt.Sprintf("product-%s-%s-%s", menuId, productId, r.menuType)
-
-	product, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
-		return r.getProduct(query)
-	})
-	if err != nil {
-		return &models.Product{}, err
-	}
-
-	return product.(*models.Product), nil
+	return r.getProduct(query)
 }
 
 func (r *Repository) GetProducts(menuId string) ([]*models.Product, error) {
 	query := AllProductQuery(menuId, r.menuType)
-	queryKey := fmt.Sprintf("products-%s-%s", menuId, r.menuType)
-
-	products, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
-		return r.getProducts(query)
-	})
-	if err != nil {
-		return []*models.Product{}, err
-	}
-
-	return products.([]*models.Product), nil
+	return r.getProducts(query)
 }
 
 func (r *Repository) GetProductsForCategory(menuId string, category models.Category) ([]*models.Product, error) {
 	query := AllProductForCategoryQuery(menuId, r.menuType, string(category))
-	queryKey := fmt.Sprintf("products-%s-%s-%s", menuId, string(category), r.menuType)
-
-	products, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
-		return r.getProductsForCategory(query)
-	})
-	if err != nil {
-		return []*models.Product{}, err
-	}
-
-	return products.([]*models.Product), nil
+	return r.getProductsForCategory(query)
 }
 
-func (r *Repository) GetCategories(menuId string) ([]*models.Category, error) {
+func (r *Repository) GetCategories(menuId string) ([]models.Category, error) {
 	query := AllCategoriesQuery(menuId, r.menuType)
-	queryKey := fmt.Sprintf("categories-%s-%s", menuId, r.menuType)
-
-	categories, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
-		return r.getCategories(query)
-	})
-	if err != nil {
-		return []*models.Category{}, err
-	}
-
-	return categories.([]*models.Category), nil
+	return r.getCategories(query)
 }
 
 func (r *Repository) GetTerpenes(menuId string) ([]*models.Terpene, error) {
 	query := AllProductQuery(menuId, r.menuType)
-	queryKey := fmt.Sprintf("terpenes-%s-%s", menuId, r.menuType)
-
-	terpenes, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
-		return r.getTerpenes(query)
-	})
-	if err != nil {
-		return []*models.Terpene{}, err
-	}
-
-	return terpenes.([]*models.Terpene), nil
+	return r.getTerpenes(query)
 }
 
 func (r *Repository) GetCannabinoids(menuId string) ([]*models.Cannabinoid, error) {
 	query := AllProductQuery(menuId, r.menuType)
-	queryKey := fmt.Sprintf("cannabinoids-%s-%s", menuId, r.menuType)
-
-	cannabinoids, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
-		return r.getCannabinoids(query)
-	})
-	if err != nil {
-		return []*models.Cannabinoid{}, err
-	}
-
-	return cannabinoids.([]*models.Cannabinoid), nil
+	return r.getCannabinoids(query)
 }
 
 func (r *Repository) GetOffers(menuId string) ([]*models.Offer, error) {
 	query := AllOffersQuery(menuId, r.menuType)
-	queryKey := fmt.Sprintf("offers-%s-%s", menuId, r.menuType)
-
-	offers, err := r.MC.GetOrRetrieve(queryKey, func() (any, error) {
-		return r.getOffers(query)
-	})
-	if err != nil {
-		return []*models.Offer{}, err
-	}
-
-	return offers.([]*models.Offer), nil
+	return r.getOffers(query)
 }
 
 func (r *Repository) getLocation(query, locationId string) (*models.Location, error) {
@@ -194,15 +111,6 @@ func (r *Repository) getLocations(query string) ([]*models.Location, error) {
 	return locs, nil
 }
 
-func contains(s []string, e string) bool {
-	for _, a := range s {
-		if strings.EqualFold(a, e) {
-			return true
-		}
-	}
-	return false
-}
-
 func (r *Repository) getProduct(query string) (*models.Product, error) {
 	productResp, err := r.getResponse(query)
 	if err != nil {
@@ -233,10 +141,10 @@ func (r *Repository) getProductsForCategory(query string) ([]*models.Product, er
 	return r.T.TranslateClientProducts(allProdForCatResp.Data.DispensaryMenu.Products), nil
 }
 
-func (r *Repository) getCategories(query string) ([]*models.Category, error) {
+func (r *Repository) getCategories(query string) ([]models.Category, error) {
 	allCatsResp, err := r.getResponse(query)
 	if err != nil {
-		return []*models.Category{}, err
+		return []models.Category{}, err
 	}
 	return r.T.TranslateClientCategories(allCatsResp.Data.DispensaryMenu.AllFilters.Categories), nil
 }
@@ -317,4 +225,13 @@ func (r *Repository) getResponse(query string) (Response, error) {
 	}
 
 	return cResp, nil
+}
+
+func contains(s []string, e string) bool {
+	for _, a := range s {
+		if strings.EqualFold(a, e) {
+			return true
+		}
+	}
+	return false
 }

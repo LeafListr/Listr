@@ -1,15 +1,14 @@
-package curaleaf
+package transformation
 
 import (
 	"strings"
 
 	"github.com/Linkinlog/LeafListr/internal/models"
-	"github.com/Linkinlog/LeafListr/internal/transformation"
 )
 
 type filterer struct{}
 
-func NewFilterer() transformation.Filterer {
+func NewFilterer() Filterer {
 	return &filterer{}
 }
 

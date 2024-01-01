@@ -87,12 +87,12 @@ func (aT *APITranslator) TranslateAPIProducts(ps []*models.Product) []*apiModels
 	return apiPs
 }
 
-func (aT *APITranslator) TranslateAPICategory(c *models.Category) *apiModels.Category {
-	return (*apiModels.Category)(c)
+func (aT *APITranslator) TranslateAPICategory(c models.Category) apiModels.Category {
+	return apiModels.Category(c)
 }
 
-func (aT *APITranslator) TranslateAPICategories(cs []*models.Category) []*apiModels.Category {
-	apiCs := make([]*apiModels.Category, 0)
+func (aT *APITranslator) TranslateAPICategories(cs []models.Category) []apiModels.Category {
+	apiCs := make([]apiModels.Category, 0)
 	for _, c := range cs {
 		apiCs = append(apiCs, aT.TranslateAPICategory(c))
 	}

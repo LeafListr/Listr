@@ -25,7 +25,7 @@ type FakeWorkflow struct {
 		result1 []*models.Cannabinoid
 		result2 error
 	}
-	CategoriesStub        func(string, string, string) ([]*models.Category, error)
+	CategoriesStub        func(string, string, string) ([]models.Category, error)
 	categoriesMutex       sync.RWMutex
 	categoriesArgsForCall []struct {
 		arg1 string
@@ -33,11 +33,11 @@ type FakeWorkflow struct {
 		arg3 string
 	}
 	categoriesReturns struct {
-		result1 []*models.Category
+		result1 []models.Category
 		result2 error
 	}
 	categoriesReturnsOnCall map[int]struct {
-		result1 []*models.Category
+		result1 []models.Category
 		result2 error
 	}
 	LocationStub        func(string, string, string) (*models.Location, error)
@@ -333,7 +333,7 @@ func (fake *FakeWorkflow) CannabinoidsReturnsOnCall(i int, result1 []*models.Can
 	}{result1, result2}
 }
 
-func (fake *FakeWorkflow) Categories(arg1 string, arg2 string, arg3 string) ([]*models.Category, error) {
+func (fake *FakeWorkflow) Categories(arg1 string, arg2 string, arg3 string) ([]models.Category, error) {
 	fake.categoriesMutex.Lock()
 	ret, specificReturn := fake.categoriesReturnsOnCall[len(fake.categoriesArgsForCall)]
 	fake.categoriesArgsForCall = append(fake.categoriesArgsForCall, struct {
@@ -360,7 +360,7 @@ func (fake *FakeWorkflow) CategoriesCallCount() int {
 	return len(fake.categoriesArgsForCall)
 }
 
-func (fake *FakeWorkflow) CategoriesCalls(stub func(string, string, string) ([]*models.Category, error)) {
+func (fake *FakeWorkflow) CategoriesCalls(stub func(string, string, string) ([]models.Category, error)) {
 	fake.categoriesMutex.Lock()
 	defer fake.categoriesMutex.Unlock()
 	fake.CategoriesStub = stub
@@ -373,28 +373,28 @@ func (fake *FakeWorkflow) CategoriesArgsForCall(i int) (string, string, string) 
 	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
 }
 
-func (fake *FakeWorkflow) CategoriesReturns(result1 []*models.Category, result2 error) {
+func (fake *FakeWorkflow) CategoriesReturns(result1 []models.Category, result2 error) {
 	fake.categoriesMutex.Lock()
 	defer fake.categoriesMutex.Unlock()
 	fake.CategoriesStub = nil
 	fake.categoriesReturns = struct {
-		result1 []*models.Category
+		result1 []models.Category
 		result2 error
 	}{result1, result2}
 }
 
-func (fake *FakeWorkflow) CategoriesReturnsOnCall(i int, result1 []*models.Category, result2 error) {
+func (fake *FakeWorkflow) CategoriesReturnsOnCall(i int, result1 []models.Category, result2 error) {
 	fake.categoriesMutex.Lock()
 	defer fake.categoriesMutex.Unlock()
 	fake.CategoriesStub = nil
 	if fake.categoriesReturnsOnCall == nil {
 		fake.categoriesReturnsOnCall = make(map[int]struct {
-			result1 []*models.Category
+			result1 []models.Category
 			result2 error
 		})
 	}
 	fake.categoriesReturnsOnCall[i] = struct {
-		result1 []*models.Category
+		result1 []models.Category
 		result2 error
 	}{result1, result2}
 }

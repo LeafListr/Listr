@@ -43,6 +43,7 @@ type hit struct {
 	DiscountedPriceOunce        string        `json:"discounted_price_ounce"`
 	DiscountedPriceQuarterOunce string        `json:"discounted_price_quarter_ounce"`
 	DiscountedPriceTwoGram      string        `json:"discounted_price_two_gram"`
+	DiscountedPriceEach         string        `json:"discounted_price_each"`
 	Dosage                      interface{}   `json:"dosage"`
 	Effects                     []interface{} `json:"effects"`
 	Feelings                    []string      `json:"feelings"`
@@ -98,6 +99,7 @@ type hit struct {
 	PriceOunce        string      `json:"price_ounce"`
 	PriceQuarterOunce string      `json:"price_quarter_ounce"`
 	PriceTwoGram      string      `json:"price_two_gram"`
+	PriceEach         string      `json:"price_each"`
 	ProductBrandId    int         `json:"product_brand_id"`
 	ProductId         int         `json:"product_id"`
 	ProductPercentCbd interface{} `json:"product_percent_cbd"`
@@ -156,7 +158,18 @@ type hit struct {
 	UrlSlug                  string        `json:"url_slug"`
 }
 
-type Response struct {
+type LocationResponse []*struct {
+	Id    int    `json:"id"`
+	Link  string `json:"link"`
+	Title struct {
+		Rendered string `json:"rendered"`
+	} `json:"title"`
+	Content struct {
+		Rendered string `json:"rendered"`
+	} `json:"content"`
+}
+
+type ProductResponse struct {
 	Hits        []hit `json:"hits"`
 	NbHits      int   `json:"nbHits"`
 	Page        int   `json:"page"`

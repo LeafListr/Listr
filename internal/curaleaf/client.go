@@ -12,16 +12,14 @@ import (
 type Endpoint string
 
 type HttpClient struct {
-	hC      *http.Client
-	headers http.Header
-	e       Endpoint
+	hC *http.Client
+	e  Endpoint
 }
 
-func NewHTTPClient(endpoint Endpoint, headers http.Header) *HttpClient {
+func NewHTTPClient(endpoint Endpoint) *HttpClient {
 	return &HttpClient{
-		hC:      &http.Client{Timeout: 30 * time.Second},
-		headers: headers,
-		e:       endpoint,
+		hC: &http.Client{Timeout: 30 * time.Second},
+		e:  endpoint,
 	}
 }
 

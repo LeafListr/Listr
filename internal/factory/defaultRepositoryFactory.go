@@ -1,12 +1,10 @@
-package curaleaf
+package factory
 
 import (
 	"errors"
-	"net/http"
 
-	"github.com/Linkinlog/LeafListr/internal/cache"
-	"github.com/Linkinlog/LeafListr/internal/factory"
-
+	"github.com/Linkinlog/LeafListr/internal/beyondhello"
+	"github.com/Linkinlog/LeafListr/internal/curaleaf"
 	"github.com/Linkinlog/LeafListr/internal/repository"
 )
 
@@ -16,26 +14,22 @@ const (
 	MenuTypeMismatch  = "menu type mismatch"
 )
 
-type DefaultRepositoryFactory struct {
-	memCache cache.Cacher
-}
+type DefaultRepositoryFactory struct{}
 
-func NewRepoFactory(mC cache.Cacher) factory.RepositoryFactory {
-	return &DefaultRepositoryFactory{
-		memCache: mC,
-	}
+func NewRepoFactory() RepositoryFactory {
+	return &DefaultRepositoryFactory{}
 }
 
 func (rf *DefaultRepositoryFactory) FindByDispensary(dispensary, menuType string) (repository.Repository, error) {
-	return findRepository(dispensary, menuType, rf.memCache)
+	return findRepository(dispensary, menuType)
 }
 
 func (rf *DefaultRepositoryFactory) FindByDispensaryMenu(dispensary, menuId, menuType string) (repository.Repository, error) {
-	return findRepositoryForMenu(dispensary, menuId, menuType, rf.memCache)
+	return findRepositoryForMenu(dispensary, menuId, menuType)
 }
 
-func findRepositoryForMenu(dispensary string, menuId, menuType string, mc cache.Cacher) (repository.Repository, error) {
-	repo, err := findRepository(dispensary, menuType, mc)
+func findRepositoryForMenu(dispensary string, menuId, menuType string) (repository.Repository, error) {
+	repo, err := findRepository(dispensary, menuType)
 	if err != nil {
 		return nil, err
 	}
@@ -52,17 +46,18 @@ func findRepositoryForMenu(dispensary string, menuId, menuType string, mc cache.
 	return repo, nil
 }
 
-func findRepository(dispensary, menuType string, mc cache.Cacher) (repository.Repository, error) {
+func findRepository(dispensary, menuType string) (repository.Repository, error) {
 	var repo repository.Repository
 	var err error
 
 	switch dispensary {
 	case "curaleaf", "Curaleaf":
-		c := NewHTTPClient(
-			GqlEndpoint,
-			make(http.Header),
+		c := curaleaf.NewHTTPClient(
+			curaleaf.GqlEndpoint,
 		)
-		repo = NewRepository(c, NewClientTranslator(), mc, menuType)
+		repo = curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), menuType)
+	case "beyond", "Beyond", "BeyondHello", "Beyond-Hello", "beyond-hello":
+		repo = beyondhello.NewRepository()
 	default:
 		err = errors.New("unsupported dispensary")
 	}

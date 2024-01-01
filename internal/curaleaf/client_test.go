@@ -3,7 +3,6 @@ package curaleaf_test
 import (
 	"context"
 	"encoding/json"
-	"net/http"
 	"testing"
 
 	"github.com/Linkinlog/LeafListr/internal/curaleaf"
@@ -70,7 +69,7 @@ func TestSend(t *testing.T) {
 	}
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			c := curaleaf.NewHTTPClient(tt.endpoint, http.Header{})
+			c := curaleaf.NewHTTPClient(tt.endpoint)
 			respBytes, err := c.Query(tt.ctx, tt.query, "POST")
 			if err != nil && !tt.expectedError {
 				t.Fatal(err)

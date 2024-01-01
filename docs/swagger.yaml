@@ -2,10 +2,12 @@ basePath: /api/v1
 definitions:
   api.supportedDispensary:
     enum:
-    - curaleaf
+    - Curaleaf
+    - Beyond-Hello
     type: string
     x-enum-varnames:
     - Curaleaf
+    - Beyond
   api.supportedDispensaryOptions:
     enum:
     - locations

@@ -12,7 +12,11 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Linkinlog/LeafListr/internal/cache"
 	"github.com/Linkinlog/LeafListr/internal/factory"
+	"github.com/Linkinlog/LeafListr/internal/transformation"
+
+	"github.com/Linkinlog/LeafListr/internal/workflow"
 
 	"github.com/honeycombio/honeycomb-opentelemetry-go"
 	"github.com/honeycombio/otel-config-go/otelconfig"
@@ -50,7 +54,8 @@ const (
 type supportedDispensary string
 
 const (
-	Curaleaf supportedDispensary = "curaleaf"
+	Curaleaf supportedDispensary = "Curaleaf"
+	Beyond   supportedDispensary = "Beyond-Hello"
 )
 
 type supportedDispensaryOptions string
@@ -60,13 +65,13 @@ const (
 )
 
 type API struct {
-	w                     factory.WorkflowFactory
+	w                     workflow.Workflow
 	t                     translation.APITranslatable
 	h                     http.Handler
 	supportedDispensaries []supportedDispensary
 }
 
-func New(workflow factory.WorkflowFactory) *API {
+func New() *API {
 	router := chi.NewRouter()
 
 	bsp := honeycomb.NewBaggageSpanProcessor()
@@ -78,10 +83,14 @@ func New(workflow factory.WorkflowFactory) *API {
 		log.Fatalf("error setting up OTel SDK - %e", err)
 	}
 
+	f := factory.NewRepoFactory()
+	tf := transformation.NewFilterer()
+	s := transformation.NewSorterer()
+	cc := cache.NewCache()
 	api := &API{
-		w:                     workflow,
+		w:                     workflow.NewWorkflow(f, tf, s, cc),
 		h:                     router,
-		supportedDispensaries: []supportedDispensary{Curaleaf},
+		supportedDispensaries: []supportedDispensary{Curaleaf, Beyond},
 		t:                     apiTranslator.NewAPITranslator(),
 	}
 
@@ -138,9 +147,7 @@ func ListenAndServe(addr string, timeout int64) error {
 
 	slog.SetDefault(logger)
 
-	wf := NewWorkflowFactory()
-
-	a := New(wf)
+	a := New()
 	h := http.Server{
 		Addr:              addr,
 		Handler:           a.h,
@@ -170,11 +177,7 @@ func (a *API) writeJson(r http.ResponseWriter, req *http.Request, data any, err 
 }
 
 func (a *API) handleError(r http.ResponseWriter, req *http.Request, err error) {
-	dispensary, _, _, _ := params(req, "")
-	w, findErr := a.w.FindByDispensary(dispensary)
-	if findErr == nil && w != nil {
-		w.LogError(err, req.Context())
-	}
+	a.w.LogError(err, req.Context())
 	r.WriteHeader(http.StatusInternalServerError)
 }
 
@@ -225,11 +228,8 @@ func (a *API) handleLocation(res http.ResponseWriter, req *http.Request) {
 // @Router			/dispensaries/{dispensaryId}/locations [get].
 func (a *API) handleLocationListing(r http.ResponseWriter, req *http.Request) {
 	dispensary, _, menuType, _ := params(req, "")
-	w, findErr := a.w.FindByDispensary(dispensary)
-	if findErr == nil && w != nil {
-		locations, err := w.Locations(dispensary, menuType)
-		a.writeJson(r, req, a.t.TranslateAPILocations(locations), err)
-	}
+	locations, err := a.w.Locations(dispensary, menuType)
+	a.writeJson(r, req, a.t.TranslateAPILocations(locations), err)
 }
 
 // @Summary		Get product details
@@ -245,11 +245,8 @@ func (a *API) handleLocationListing(r http.ResponseWriter, req *http.Request) {
 // @Router			/dispensaries/{dispensaryId}/locations/{locationId}/products/{productId} [get].
 func (a *API) handleProduct(r http.ResponseWriter, req *http.Request) {
 	dispensary, locationId, menuType, productId := params(req, "productId")
-	w, findErr := a.w.FindByDispensary(dispensary)
-	if findErr == nil && w != nil {
-		product, err := w.Product(dispensary, locationId, menuType, productId)
-		a.writeJson(r, req, a.t.TranslateAPIProduct(product), err)
-	}
+	product, err := a.w.Product(dispensary, locationId, menuType, productId)
+	a.writeJson(r, req, a.t.TranslateAPIProduct(product), err)
 }
 
 // @Summary		List products for a location
@@ -277,76 +274,73 @@ func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 	var products []*models.Product
 	var err error
 	dispensary, locationId, menuType, _ := params(req, "")
-	w, findErr := a.w.FindByDispensary(dispensary)
-	if findErr == nil && w != nil {
-		if category := req.URL.Query().Get("category"); category != "" {
-			products, err = w.ProductsForCategory(dispensary, locationId, menuType, models.Category(category))
-			if err != nil {
-				a.handleError(r, req, err)
-				return
-			}
+	if category := req.URL.Query().Get("category"); category != "" {
+		products, err = a.w.ProductsForCategory(dispensary, locationId, menuType, models.Category(category))
+		if err != nil {
+			a.handleError(r, req, err)
+			return
 		}
-		if subCategory := subCategoryFilter(req); subCategory != "" {
-			products, err = w.ProductsForSubCategory(dispensary, locationId, menuType, products, subCategory)
-			if err != nil {
-				a.handleError(r, req, err)
-				return
-			}
-		}
-		if hasPriceFilters(req) {
-			minPrice, maxPrice := priceFilters(req)
-			products, err = w.ProductsForPriceRange(dispensary, locationId, menuType, products, minPrice, maxPrice)
-			if err != nil {
-				a.handleError(r, req, err)
-				return
-			}
-		}
-		if brands := brandFilters(req); brands != "" {
-			products, err = w.ProductsForBrands(dispensary, locationId, menuType, products, strings.Split(brands, ","))
-			if err != nil {
-				a.handleError(r, req, err)
-				return
-			}
-		}
-		if notBrands := notBrandFilters(req); notBrands != "" {
-			products, err = w.ProductsExcludingBrands(dispensary, locationId, menuType, products, strings.Split(notBrands, ","))
-			if err != nil {
-				a.handleError(r, req, err)
-				return
-			}
-		}
-		if variants := variantFilters(req); variants != "" {
-			products, err = w.ProductsForVariants(dispensary, locationId, menuType, products, strings.Split(variants, ","))
-			if err != nil {
-				a.handleError(r, req, err)
-				return
-			}
-		}
-
-		if products == nil {
-			products, err = w.Products(dispensary, locationId, menuType)
-			if err != nil {
-				a.handleError(r, req, err)
-				return
-			}
-		}
-
-		if sortTop3Terps(req) {
-			slog.Debug("Sorting products by top 3 terps")
-			w.SortProductsByTop3Terps(dispensary, locationId, menuType, products, top3Terps(req))
-		}
-
-		if sortPriceAsc(req) {
-			slog.Debug("Sorting products by price asc")
-			w.SortProductsByPriceAsc(dispensary, locationId, menuType, products)
-		}
-		if sortPriceDesc(req) {
-			slog.Debug("Sorting products by price desc")
-			w.SortProductsByPriceDesc(dispensary, locationId, menuType, products)
-		}
-
-		a.writeJson(r, req, a.t.TranslateAPIProducts(products), err)
 	}
+	if subCategory := subCategoryFilter(req); subCategory != "" {
+		products, err = a.w.ProductsForSubCategory(dispensary, locationId, menuType, products, subCategory)
+		if err != nil {
+			a.handleError(r, req, err)
+			return
+		}
+	}
+	if hasPriceFilters(req) {
+		minPrice, maxPrice := priceFilters(req)
+		products, err = a.w.ProductsForPriceRange(dispensary, locationId, menuType, products, minPrice, maxPrice)
+		if err != nil {
+			a.handleError(r, req, err)
+			return
+		}
+	}
+	if brands := brandFilters(req); brands != "" {
+		products, err = a.w.ProductsForBrands(dispensary, locationId, menuType, products, strings.Split(brands, ","))
+		if err != nil {
+			a.handleError(r, req, err)
+			return
+		}
+	}
+	if notBrands := notBrandFilters(req); notBrands != "" {
+		products, err = a.w.ProductsExcludingBrands(dispensary, locationId, menuType, products, strings.Split(notBrands, ","))
+		if err != nil {
+			a.handleError(r, req, err)
+			return
+		}
+	}
+	if variants := variantFilters(req); variants != "" {
+		products, err = a.w.ProductsForVariants(dispensary, locationId, menuType, products, strings.Split(variants, ","))
+		if err != nil {
+			a.handleError(r, req, err)
+			return
+		}
+	}
+
+	if products == nil {
+		products, err = a.w.Products(dispensary, locationId, menuType)
+		if err != nil {
+			a.handleError(r, req, err)
+			return
+		}
+	}
+
+	if sortTop3Terps(req) {
+		slog.Debug("Sorting products by top 3 terps")
+		a.w.SortProductsByTop3Terps(dispensary, locationId, menuType, products, top3Terps(req))
+	}
+
+	if sortPriceAsc(req) {
+		slog.Debug("Sorting products by price asc")
+		a.w.SortProductsByPriceAsc(dispensary, locationId, menuType, products)
+	}
+	if sortPriceDesc(req) {
+		slog.Debug("Sorting products by price desc")
+		a.w.SortProductsByPriceDesc(dispensary, locationId, menuType, products)
+	}
+
+	a.writeJson(r, req, a.t.TranslateAPIProducts(products), err)
 }
 
 // @Summary		List offers for a location
@@ -361,11 +355,8 @@ func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 // @Router			/dispensaries/{dispensaryId}/locations/{locationId}/offers [get].
 func (a *API) handleOfferListing(r http.ResponseWriter, req *http.Request) {
 	dispensary, locationId, menuType, _ := params(req, "")
-	w, findErr := a.w.FindByDispensary(dispensary)
-	if findErr == nil && w != nil {
-		offers, err := w.Offers(dispensary, locationId, menuType)
-		a.writeJson(r, req, a.t.TranslateAPIOffers(offers), err)
-	}
+	offers, err := a.w.Offers(dispensary, locationId, menuType)
+	a.writeJson(r, req, a.t.TranslateAPIOffers(offers), err)
 }
 
 // @Summary		List categories for a location
@@ -380,11 +371,8 @@ func (a *API) handleOfferListing(r http.ResponseWriter, req *http.Request) {
 // @Router			/dispensaries/{dispensaryId}/locations/{locationId}/categories [get].
 func (a *API) handleCategoryListing(r http.ResponseWriter, req *http.Request) {
 	dispensary, locationId, menuType, _ := params(req, "")
-	w, findErr := a.w.FindByDispensary(dispensary)
-	if findErr == nil && w != nil {
-		categories, err := w.Categories(dispensary, locationId, menuType)
-		a.writeJson(r, req, a.t.TranslateAPICategories(categories), err)
-	}
+	categories, err := a.w.Categories(dispensary, locationId, menuType)
+	a.writeJson(r, req, a.t.TranslateAPICategories(categories), err)
 }
 
 // @Summary		List terpenes for a location
@@ -399,11 +387,8 @@ func (a *API) handleCategoryListing(r http.ResponseWriter, req *http.Request) {
 // @Router			/dispensaries/{dispensaryId}/locations/{locationId}/terpenes [get].
 func (a *API) handleTerpeneListing(r http.ResponseWriter, req *http.Request) {
 	dispensary, locationId, menuType, _ := params(req, "")
-	w, findErr := a.w.FindByDispensary(dispensary)
-	if findErr == nil && w != nil {
-		terpenes, err := w.Terpenes(dispensary, locationId, menuType)
-		a.writeJson(r, req, a.t.TranslateAPITerpenes(terpenes), err)
-	}
+	terpenes, err := a.w.Terpenes(dispensary, locationId, menuType)
+	a.writeJson(r, req, a.t.TranslateAPITerpenes(terpenes), err)
 }
 
 // @Summary		List cannabinoids for a location
@@ -418,11 +403,8 @@ func (a *API) handleTerpeneListing(r http.ResponseWriter, req *http.Request) {
 // @Router			/dispensaries/{dispensaryId}/locations/{locationId}/cannabinoids [get].
 func (a *API) handleCannabinoidListing(r http.ResponseWriter, req *http.Request) {
 	dispensary, locationId, menuType, _ := params(req, "")
-	w, findErr := a.w.FindByDispensary(dispensary)
-	if findErr == nil && w != nil {
-		cannabinoids, err := w.Cannabinoids(dispensary, locationId, menuType)
-		a.writeJson(r, req, a.t.TranslateAPICannabinoids(cannabinoids), err)
-	}
+	cannabinoids, err := a.w.Cannabinoids(dispensary, locationId, menuType)
+	a.writeJson(r, req, a.t.TranslateAPICannabinoids(cannabinoids), err)
 }
 
 func RequestLogger(next http.Handler) http.Handler {
