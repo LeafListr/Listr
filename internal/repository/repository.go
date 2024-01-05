@@ -7,8 +7,9 @@ import (
 )
 
 var (
-	InvalidJSONError = errors.New("invalid json")
-	ResourceNotFound = errors.New("resource not found")
+	InvalidJSONError     = errors.New("invalid json")
+	ResourceNotFound     = errors.New("resource not found")
+	InvalidCategoryError = errors.New("invalid category")
 )
 
 //go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate

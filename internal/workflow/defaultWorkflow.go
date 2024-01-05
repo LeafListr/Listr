@@ -3,16 +3,15 @@ package workflow
 import (
 	"context"
 	"github.com/Linkinlog/LeafListr/internal/cache"
-	"github.com/Linkinlog/LeafListr/internal/factory"
 	"github.com/Linkinlog/LeafListr/internal/models"
 	"github.com/Linkinlog/LeafListr/internal/transformation"
 	"log/slog"
 )
 
 type defaultWorkflow struct {
-	rf factory.RepositoryFactory
-	c  cache.Cacher
-	f  transformation.Filterer
+	//rf factory.RepositoryFactory
+	c cache.Cacher
+	f transformation.Filterer
 }
 
 func NewWorkflow() Workflow {

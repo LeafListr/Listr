@@ -44,16 +44,37 @@ func (r *Repository) GetProducts(menuId string) ([]*models.Product, error) {
 	if err != nil {
 		return nil, err
 	}
-	query := MenuQuery(mId)
+	query := menuQuery(mId)
 	return r.getProducts(query)
 }
 
 func (r *Repository) GetProductsForCategory(menuId string, category models.Category) ([]*models.Product, error) {
-	return nil, nil
+	validCategories, catErr := r.GetCategories(menuId)
+	if catErr != nil {
+		return nil, catErr
+	}
+	for _, c := range validCategories {
+		if c == &category {
+			break
+		}
+		return nil, repository.InvalidCategoryError
+	}
+
+	mId, err := strconv.Atoi(menuId)
+	if err != nil {
+		return nil, err
+	}
+	query := menuQueryWithCategory(mId, string(category))
+	return r.getProducts(query)
 }
 
 func (r *Repository) GetCategories(menuId string) ([]*models.Category, error) {
-	return nil, nil
+	mId, err := strconv.Atoi(menuId)
+	if err != nil {
+		return nil, err
+	}
+	query := facetQuery(mId, "kind")
+	return r.getCategories(query)
 }
 
 func (r *Repository) GetTerpenes(menuId string) ([]*models.Terpene, error) {
@@ -75,6 +96,15 @@ func (r *Repository) getProducts(query string) ([]*models.Product, error) {
 	}
 
 	return resp.translateProducts()
+}
+
+func (r *Repository) getCategories(query string) ([]*models.Category, error) {
+	resp, err := r.getResponse(query)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp.translateCategories()
 }
 
 func (r *Repository) getResponse(query string) (Response, error) {
