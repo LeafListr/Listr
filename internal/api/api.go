@@ -8,6 +8,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -28,7 +29,6 @@ import (
 	apiTranslator "github.com/Linkinlog/LeafListr/internal/api/translation"
 	"github.com/Linkinlog/LeafListr/internal/models"
 	"github.com/Linkinlog/LeafListr/internal/translation"
-	"github.com/rs/cors"
 
 	"github.com/go-chi/chi/v5"
 	httpSwagger "github.com/swaggo/http-swagger"
@@ -73,6 +73,7 @@ type API struct {
 
 func New() *API {
 	router := chi.NewRouter()
+	router.Use(corsMiddleware)
 
 	bsp := honeycomb.NewBaggageSpanProcessor()
 
@@ -94,13 +95,6 @@ func New() *API {
 		t:                     apiTranslator.NewAPITranslator(),
 	}
 
-	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"https://*.dahlton.org", "http://localhost:*"},
-		AllowedMethods: []string{"GET"},
-		AllowedHeaders: []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
-		MaxAge:         300,
-	})
-	router.Use(c.Handler)
 	router.Use(RequestLogger)
 
 	router.Get("/swagger/*", httpSwagger.WrapHandler)
@@ -341,11 +335,11 @@ func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 	}
 
 	if sortTHCAsc(req) {
-		slog.Debug("Sorting products by price desc")
+		slog.Debug("Sorting products by thc asc")
 		a.w.SortProductsByTHCAsc(dispensary, locationId, menuType, products)
 	}
 	if sortTHCDesc(req) {
-		slog.Debug("Sorting products by price desc")
+		slog.Debug("Sorting products by thc desc")
 		a.w.SortProductsByTHCDesc(dispensary, locationId, menuType, products)
 	}
 
@@ -448,6 +442,26 @@ func RequestLogger(next http.Handler) http.Handler {
 				slog.Attr{Key: "Header", Value: slog.GroupValue(headers...)},
 			),
 		)
+		next.ServeHTTP(w, r)
+	})
+}
+
+func corsMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		originRegex := regexp.MustCompile(`^https?:\/\/(localhost:[0-9]+|.*dahlton.org)\/?$`)
+		origin := r.Header.Get("Origin")
+		if originRegex.MatchString(origin) {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+			w.Header().Set("Access-Control-Allow-Methods", "GET")
+			w.Header().Set("Access-Control-Allow-Headers", "Accept, Authorization, Content-Type, X-CSRF-Token")
+			w.Header().Set("Access-Control-Max-Age", "300")
+		}
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
 		next.ServeHTTP(w, r)
 	})
 }

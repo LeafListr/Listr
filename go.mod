@@ -7,7 +7,6 @@ require (
 	github.com/honeycombio/honeycomb-opentelemetry-go v0.9.0
 	github.com/honeycombio/otel-config-go v1.13.0
 	github.com/maxbrunsfeld/counterfeiter/v6 v6.7.0
-	github.com/rs/cors v1.10.1
 	github.com/stretchr/testify v1.8.4
 	github.com/swaggo/http-swagger v1.3.4
 	github.com/swaggo/swag v1.16.2
