@@ -205,6 +205,14 @@ func (w *DefaultWorkflow) SortProductsByPriceDesc(_, _, _ string, products []*mo
 	w.S.PriceDesc(products)
 }
 
+func (w *DefaultWorkflow) SortProductsByTHCAsc(_, _, _ string, products []*models.Product) {
+	w.S.THCAsc(products)
+}
+
+func (w *DefaultWorkflow) SortProductsByTHCDesc(_, _, _ string, products []*models.Product) {
+	w.S.THCDesc(products)
+}
+
 func (w *DefaultWorkflow) SortProductsByTop3Terps(_, _, _ string, products []*models.Product, terps [3]string) {
 	w.S.Top3Terps(products, terps)
 }

@@ -264,7 +264,7 @@ func (a *API) handleProduct(r http.ResponseWriter, req *http.Request) {
 // @Param			brands			query	string			false	"Brands to include"
 // @Param			not_brands		query	string			false	"Brands to exclude"
 // @Param			variants		query	string			false	"Variants to include"
-// @Param			sort			query	string			false	"Sort products"	Enums(price_asc, price_desc)
+// @Param			sort			query	string			false	"Sort products"	Enums(price_asc, price_desc, thc_asc, thc_desc)
 // @Param			terp1			query	string			false	"Most important terpene"
 // @Param			terp2			query	string			false	"Second most important terpene"
 // @Param			terp3			query	string			false	"Third most important terpene"
@@ -338,6 +338,15 @@ func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 	if sortPriceDesc(req) {
 		slog.Debug("Sorting products by price desc")
 		a.w.SortProductsByPriceDesc(dispensary, locationId, menuType, products)
+	}
+
+	if sortTHCAsc(req) {
+		slog.Debug("Sorting products by price desc")
+		a.w.SortProductsByTHCAsc(dispensary, locationId, menuType, products)
+	}
+	if sortTHCDesc(req) {
+		slog.Debug("Sorting products by price desc")
+		a.w.SortProductsByTHCDesc(dispensary, locationId, menuType, products)
 	}
 
 	a.writeJson(r, req, a.t.TranslateAPIProducts(products), err)
@@ -499,6 +508,14 @@ func sortPriceAsc(req *http.Request) bool {
 
 func sortPriceDesc(req *http.Request) bool {
 	return req.URL.Query().Get("sort") == "price_desc"
+}
+
+func sortTHCAsc(req *http.Request) bool {
+	return req.URL.Query().Get("sort") == "thc_asc"
+}
+
+func sortTHCDesc(req *http.Request) bool {
+	return req.URL.Query().Get("sort") == "thc_desc"
 }
 
 func top3Terps(req *http.Request) [3]string {

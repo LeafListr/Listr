@@ -239,6 +239,22 @@ type FakeWorkflow struct {
 		arg3 string
 		arg4 []*models.Product
 	}
+	SortProductsByTHCAscStub        func(string, string, string, []*models.Product)
+	sortProductsByTHCAscMutex       sync.RWMutex
+	sortProductsByTHCAscArgsForCall []struct {
+		arg1 string
+		arg2 string
+		arg3 string
+		arg4 []*models.Product
+	}
+	SortProductsByTHCDescStub        func(string, string, string, []*models.Product)
+	sortProductsByTHCDescMutex       sync.RWMutex
+	sortProductsByTHCDescArgsForCall []struct {
+		arg1 string
+		arg2 string
+		arg3 string
+		arg4 []*models.Product
+	}
 	SortProductsByTop3TerpsStub        func(string, string, string, []*models.Product, [3]string)
 	sortProductsByTop3TerpsMutex       sync.RWMutex
 	sortProductsByTop3TerpsArgsForCall []struct {
@@ -1290,6 +1306,86 @@ func (fake *FakeWorkflow) SortProductsByPriceDescArgsForCall(i int) (string, str
 	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3, argsForCall.arg4
 }
 
+func (fake *FakeWorkflow) SortProductsByTHCAsc(arg1 string, arg2 string, arg3 string, arg4 []*models.Product) {
+	var arg4Copy []*models.Product
+	if arg4 != nil {
+		arg4Copy = make([]*models.Product, len(arg4))
+		copy(arg4Copy, arg4)
+	}
+	fake.sortProductsByTHCAscMutex.Lock()
+	fake.sortProductsByTHCAscArgsForCall = append(fake.sortProductsByTHCAscArgsForCall, struct {
+		arg1 string
+		arg2 string
+		arg3 string
+		arg4 []*models.Product
+	}{arg1, arg2, arg3, arg4Copy})
+	stub := fake.SortProductsByTHCAscStub
+	fake.recordInvocation("SortProductsByTHCAsc", []interface{}{arg1, arg2, arg3, arg4Copy})
+	fake.sortProductsByTHCAscMutex.Unlock()
+	if stub != nil {
+		fake.SortProductsByTHCAscStub(arg1, arg2, arg3, arg4)
+	}
+}
+
+func (fake *FakeWorkflow) SortProductsByTHCAscCallCount() int {
+	fake.sortProductsByTHCAscMutex.RLock()
+	defer fake.sortProductsByTHCAscMutex.RUnlock()
+	return len(fake.sortProductsByTHCAscArgsForCall)
+}
+
+func (fake *FakeWorkflow) SortProductsByTHCAscCalls(stub func(string, string, string, []*models.Product)) {
+	fake.sortProductsByTHCAscMutex.Lock()
+	defer fake.sortProductsByTHCAscMutex.Unlock()
+	fake.SortProductsByTHCAscStub = stub
+}
+
+func (fake *FakeWorkflow) SortProductsByTHCAscArgsForCall(i int) (string, string, string, []*models.Product) {
+	fake.sortProductsByTHCAscMutex.RLock()
+	defer fake.sortProductsByTHCAscMutex.RUnlock()
+	argsForCall := fake.sortProductsByTHCAscArgsForCall[i]
+	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3, argsForCall.arg4
+}
+
+func (fake *FakeWorkflow) SortProductsByTHCDesc(arg1 string, arg2 string, arg3 string, arg4 []*models.Product) {
+	var arg4Copy []*models.Product
+	if arg4 != nil {
+		arg4Copy = make([]*models.Product, len(arg4))
+		copy(arg4Copy, arg4)
+	}
+	fake.sortProductsByTHCDescMutex.Lock()
+	fake.sortProductsByTHCDescArgsForCall = append(fake.sortProductsByTHCDescArgsForCall, struct {
+		arg1 string
+		arg2 string
+		arg3 string
+		arg4 []*models.Product
+	}{arg1, arg2, arg3, arg4Copy})
+	stub := fake.SortProductsByTHCDescStub
+	fake.recordInvocation("SortProductsByTHCDesc", []interface{}{arg1, arg2, arg3, arg4Copy})
+	fake.sortProductsByTHCDescMutex.Unlock()
+	if stub != nil {
+		fake.SortProductsByTHCDescStub(arg1, arg2, arg3, arg4)
+	}
+}
+
+func (fake *FakeWorkflow) SortProductsByTHCDescCallCount() int {
+	fake.sortProductsByTHCDescMutex.RLock()
+	defer fake.sortProductsByTHCDescMutex.RUnlock()
+	return len(fake.sortProductsByTHCDescArgsForCall)
+}
+
+func (fake *FakeWorkflow) SortProductsByTHCDescCalls(stub func(string, string, string, []*models.Product)) {
+	fake.sortProductsByTHCDescMutex.Lock()
+	defer fake.sortProductsByTHCDescMutex.Unlock()
+	fake.SortProductsByTHCDescStub = stub
+}
+
+func (fake *FakeWorkflow) SortProductsByTHCDescArgsForCall(i int) (string, string, string, []*models.Product) {
+	fake.sortProductsByTHCDescMutex.RLock()
+	defer fake.sortProductsByTHCDescMutex.RUnlock()
+	argsForCall := fake.sortProductsByTHCDescArgsForCall[i]
+	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3, argsForCall.arg4
+}
+
 func (fake *FakeWorkflow) SortProductsByTop3Terps(arg1 string, arg2 string, arg3 string, arg4 []*models.Product, arg5 [3]string) {
 	var arg4Copy []*models.Product
 	if arg4 != nil {
@@ -1432,6 +1528,10 @@ func (fake *FakeWorkflow) Invocations() map[string][][]interface{} {
 	defer fake.sortProductsByPriceAscMutex.RUnlock()
 	fake.sortProductsByPriceDescMutex.RLock()
 	defer fake.sortProductsByPriceDescMutex.RUnlock()
+	fake.sortProductsByTHCAscMutex.RLock()
+	defer fake.sortProductsByTHCAscMutex.RUnlock()
+	fake.sortProductsByTHCDescMutex.RLock()
+	defer fake.sortProductsByTHCDescMutex.RUnlock()
 	fake.sortProductsByTop3TerpsMutex.RLock()
 	defer fake.sortProductsByTop3TerpsMutex.RUnlock()
 	fake.terpenesMutex.RLock()

@@ -33,6 +33,16 @@ type Product struct {
 	T      []*Terpene
 }
 
+func (p *Product) THC() float64 {
+	for _, c := range p.C {
+		if c.Name == "THC" {
+			return c.Value
+		}
+	}
+
+	return 0
+}
+
 type Offer struct {
 	Id          string
 	Description string

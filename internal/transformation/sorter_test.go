@@ -261,3 +261,165 @@ func TestTop3Terps(t *testing.T) {
 		})
 	}
 }
+
+func TestTHCAsc(t *testing.T) {
+	tests := map[string]struct {
+		products []*models.Product
+		want     []*models.Product
+	}{
+		"empty": {
+			products: []*models.Product{},
+			want:     []*models.Product{},
+		},
+		"multiple": {
+			products: []*models.Product{
+				{
+					Id: "1",
+					C: []*models.Cannabinoid{
+						{
+							Name:  "THC",
+							Value: 10,
+						},
+					},
+				},
+				{
+					Id: "2",
+					C: []*models.Cannabinoid{
+						{
+							Name:  "THC",
+							Value: 25,
+						},
+					},
+				},
+				{
+					Id: "3",
+					C: []*models.Cannabinoid{
+						{
+							Name:  "THC",
+							Value: 20,
+						},
+					},
+				},
+			},
+			want: []*models.Product{
+				{
+					Id: "1",
+					C: []*models.Cannabinoid{
+						{
+							Name:  "THC",
+							Value: 10,
+						},
+					},
+				},
+				{
+					Id: "3",
+					C: []*models.Cannabinoid{
+						{
+							Name:  "THC",
+							Value: 20,
+						},
+					},
+				},
+				{
+					Id: "2",
+					C: []*models.Cannabinoid{
+						{
+							Name:  "THC",
+							Value: 25,
+						},
+					},
+				},
+			},
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			transformation.NewSorterer().THCAsc(tc.products)
+			if !reflect.DeepEqual(tc.products, tc.want) {
+				t.Fatalf("got: %v, want: %v", tc.products, tc.want)
+			}
+		})
+	}
+}
+
+func TestTHCDesc(t *testing.T) {
+	tests := map[string]struct {
+		products []*models.Product
+		want     []*models.Product
+	}{
+		"empty": {
+			products: []*models.Product{},
+			want:     []*models.Product{},
+		},
+		"multiple": {
+			products: []*models.Product{
+				{
+					Id: "1",
+					C: []*models.Cannabinoid{
+						{
+							Name:  "THC",
+							Value: 10,
+						},
+					},
+				},
+				{
+					Id: "2",
+					C: []*models.Cannabinoid{
+						{
+							Name:  "THC",
+							Value: 25,
+						},
+					},
+				},
+				{
+					Id: "3",
+					C: []*models.Cannabinoid{
+						{
+							Name:  "THC",
+							Value: 20,
+						},
+					},
+				},
+			},
+			want: []*models.Product{
+				{
+					Id: "2",
+					C: []*models.Cannabinoid{
+						{
+							Name:  "THC",
+							Value: 25,
+						},
+					},
+				},
+				{
+					Id: "3",
+					C: []*models.Cannabinoid{
+						{
+							Name:  "THC",
+							Value: 20,
+						},
+					},
+				},
+				{
+					Id: "1",
+					C: []*models.Cannabinoid{
+						{
+							Name:  "THC",
+							Value: 10,
+						},
+					},
+				},
+			},
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			transformation.NewSorterer().THCDesc(tc.products)
+			if !reflect.DeepEqual(tc.products, tc.want) {
+				t.Fatalf("got: %v, want: %v", tc.products, tc.want)
+			}
+		})
+	}
+}

@@ -388,7 +388,9 @@ const docTemplate = `{
                     {
                         "enum": [
                             "price_asc",
-                            "price_desc"
+                            "price_desc",
+                            "thc_asc",
+                            "thc_desc"
                         ],
                         "type": "string",
                         "description": "Sort products",

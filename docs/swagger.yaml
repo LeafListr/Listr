@@ -351,6 +351,8 @@ paths:
         enum:
         - price_asc
         - price_desc
+        - thc_asc
+        - thc_desc
         in: query
         name: sort
         type: string

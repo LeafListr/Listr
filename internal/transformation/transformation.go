@@ -13,5 +13,7 @@ type Filterer interface {
 type Sorter interface {
 	PriceAsc(products []*models.Product)
 	PriceDesc(products []*models.Product)
+	THCAsc(products []*models.Product)
+	THCDesc(products []*models.Product)
 	Top3Terps(products []*models.Product, terps [3]string)
 }
