@@ -388,13 +388,21 @@ const docTemplate = `{
                     {
                         "enum": [
                             "price_asc",
-                            "price_desc",
+                            "price_desc"
+                        ],
+                        "type": "string",
+                        "description": "Sort products",
+                        "name": "price_sort",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
                             "thc_asc",
                             "thc_desc"
                         ],
                         "type": "string",
                         "description": "Sort products",
-                        "name": "sort",
+                        "name": "thc_sort",
                         "in": "query"
                     },
                     {

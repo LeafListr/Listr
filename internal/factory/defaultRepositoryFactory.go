@@ -57,7 +57,7 @@ func findRepository(dispensary, menuType string) (repository.Repository, error) 
 		)
 		repo = curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), menuType)
 	case "beyond", "Beyond", "BeyondHello", "Beyond-Hello", "beyond-hello":
-		repo = beyondhello.NewRepository()
+		repo = beyondhello.NewRepository(menuType)
 	default:
 		err = errors.New("unsupported dispensary")
 	}

@@ -1,5 +1,7 @@
 package models
 
+import "strings"
+
 type Price struct {
 	Total           float64
 	DiscountedTotal float64
@@ -35,7 +37,7 @@ type Product struct {
 
 func (p *Product) THC() float64 {
 	for _, c := range p.C {
-		if c.Name == "THC" {
+		if strings.Contains(strings.ToLower(c.Name), "thc") {
 			return c.Value
 		}
 	}

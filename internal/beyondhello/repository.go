@@ -22,11 +22,13 @@ var Headers = map[string][]string{
 	"Content-Type":             {"application/json"},
 }
 
-func NewRepository() repository.Repository {
-	return &Repository{}
+func NewRepository(menuType string) repository.Repository {
+	return &Repository{menuType: menuType}
 }
 
-type Repository struct{}
+type Repository struct {
+	menuType string
+}
 
 func (r *Repository) Location(menuId string) (*models.Location, error) {
 	locs, err := r.Locations(0, 0)
@@ -46,7 +48,23 @@ func (r *Repository) Locations(longitude, latitude float64) ([]*models.Location,
 	if err != nil {
 		return nil, err
 	}
-	return resp.translateLocations()
+
+	translated, tErr := resp.translateLocations()
+	if tErr != nil {
+		return nil, tErr
+	}
+
+	locs := make([]*models.Location, 0)
+
+	for _, l := range translated {
+		for _, t := range l.LocationTypes {
+			if strings.EqualFold(t, r.menuType) {
+				locs = append(locs, l)
+			}
+		}
+	}
+
+	return locs, nil
 }
 
 func (r *Repository) GetProduct(menuId, productId string) (*models.Product, error) {

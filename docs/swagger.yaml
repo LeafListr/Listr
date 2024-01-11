@@ -351,10 +351,15 @@ paths:
         enum:
         - price_asc
         - price_desc
+        in: query
+        name: price_sort
+        type: string
+      - description: Sort products
+        enum:
         - thc_asc
         - thc_desc
         in: query
-        name: sort
+        name: thc_sort
         type: string
       - description: Most important terpene
         in: query

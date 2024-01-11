@@ -14,10 +14,18 @@ func (r LocationResponse) translateLocations() ([]*models.Location, error) {
 	for _, l := range r {
 		id, err := extractId(l.Content.Rendered)
 		if err == nil {
-			locations = append(locations, &models.Location{
+			loc := &models.Location{
 				Id:   id,
-				Name: l.Title.Rendered,
-			})
+				Name: strings.ReplaceAll(l.Title.Rendered, "Cannabis Menu", ""),
+			}
+			if strings.Contains(l.Title.Rendered, "Medical") {
+				loc.Name = strings.ReplaceAll(loc.Name, "Medical", "")
+				loc.LocationTypes = append(loc.LocationTypes, "Medical")
+			} else {
+				loc.Name = strings.ReplaceAll(loc.Name, "Adult-Use", "")
+				loc.LocationTypes = append(loc.LocationTypes, "Recreational")
+			}
+			locations = append(locations, loc)
 		}
 	}
 	return locations, nil

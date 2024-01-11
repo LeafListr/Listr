@@ -258,7 +258,8 @@ func (a *API) handleProduct(r http.ResponseWriter, req *http.Request) {
 // @Param			brands			query	string			false	"Brands to include"
 // @Param			not_brands		query	string			false	"Brands to exclude"
 // @Param			variants		query	string			false	"Variants to include"
-// @Param			sort			query	string			false	"Sort products"	Enums(price_asc, price_desc, thc_asc, thc_desc)
+// @Param			price_sort		query	string			false	"Sort products"	Enums(price_asc, price_desc)
+// @Param			thc_sort		query	string			false	"Sort products"	Enums(thc_asc, thc_desc)
 // @Param			terp1			query	string			false	"Most important terpene"
 // @Param			terp2			query	string			false	"Second most important terpene"
 // @Param			terp3			query	string			false	"Third most important terpene"
@@ -517,19 +518,19 @@ func variantFilters(req *http.Request) string {
 }
 
 func sortPriceAsc(req *http.Request) bool {
-	return req.URL.Query().Get("sort") == "price_asc"
+	return req.URL.Query().Get("price_sort") == "asc"
 }
 
 func sortPriceDesc(req *http.Request) bool {
-	return req.URL.Query().Get("sort") == "price_desc"
+	return req.URL.Query().Get("price_sort") == "desc"
 }
 
 func sortTHCAsc(req *http.Request) bool {
-	return req.URL.Query().Get("sort") == "thc_asc"
+	return req.URL.Query().Get("thc_sort") == "asc"
 }
 
 func sortTHCDesc(req *http.Request) bool {
-	return req.URL.Query().Get("sort") == "thc_desc"
+	return req.URL.Query().Get("thc_sort") == "desc"
 }
 
 func top3Terps(req *http.Request) [3]string {
