@@ -97,7 +97,7 @@ func (w *DefaultWorkflow) Products(dispensary, menuId, menuType string) ([]*mode
 	return products.([]*models.Product), nil
 }
 
-func (w *DefaultWorkflow) ProductsForCategory(dispensary, menuId, menuType string, category models.Category) ([]*models.Product, error) {
+func (w *DefaultWorkflow) ProductsInCategory(dispensary, menuId, menuType string, category models.Category) ([]*models.Product, error) {
 	repo, err := w.F.FindByDispensaryMenu(dispensary, menuId, menuType)
 	if err != nil {
 		return []*models.Product{}, fmt.Errorf("couldn't find dispensary by menu for products for category. Dispensary=%s, Location=%s, MenuType=%s. Err: %v", dispensary, menuId, menuType, err)
@@ -195,6 +195,14 @@ func (w *DefaultWorkflow) ProductsForVariants(_, _, _ string, products []*models
 
 func (w *DefaultWorkflow) ProductsForPriceRange(_, _, _ string, products []*models.Product, min, max float64) ([]*models.Product, error) {
 	return w.TF.Price(min, max, products), nil
+}
+
+func (w *DefaultWorkflow) ProductsIncludingTerms(_, _, _ string, products []*models.Product, includes []string) ([]*models.Product, error) {
+	return w.TF.IncludingTerms(includes, products), nil
+}
+
+func (w *DefaultWorkflow) ProductsExcludingTerms(_, _, _ string, products []*models.Product, excludes []string) ([]*models.Product, error) {
+	return w.TF.ExcludingTerms(excludes, products), nil
 }
 
 func (w *DefaultWorkflow) SortProductsByPriceAsc(_, _, _ string, products []*models.Product) {

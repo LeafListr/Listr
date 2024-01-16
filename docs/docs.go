@@ -386,6 +386,18 @@ const docTemplate = `{
                         "in": "query"
                     },
                     {
+                        "type": "string",
+                        "description": "Terms to exclude",
+                        "name": "excludes",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Terms to include",
+                        "name": "includes",
+                        "in": "query"
+                    },
+                    {
                         "enum": [
                             "price_asc",
                             "price_desc"

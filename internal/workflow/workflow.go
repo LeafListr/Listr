@@ -29,14 +29,16 @@ type LocationManager interface {
 type ProductManager interface {
 	Product(dispensary, menuId, menuType, productId string) (*models.Product, error)
 	Products(dispensary, menuId, menuType string) ([]*models.Product, error)
+	ProductsInCategory(dispensary, menuId, menuType string, category models.Category) ([]*models.Product, error)
 }
 
 type ProductFilter interface {
-	ProductsForCategory(dispensary, menuId, menuType string, category models.Category) ([]*models.Product, error)
 	ProductsForSubCategory(dispensary, menuId, menuType string, products []*models.Product, subCategory string) ([]*models.Product, error)
 	ProductsForBrands(dispensary, menuId, menuType string, products []*models.Product, brands []string) ([]*models.Product, error)
 	ProductsExcludingBrands(dispensary, menuId, menuType string, products []*models.Product, brands []string) ([]*models.Product, error)
 	ProductsForVariants(dispensary, menuId, menuType string, products []*models.Product, variants []string) ([]*models.Product, error)
+	ProductsIncludingTerms(dispensary, menuId, menuType string, products []*models.Product, includes []string) ([]*models.Product, error)
+	ProductsExcludingTerms(dispensary, menuId, menuType string, products []*models.Product, excludes []string) ([]*models.Product, error)
 	ProductsForPriceRange(dispensary, menuId, menuType string, products []*models.Product, min, max float64) ([]*models.Product, error)
 }
 

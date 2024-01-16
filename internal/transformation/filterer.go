@@ -74,3 +74,27 @@ func (f *filterer) Variants(variantNames []string, products []*models.Product) [
 	}
 	return filteredProducts
 }
+
+func (f *filterer) IncludingTerms(terms []string, products []*models.Product) []*models.Product {
+	filteredProducts := make([]*models.Product, 0)
+	for _, product := range products {
+		for _, term := range terms {
+			if term != "" && strings.Contains(strings.ToLower(product.Name), strings.ToLower(term)) {
+				filteredProducts = append(filteredProducts, product)
+			}
+		}
+	}
+	return filteredProducts
+}
+
+func (f *filterer) ExcludingTerms(terms []string, products []*models.Product) []*models.Product {
+	filteredProducts := make([]*models.Product, 0)
+	for _, product := range products {
+		for _, term := range terms {
+			if term != "" && !strings.Contains(strings.ToLower(product.Name), strings.ToLower(term)) {
+				filteredProducts = append(filteredProducts, product)
+			}
+		}
+	}
+	return filteredProducts
+}

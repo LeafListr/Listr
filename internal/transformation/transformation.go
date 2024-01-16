@@ -8,6 +8,8 @@ type Filterer interface {
 	Brands(brandNames []string, products []*models.Product) []*models.Product
 	NotBrands(brandNames []string, products []*models.Product) []*models.Product
 	Variants(variantNames []string, products []*models.Product) []*models.Product
+	IncludingTerms(terms []string, products []*models.Product) []*models.Product
+	ExcludingTerms(terms []string, products []*models.Product) []*models.Product
 }
 
 type Sorter interface {

@@ -258,6 +258,8 @@ func (a *API) handleProduct(r http.ResponseWriter, req *http.Request) {
 // @Param			brands			query	string			false	"Brands to include"
 // @Param			not_brands		query	string			false	"Brands to exclude"
 // @Param			variants		query	string			false	"Variants to include"
+// @Param			excludes		query	string			false	"Terms to exclude"
+// @Param			includes		query	string			false	"Terms to include"
 // @Param			price_sort		query	string			false	"Sort products"	Enums(price_asc, price_desc)
 // @Param			thc_sort		query	string			false	"Sort products"	Enums(thc_asc, thc_desc)
 // @Param			terp1			query	string			false	"Most important terpene"
@@ -270,7 +272,7 @@ func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 	var err error
 	dispensary, locationId, menuType, _ := params(req, "")
 	if category := req.URL.Query().Get("category"); category != "" {
-		products, err = a.w.ProductsForCategory(dispensary, locationId, menuType, models.Category(category))
+		products, err = a.w.ProductsInCategory(dispensary, locationId, menuType, models.Category(category))
 		if err != nil {
 			a.handleError(r, req, err)
 			return
@@ -307,6 +309,22 @@ func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 	}
 	if variants := variantFilters(req); variants != "" {
 		products, err = a.w.ProductsForVariants(dispensary, locationId, menuType, products, strings.Split(variants, ","))
+		if err != nil {
+			a.handleError(r, req, err)
+			return
+		}
+	}
+
+	if includes := includedTerm(req); includes != "" {
+		products, err = a.w.ProductsIncludingTerms(dispensary, locationId, menuType, products, strings.Split(includes, ","))
+		if err != nil {
+			a.handleError(r, req, err)
+			return
+		}
+	}
+
+	if excludes := excludedTerm(req); excludes != "" {
+		products, err = a.w.ProductsExcludingTerms(dispensary, locationId, menuType, products, strings.Split(excludes, ","))
 		if err != nil {
 			a.handleError(r, req, err)
 			return
@@ -515,6 +533,14 @@ func notBrandFilters(req *http.Request) string {
 
 func variantFilters(req *http.Request) string {
 	return req.URL.Query().Get("variants")
+}
+
+func excludedTerm(req *http.Request) string {
+	return req.URL.Query().Get("exclude")
+}
+
+func includedTerm(req *http.Request) string {
+	return req.URL.Query().Get("include")
 }
 
 func sortPriceAsc(req *http.Request) bool {

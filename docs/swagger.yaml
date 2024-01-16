@@ -347,6 +347,14 @@ paths:
         in: query
         name: variants
         type: string
+      - description: Terms to exclude
+        in: query
+        name: excludes
+        type: string
+      - description: Terms to include
+        in: query
+        name: includes
+        type: string
       - description: Sort products
         enum:
         - price_asc
