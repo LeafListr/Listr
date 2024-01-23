@@ -1,0 +1,25 @@
+package components
+
+import (
+	"github.com/Linkinlog/LeafListr/internal/api/models"
+)
+
+templ Locations(selectedDisp string, locations []*models.Location) {
+	<select
+		hx-get="/views/offers-and-search"
+		hx-target="#offers-and-search"
+		hx-swap="outerHTML"
+		hx-indicator="#loading-categories"
+		name="location"
+		id="location-select"
+		disabled?={ len(locations) == 0 }
+	>
+		<option value="">Select Location</option>
+		for _, location := range locations {
+			<option value={ location.Id }>{ location.Name }</option>
+		}
+	</select>
+	if selectedDisp != "" {
+		<h2 id="now-viewing" hx-swap-oob="true">Now Viewing: { selectedDisp }</h2>
+	}
+}

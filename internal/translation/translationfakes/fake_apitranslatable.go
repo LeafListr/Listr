@@ -10,174 +10,174 @@ import (
 )
 
 type FakeAPITranslatable struct {
-	TranslateAPICannabinoidStub        func(*modelsa.Cannabinoid) *models.Cannabinoid
-	translateAPICannabinoidMutex       sync.RWMutex
-	translateAPICannabinoidArgsForCall []struct {
+	TranslateCannabinoidStub        func(*modelsa.Cannabinoid) *models.Cannabinoid
+	translateCannabinoidMutex       sync.RWMutex
+	translateCannabinoidArgsForCall []struct {
 		arg1 *modelsa.Cannabinoid
 	}
-	translateAPICannabinoidReturns struct {
+	translateCannabinoidReturns struct {
 		result1 *models.Cannabinoid
 	}
-	translateAPICannabinoidReturnsOnCall map[int]struct {
+	translateCannabinoidReturnsOnCall map[int]struct {
 		result1 *models.Cannabinoid
 	}
-	TranslateAPICannabinoidsStub        func([]*modelsa.Cannabinoid) []*models.Cannabinoid
-	translateAPICannabinoidsMutex       sync.RWMutex
-	translateAPICannabinoidsArgsForCall []struct {
+	TranslateCannabinoidsStub        func([]*modelsa.Cannabinoid) []*models.Cannabinoid
+	translateCannabinoidsMutex       sync.RWMutex
+	translateCannabinoidsArgsForCall []struct {
 		arg1 []*modelsa.Cannabinoid
 	}
-	translateAPICannabinoidsReturns struct {
+	translateCannabinoidsReturns struct {
 		result1 []*models.Cannabinoid
 	}
-	translateAPICannabinoidsReturnsOnCall map[int]struct {
+	translateCannabinoidsReturnsOnCall map[int]struct {
 		result1 []*models.Cannabinoid
 	}
-	TranslateAPICategoriesStub        func([]modelsa.Category) []models.Category
-	translateAPICategoriesMutex       sync.RWMutex
-	translateAPICategoriesArgsForCall []struct {
-		arg1 []modelsa.Category
+	TranslateCategoriesStub        func([]string) []string
+	translateCategoriesMutex       sync.RWMutex
+	translateCategoriesArgsForCall []struct {
+		arg1 []string
 	}
-	translateAPICategoriesReturns struct {
-		result1 []models.Category
+	translateCategoriesReturns struct {
+		result1 []string
 	}
-	translateAPICategoriesReturnsOnCall map[int]struct {
-		result1 []models.Category
+	translateCategoriesReturnsOnCall map[int]struct {
+		result1 []string
 	}
-	TranslateAPICategoryStub        func(modelsa.Category) models.Category
-	translateAPICategoryMutex       sync.RWMutex
-	translateAPICategoryArgsForCall []struct {
-		arg1 modelsa.Category
+	TranslateCategoryStub        func(string) string
+	translateCategoryMutex       sync.RWMutex
+	translateCategoryArgsForCall []struct {
+		arg1 string
 	}
-	translateAPICategoryReturns struct {
-		result1 models.Category
+	translateCategoryReturns struct {
+		result1 string
 	}
-	translateAPICategoryReturnsOnCall map[int]struct {
-		result1 models.Category
+	translateCategoryReturnsOnCall map[int]struct {
+		result1 string
 	}
-	TranslateAPIDispensariesStub        func([]*modelsa.Dispensary) []*models.Dispensary
-	translateAPIDispensariesMutex       sync.RWMutex
-	translateAPIDispensariesArgsForCall []struct {
+	TranslateDispensariesStub        func([]*modelsa.Dispensary) []*models.Dispensary
+	translateDispensariesMutex       sync.RWMutex
+	translateDispensariesArgsForCall []struct {
 		arg1 []*modelsa.Dispensary
 	}
-	translateAPIDispensariesReturns struct {
+	translateDispensariesReturns struct {
 		result1 []*models.Dispensary
 	}
-	translateAPIDispensariesReturnsOnCall map[int]struct {
+	translateDispensariesReturnsOnCall map[int]struct {
 		result1 []*models.Dispensary
 	}
-	TranslateAPIDispensaryStub        func(*modelsa.Dispensary) *models.Dispensary
-	translateAPIDispensaryMutex       sync.RWMutex
-	translateAPIDispensaryArgsForCall []struct {
+	TranslateDispensaryStub        func(*modelsa.Dispensary) *models.Dispensary
+	translateDispensaryMutex       sync.RWMutex
+	translateDispensaryArgsForCall []struct {
 		arg1 *modelsa.Dispensary
 	}
-	translateAPIDispensaryReturns struct {
+	translateDispensaryReturns struct {
 		result1 *models.Dispensary
 	}
-	translateAPIDispensaryReturnsOnCall map[int]struct {
+	translateDispensaryReturnsOnCall map[int]struct {
 		result1 *models.Dispensary
 	}
-	TranslateAPILocationStub        func(*modelsa.Location) *models.Location
-	translateAPILocationMutex       sync.RWMutex
-	translateAPILocationArgsForCall []struct {
+	TranslateLocationStub        func(*modelsa.Location) *models.Location
+	translateLocationMutex       sync.RWMutex
+	translateLocationArgsForCall []struct {
 		arg1 *modelsa.Location
 	}
-	translateAPILocationReturns struct {
+	translateLocationReturns struct {
 		result1 *models.Location
 	}
-	translateAPILocationReturnsOnCall map[int]struct {
+	translateLocationReturnsOnCall map[int]struct {
 		result1 *models.Location
 	}
-	TranslateAPILocationsStub        func([]*modelsa.Location) []*models.Location
-	translateAPILocationsMutex       sync.RWMutex
-	translateAPILocationsArgsForCall []struct {
+	TranslateLocationsStub        func([]*modelsa.Location) []*models.Location
+	translateLocationsMutex       sync.RWMutex
+	translateLocationsArgsForCall []struct {
 		arg1 []*modelsa.Location
 	}
-	translateAPILocationsReturns struct {
+	translateLocationsReturns struct {
 		result1 []*models.Location
 	}
-	translateAPILocationsReturnsOnCall map[int]struct {
+	translateLocationsReturnsOnCall map[int]struct {
 		result1 []*models.Location
 	}
-	TranslateAPIOfferStub        func(*modelsa.Offer) *models.Offer
-	translateAPIOfferMutex       sync.RWMutex
-	translateAPIOfferArgsForCall []struct {
+	TranslateOfferStub        func(*modelsa.Offer) *models.Offer
+	translateOfferMutex       sync.RWMutex
+	translateOfferArgsForCall []struct {
 		arg1 *modelsa.Offer
 	}
-	translateAPIOfferReturns struct {
+	translateOfferReturns struct {
 		result1 *models.Offer
 	}
-	translateAPIOfferReturnsOnCall map[int]struct {
+	translateOfferReturnsOnCall map[int]struct {
 		result1 *models.Offer
 	}
-	TranslateAPIOffersStub        func([]*modelsa.Offer) []*models.Offer
-	translateAPIOffersMutex       sync.RWMutex
-	translateAPIOffersArgsForCall []struct {
+	TranslateOffersStub        func([]*modelsa.Offer) []*models.Offer
+	translateOffersMutex       sync.RWMutex
+	translateOffersArgsForCall []struct {
 		arg1 []*modelsa.Offer
 	}
-	translateAPIOffersReturns struct {
+	translateOffersReturns struct {
 		result1 []*models.Offer
 	}
-	translateAPIOffersReturnsOnCall map[int]struct {
+	translateOffersReturnsOnCall map[int]struct {
 		result1 []*models.Offer
 	}
-	TranslateAPIProductStub        func(*modelsa.Product) *models.Product
-	translateAPIProductMutex       sync.RWMutex
-	translateAPIProductArgsForCall []struct {
+	TranslateProductStub        func(*modelsa.Product) *models.Product
+	translateProductMutex       sync.RWMutex
+	translateProductArgsForCall []struct {
 		arg1 *modelsa.Product
 	}
-	translateAPIProductReturns struct {
+	translateProductReturns struct {
 		result1 *models.Product
 	}
-	translateAPIProductReturnsOnCall map[int]struct {
+	translateProductReturnsOnCall map[int]struct {
 		result1 *models.Product
 	}
-	TranslateAPIProductsStub        func([]*modelsa.Product) []*models.Product
-	translateAPIProductsMutex       sync.RWMutex
-	translateAPIProductsArgsForCall []struct {
+	TranslateProductsStub        func([]*modelsa.Product) []*models.Product
+	translateProductsMutex       sync.RWMutex
+	translateProductsArgsForCall []struct {
 		arg1 []*modelsa.Product
 	}
-	translateAPIProductsReturns struct {
+	translateProductsReturns struct {
 		result1 []*models.Product
 	}
-	translateAPIProductsReturnsOnCall map[int]struct {
+	translateProductsReturnsOnCall map[int]struct {
 		result1 []*models.Product
 	}
-	TranslateAPITerpeneStub        func(*modelsa.Terpene) *models.Terpene
-	translateAPITerpeneMutex       sync.RWMutex
-	translateAPITerpeneArgsForCall []struct {
+	TranslateTerpeneStub        func(*modelsa.Terpene) *models.Terpene
+	translateTerpeneMutex       sync.RWMutex
+	translateTerpeneArgsForCall []struct {
 		arg1 *modelsa.Terpene
 	}
-	translateAPITerpeneReturns struct {
+	translateTerpeneReturns struct {
 		result1 *models.Terpene
 	}
-	translateAPITerpeneReturnsOnCall map[int]struct {
+	translateTerpeneReturnsOnCall map[int]struct {
 		result1 *models.Terpene
 	}
-	TranslateAPITerpenesStub        func([]*modelsa.Terpene) []*models.Terpene
-	translateAPITerpenesMutex       sync.RWMutex
-	translateAPITerpenesArgsForCall []struct {
+	TranslateTerpenesStub        func([]*modelsa.Terpene) []*models.Terpene
+	translateTerpenesMutex       sync.RWMutex
+	translateTerpenesArgsForCall []struct {
 		arg1 []*modelsa.Terpene
 	}
-	translateAPITerpenesReturns struct {
+	translateTerpenesReturns struct {
 		result1 []*models.Terpene
 	}
-	translateAPITerpenesReturnsOnCall map[int]struct {
+	translateTerpenesReturnsOnCall map[int]struct {
 		result1 []*models.Terpene
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICannabinoid(arg1 *modelsa.Cannabinoid) *models.Cannabinoid {
-	fake.translateAPICannabinoidMutex.Lock()
-	ret, specificReturn := fake.translateAPICannabinoidReturnsOnCall[len(fake.translateAPICannabinoidArgsForCall)]
-	fake.translateAPICannabinoidArgsForCall = append(fake.translateAPICannabinoidArgsForCall, struct {
+func (fake *FakeAPITranslatable) TranslateCannabinoid(arg1 *modelsa.Cannabinoid) *models.Cannabinoid {
+	fake.translateCannabinoidMutex.Lock()
+	ret, specificReturn := fake.translateCannabinoidReturnsOnCall[len(fake.translateCannabinoidArgsForCall)]
+	fake.translateCannabinoidArgsForCall = append(fake.translateCannabinoidArgsForCall, struct {
 		arg1 *modelsa.Cannabinoid
 	}{arg1})
-	stub := fake.TranslateAPICannabinoidStub
-	fakeReturns := fake.translateAPICannabinoidReturns
-	fake.recordInvocation("TranslateAPICannabinoid", []interface{}{arg1})
-	fake.translateAPICannabinoidMutex.Unlock()
+	stub := fake.TranslateCannabinoidStub
+	fakeReturns := fake.translateCannabinoidReturns
+	fake.recordInvocation("TranslateCannabinoid", []interface{}{arg1})
+	fake.translateCannabinoidMutex.Unlock()
 	if stub != nil {
 		return stub(arg1)
 	}
@@ -187,63 +187,63 @@ func (fake *FakeAPITranslatable) TranslateAPICannabinoid(arg1 *modelsa.Cannabino
 	return fakeReturns.result1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICannabinoidCallCount() int {
-	fake.translateAPICannabinoidMutex.RLock()
-	defer fake.translateAPICannabinoidMutex.RUnlock()
-	return len(fake.translateAPICannabinoidArgsForCall)
+func (fake *FakeAPITranslatable) TranslateCannabinoidCallCount() int {
+	fake.translateCannabinoidMutex.RLock()
+	defer fake.translateCannabinoidMutex.RUnlock()
+	return len(fake.translateCannabinoidArgsForCall)
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICannabinoidCalls(stub func(*modelsa.Cannabinoid) *models.Cannabinoid) {
-	fake.translateAPICannabinoidMutex.Lock()
-	defer fake.translateAPICannabinoidMutex.Unlock()
-	fake.TranslateAPICannabinoidStub = stub
+func (fake *FakeAPITranslatable) TranslateCannabinoidCalls(stub func(*modelsa.Cannabinoid) *models.Cannabinoid) {
+	fake.translateCannabinoidMutex.Lock()
+	defer fake.translateCannabinoidMutex.Unlock()
+	fake.TranslateCannabinoidStub = stub
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICannabinoidArgsForCall(i int) *modelsa.Cannabinoid {
-	fake.translateAPICannabinoidMutex.RLock()
-	defer fake.translateAPICannabinoidMutex.RUnlock()
-	argsForCall := fake.translateAPICannabinoidArgsForCall[i]
+func (fake *FakeAPITranslatable) TranslateCannabinoidArgsForCall(i int) *modelsa.Cannabinoid {
+	fake.translateCannabinoidMutex.RLock()
+	defer fake.translateCannabinoidMutex.RUnlock()
+	argsForCall := fake.translateCannabinoidArgsForCall[i]
 	return argsForCall.arg1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICannabinoidReturns(result1 *models.Cannabinoid) {
-	fake.translateAPICannabinoidMutex.Lock()
-	defer fake.translateAPICannabinoidMutex.Unlock()
-	fake.TranslateAPICannabinoidStub = nil
-	fake.translateAPICannabinoidReturns = struct {
+func (fake *FakeAPITranslatable) TranslateCannabinoidReturns(result1 *models.Cannabinoid) {
+	fake.translateCannabinoidMutex.Lock()
+	defer fake.translateCannabinoidMutex.Unlock()
+	fake.TranslateCannabinoidStub = nil
+	fake.translateCannabinoidReturns = struct {
 		result1 *models.Cannabinoid
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICannabinoidReturnsOnCall(i int, result1 *models.Cannabinoid) {
-	fake.translateAPICannabinoidMutex.Lock()
-	defer fake.translateAPICannabinoidMutex.Unlock()
-	fake.TranslateAPICannabinoidStub = nil
-	if fake.translateAPICannabinoidReturnsOnCall == nil {
-		fake.translateAPICannabinoidReturnsOnCall = make(map[int]struct {
+func (fake *FakeAPITranslatable) TranslateCannabinoidReturnsOnCall(i int, result1 *models.Cannabinoid) {
+	fake.translateCannabinoidMutex.Lock()
+	defer fake.translateCannabinoidMutex.Unlock()
+	fake.TranslateCannabinoidStub = nil
+	if fake.translateCannabinoidReturnsOnCall == nil {
+		fake.translateCannabinoidReturnsOnCall = make(map[int]struct {
 			result1 *models.Cannabinoid
 		})
 	}
-	fake.translateAPICannabinoidReturnsOnCall[i] = struct {
+	fake.translateCannabinoidReturnsOnCall[i] = struct {
 		result1 *models.Cannabinoid
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICannabinoids(arg1 []*modelsa.Cannabinoid) []*models.Cannabinoid {
+func (fake *FakeAPITranslatable) TranslateCannabinoids(arg1 []*modelsa.Cannabinoid) []*models.Cannabinoid {
 	var arg1Copy []*modelsa.Cannabinoid
 	if arg1 != nil {
 		arg1Copy = make([]*modelsa.Cannabinoid, len(arg1))
 		copy(arg1Copy, arg1)
 	}
-	fake.translateAPICannabinoidsMutex.Lock()
-	ret, specificReturn := fake.translateAPICannabinoidsReturnsOnCall[len(fake.translateAPICannabinoidsArgsForCall)]
-	fake.translateAPICannabinoidsArgsForCall = append(fake.translateAPICannabinoidsArgsForCall, struct {
+	fake.translateCannabinoidsMutex.Lock()
+	ret, specificReturn := fake.translateCannabinoidsReturnsOnCall[len(fake.translateCannabinoidsArgsForCall)]
+	fake.translateCannabinoidsArgsForCall = append(fake.translateCannabinoidsArgsForCall, struct {
 		arg1 []*modelsa.Cannabinoid
 	}{arg1Copy})
-	stub := fake.TranslateAPICannabinoidsStub
-	fakeReturns := fake.translateAPICannabinoidsReturns
-	fake.recordInvocation("TranslateAPICannabinoids", []interface{}{arg1Copy})
-	fake.translateAPICannabinoidsMutex.Unlock()
+	stub := fake.TranslateCannabinoidsStub
+	fakeReturns := fake.translateCannabinoidsReturns
+	fake.recordInvocation("TranslateCannabinoids", []interface{}{arg1Copy})
+	fake.translateCannabinoidsMutex.Unlock()
 	if stub != nil {
 		return stub(arg1)
 	}
@@ -253,63 +253,63 @@ func (fake *FakeAPITranslatable) TranslateAPICannabinoids(arg1 []*modelsa.Cannab
 	return fakeReturns.result1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICannabinoidsCallCount() int {
-	fake.translateAPICannabinoidsMutex.RLock()
-	defer fake.translateAPICannabinoidsMutex.RUnlock()
-	return len(fake.translateAPICannabinoidsArgsForCall)
+func (fake *FakeAPITranslatable) TranslateCannabinoidsCallCount() int {
+	fake.translateCannabinoidsMutex.RLock()
+	defer fake.translateCannabinoidsMutex.RUnlock()
+	return len(fake.translateCannabinoidsArgsForCall)
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICannabinoidsCalls(stub func([]*modelsa.Cannabinoid) []*models.Cannabinoid) {
-	fake.translateAPICannabinoidsMutex.Lock()
-	defer fake.translateAPICannabinoidsMutex.Unlock()
-	fake.TranslateAPICannabinoidsStub = stub
+func (fake *FakeAPITranslatable) TranslateCannabinoidsCalls(stub func([]*modelsa.Cannabinoid) []*models.Cannabinoid) {
+	fake.translateCannabinoidsMutex.Lock()
+	defer fake.translateCannabinoidsMutex.Unlock()
+	fake.TranslateCannabinoidsStub = stub
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICannabinoidsArgsForCall(i int) []*modelsa.Cannabinoid {
-	fake.translateAPICannabinoidsMutex.RLock()
-	defer fake.translateAPICannabinoidsMutex.RUnlock()
-	argsForCall := fake.translateAPICannabinoidsArgsForCall[i]
+func (fake *FakeAPITranslatable) TranslateCannabinoidsArgsForCall(i int) []*modelsa.Cannabinoid {
+	fake.translateCannabinoidsMutex.RLock()
+	defer fake.translateCannabinoidsMutex.RUnlock()
+	argsForCall := fake.translateCannabinoidsArgsForCall[i]
 	return argsForCall.arg1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICannabinoidsReturns(result1 []*models.Cannabinoid) {
-	fake.translateAPICannabinoidsMutex.Lock()
-	defer fake.translateAPICannabinoidsMutex.Unlock()
-	fake.TranslateAPICannabinoidsStub = nil
-	fake.translateAPICannabinoidsReturns = struct {
+func (fake *FakeAPITranslatable) TranslateCannabinoidsReturns(result1 []*models.Cannabinoid) {
+	fake.translateCannabinoidsMutex.Lock()
+	defer fake.translateCannabinoidsMutex.Unlock()
+	fake.TranslateCannabinoidsStub = nil
+	fake.translateCannabinoidsReturns = struct {
 		result1 []*models.Cannabinoid
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICannabinoidsReturnsOnCall(i int, result1 []*models.Cannabinoid) {
-	fake.translateAPICannabinoidsMutex.Lock()
-	defer fake.translateAPICannabinoidsMutex.Unlock()
-	fake.TranslateAPICannabinoidsStub = nil
-	if fake.translateAPICannabinoidsReturnsOnCall == nil {
-		fake.translateAPICannabinoidsReturnsOnCall = make(map[int]struct {
+func (fake *FakeAPITranslatable) TranslateCannabinoidsReturnsOnCall(i int, result1 []*models.Cannabinoid) {
+	fake.translateCannabinoidsMutex.Lock()
+	defer fake.translateCannabinoidsMutex.Unlock()
+	fake.TranslateCannabinoidsStub = nil
+	if fake.translateCannabinoidsReturnsOnCall == nil {
+		fake.translateCannabinoidsReturnsOnCall = make(map[int]struct {
 			result1 []*models.Cannabinoid
 		})
 	}
-	fake.translateAPICannabinoidsReturnsOnCall[i] = struct {
+	fake.translateCannabinoidsReturnsOnCall[i] = struct {
 		result1 []*models.Cannabinoid
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICategories(arg1 []modelsa.Category) []models.Category {
-	var arg1Copy []modelsa.Category
+func (fake *FakeAPITranslatable) TranslateCategories(arg1 []string) []string {
+	var arg1Copy []string
 	if arg1 != nil {
-		arg1Copy = make([]modelsa.Category, len(arg1))
+		arg1Copy = make([]string, len(arg1))
 		copy(arg1Copy, arg1)
 	}
-	fake.translateAPICategoriesMutex.Lock()
-	ret, specificReturn := fake.translateAPICategoriesReturnsOnCall[len(fake.translateAPICategoriesArgsForCall)]
-	fake.translateAPICategoriesArgsForCall = append(fake.translateAPICategoriesArgsForCall, struct {
-		arg1 []modelsa.Category
+	fake.translateCategoriesMutex.Lock()
+	ret, specificReturn := fake.translateCategoriesReturnsOnCall[len(fake.translateCategoriesArgsForCall)]
+	fake.translateCategoriesArgsForCall = append(fake.translateCategoriesArgsForCall, struct {
+		arg1 []string
 	}{arg1Copy})
-	stub := fake.TranslateAPICategoriesStub
-	fakeReturns := fake.translateAPICategoriesReturns
-	fake.recordInvocation("TranslateAPICategories", []interface{}{arg1Copy})
-	fake.translateAPICategoriesMutex.Unlock()
+	stub := fake.TranslateCategoriesStub
+	fakeReturns := fake.translateCategoriesReturns
+	fake.recordInvocation("TranslateCategories", []interface{}{arg1Copy})
+	fake.translateCategoriesMutex.Unlock()
 	if stub != nil {
 		return stub(arg1)
 	}
@@ -319,58 +319,58 @@ func (fake *FakeAPITranslatable) TranslateAPICategories(arg1 []modelsa.Category)
 	return fakeReturns.result1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICategoriesCallCount() int {
-	fake.translateAPICategoriesMutex.RLock()
-	defer fake.translateAPICategoriesMutex.RUnlock()
-	return len(fake.translateAPICategoriesArgsForCall)
+func (fake *FakeAPITranslatable) TranslateCategoriesCallCount() int {
+	fake.translateCategoriesMutex.RLock()
+	defer fake.translateCategoriesMutex.RUnlock()
+	return len(fake.translateCategoriesArgsForCall)
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICategoriesCalls(stub func([]modelsa.Category) []models.Category) {
-	fake.translateAPICategoriesMutex.Lock()
-	defer fake.translateAPICategoriesMutex.Unlock()
-	fake.TranslateAPICategoriesStub = stub
+func (fake *FakeAPITranslatable) TranslateCategoriesCalls(stub func([]string) []string) {
+	fake.translateCategoriesMutex.Lock()
+	defer fake.translateCategoriesMutex.Unlock()
+	fake.TranslateCategoriesStub = stub
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICategoriesArgsForCall(i int) []modelsa.Category {
-	fake.translateAPICategoriesMutex.RLock()
-	defer fake.translateAPICategoriesMutex.RUnlock()
-	argsForCall := fake.translateAPICategoriesArgsForCall[i]
+func (fake *FakeAPITranslatable) TranslateCategoriesArgsForCall(i int) []string {
+	fake.translateCategoriesMutex.RLock()
+	defer fake.translateCategoriesMutex.RUnlock()
+	argsForCall := fake.translateCategoriesArgsForCall[i]
 	return argsForCall.arg1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICategoriesReturns(result1 []models.Category) {
-	fake.translateAPICategoriesMutex.Lock()
-	defer fake.translateAPICategoriesMutex.Unlock()
-	fake.TranslateAPICategoriesStub = nil
-	fake.translateAPICategoriesReturns = struct {
-		result1 []models.Category
+func (fake *FakeAPITranslatable) TranslateCategoriesReturns(result1 []string) {
+	fake.translateCategoriesMutex.Lock()
+	defer fake.translateCategoriesMutex.Unlock()
+	fake.TranslateCategoriesStub = nil
+	fake.translateCategoriesReturns = struct {
+		result1 []string
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICategoriesReturnsOnCall(i int, result1 []models.Category) {
-	fake.translateAPICategoriesMutex.Lock()
-	defer fake.translateAPICategoriesMutex.Unlock()
-	fake.TranslateAPICategoriesStub = nil
-	if fake.translateAPICategoriesReturnsOnCall == nil {
-		fake.translateAPICategoriesReturnsOnCall = make(map[int]struct {
-			result1 []models.Category
+func (fake *FakeAPITranslatable) TranslateCategoriesReturnsOnCall(i int, result1 []string) {
+	fake.translateCategoriesMutex.Lock()
+	defer fake.translateCategoriesMutex.Unlock()
+	fake.TranslateCategoriesStub = nil
+	if fake.translateCategoriesReturnsOnCall == nil {
+		fake.translateCategoriesReturnsOnCall = make(map[int]struct {
+			result1 []string
 		})
 	}
-	fake.translateAPICategoriesReturnsOnCall[i] = struct {
-		result1 []models.Category
+	fake.translateCategoriesReturnsOnCall[i] = struct {
+		result1 []string
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICategory(arg1 modelsa.Category) models.Category {
-	fake.translateAPICategoryMutex.Lock()
-	ret, specificReturn := fake.translateAPICategoryReturnsOnCall[len(fake.translateAPICategoryArgsForCall)]
-	fake.translateAPICategoryArgsForCall = append(fake.translateAPICategoryArgsForCall, struct {
-		arg1 modelsa.Category
+func (fake *FakeAPITranslatable) TranslateCategory(arg1 string) string {
+	fake.translateCategoryMutex.Lock()
+	ret, specificReturn := fake.translateCategoryReturnsOnCall[len(fake.translateCategoryArgsForCall)]
+	fake.translateCategoryArgsForCall = append(fake.translateCategoryArgsForCall, struct {
+		arg1 string
 	}{arg1})
-	stub := fake.TranslateAPICategoryStub
-	fakeReturns := fake.translateAPICategoryReturns
-	fake.recordInvocation("TranslateAPICategory", []interface{}{arg1})
-	fake.translateAPICategoryMutex.Unlock()
+	stub := fake.TranslateCategoryStub
+	fakeReturns := fake.translateCategoryReturns
+	fake.recordInvocation("TranslateCategory", []interface{}{arg1})
+	fake.translateCategoryMutex.Unlock()
 	if stub != nil {
 		return stub(arg1)
 	}
@@ -380,63 +380,63 @@ func (fake *FakeAPITranslatable) TranslateAPICategory(arg1 modelsa.Category) mod
 	return fakeReturns.result1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICategoryCallCount() int {
-	fake.translateAPICategoryMutex.RLock()
-	defer fake.translateAPICategoryMutex.RUnlock()
-	return len(fake.translateAPICategoryArgsForCall)
+func (fake *FakeAPITranslatable) TranslateCategoryCallCount() int {
+	fake.translateCategoryMutex.RLock()
+	defer fake.translateCategoryMutex.RUnlock()
+	return len(fake.translateCategoryArgsForCall)
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICategoryCalls(stub func(modelsa.Category) models.Category) {
-	fake.translateAPICategoryMutex.Lock()
-	defer fake.translateAPICategoryMutex.Unlock()
-	fake.TranslateAPICategoryStub = stub
+func (fake *FakeAPITranslatable) TranslateCategoryCalls(stub func(string) string) {
+	fake.translateCategoryMutex.Lock()
+	defer fake.translateCategoryMutex.Unlock()
+	fake.TranslateCategoryStub = stub
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICategoryArgsForCall(i int) modelsa.Category {
-	fake.translateAPICategoryMutex.RLock()
-	defer fake.translateAPICategoryMutex.RUnlock()
-	argsForCall := fake.translateAPICategoryArgsForCall[i]
+func (fake *FakeAPITranslatable) TranslateCategoryArgsForCall(i int) string {
+	fake.translateCategoryMutex.RLock()
+	defer fake.translateCategoryMutex.RUnlock()
+	argsForCall := fake.translateCategoryArgsForCall[i]
 	return argsForCall.arg1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICategoryReturns(result1 models.Category) {
-	fake.translateAPICategoryMutex.Lock()
-	defer fake.translateAPICategoryMutex.Unlock()
-	fake.TranslateAPICategoryStub = nil
-	fake.translateAPICategoryReturns = struct {
-		result1 models.Category
+func (fake *FakeAPITranslatable) TranslateCategoryReturns(result1 string) {
+	fake.translateCategoryMutex.Lock()
+	defer fake.translateCategoryMutex.Unlock()
+	fake.TranslateCategoryStub = nil
+	fake.translateCategoryReturns = struct {
+		result1 string
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPICategoryReturnsOnCall(i int, result1 models.Category) {
-	fake.translateAPICategoryMutex.Lock()
-	defer fake.translateAPICategoryMutex.Unlock()
-	fake.TranslateAPICategoryStub = nil
-	if fake.translateAPICategoryReturnsOnCall == nil {
-		fake.translateAPICategoryReturnsOnCall = make(map[int]struct {
-			result1 models.Category
+func (fake *FakeAPITranslatable) TranslateCategoryReturnsOnCall(i int, result1 string) {
+	fake.translateCategoryMutex.Lock()
+	defer fake.translateCategoryMutex.Unlock()
+	fake.TranslateCategoryStub = nil
+	if fake.translateCategoryReturnsOnCall == nil {
+		fake.translateCategoryReturnsOnCall = make(map[int]struct {
+			result1 string
 		})
 	}
-	fake.translateAPICategoryReturnsOnCall[i] = struct {
-		result1 models.Category
+	fake.translateCategoryReturnsOnCall[i] = struct {
+		result1 string
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIDispensaries(arg1 []*modelsa.Dispensary) []*models.Dispensary {
+func (fake *FakeAPITranslatable) TranslateDispensaries(arg1 []*modelsa.Dispensary) []*models.Dispensary {
 	var arg1Copy []*modelsa.Dispensary
 	if arg1 != nil {
 		arg1Copy = make([]*modelsa.Dispensary, len(arg1))
 		copy(arg1Copy, arg1)
 	}
-	fake.translateAPIDispensariesMutex.Lock()
-	ret, specificReturn := fake.translateAPIDispensariesReturnsOnCall[len(fake.translateAPIDispensariesArgsForCall)]
-	fake.translateAPIDispensariesArgsForCall = append(fake.translateAPIDispensariesArgsForCall, struct {
+	fake.translateDispensariesMutex.Lock()
+	ret, specificReturn := fake.translateDispensariesReturnsOnCall[len(fake.translateDispensariesArgsForCall)]
+	fake.translateDispensariesArgsForCall = append(fake.translateDispensariesArgsForCall, struct {
 		arg1 []*modelsa.Dispensary
 	}{arg1Copy})
-	stub := fake.TranslateAPIDispensariesStub
-	fakeReturns := fake.translateAPIDispensariesReturns
-	fake.recordInvocation("TranslateAPIDispensaries", []interface{}{arg1Copy})
-	fake.translateAPIDispensariesMutex.Unlock()
+	stub := fake.TranslateDispensariesStub
+	fakeReturns := fake.translateDispensariesReturns
+	fake.recordInvocation("TranslateDispensaries", []interface{}{arg1Copy})
+	fake.translateDispensariesMutex.Unlock()
 	if stub != nil {
 		return stub(arg1)
 	}
@@ -446,58 +446,58 @@ func (fake *FakeAPITranslatable) TranslateAPIDispensaries(arg1 []*modelsa.Dispen
 	return fakeReturns.result1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIDispensariesCallCount() int {
-	fake.translateAPIDispensariesMutex.RLock()
-	defer fake.translateAPIDispensariesMutex.RUnlock()
-	return len(fake.translateAPIDispensariesArgsForCall)
+func (fake *FakeAPITranslatable) TranslateDispensariesCallCount() int {
+	fake.translateDispensariesMutex.RLock()
+	defer fake.translateDispensariesMutex.RUnlock()
+	return len(fake.translateDispensariesArgsForCall)
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIDispensariesCalls(stub func([]*modelsa.Dispensary) []*models.Dispensary) {
-	fake.translateAPIDispensariesMutex.Lock()
-	defer fake.translateAPIDispensariesMutex.Unlock()
-	fake.TranslateAPIDispensariesStub = stub
+func (fake *FakeAPITranslatable) TranslateDispensariesCalls(stub func([]*modelsa.Dispensary) []*models.Dispensary) {
+	fake.translateDispensariesMutex.Lock()
+	defer fake.translateDispensariesMutex.Unlock()
+	fake.TranslateDispensariesStub = stub
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIDispensariesArgsForCall(i int) []*modelsa.Dispensary {
-	fake.translateAPIDispensariesMutex.RLock()
-	defer fake.translateAPIDispensariesMutex.RUnlock()
-	argsForCall := fake.translateAPIDispensariesArgsForCall[i]
+func (fake *FakeAPITranslatable) TranslateDispensariesArgsForCall(i int) []*modelsa.Dispensary {
+	fake.translateDispensariesMutex.RLock()
+	defer fake.translateDispensariesMutex.RUnlock()
+	argsForCall := fake.translateDispensariesArgsForCall[i]
 	return argsForCall.arg1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIDispensariesReturns(result1 []*models.Dispensary) {
-	fake.translateAPIDispensariesMutex.Lock()
-	defer fake.translateAPIDispensariesMutex.Unlock()
-	fake.TranslateAPIDispensariesStub = nil
-	fake.translateAPIDispensariesReturns = struct {
+func (fake *FakeAPITranslatable) TranslateDispensariesReturns(result1 []*models.Dispensary) {
+	fake.translateDispensariesMutex.Lock()
+	defer fake.translateDispensariesMutex.Unlock()
+	fake.TranslateDispensariesStub = nil
+	fake.translateDispensariesReturns = struct {
 		result1 []*models.Dispensary
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIDispensariesReturnsOnCall(i int, result1 []*models.Dispensary) {
-	fake.translateAPIDispensariesMutex.Lock()
-	defer fake.translateAPIDispensariesMutex.Unlock()
-	fake.TranslateAPIDispensariesStub = nil
-	if fake.translateAPIDispensariesReturnsOnCall == nil {
-		fake.translateAPIDispensariesReturnsOnCall = make(map[int]struct {
+func (fake *FakeAPITranslatable) TranslateDispensariesReturnsOnCall(i int, result1 []*models.Dispensary) {
+	fake.translateDispensariesMutex.Lock()
+	defer fake.translateDispensariesMutex.Unlock()
+	fake.TranslateDispensariesStub = nil
+	if fake.translateDispensariesReturnsOnCall == nil {
+		fake.translateDispensariesReturnsOnCall = make(map[int]struct {
 			result1 []*models.Dispensary
 		})
 	}
-	fake.translateAPIDispensariesReturnsOnCall[i] = struct {
+	fake.translateDispensariesReturnsOnCall[i] = struct {
 		result1 []*models.Dispensary
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIDispensary(arg1 *modelsa.Dispensary) *models.Dispensary {
-	fake.translateAPIDispensaryMutex.Lock()
-	ret, specificReturn := fake.translateAPIDispensaryReturnsOnCall[len(fake.translateAPIDispensaryArgsForCall)]
-	fake.translateAPIDispensaryArgsForCall = append(fake.translateAPIDispensaryArgsForCall, struct {
+func (fake *FakeAPITranslatable) TranslateDispensary(arg1 *modelsa.Dispensary) *models.Dispensary {
+	fake.translateDispensaryMutex.Lock()
+	ret, specificReturn := fake.translateDispensaryReturnsOnCall[len(fake.translateDispensaryArgsForCall)]
+	fake.translateDispensaryArgsForCall = append(fake.translateDispensaryArgsForCall, struct {
 		arg1 *modelsa.Dispensary
 	}{arg1})
-	stub := fake.TranslateAPIDispensaryStub
-	fakeReturns := fake.translateAPIDispensaryReturns
-	fake.recordInvocation("TranslateAPIDispensary", []interface{}{arg1})
-	fake.translateAPIDispensaryMutex.Unlock()
+	stub := fake.TranslateDispensaryStub
+	fakeReturns := fake.translateDispensaryReturns
+	fake.recordInvocation("TranslateDispensary", []interface{}{arg1})
+	fake.translateDispensaryMutex.Unlock()
 	if stub != nil {
 		return stub(arg1)
 	}
@@ -507,58 +507,58 @@ func (fake *FakeAPITranslatable) TranslateAPIDispensary(arg1 *modelsa.Dispensary
 	return fakeReturns.result1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIDispensaryCallCount() int {
-	fake.translateAPIDispensaryMutex.RLock()
-	defer fake.translateAPIDispensaryMutex.RUnlock()
-	return len(fake.translateAPIDispensaryArgsForCall)
+func (fake *FakeAPITranslatable) TranslateDispensaryCallCount() int {
+	fake.translateDispensaryMutex.RLock()
+	defer fake.translateDispensaryMutex.RUnlock()
+	return len(fake.translateDispensaryArgsForCall)
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIDispensaryCalls(stub func(*modelsa.Dispensary) *models.Dispensary) {
-	fake.translateAPIDispensaryMutex.Lock()
-	defer fake.translateAPIDispensaryMutex.Unlock()
-	fake.TranslateAPIDispensaryStub = stub
+func (fake *FakeAPITranslatable) TranslateDispensaryCalls(stub func(*modelsa.Dispensary) *models.Dispensary) {
+	fake.translateDispensaryMutex.Lock()
+	defer fake.translateDispensaryMutex.Unlock()
+	fake.TranslateDispensaryStub = stub
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIDispensaryArgsForCall(i int) *modelsa.Dispensary {
-	fake.translateAPIDispensaryMutex.RLock()
-	defer fake.translateAPIDispensaryMutex.RUnlock()
-	argsForCall := fake.translateAPIDispensaryArgsForCall[i]
+func (fake *FakeAPITranslatable) TranslateDispensaryArgsForCall(i int) *modelsa.Dispensary {
+	fake.translateDispensaryMutex.RLock()
+	defer fake.translateDispensaryMutex.RUnlock()
+	argsForCall := fake.translateDispensaryArgsForCall[i]
 	return argsForCall.arg1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIDispensaryReturns(result1 *models.Dispensary) {
-	fake.translateAPIDispensaryMutex.Lock()
-	defer fake.translateAPIDispensaryMutex.Unlock()
-	fake.TranslateAPIDispensaryStub = nil
-	fake.translateAPIDispensaryReturns = struct {
+func (fake *FakeAPITranslatable) TranslateDispensaryReturns(result1 *models.Dispensary) {
+	fake.translateDispensaryMutex.Lock()
+	defer fake.translateDispensaryMutex.Unlock()
+	fake.TranslateDispensaryStub = nil
+	fake.translateDispensaryReturns = struct {
 		result1 *models.Dispensary
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIDispensaryReturnsOnCall(i int, result1 *models.Dispensary) {
-	fake.translateAPIDispensaryMutex.Lock()
-	defer fake.translateAPIDispensaryMutex.Unlock()
-	fake.TranslateAPIDispensaryStub = nil
-	if fake.translateAPIDispensaryReturnsOnCall == nil {
-		fake.translateAPIDispensaryReturnsOnCall = make(map[int]struct {
+func (fake *FakeAPITranslatable) TranslateDispensaryReturnsOnCall(i int, result1 *models.Dispensary) {
+	fake.translateDispensaryMutex.Lock()
+	defer fake.translateDispensaryMutex.Unlock()
+	fake.TranslateDispensaryStub = nil
+	if fake.translateDispensaryReturnsOnCall == nil {
+		fake.translateDispensaryReturnsOnCall = make(map[int]struct {
 			result1 *models.Dispensary
 		})
 	}
-	fake.translateAPIDispensaryReturnsOnCall[i] = struct {
+	fake.translateDispensaryReturnsOnCall[i] = struct {
 		result1 *models.Dispensary
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPILocation(arg1 *modelsa.Location) *models.Location {
-	fake.translateAPILocationMutex.Lock()
-	ret, specificReturn := fake.translateAPILocationReturnsOnCall[len(fake.translateAPILocationArgsForCall)]
-	fake.translateAPILocationArgsForCall = append(fake.translateAPILocationArgsForCall, struct {
+func (fake *FakeAPITranslatable) TranslateLocation(arg1 *modelsa.Location) *models.Location {
+	fake.translateLocationMutex.Lock()
+	ret, specificReturn := fake.translateLocationReturnsOnCall[len(fake.translateLocationArgsForCall)]
+	fake.translateLocationArgsForCall = append(fake.translateLocationArgsForCall, struct {
 		arg1 *modelsa.Location
 	}{arg1})
-	stub := fake.TranslateAPILocationStub
-	fakeReturns := fake.translateAPILocationReturns
-	fake.recordInvocation("TranslateAPILocation", []interface{}{arg1})
-	fake.translateAPILocationMutex.Unlock()
+	stub := fake.TranslateLocationStub
+	fakeReturns := fake.translateLocationReturns
+	fake.recordInvocation("TranslateLocation", []interface{}{arg1})
+	fake.translateLocationMutex.Unlock()
 	if stub != nil {
 		return stub(arg1)
 	}
@@ -568,63 +568,63 @@ func (fake *FakeAPITranslatable) TranslateAPILocation(arg1 *modelsa.Location) *m
 	return fakeReturns.result1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPILocationCallCount() int {
-	fake.translateAPILocationMutex.RLock()
-	defer fake.translateAPILocationMutex.RUnlock()
-	return len(fake.translateAPILocationArgsForCall)
+func (fake *FakeAPITranslatable) TranslateLocationCallCount() int {
+	fake.translateLocationMutex.RLock()
+	defer fake.translateLocationMutex.RUnlock()
+	return len(fake.translateLocationArgsForCall)
 }
 
-func (fake *FakeAPITranslatable) TranslateAPILocationCalls(stub func(*modelsa.Location) *models.Location) {
-	fake.translateAPILocationMutex.Lock()
-	defer fake.translateAPILocationMutex.Unlock()
-	fake.TranslateAPILocationStub = stub
+func (fake *FakeAPITranslatable) TranslateLocationCalls(stub func(*modelsa.Location) *models.Location) {
+	fake.translateLocationMutex.Lock()
+	defer fake.translateLocationMutex.Unlock()
+	fake.TranslateLocationStub = stub
 }
 
-func (fake *FakeAPITranslatable) TranslateAPILocationArgsForCall(i int) *modelsa.Location {
-	fake.translateAPILocationMutex.RLock()
-	defer fake.translateAPILocationMutex.RUnlock()
-	argsForCall := fake.translateAPILocationArgsForCall[i]
+func (fake *FakeAPITranslatable) TranslateLocationArgsForCall(i int) *modelsa.Location {
+	fake.translateLocationMutex.RLock()
+	defer fake.translateLocationMutex.RUnlock()
+	argsForCall := fake.translateLocationArgsForCall[i]
 	return argsForCall.arg1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPILocationReturns(result1 *models.Location) {
-	fake.translateAPILocationMutex.Lock()
-	defer fake.translateAPILocationMutex.Unlock()
-	fake.TranslateAPILocationStub = nil
-	fake.translateAPILocationReturns = struct {
+func (fake *FakeAPITranslatable) TranslateLocationReturns(result1 *models.Location) {
+	fake.translateLocationMutex.Lock()
+	defer fake.translateLocationMutex.Unlock()
+	fake.TranslateLocationStub = nil
+	fake.translateLocationReturns = struct {
 		result1 *models.Location
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPILocationReturnsOnCall(i int, result1 *models.Location) {
-	fake.translateAPILocationMutex.Lock()
-	defer fake.translateAPILocationMutex.Unlock()
-	fake.TranslateAPILocationStub = nil
-	if fake.translateAPILocationReturnsOnCall == nil {
-		fake.translateAPILocationReturnsOnCall = make(map[int]struct {
+func (fake *FakeAPITranslatable) TranslateLocationReturnsOnCall(i int, result1 *models.Location) {
+	fake.translateLocationMutex.Lock()
+	defer fake.translateLocationMutex.Unlock()
+	fake.TranslateLocationStub = nil
+	if fake.translateLocationReturnsOnCall == nil {
+		fake.translateLocationReturnsOnCall = make(map[int]struct {
 			result1 *models.Location
 		})
 	}
-	fake.translateAPILocationReturnsOnCall[i] = struct {
+	fake.translateLocationReturnsOnCall[i] = struct {
 		result1 *models.Location
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPILocations(arg1 []*modelsa.Location) []*models.Location {
+func (fake *FakeAPITranslatable) TranslateLocations(arg1 []*modelsa.Location) []*models.Location {
 	var arg1Copy []*modelsa.Location
 	if arg1 != nil {
 		arg1Copy = make([]*modelsa.Location, len(arg1))
 		copy(arg1Copy, arg1)
 	}
-	fake.translateAPILocationsMutex.Lock()
-	ret, specificReturn := fake.translateAPILocationsReturnsOnCall[len(fake.translateAPILocationsArgsForCall)]
-	fake.translateAPILocationsArgsForCall = append(fake.translateAPILocationsArgsForCall, struct {
+	fake.translateLocationsMutex.Lock()
+	ret, specificReturn := fake.translateLocationsReturnsOnCall[len(fake.translateLocationsArgsForCall)]
+	fake.translateLocationsArgsForCall = append(fake.translateLocationsArgsForCall, struct {
 		arg1 []*modelsa.Location
 	}{arg1Copy})
-	stub := fake.TranslateAPILocationsStub
-	fakeReturns := fake.translateAPILocationsReturns
-	fake.recordInvocation("TranslateAPILocations", []interface{}{arg1Copy})
-	fake.translateAPILocationsMutex.Unlock()
+	stub := fake.TranslateLocationsStub
+	fakeReturns := fake.translateLocationsReturns
+	fake.recordInvocation("TranslateLocations", []interface{}{arg1Copy})
+	fake.translateLocationsMutex.Unlock()
 	if stub != nil {
 		return stub(arg1)
 	}
@@ -634,58 +634,58 @@ func (fake *FakeAPITranslatable) TranslateAPILocations(arg1 []*modelsa.Location)
 	return fakeReturns.result1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPILocationsCallCount() int {
-	fake.translateAPILocationsMutex.RLock()
-	defer fake.translateAPILocationsMutex.RUnlock()
-	return len(fake.translateAPILocationsArgsForCall)
+func (fake *FakeAPITranslatable) TranslateLocationsCallCount() int {
+	fake.translateLocationsMutex.RLock()
+	defer fake.translateLocationsMutex.RUnlock()
+	return len(fake.translateLocationsArgsForCall)
 }
 
-func (fake *FakeAPITranslatable) TranslateAPILocationsCalls(stub func([]*modelsa.Location) []*models.Location) {
-	fake.translateAPILocationsMutex.Lock()
-	defer fake.translateAPILocationsMutex.Unlock()
-	fake.TranslateAPILocationsStub = stub
+func (fake *FakeAPITranslatable) TranslateLocationsCalls(stub func([]*modelsa.Location) []*models.Location) {
+	fake.translateLocationsMutex.Lock()
+	defer fake.translateLocationsMutex.Unlock()
+	fake.TranslateLocationsStub = stub
 }
 
-func (fake *FakeAPITranslatable) TranslateAPILocationsArgsForCall(i int) []*modelsa.Location {
-	fake.translateAPILocationsMutex.RLock()
-	defer fake.translateAPILocationsMutex.RUnlock()
-	argsForCall := fake.translateAPILocationsArgsForCall[i]
+func (fake *FakeAPITranslatable) TranslateLocationsArgsForCall(i int) []*modelsa.Location {
+	fake.translateLocationsMutex.RLock()
+	defer fake.translateLocationsMutex.RUnlock()
+	argsForCall := fake.translateLocationsArgsForCall[i]
 	return argsForCall.arg1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPILocationsReturns(result1 []*models.Location) {
-	fake.translateAPILocationsMutex.Lock()
-	defer fake.translateAPILocationsMutex.Unlock()
-	fake.TranslateAPILocationsStub = nil
-	fake.translateAPILocationsReturns = struct {
+func (fake *FakeAPITranslatable) TranslateLocationsReturns(result1 []*models.Location) {
+	fake.translateLocationsMutex.Lock()
+	defer fake.translateLocationsMutex.Unlock()
+	fake.TranslateLocationsStub = nil
+	fake.translateLocationsReturns = struct {
 		result1 []*models.Location
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPILocationsReturnsOnCall(i int, result1 []*models.Location) {
-	fake.translateAPILocationsMutex.Lock()
-	defer fake.translateAPILocationsMutex.Unlock()
-	fake.TranslateAPILocationsStub = nil
-	if fake.translateAPILocationsReturnsOnCall == nil {
-		fake.translateAPILocationsReturnsOnCall = make(map[int]struct {
+func (fake *FakeAPITranslatable) TranslateLocationsReturnsOnCall(i int, result1 []*models.Location) {
+	fake.translateLocationsMutex.Lock()
+	defer fake.translateLocationsMutex.Unlock()
+	fake.TranslateLocationsStub = nil
+	if fake.translateLocationsReturnsOnCall == nil {
+		fake.translateLocationsReturnsOnCall = make(map[int]struct {
 			result1 []*models.Location
 		})
 	}
-	fake.translateAPILocationsReturnsOnCall[i] = struct {
+	fake.translateLocationsReturnsOnCall[i] = struct {
 		result1 []*models.Location
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIOffer(arg1 *modelsa.Offer) *models.Offer {
-	fake.translateAPIOfferMutex.Lock()
-	ret, specificReturn := fake.translateAPIOfferReturnsOnCall[len(fake.translateAPIOfferArgsForCall)]
-	fake.translateAPIOfferArgsForCall = append(fake.translateAPIOfferArgsForCall, struct {
+func (fake *FakeAPITranslatable) TranslateOffer(arg1 *modelsa.Offer) *models.Offer {
+	fake.translateOfferMutex.Lock()
+	ret, specificReturn := fake.translateOfferReturnsOnCall[len(fake.translateOfferArgsForCall)]
+	fake.translateOfferArgsForCall = append(fake.translateOfferArgsForCall, struct {
 		arg1 *modelsa.Offer
 	}{arg1})
-	stub := fake.TranslateAPIOfferStub
-	fakeReturns := fake.translateAPIOfferReturns
-	fake.recordInvocation("TranslateAPIOffer", []interface{}{arg1})
-	fake.translateAPIOfferMutex.Unlock()
+	stub := fake.TranslateOfferStub
+	fakeReturns := fake.translateOfferReturns
+	fake.recordInvocation("TranslateOffer", []interface{}{arg1})
+	fake.translateOfferMutex.Unlock()
 	if stub != nil {
 		return stub(arg1)
 	}
@@ -695,63 +695,63 @@ func (fake *FakeAPITranslatable) TranslateAPIOffer(arg1 *modelsa.Offer) *models.
 	return fakeReturns.result1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIOfferCallCount() int {
-	fake.translateAPIOfferMutex.RLock()
-	defer fake.translateAPIOfferMutex.RUnlock()
-	return len(fake.translateAPIOfferArgsForCall)
+func (fake *FakeAPITranslatable) TranslateOfferCallCount() int {
+	fake.translateOfferMutex.RLock()
+	defer fake.translateOfferMutex.RUnlock()
+	return len(fake.translateOfferArgsForCall)
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIOfferCalls(stub func(*modelsa.Offer) *models.Offer) {
-	fake.translateAPIOfferMutex.Lock()
-	defer fake.translateAPIOfferMutex.Unlock()
-	fake.TranslateAPIOfferStub = stub
+func (fake *FakeAPITranslatable) TranslateOfferCalls(stub func(*modelsa.Offer) *models.Offer) {
+	fake.translateOfferMutex.Lock()
+	defer fake.translateOfferMutex.Unlock()
+	fake.TranslateOfferStub = stub
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIOfferArgsForCall(i int) *modelsa.Offer {
-	fake.translateAPIOfferMutex.RLock()
-	defer fake.translateAPIOfferMutex.RUnlock()
-	argsForCall := fake.translateAPIOfferArgsForCall[i]
+func (fake *FakeAPITranslatable) TranslateOfferArgsForCall(i int) *modelsa.Offer {
+	fake.translateOfferMutex.RLock()
+	defer fake.translateOfferMutex.RUnlock()
+	argsForCall := fake.translateOfferArgsForCall[i]
 	return argsForCall.arg1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIOfferReturns(result1 *models.Offer) {
-	fake.translateAPIOfferMutex.Lock()
-	defer fake.translateAPIOfferMutex.Unlock()
-	fake.TranslateAPIOfferStub = nil
-	fake.translateAPIOfferReturns = struct {
+func (fake *FakeAPITranslatable) TranslateOfferReturns(result1 *models.Offer) {
+	fake.translateOfferMutex.Lock()
+	defer fake.translateOfferMutex.Unlock()
+	fake.TranslateOfferStub = nil
+	fake.translateOfferReturns = struct {
 		result1 *models.Offer
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIOfferReturnsOnCall(i int, result1 *models.Offer) {
-	fake.translateAPIOfferMutex.Lock()
-	defer fake.translateAPIOfferMutex.Unlock()
-	fake.TranslateAPIOfferStub = nil
-	if fake.translateAPIOfferReturnsOnCall == nil {
-		fake.translateAPIOfferReturnsOnCall = make(map[int]struct {
+func (fake *FakeAPITranslatable) TranslateOfferReturnsOnCall(i int, result1 *models.Offer) {
+	fake.translateOfferMutex.Lock()
+	defer fake.translateOfferMutex.Unlock()
+	fake.TranslateOfferStub = nil
+	if fake.translateOfferReturnsOnCall == nil {
+		fake.translateOfferReturnsOnCall = make(map[int]struct {
 			result1 *models.Offer
 		})
 	}
-	fake.translateAPIOfferReturnsOnCall[i] = struct {
+	fake.translateOfferReturnsOnCall[i] = struct {
 		result1 *models.Offer
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIOffers(arg1 []*modelsa.Offer) []*models.Offer {
+func (fake *FakeAPITranslatable) TranslateOffers(arg1 []*modelsa.Offer) []*models.Offer {
 	var arg1Copy []*modelsa.Offer
 	if arg1 != nil {
 		arg1Copy = make([]*modelsa.Offer, len(arg1))
 		copy(arg1Copy, arg1)
 	}
-	fake.translateAPIOffersMutex.Lock()
-	ret, specificReturn := fake.translateAPIOffersReturnsOnCall[len(fake.translateAPIOffersArgsForCall)]
-	fake.translateAPIOffersArgsForCall = append(fake.translateAPIOffersArgsForCall, struct {
+	fake.translateOffersMutex.Lock()
+	ret, specificReturn := fake.translateOffersReturnsOnCall[len(fake.translateOffersArgsForCall)]
+	fake.translateOffersArgsForCall = append(fake.translateOffersArgsForCall, struct {
 		arg1 []*modelsa.Offer
 	}{arg1Copy})
-	stub := fake.TranslateAPIOffersStub
-	fakeReturns := fake.translateAPIOffersReturns
-	fake.recordInvocation("TranslateAPIOffers", []interface{}{arg1Copy})
-	fake.translateAPIOffersMutex.Unlock()
+	stub := fake.TranslateOffersStub
+	fakeReturns := fake.translateOffersReturns
+	fake.recordInvocation("TranslateOffers", []interface{}{arg1Copy})
+	fake.translateOffersMutex.Unlock()
 	if stub != nil {
 		return stub(arg1)
 	}
@@ -761,58 +761,58 @@ func (fake *FakeAPITranslatable) TranslateAPIOffers(arg1 []*modelsa.Offer) []*mo
 	return fakeReturns.result1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIOffersCallCount() int {
-	fake.translateAPIOffersMutex.RLock()
-	defer fake.translateAPIOffersMutex.RUnlock()
-	return len(fake.translateAPIOffersArgsForCall)
+func (fake *FakeAPITranslatable) TranslateOffersCallCount() int {
+	fake.translateOffersMutex.RLock()
+	defer fake.translateOffersMutex.RUnlock()
+	return len(fake.translateOffersArgsForCall)
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIOffersCalls(stub func([]*modelsa.Offer) []*models.Offer) {
-	fake.translateAPIOffersMutex.Lock()
-	defer fake.translateAPIOffersMutex.Unlock()
-	fake.TranslateAPIOffersStub = stub
+func (fake *FakeAPITranslatable) TranslateOffersCalls(stub func([]*modelsa.Offer) []*models.Offer) {
+	fake.translateOffersMutex.Lock()
+	defer fake.translateOffersMutex.Unlock()
+	fake.TranslateOffersStub = stub
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIOffersArgsForCall(i int) []*modelsa.Offer {
-	fake.translateAPIOffersMutex.RLock()
-	defer fake.translateAPIOffersMutex.RUnlock()
-	argsForCall := fake.translateAPIOffersArgsForCall[i]
+func (fake *FakeAPITranslatable) TranslateOffersArgsForCall(i int) []*modelsa.Offer {
+	fake.translateOffersMutex.RLock()
+	defer fake.translateOffersMutex.RUnlock()
+	argsForCall := fake.translateOffersArgsForCall[i]
 	return argsForCall.arg1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIOffersReturns(result1 []*models.Offer) {
-	fake.translateAPIOffersMutex.Lock()
-	defer fake.translateAPIOffersMutex.Unlock()
-	fake.TranslateAPIOffersStub = nil
-	fake.translateAPIOffersReturns = struct {
+func (fake *FakeAPITranslatable) TranslateOffersReturns(result1 []*models.Offer) {
+	fake.translateOffersMutex.Lock()
+	defer fake.translateOffersMutex.Unlock()
+	fake.TranslateOffersStub = nil
+	fake.translateOffersReturns = struct {
 		result1 []*models.Offer
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIOffersReturnsOnCall(i int, result1 []*models.Offer) {
-	fake.translateAPIOffersMutex.Lock()
-	defer fake.translateAPIOffersMutex.Unlock()
-	fake.TranslateAPIOffersStub = nil
-	if fake.translateAPIOffersReturnsOnCall == nil {
-		fake.translateAPIOffersReturnsOnCall = make(map[int]struct {
+func (fake *FakeAPITranslatable) TranslateOffersReturnsOnCall(i int, result1 []*models.Offer) {
+	fake.translateOffersMutex.Lock()
+	defer fake.translateOffersMutex.Unlock()
+	fake.TranslateOffersStub = nil
+	if fake.translateOffersReturnsOnCall == nil {
+		fake.translateOffersReturnsOnCall = make(map[int]struct {
 			result1 []*models.Offer
 		})
 	}
-	fake.translateAPIOffersReturnsOnCall[i] = struct {
+	fake.translateOffersReturnsOnCall[i] = struct {
 		result1 []*models.Offer
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIProduct(arg1 *modelsa.Product) *models.Product {
-	fake.translateAPIProductMutex.Lock()
-	ret, specificReturn := fake.translateAPIProductReturnsOnCall[len(fake.translateAPIProductArgsForCall)]
-	fake.translateAPIProductArgsForCall = append(fake.translateAPIProductArgsForCall, struct {
+func (fake *FakeAPITranslatable) TranslateProduct(arg1 *modelsa.Product) *models.Product {
+	fake.translateProductMutex.Lock()
+	ret, specificReturn := fake.translateProductReturnsOnCall[len(fake.translateProductArgsForCall)]
+	fake.translateProductArgsForCall = append(fake.translateProductArgsForCall, struct {
 		arg1 *modelsa.Product
 	}{arg1})
-	stub := fake.TranslateAPIProductStub
-	fakeReturns := fake.translateAPIProductReturns
-	fake.recordInvocation("TranslateAPIProduct", []interface{}{arg1})
-	fake.translateAPIProductMutex.Unlock()
+	stub := fake.TranslateProductStub
+	fakeReturns := fake.translateProductReturns
+	fake.recordInvocation("TranslateProduct", []interface{}{arg1})
+	fake.translateProductMutex.Unlock()
 	if stub != nil {
 		return stub(arg1)
 	}
@@ -822,63 +822,63 @@ func (fake *FakeAPITranslatable) TranslateAPIProduct(arg1 *modelsa.Product) *mod
 	return fakeReturns.result1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIProductCallCount() int {
-	fake.translateAPIProductMutex.RLock()
-	defer fake.translateAPIProductMutex.RUnlock()
-	return len(fake.translateAPIProductArgsForCall)
+func (fake *FakeAPITranslatable) TranslateProductCallCount() int {
+	fake.translateProductMutex.RLock()
+	defer fake.translateProductMutex.RUnlock()
+	return len(fake.translateProductArgsForCall)
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIProductCalls(stub func(*modelsa.Product) *models.Product) {
-	fake.translateAPIProductMutex.Lock()
-	defer fake.translateAPIProductMutex.Unlock()
-	fake.TranslateAPIProductStub = stub
+func (fake *FakeAPITranslatable) TranslateProductCalls(stub func(*modelsa.Product) *models.Product) {
+	fake.translateProductMutex.Lock()
+	defer fake.translateProductMutex.Unlock()
+	fake.TranslateProductStub = stub
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIProductArgsForCall(i int) *modelsa.Product {
-	fake.translateAPIProductMutex.RLock()
-	defer fake.translateAPIProductMutex.RUnlock()
-	argsForCall := fake.translateAPIProductArgsForCall[i]
+func (fake *FakeAPITranslatable) TranslateProductArgsForCall(i int) *modelsa.Product {
+	fake.translateProductMutex.RLock()
+	defer fake.translateProductMutex.RUnlock()
+	argsForCall := fake.translateProductArgsForCall[i]
 	return argsForCall.arg1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIProductReturns(result1 *models.Product) {
-	fake.translateAPIProductMutex.Lock()
-	defer fake.translateAPIProductMutex.Unlock()
-	fake.TranslateAPIProductStub = nil
-	fake.translateAPIProductReturns = struct {
+func (fake *FakeAPITranslatable) TranslateProductReturns(result1 *models.Product) {
+	fake.translateProductMutex.Lock()
+	defer fake.translateProductMutex.Unlock()
+	fake.TranslateProductStub = nil
+	fake.translateProductReturns = struct {
 		result1 *models.Product
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIProductReturnsOnCall(i int, result1 *models.Product) {
-	fake.translateAPIProductMutex.Lock()
-	defer fake.translateAPIProductMutex.Unlock()
-	fake.TranslateAPIProductStub = nil
-	if fake.translateAPIProductReturnsOnCall == nil {
-		fake.translateAPIProductReturnsOnCall = make(map[int]struct {
+func (fake *FakeAPITranslatable) TranslateProductReturnsOnCall(i int, result1 *models.Product) {
+	fake.translateProductMutex.Lock()
+	defer fake.translateProductMutex.Unlock()
+	fake.TranslateProductStub = nil
+	if fake.translateProductReturnsOnCall == nil {
+		fake.translateProductReturnsOnCall = make(map[int]struct {
 			result1 *models.Product
 		})
 	}
-	fake.translateAPIProductReturnsOnCall[i] = struct {
+	fake.translateProductReturnsOnCall[i] = struct {
 		result1 *models.Product
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIProducts(arg1 []*modelsa.Product) []*models.Product {
+func (fake *FakeAPITranslatable) TranslateProducts(arg1 []*modelsa.Product) []*models.Product {
 	var arg1Copy []*modelsa.Product
 	if arg1 != nil {
 		arg1Copy = make([]*modelsa.Product, len(arg1))
 		copy(arg1Copy, arg1)
 	}
-	fake.translateAPIProductsMutex.Lock()
-	ret, specificReturn := fake.translateAPIProductsReturnsOnCall[len(fake.translateAPIProductsArgsForCall)]
-	fake.translateAPIProductsArgsForCall = append(fake.translateAPIProductsArgsForCall, struct {
+	fake.translateProductsMutex.Lock()
+	ret, specificReturn := fake.translateProductsReturnsOnCall[len(fake.translateProductsArgsForCall)]
+	fake.translateProductsArgsForCall = append(fake.translateProductsArgsForCall, struct {
 		arg1 []*modelsa.Product
 	}{arg1Copy})
-	stub := fake.TranslateAPIProductsStub
-	fakeReturns := fake.translateAPIProductsReturns
-	fake.recordInvocation("TranslateAPIProducts", []interface{}{arg1Copy})
-	fake.translateAPIProductsMutex.Unlock()
+	stub := fake.TranslateProductsStub
+	fakeReturns := fake.translateProductsReturns
+	fake.recordInvocation("TranslateProducts", []interface{}{arg1Copy})
+	fake.translateProductsMutex.Unlock()
 	if stub != nil {
 		return stub(arg1)
 	}
@@ -888,58 +888,58 @@ func (fake *FakeAPITranslatable) TranslateAPIProducts(arg1 []*modelsa.Product) [
 	return fakeReturns.result1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIProductsCallCount() int {
-	fake.translateAPIProductsMutex.RLock()
-	defer fake.translateAPIProductsMutex.RUnlock()
-	return len(fake.translateAPIProductsArgsForCall)
+func (fake *FakeAPITranslatable) TranslateProductsCallCount() int {
+	fake.translateProductsMutex.RLock()
+	defer fake.translateProductsMutex.RUnlock()
+	return len(fake.translateProductsArgsForCall)
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIProductsCalls(stub func([]*modelsa.Product) []*models.Product) {
-	fake.translateAPIProductsMutex.Lock()
-	defer fake.translateAPIProductsMutex.Unlock()
-	fake.TranslateAPIProductsStub = stub
+func (fake *FakeAPITranslatable) TranslateProductsCalls(stub func([]*modelsa.Product) []*models.Product) {
+	fake.translateProductsMutex.Lock()
+	defer fake.translateProductsMutex.Unlock()
+	fake.TranslateProductsStub = stub
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIProductsArgsForCall(i int) []*modelsa.Product {
-	fake.translateAPIProductsMutex.RLock()
-	defer fake.translateAPIProductsMutex.RUnlock()
-	argsForCall := fake.translateAPIProductsArgsForCall[i]
+func (fake *FakeAPITranslatable) TranslateProductsArgsForCall(i int) []*modelsa.Product {
+	fake.translateProductsMutex.RLock()
+	defer fake.translateProductsMutex.RUnlock()
+	argsForCall := fake.translateProductsArgsForCall[i]
 	return argsForCall.arg1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIProductsReturns(result1 []*models.Product) {
-	fake.translateAPIProductsMutex.Lock()
-	defer fake.translateAPIProductsMutex.Unlock()
-	fake.TranslateAPIProductsStub = nil
-	fake.translateAPIProductsReturns = struct {
+func (fake *FakeAPITranslatable) TranslateProductsReturns(result1 []*models.Product) {
+	fake.translateProductsMutex.Lock()
+	defer fake.translateProductsMutex.Unlock()
+	fake.TranslateProductsStub = nil
+	fake.translateProductsReturns = struct {
 		result1 []*models.Product
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPIProductsReturnsOnCall(i int, result1 []*models.Product) {
-	fake.translateAPIProductsMutex.Lock()
-	defer fake.translateAPIProductsMutex.Unlock()
-	fake.TranslateAPIProductsStub = nil
-	if fake.translateAPIProductsReturnsOnCall == nil {
-		fake.translateAPIProductsReturnsOnCall = make(map[int]struct {
+func (fake *FakeAPITranslatable) TranslateProductsReturnsOnCall(i int, result1 []*models.Product) {
+	fake.translateProductsMutex.Lock()
+	defer fake.translateProductsMutex.Unlock()
+	fake.TranslateProductsStub = nil
+	if fake.translateProductsReturnsOnCall == nil {
+		fake.translateProductsReturnsOnCall = make(map[int]struct {
 			result1 []*models.Product
 		})
 	}
-	fake.translateAPIProductsReturnsOnCall[i] = struct {
+	fake.translateProductsReturnsOnCall[i] = struct {
 		result1 []*models.Product
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPITerpene(arg1 *modelsa.Terpene) *models.Terpene {
-	fake.translateAPITerpeneMutex.Lock()
-	ret, specificReturn := fake.translateAPITerpeneReturnsOnCall[len(fake.translateAPITerpeneArgsForCall)]
-	fake.translateAPITerpeneArgsForCall = append(fake.translateAPITerpeneArgsForCall, struct {
+func (fake *FakeAPITranslatable) TranslateTerpene(arg1 *modelsa.Terpene) *models.Terpene {
+	fake.translateTerpeneMutex.Lock()
+	ret, specificReturn := fake.translateTerpeneReturnsOnCall[len(fake.translateTerpeneArgsForCall)]
+	fake.translateTerpeneArgsForCall = append(fake.translateTerpeneArgsForCall, struct {
 		arg1 *modelsa.Terpene
 	}{arg1})
-	stub := fake.TranslateAPITerpeneStub
-	fakeReturns := fake.translateAPITerpeneReturns
-	fake.recordInvocation("TranslateAPITerpene", []interface{}{arg1})
-	fake.translateAPITerpeneMutex.Unlock()
+	stub := fake.TranslateTerpeneStub
+	fakeReturns := fake.translateTerpeneReturns
+	fake.recordInvocation("TranslateTerpene", []interface{}{arg1})
+	fake.translateTerpeneMutex.Unlock()
 	if stub != nil {
 		return stub(arg1)
 	}
@@ -949,63 +949,63 @@ func (fake *FakeAPITranslatable) TranslateAPITerpene(arg1 *modelsa.Terpene) *mod
 	return fakeReturns.result1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPITerpeneCallCount() int {
-	fake.translateAPITerpeneMutex.RLock()
-	defer fake.translateAPITerpeneMutex.RUnlock()
-	return len(fake.translateAPITerpeneArgsForCall)
+func (fake *FakeAPITranslatable) TranslateTerpeneCallCount() int {
+	fake.translateTerpeneMutex.RLock()
+	defer fake.translateTerpeneMutex.RUnlock()
+	return len(fake.translateTerpeneArgsForCall)
 }
 
-func (fake *FakeAPITranslatable) TranslateAPITerpeneCalls(stub func(*modelsa.Terpene) *models.Terpene) {
-	fake.translateAPITerpeneMutex.Lock()
-	defer fake.translateAPITerpeneMutex.Unlock()
-	fake.TranslateAPITerpeneStub = stub
+func (fake *FakeAPITranslatable) TranslateTerpeneCalls(stub func(*modelsa.Terpene) *models.Terpene) {
+	fake.translateTerpeneMutex.Lock()
+	defer fake.translateTerpeneMutex.Unlock()
+	fake.TranslateTerpeneStub = stub
 }
 
-func (fake *FakeAPITranslatable) TranslateAPITerpeneArgsForCall(i int) *modelsa.Terpene {
-	fake.translateAPITerpeneMutex.RLock()
-	defer fake.translateAPITerpeneMutex.RUnlock()
-	argsForCall := fake.translateAPITerpeneArgsForCall[i]
+func (fake *FakeAPITranslatable) TranslateTerpeneArgsForCall(i int) *modelsa.Terpene {
+	fake.translateTerpeneMutex.RLock()
+	defer fake.translateTerpeneMutex.RUnlock()
+	argsForCall := fake.translateTerpeneArgsForCall[i]
 	return argsForCall.arg1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPITerpeneReturns(result1 *models.Terpene) {
-	fake.translateAPITerpeneMutex.Lock()
-	defer fake.translateAPITerpeneMutex.Unlock()
-	fake.TranslateAPITerpeneStub = nil
-	fake.translateAPITerpeneReturns = struct {
+func (fake *FakeAPITranslatable) TranslateTerpeneReturns(result1 *models.Terpene) {
+	fake.translateTerpeneMutex.Lock()
+	defer fake.translateTerpeneMutex.Unlock()
+	fake.TranslateTerpeneStub = nil
+	fake.translateTerpeneReturns = struct {
 		result1 *models.Terpene
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPITerpeneReturnsOnCall(i int, result1 *models.Terpene) {
-	fake.translateAPITerpeneMutex.Lock()
-	defer fake.translateAPITerpeneMutex.Unlock()
-	fake.TranslateAPITerpeneStub = nil
-	if fake.translateAPITerpeneReturnsOnCall == nil {
-		fake.translateAPITerpeneReturnsOnCall = make(map[int]struct {
+func (fake *FakeAPITranslatable) TranslateTerpeneReturnsOnCall(i int, result1 *models.Terpene) {
+	fake.translateTerpeneMutex.Lock()
+	defer fake.translateTerpeneMutex.Unlock()
+	fake.TranslateTerpeneStub = nil
+	if fake.translateTerpeneReturnsOnCall == nil {
+		fake.translateTerpeneReturnsOnCall = make(map[int]struct {
 			result1 *models.Terpene
 		})
 	}
-	fake.translateAPITerpeneReturnsOnCall[i] = struct {
+	fake.translateTerpeneReturnsOnCall[i] = struct {
 		result1 *models.Terpene
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPITerpenes(arg1 []*modelsa.Terpene) []*models.Terpene {
+func (fake *FakeAPITranslatable) TranslateTerpenes(arg1 []*modelsa.Terpene) []*models.Terpene {
 	var arg1Copy []*modelsa.Terpene
 	if arg1 != nil {
 		arg1Copy = make([]*modelsa.Terpene, len(arg1))
 		copy(arg1Copy, arg1)
 	}
-	fake.translateAPITerpenesMutex.Lock()
-	ret, specificReturn := fake.translateAPITerpenesReturnsOnCall[len(fake.translateAPITerpenesArgsForCall)]
-	fake.translateAPITerpenesArgsForCall = append(fake.translateAPITerpenesArgsForCall, struct {
+	fake.translateTerpenesMutex.Lock()
+	ret, specificReturn := fake.translateTerpenesReturnsOnCall[len(fake.translateTerpenesArgsForCall)]
+	fake.translateTerpenesArgsForCall = append(fake.translateTerpenesArgsForCall, struct {
 		arg1 []*modelsa.Terpene
 	}{arg1Copy})
-	stub := fake.TranslateAPITerpenesStub
-	fakeReturns := fake.translateAPITerpenesReturns
-	fake.recordInvocation("TranslateAPITerpenes", []interface{}{arg1Copy})
-	fake.translateAPITerpenesMutex.Unlock()
+	stub := fake.TranslateTerpenesStub
+	fakeReturns := fake.translateTerpenesReturns
+	fake.recordInvocation("TranslateTerpenes", []interface{}{arg1Copy})
+	fake.translateTerpenesMutex.Unlock()
 	if stub != nil {
 		return stub(arg1)
 	}
@@ -1015,44 +1015,44 @@ func (fake *FakeAPITranslatable) TranslateAPITerpenes(arg1 []*modelsa.Terpene) [
 	return fakeReturns.result1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPITerpenesCallCount() int {
-	fake.translateAPITerpenesMutex.RLock()
-	defer fake.translateAPITerpenesMutex.RUnlock()
-	return len(fake.translateAPITerpenesArgsForCall)
+func (fake *FakeAPITranslatable) TranslateTerpenesCallCount() int {
+	fake.translateTerpenesMutex.RLock()
+	defer fake.translateTerpenesMutex.RUnlock()
+	return len(fake.translateTerpenesArgsForCall)
 }
 
-func (fake *FakeAPITranslatable) TranslateAPITerpenesCalls(stub func([]*modelsa.Terpene) []*models.Terpene) {
-	fake.translateAPITerpenesMutex.Lock()
-	defer fake.translateAPITerpenesMutex.Unlock()
-	fake.TranslateAPITerpenesStub = stub
+func (fake *FakeAPITranslatable) TranslateTerpenesCalls(stub func([]*modelsa.Terpene) []*models.Terpene) {
+	fake.translateTerpenesMutex.Lock()
+	defer fake.translateTerpenesMutex.Unlock()
+	fake.TranslateTerpenesStub = stub
 }
 
-func (fake *FakeAPITranslatable) TranslateAPITerpenesArgsForCall(i int) []*modelsa.Terpene {
-	fake.translateAPITerpenesMutex.RLock()
-	defer fake.translateAPITerpenesMutex.RUnlock()
-	argsForCall := fake.translateAPITerpenesArgsForCall[i]
+func (fake *FakeAPITranslatable) TranslateTerpenesArgsForCall(i int) []*modelsa.Terpene {
+	fake.translateTerpenesMutex.RLock()
+	defer fake.translateTerpenesMutex.RUnlock()
+	argsForCall := fake.translateTerpenesArgsForCall[i]
 	return argsForCall.arg1
 }
 
-func (fake *FakeAPITranslatable) TranslateAPITerpenesReturns(result1 []*models.Terpene) {
-	fake.translateAPITerpenesMutex.Lock()
-	defer fake.translateAPITerpenesMutex.Unlock()
-	fake.TranslateAPITerpenesStub = nil
-	fake.translateAPITerpenesReturns = struct {
+func (fake *FakeAPITranslatable) TranslateTerpenesReturns(result1 []*models.Terpene) {
+	fake.translateTerpenesMutex.Lock()
+	defer fake.translateTerpenesMutex.Unlock()
+	fake.TranslateTerpenesStub = nil
+	fake.translateTerpenesReturns = struct {
 		result1 []*models.Terpene
 	}{result1}
 }
 
-func (fake *FakeAPITranslatable) TranslateAPITerpenesReturnsOnCall(i int, result1 []*models.Terpene) {
-	fake.translateAPITerpenesMutex.Lock()
-	defer fake.translateAPITerpenesMutex.Unlock()
-	fake.TranslateAPITerpenesStub = nil
-	if fake.translateAPITerpenesReturnsOnCall == nil {
-		fake.translateAPITerpenesReturnsOnCall = make(map[int]struct {
+func (fake *FakeAPITranslatable) TranslateTerpenesReturnsOnCall(i int, result1 []*models.Terpene) {
+	fake.translateTerpenesMutex.Lock()
+	defer fake.translateTerpenesMutex.Unlock()
+	fake.TranslateTerpenesStub = nil
+	if fake.translateTerpenesReturnsOnCall == nil {
+		fake.translateTerpenesReturnsOnCall = make(map[int]struct {
 			result1 []*models.Terpene
 		})
 	}
-	fake.translateAPITerpenesReturnsOnCall[i] = struct {
+	fake.translateTerpenesReturnsOnCall[i] = struct {
 		result1 []*models.Terpene
 	}{result1}
 }
@@ -1060,34 +1060,34 @@ func (fake *FakeAPITranslatable) TranslateAPITerpenesReturnsOnCall(i int, result
 func (fake *FakeAPITranslatable) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
-	fake.translateAPICannabinoidMutex.RLock()
-	defer fake.translateAPICannabinoidMutex.RUnlock()
-	fake.translateAPICannabinoidsMutex.RLock()
-	defer fake.translateAPICannabinoidsMutex.RUnlock()
-	fake.translateAPICategoriesMutex.RLock()
-	defer fake.translateAPICategoriesMutex.RUnlock()
-	fake.translateAPICategoryMutex.RLock()
-	defer fake.translateAPICategoryMutex.RUnlock()
-	fake.translateAPIDispensariesMutex.RLock()
-	defer fake.translateAPIDispensariesMutex.RUnlock()
-	fake.translateAPIDispensaryMutex.RLock()
-	defer fake.translateAPIDispensaryMutex.RUnlock()
-	fake.translateAPILocationMutex.RLock()
-	defer fake.translateAPILocationMutex.RUnlock()
-	fake.translateAPILocationsMutex.RLock()
-	defer fake.translateAPILocationsMutex.RUnlock()
-	fake.translateAPIOfferMutex.RLock()
-	defer fake.translateAPIOfferMutex.RUnlock()
-	fake.translateAPIOffersMutex.RLock()
-	defer fake.translateAPIOffersMutex.RUnlock()
-	fake.translateAPIProductMutex.RLock()
-	defer fake.translateAPIProductMutex.RUnlock()
-	fake.translateAPIProductsMutex.RLock()
-	defer fake.translateAPIProductsMutex.RUnlock()
-	fake.translateAPITerpeneMutex.RLock()
-	defer fake.translateAPITerpeneMutex.RUnlock()
-	fake.translateAPITerpenesMutex.RLock()
-	defer fake.translateAPITerpenesMutex.RUnlock()
+	fake.translateCannabinoidMutex.RLock()
+	defer fake.translateCannabinoidMutex.RUnlock()
+	fake.translateCannabinoidsMutex.RLock()
+	defer fake.translateCannabinoidsMutex.RUnlock()
+	fake.translateCategoriesMutex.RLock()
+	defer fake.translateCategoriesMutex.RUnlock()
+	fake.translateCategoryMutex.RLock()
+	defer fake.translateCategoryMutex.RUnlock()
+	fake.translateDispensariesMutex.RLock()
+	defer fake.translateDispensariesMutex.RUnlock()
+	fake.translateDispensaryMutex.RLock()
+	defer fake.translateDispensaryMutex.RUnlock()
+	fake.translateLocationMutex.RLock()
+	defer fake.translateLocationMutex.RUnlock()
+	fake.translateLocationsMutex.RLock()
+	defer fake.translateLocationsMutex.RUnlock()
+	fake.translateOfferMutex.RLock()
+	defer fake.translateOfferMutex.RUnlock()
+	fake.translateOffersMutex.RLock()
+	defer fake.translateOffersMutex.RUnlock()
+	fake.translateProductMutex.RLock()
+	defer fake.translateProductMutex.RUnlock()
+	fake.translateProductsMutex.RLock()
+	defer fake.translateProductsMutex.RUnlock()
+	fake.translateTerpeneMutex.RLock()
+	defer fake.translateTerpeneMutex.RUnlock()
+	fake.translateTerpenesMutex.RLock()
+	defer fake.translateTerpenesMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
 	for key, value := range fake.invocations {
 		copiedInvocations[key] = value

@@ -30,11 +30,11 @@ const docTemplate = `{
                 "summary": "List supported dispensaries",
                 "responses": {
                     "200": {
-                        "description": "List of supported dispensaries",
+                        "description": "List of supported dispensaries\" Enums(Curaleaf, Beyond-Hello)",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/api.supportedDispensary"
+                                "type": "string"
                             }
                         }
                     }
@@ -553,17 +553,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "api.supportedDispensary": {
-            "type": "string",
-            "enum": [
-                "Curaleaf",
-                "Beyond-Hello"
-            ],
-            "x-enum-varnames": [
-                "Curaleaf",
-                "Beyond"
-            ]
-        },
         "api.supportedDispensaryOptions": {
             "type": "string",
             "enum": [
@@ -704,7 +693,7 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "0.1.2",
+	Version:          "0.2.0",
 	Host:             "",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},

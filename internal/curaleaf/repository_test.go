@@ -7,7 +7,7 @@ import (
 	"github.com/Linkinlog/LeafListr/internal/curaleaf"
 
 	"github.com/Linkinlog/LeafListr/internal/models"
-	repo "github.com/Linkinlog/LeafListr/internal/repository"
+	"github.com/Linkinlog/LeafListr/internal/repository"
 
 	"github.com/Linkinlog/LeafListr/internal/client/clientfakes"
 	"github.com/stretchr/testify/assert"
@@ -44,7 +44,7 @@ func TestGetLocation(t *testing.T) {
 			},
 			assertions: func(t *testing.T, loc *models.Location, err error) {
 				assert.Equal(t, &models.Location{}, loc)
-				assert.ErrorIs(t, err, repo.InvalidJSONError)
+				assert.ErrorIs(t, err, repository.InvalidJSONError)
 			},
 		},
 		"invalid request - valid json / invalid expected response, empty product": {
@@ -63,8 +63,8 @@ func TestGetLocation(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "MEDICAL")
-			ls, getErr := cr.Location("ASDF123")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "ASDF123", false)
+			ls, getErr := cr.Location()
 			tt.assertions(t, ls, getErr)
 		})
 	}
@@ -104,7 +104,7 @@ func TestGetLocations(t *testing.T) {
 			},
 			assertions: func(t *testing.T, ls []*models.Location, err error) {
 				assert.Equal(t, []*models.Location{}, ls)
-				assert.ErrorIs(t, err, repo.InvalidJSONError)
+				assert.ErrorIs(t, err, repository.InvalidJSONError)
 			},
 		},
 		"invalid request - valid json / invalid expected response, empty products": {
@@ -123,7 +123,7 @@ func TestGetLocations(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "MEDICAL")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "ASDF", false)
 			ls, getErr := cr.Locations(0, 0)
 			tt.assertions(t, ls, getErr)
 		})
@@ -152,7 +152,7 @@ func TestGetProduct(t *testing.T) {
 				expectedProd := expectedProducts[0]
 
 				assert.Equal(t, expectedProd.ID, prod.Id)
-				assert.Equal(t, models.Category(expectedProd.Category.Key), prod.Ctg)
+				assert.Equal(t, expectedProd.Category.Key, prod.Ctg)
 
 				assert.Equal(t, len(expectedProd.LabResults.Cannabinoids), len(prod.C))
 				for j, canna := range prod.C {
@@ -177,7 +177,7 @@ func TestGetProduct(t *testing.T) {
 			},
 			assertions: func(t *testing.T, prod *models.Product, err error) {
 				assert.Equal(t, &models.Product{}, prod)
-				assert.ErrorIs(t, err, repo.InvalidJSONError)
+				assert.ErrorIs(t, err, repository.InvalidJSONError)
 			},
 		},
 		"invalid request - valid json / invalid expected response, empty product": {
@@ -196,8 +196,8 @@ func TestGetProduct(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "MEDICAL")
-			ps, getErr := cr.GetProduct("foo", "bar")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "ASDF", false)
+			ps, getErr := cr.GetProduct("foo")
 			tt.assertions(t, ps, getErr)
 		})
 	}
@@ -230,7 +230,7 @@ func TestGetProducts(t *testing.T) {
 					expectedProd := expectedProducts[i]
 
 					// assert.Equal(t, expectedProd.ID, prod.Id)
-					assert.Equal(t, models.Category(expectedProd.Category.Key), prod.Ctg)
+					assert.Equal(t, expectedProd.Category.Key, prod.Ctg)
 
 					// for _, expectedVariant := range expectedProd.Variants {
 					// 	assert.Equal(t, expectedVariant.Price, prod.Price.Total)
@@ -261,7 +261,7 @@ func TestGetProducts(t *testing.T) {
 			},
 			assertions: func(t *testing.T, ps []*models.Product, err error) {
 				assert.Equal(t, []*models.Product{}, ps)
-				assert.ErrorIs(t, err, repo.InvalidJSONError)
+				assert.ErrorIs(t, err, repository.InvalidJSONError)
 			},
 		},
 		"invalid request - valid json / invalid expected response, empty products": {
@@ -280,8 +280,8 @@ func TestGetProducts(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "MEDICAL")
-			ps, getErr := cr.GetProducts("foo")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "foo", false)
+			ps, getErr := cr.GetProducts()
 			tt.assertions(t, ps, getErr)
 		})
 	}
@@ -314,7 +314,7 @@ func TestGetProductsForCategory(t *testing.T) {
 					expectedProd := expectedProducts[i]
 
 					//	assert.Equal(t, expectedProd.ID, prod.Id)
-					assert.Equal(t, models.Category(expectedProd.Category.Key), prod.Ctg)
+					assert.Equal(t, expectedProd.Category.Key, prod.Ctg)
 
 					//	for _, expectedVariant := range expectedProd.Variants {
 					//		assert.Equal(t, expectedVariant.Price, prod.Price.Total)
@@ -345,7 +345,7 @@ func TestGetProductsForCategory(t *testing.T) {
 			},
 			assertions: func(t *testing.T, ps []*models.Product, err error) {
 				assert.Equal(t, []*models.Product{}, ps)
-				assert.ErrorIs(t, err, repo.InvalidJSONError)
+				assert.ErrorIs(t, err, repository.InvalidJSONError)
 			},
 		},
 		"invalid request - valid json / invalid expected response, empty products": {
@@ -364,8 +364,8 @@ func TestGetProductsForCategory(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "MEDICAL")
-			ps, getErr := cr.GetProductsForCategory("foo", "bar")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "foo", false)
+			ps, getErr := cr.GetProductsForCategory("foo")
 			tt.assertions(t, ps, getErr)
 		})
 	}
@@ -379,13 +379,13 @@ func TestGetCategories(t *testing.T) {
 	}
 	tests := map[string]struct {
 		setup      func(*clientfakes.FakeClient)
-		assertions func(*testing.T, []models.Category, error)
+		assertions func(*testing.T, []string, error)
 	}{
 		"valid request": {
 			setup: func(fc *clientfakes.FakeClient) {
 				fc.QueryReturns(bs, nil)
 			},
-			assertions: func(t *testing.T, cs []models.Category, err error) {
+			assertions: func(t *testing.T, cs []string, err error) {
 				assert.Nil(t, err)
 				assert.NotNil(t, cs)
 				expectedCategories := response.Data.DispensaryMenu.AllFilters.Categories
@@ -394,7 +394,7 @@ func TestGetCategories(t *testing.T) {
 				for i, cat := range cs {
 					expectedCategory := expectedCategories[i]
 
-					assert.Equal(t, models.Category(expectedCategory.Key), cat)
+					assert.Equal(t, expectedCategory.Key, cat)
 				}
 			},
 		},
@@ -402,17 +402,17 @@ func TestGetCategories(t *testing.T) {
 			setup: func(fc *clientfakes.FakeClient) {
 				fc.QueryReturns(nil, nil)
 			},
-			assertions: func(t *testing.T, cs []models.Category, err error) {
-				assert.Equal(t, []models.Category{}, cs)
-				assert.ErrorIs(t, err, repo.InvalidJSONError)
+			assertions: func(t *testing.T, cs []string, err error) {
+				assert.Equal(t, []string{}, cs)
+				assert.ErrorIs(t, err, repository.InvalidJSONError)
 			},
 		},
 		"invalid request - valid json / invalid expected response, empty products": {
 			setup: func(fc *clientfakes.FakeClient) {
 				fc.QueryReturns([]byte("{}"), nil)
 			},
-			assertions: func(t *testing.T, cs []models.Category, err error) {
-				assert.Equal(t, []models.Category{}, cs)
+			assertions: func(t *testing.T, cs []string, err error) {
+				assert.Equal(t, []string{}, cs)
 				assert.NoError(t, err)
 			},
 		},
@@ -423,8 +423,8 @@ func TestGetCategories(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "MEDICAL")
-			cs, getErr := cr.GetCategories("foo")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "foo", false)
+			cs, getErr := cr.GetCategories()
 			tt.assertions(t, cs, getErr)
 		})
 	}
@@ -466,7 +466,7 @@ func TestGetTerpenes(t *testing.T) {
 			},
 			assertions: func(t *testing.T, ts []*models.Terpene, err error) {
 				assert.Equal(t, []*models.Terpene{}, ts)
-				assert.ErrorIs(t, err, repo.InvalidJSONError)
+				assert.ErrorIs(t, err, repository.InvalidJSONError)
 			},
 		},
 		"invalid request - valid json / invalid expected response, empty products": {
@@ -485,8 +485,8 @@ func TestGetTerpenes(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "MEDICAL")
-			ts, getErr := cr.GetTerpenes("foo")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "foo", false)
+			ts, getErr := cr.GetTerpenes()
 			tt.assertions(t, ts, getErr)
 		})
 	}
@@ -528,7 +528,7 @@ func TestGetCannabinoids(t *testing.T) {
 			},
 			assertions: func(t *testing.T, cs []*models.Cannabinoid, err error) {
 				assert.Equal(t, []*models.Cannabinoid{}, cs)
-				assert.ErrorIs(t, err, repo.InvalidJSONError)
+				assert.ErrorIs(t, err, repository.InvalidJSONError)
 			},
 		},
 		"invalid request - valid json / invalid expected response, empty products": {
@@ -547,8 +547,8 @@ func TestGetCannabinoids(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "MEDICAL")
-			cs, getErr := cr.GetCannabinoids("foo")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "foo", false)
+			cs, getErr := cr.GetCannabinoids()
 			tt.assertions(t, cs, getErr)
 		})
 	}
@@ -587,7 +587,7 @@ func TestGetOffers(t *testing.T) {
 				fc.QueryReturns(nil, nil)
 			},
 			assertions: func(t *testing.T, os []*models.Offer, err error) {
-				assert.ErrorIs(t, err, repo.InvalidJSONError)
+				assert.ErrorIs(t, err, repository.InvalidJSONError)
 
 				assert.Equal(t, []*models.Offer{}, os)
 			},
@@ -608,8 +608,8 @@ func TestGetOffers(t *testing.T) {
 			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
-			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "MEDICAL")
-			os, getErr := cr.GetOffers("foo")
+			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "foo", false)
+			os, getErr := cr.GetOffers()
 			tt.assertions(t, os, getErr)
 		})
 	}
@@ -729,7 +729,7 @@ func offerSample() curaleaf.Offer {
 func categorySample() curaleaf.Category {
 	return curaleaf.Category{
 		DisplayName: "Flower",
-		Key:         "FLOWER",
+		Key:         "flower",
 	}
 }
 

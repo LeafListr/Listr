@@ -1,0 +1,11 @@
+package components
+
+import "github.com/Linkinlog/LeafListr/internal/api/models"
+
+templ Products(products []*models.Product) {
+	<div id="products" class={ "products-grid" }>
+		for _, product := range products {
+			@Product(product)
+		}
+	</div>
+}

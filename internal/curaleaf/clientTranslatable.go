@@ -90,7 +90,7 @@ func (cT *ClientTranslator) TranslateClientProduct(p Product) *models.Product {
 		Id:     p.ID,
 		Brand:  strings.TrimSpace(p.Brand.Name),
 		Name:   p.Name,
-		Ctg:    models.Category(p.Category.Key),
+		Ctg:    p.Category.Key,
 		SubCtg: strings.ToLower(p.Subcategory.Key),
 	}
 	for _, t := range p.LabResults.Terpenes {
@@ -115,12 +115,13 @@ func (cT *ClientTranslator) TranslateClientProduct(p Product) *models.Product {
 	return product
 }
 
-func (cT *ClientTranslator) TranslateClientCategory(category Category) models.Category {
-	return models.Category(category.Key)
+func (cT *ClientTranslator) TranslateClientCategory(category Category) string {
+	category.Key = strings.ToLower(category.Key)
+	return category.Key
 }
 
-func (cT *ClientTranslator) TranslateClientCategories(cs []Category) []models.Category {
-	categories := make([]models.Category, 0)
+func (cT *ClientTranslator) TranslateClientCategories(cs []Category) []string {
+	categories := make([]string, 0)
 	for _, c := range cs {
 		categories = append(categories, cT.TranslateClientCategory(c))
 	}

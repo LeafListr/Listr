@@ -6,9 +6,9 @@ import (
 	"github.com/Linkinlog/LeafListr/internal/translation"
 )
 
-type APITranslator struct{}
+type internalToAPI struct{}
 
-func (aT *APITranslator) TranslateAPILocation(l *models.Location) *apiModels.Location {
+func (i *internalToAPI) TranslateLocation(l *models.Location) *apiModels.Location {
 	return &apiModels.Location{
 		Id:      l.Id,
 		Name:    l.Name,
@@ -19,15 +19,15 @@ func (aT *APITranslator) TranslateAPILocation(l *models.Location) *apiModels.Loc
 	}
 }
 
-func (aT *APITranslator) TranslateAPILocations(ls []*models.Location) []*apiModels.Location {
+func (i *internalToAPI) TranslateLocations(ls []*models.Location) []*apiModels.Location {
 	apiLs := make([]*apiModels.Location, 0)
 	for _, l := range ls {
-		apiLs = append(apiLs, aT.TranslateAPILocation(l))
+		apiLs = append(apiLs, i.TranslateLocation(l))
 	}
 	return apiLs
 }
 
-func (aT *APITranslator) TranslateAPIDispensary(d *models.Dispensary) *apiModels.Dispensary {
+func (i *internalToAPI) TranslateDispensary(d *models.Dispensary) *apiModels.Dispensary {
 	apiD := &apiModels.Dispensary{Name: d.Name}
 	for _, loc := range d.Locations {
 		temp := apiModels.Location{
@@ -42,21 +42,21 @@ func (aT *APITranslator) TranslateAPIDispensary(d *models.Dispensary) *apiModels
 	return apiD
 }
 
-func (aT *APITranslator) TranslateAPIDispensaries(ds []*models.Dispensary) []*apiModels.Dispensary {
+func (i *internalToAPI) TranslateDispensaries(ds []*models.Dispensary) []*apiModels.Dispensary {
 	apiDs := make([]*apiModels.Dispensary, 0)
 	for _, d := range ds {
-		apiDs = append(apiDs, aT.TranslateAPIDispensary(d))
+		apiDs = append(apiDs, i.TranslateDispensary(d))
 	}
 	return apiDs
 }
 
-func (aT *APITranslator) TranslateAPIProduct(p *models.Product) *apiModels.Product {
+func (i *internalToAPI) TranslateProduct(p *models.Product) *apiModels.Product {
 	apiP := &apiModels.Product{
 		Id:      p.Id,
 		Brand:   p.Brand,
 		Name:    p.Name,
 		Images:  p.Images,
-		Ctg:     apiModels.Category(p.Ctg),
+		Ctg:     string(p.Ctg),
 		SubCtg:  p.SubCtg,
 		Variant: p.Weight,
 		Price: &apiModels.Price{
@@ -67,39 +67,39 @@ func (aT *APITranslator) TranslateAPIProduct(p *models.Product) *apiModels.Produ
 	}
 
 	for _, c := range p.C {
-		apiP.C = append(apiP.C, aT.TranslateAPICannabinoid(c))
+		apiP.C = append(apiP.C, i.TranslateCannabinoid(c))
 	}
 
 	for _, terp := range p.T {
-		apiP.T = append(apiP.T, aT.TranslateAPITerpene(terp))
+		apiP.T = append(apiP.T, i.TranslateTerpene(terp))
 	}
 
 	return apiP
 }
 
-func (aT *APITranslator) TranslateAPIProducts(ps []*models.Product) []*apiModels.Product {
+func (i *internalToAPI) TranslateProducts(ps []*models.Product) []*apiModels.Product {
 	apiPs := make([]*apiModels.Product, 0)
 	for _, p := range ps {
 		if p != nil {
-			apiPs = append(apiPs, aT.TranslateAPIProduct(p))
+			apiPs = append(apiPs, i.TranslateProduct(p))
 		}
 	}
 	return apiPs
 }
 
-func (aT *APITranslator) TranslateAPICategory(c models.Category) apiModels.Category {
-	return apiModels.Category(c)
+func (i *internalToAPI) TranslateCategory(c string) string {
+	return string(c)
 }
 
-func (aT *APITranslator) TranslateAPICategories(cs []models.Category) []apiModels.Category {
-	apiCs := make([]apiModels.Category, 0)
+func (i *internalToAPI) TranslateCategories(cs []string) []string {
+	apiCs := make([]string, 0)
 	for _, c := range cs {
-		apiCs = append(apiCs, aT.TranslateAPICategory(c))
+		apiCs = append(apiCs, i.TranslateCategory(c))
 	}
 	return apiCs
 }
 
-func (aT *APITranslator) TranslateAPITerpene(terp *models.Terpene) *apiModels.Terpene {
+func (i *internalToAPI) TranslateTerpene(terp *models.Terpene) *apiModels.Terpene {
 	return &apiModels.Terpene{
 		Name:        terp.Name,
 		Description: terp.Description,
@@ -107,15 +107,15 @@ func (aT *APITranslator) TranslateAPITerpene(terp *models.Terpene) *apiModels.Te
 	}
 }
 
-func (aT *APITranslator) TranslateAPITerpenes(terps []*models.Terpene) []*apiModels.Terpene {
+func (i *internalToAPI) TranslateTerpenes(terps []*models.Terpene) []*apiModels.Terpene {
 	apiTerps := make([]*apiModels.Terpene, 0)
 	for _, terp := range terps {
-		apiTerps = append(apiTerps, aT.TranslateAPITerpene(terp))
+		apiTerps = append(apiTerps, i.TranslateTerpene(terp))
 	}
 	return apiTerps
 }
 
-func (aT *APITranslator) TranslateAPICannabinoid(c *models.Cannabinoid) *apiModels.Cannabinoid {
+func (i *internalToAPI) TranslateCannabinoid(c *models.Cannabinoid) *apiModels.Cannabinoid {
 	return &apiModels.Cannabinoid{
 		Name:        c.Name,
 		Description: c.Description,
@@ -123,29 +123,29 @@ func (aT *APITranslator) TranslateAPICannabinoid(c *models.Cannabinoid) *apiMode
 	}
 }
 
-func (aT *APITranslator) TranslateAPICannabinoids(cs []*models.Cannabinoid) []*apiModels.Cannabinoid {
+func (i *internalToAPI) TranslateCannabinoids(cs []*models.Cannabinoid) []*apiModels.Cannabinoid {
 	apiCs := make([]*apiModels.Cannabinoid, 0)
 	for _, c := range cs {
-		apiCs = append(apiCs, aT.TranslateAPICannabinoid(c))
+		apiCs = append(apiCs, i.TranslateCannabinoid(c))
 	}
 	return apiCs
 }
 
-func (aT *APITranslator) TranslateAPIOffer(o *models.Offer) *apiModels.Offer {
+func (i *internalToAPI) TranslateOffer(o *models.Offer) *apiModels.Offer {
 	return &apiModels.Offer{
 		Id:          o.Id,
 		Description: o.Description,
 	}
 }
 
-func (aT *APITranslator) TranslateAPIOffers(os []*models.Offer) []*apiModels.Offer {
+func (i *internalToAPI) TranslateOffers(os []*models.Offer) []*apiModels.Offer {
 	apiOs := make([]*apiModels.Offer, 0)
 	for _, o := range os {
-		apiOs = append(apiOs, aT.TranslateAPIOffer(o))
+		apiOs = append(apiOs, i.TranslateOffer(o))
 	}
 	return apiOs
 }
 
 func NewAPITranslator() translation.APITranslatable {
-	return &APITranslator{}
+	return &internalToAPI{}
 }

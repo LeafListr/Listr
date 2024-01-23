@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"sort"
 	"time"
 
 	"github.com/Linkinlog/LeafListr/internal/cache"
@@ -20,29 +21,24 @@ const (
 )
 
 type DefaultWorkflow struct {
-	F  factory.RepositoryFactory
-	TF transformation.Filterer
-	S  transformation.Sorter
-	C  cache.Cacher
+	C cache.Cacher
 }
 
-func NewWorkflow(f factory.RepositoryFactory, tf transformation.Filterer, s transformation.Sorter, c cache.Cacher) Workflow {
+func NewWorkflow(c cache.Cacher) Workflow {
 	return &DefaultWorkflow{
-		F:  f,
-		TF: tf,
-		S:  s,
-		C:  c,
+		C: c,
 	}
 }
 
-func (w *DefaultWorkflow) Location(dispensary, menuId, menuType string) (*models.Location, error) {
-	repo, err := w.F.FindByDispensary(dispensary, menuType)
+func (w *DefaultWorkflow) Location(wp WorkflowParams) (*models.Location, error) {
+	f := factory.NewRepoFactory(wp.dispensary, wp.menuId, wp.recreational)
+	repo, err := f.FindByDispensary()
 	if err != nil {
-		return &models.Location{}, fmt.Errorf("couldn't find dispensary by menu for location. Dispensary=%s, MenuId=%s, MenuType=%s. Err: %v", dispensary, menuId, menuType, err)
+		return &models.Location{}, fmt.Errorf("couldn't find dispensary by menu for location. Dispensary=%s, MenuId=%s. Err: %v", wp.dispensary, wp.menuId, err)
 	}
-	queryKey := fmt.Sprintf("location-%s-%s-%s", dispensary, menuId, menuType)
+	queryKey := fmt.Sprintf("location-%s-%s-%t", wp.dispensary, wp.menuId, wp.recreational)
 	location, cacheErr := w.C.GetOrRetrieve(queryKey, DayTTL, func() (any, error) {
-		return repo.Location(menuId)
+		return repo.Location()
 	})
 	if cacheErr != nil {
 		return &models.Location{}, cacheErr
@@ -50,29 +46,37 @@ func (w *DefaultWorkflow) Location(dispensary, menuId, menuType string) (*models
 	return location.(*models.Location), nil
 }
 
-func (w *DefaultWorkflow) Locations(dispensary, menuType string) ([]*models.Location, error) {
-	repo, err := w.F.FindByDispensary(dispensary, menuType)
+func (w *DefaultWorkflow) Locations(wp WorkflowParams) ([]*models.Location, error) {
+	f := factory.NewRepoFactory(wp.dispensary, wp.menuId, wp.recreational)
+	repo, err := f.FindByDispensary()
 	if err != nil {
-		return []*models.Location{}, fmt.Errorf("couldn't find dispensary by menu for locations. Dispensary=%s. Err: %v", dispensary, err)
+		return []*models.Location{}, fmt.Errorf("couldn't find dispensary by menu for locations. Dispensary=%s. Err: %v", wp.dispensary, err)
 	}
-	queryKey := fmt.Sprintf("locations-%d-%d-%s-%s", 0, 0, dispensary, menuType)
+	queryKey := fmt.Sprintf("locations-%d-%d-%s-%t", 0, 0, wp.dispensary, wp.recreational)
 	locations, cacheErr := w.C.GetOrRetrieve(queryKey, DayTTL, func() (any, error) {
 		return repo.Locations(0, 0)
 	})
 	if cacheErr != nil {
 		return []*models.Location{}, cacheErr
 	}
-	return locations.([]*models.Location), nil
+	locs := locations.([]*models.Location)
+	if len(locs) != 0 {
+		sort.SliceStable(locs, func(i, j int) bool {
+			return locs[i].Name < locs[j].Name
+		})
+	}
+	return locs, nil
 }
 
-func (w *DefaultWorkflow) Product(dispensary, menuId, menuType, productId string) (*models.Product, error) {
-	repo, err := w.F.FindByDispensaryMenu(dispensary, menuId, menuType)
+func (w *DefaultWorkflow) Product(wp WorkflowParams, productId string) (*models.Product, error) {
+	f := factory.NewRepoFactory(wp.dispensary, wp.menuId, wp.recreational)
+	repo, err := f.FindByDispensaryMenu()
 	if err != nil {
-		return &models.Product{}, fmt.Errorf("couldn't find dispensary by menu for product. Dispensary=%s, Location=%s, MenuType=%s. Err: %v", dispensary, menuId, menuType, err)
+		return &models.Product{}, fmt.Errorf("couldn't find dispensary by menu for product. Dispensary=%s, Location=%s. Err: %v", wp.dispensary, wp.menuId, err)
 	}
-	queryKey := fmt.Sprintf("product-%s-%s-%s-%s", dispensary, menuId, productId, menuType)
+	queryKey := fmt.Sprintf("product-%s-%s-%s-%t", wp.dispensary, wp.menuId, productId, wp.recreational)
 	product, retErr := w.C.GetOrRetrieve(queryKey, ShortTTL, func() (any, error) {
-		return repo.GetProduct(menuId, productId)
+		return repo.GetProduct(productId)
 	})
 	if retErr != nil {
 		return &models.Product{}, retErr
@@ -81,14 +85,15 @@ func (w *DefaultWorkflow) Product(dispensary, menuId, menuType, productId string
 	return product.(*models.Product), nil
 }
 
-func (w *DefaultWorkflow) Products(dispensary, menuId, menuType string) ([]*models.Product, error) {
-	repo, err := w.F.FindByDispensaryMenu(dispensary, menuId, menuType)
+func (w *DefaultWorkflow) Products(wp WorkflowParams) ([]*models.Product, error) {
+	f := factory.NewRepoFactory(wp.dispensary, wp.menuId, wp.recreational)
+	repo, err := f.FindByDispensaryMenu()
 	if err != nil {
-		return []*models.Product{}, fmt.Errorf("couldn't find dispensary by menu for products. Dispensary=%s, Location=%s, MenuType=%s. Err: %v", dispensary, menuId, menuType, err)
+		return []*models.Product{}, fmt.Errorf("couldn't find dispensary by menu for products. Dispensary=%s, Location=%s. Err: %v", wp.dispensary, wp.menuId, err)
 	}
-	queryKey := fmt.Sprintf("products-%s-%s-%s", dispensary, menuId, menuType)
+	queryKey := fmt.Sprintf("products-%s-%s-%t", wp.dispensary, wp.menuId, wp.recreational)
 	products, retErr := w.C.GetOrRetrieve(queryKey, ShortTTL, func() (any, error) {
-		return repo.GetProducts(menuId)
+		return repo.GetProducts()
 	})
 	if retErr != nil {
 		return []*models.Product{}, retErr
@@ -97,14 +102,15 @@ func (w *DefaultWorkflow) Products(dispensary, menuId, menuType string) ([]*mode
 	return products.([]*models.Product), nil
 }
 
-func (w *DefaultWorkflow) ProductsInCategory(dispensary, menuId, menuType string, category models.Category) ([]*models.Product, error) {
-	repo, err := w.F.FindByDispensaryMenu(dispensary, menuId, menuType)
+func (w *DefaultWorkflow) ProductsInCategory(wp WorkflowParams, category string) ([]*models.Product, error) {
+	f := factory.NewRepoFactory(wp.dispensary, wp.menuId, wp.recreational)
+	repo, err := f.FindByDispensaryMenu()
 	if err != nil {
-		return []*models.Product{}, fmt.Errorf("couldn't find dispensary by menu for products for category. Dispensary=%s, Location=%s, MenuType=%s. Err: %v", dispensary, menuId, menuType, err)
+		return []*models.Product{}, fmt.Errorf("couldn't find dispensary by menu for products for category. Dispensary=%s, Location=%s. Err: %v", wp.dispensary, wp.menuId, err)
 	}
-	queryKey := fmt.Sprintf("products-%s-%s-%s-%s", dispensary, menuId, string(category), menuType)
+	queryKey := fmt.Sprintf("products-%s-%s-%s-%t", wp.dispensary, wp.menuId, string(category), wp.recreational)
 	products, retErr := w.C.GetOrRetrieve(queryKey, ShortTTL, func() (any, error) {
-		return repo.GetProductsForCategory(menuId, category)
+		return repo.GetProductsForCategory(category)
 	})
 	if retErr != nil {
 		return []*models.Product{}, retErr
@@ -113,30 +119,38 @@ func (w *DefaultWorkflow) ProductsInCategory(dispensary, menuId, menuType string
 	return products.([]*models.Product), nil
 }
 
-func (w *DefaultWorkflow) Categories(dispensary, menuId, menuType string) ([]models.Category, error) {
-	repo, err := w.F.FindByDispensaryMenu(dispensary, menuId, menuType)
+func (w *DefaultWorkflow) Categories(wp WorkflowParams) ([]string, error) {
+	f := factory.NewRepoFactory(wp.dispensary, wp.menuId, wp.recreational)
+	repo, err := f.FindByDispensaryMenu()
 	if err != nil {
-		return []models.Category{}, fmt.Errorf("couldn't find dispensary by menu for categories. Dispensary=%s, MenuId=%s, MenuType=%s. Err: %v", dispensary, menuId, menuType, err)
+		return []string{}, fmt.Errorf("couldn't find dispensary by menu for categories. Dispensary=%s, MenuId=%s. Err: %v", wp.dispensary, wp.menuId, err)
 	}
-	queryKey := fmt.Sprintf("categories-%s-%s-%s", dispensary, menuId, menuType)
+	queryKey := fmt.Sprintf("categories-%s-%s-%t", wp.dispensary, wp.menuId, wp.recreational)
 	categories, retErr := w.C.GetOrRetrieve(queryKey, DayTTL, func() (any, error) {
-		return repo.GetCategories(menuId)
+		return repo.GetCategories()
 	})
 	if retErr != nil {
-		return []models.Category{}, retErr
+		return []string{}, retErr
+	}
+	cats := categories.([]string)
+	if len(cats) != 0 {
+		sort.SliceStable(cats, func(i, j int) bool {
+			return cats[i] < cats[j]
+		})
 	}
 
-	return categories.([]models.Category), nil
+	return cats, nil
 }
 
-func (w *DefaultWorkflow) Terpenes(dispensary, menuId, menuType string) ([]*models.Terpene, error) {
-	repo, err := w.F.FindByDispensaryMenu(dispensary, menuId, menuType)
+func (w *DefaultWorkflow) Terpenes(wp WorkflowParams) ([]*models.Terpene, error) {
+	f := factory.NewRepoFactory(wp.dispensary, wp.menuId, wp.recreational)
+	repo, err := f.FindByDispensaryMenu()
 	if err != nil {
-		return []*models.Terpene{}, fmt.Errorf("couldn't find dispensary by menu for terpenes. Dispensary=%s, MenuId=%s, MenuType=%s. Err: %v", dispensary, menuId, menuType, err)
+		return []*models.Terpene{}, fmt.Errorf("couldn't find dispensary by menu for terpenes. Dispensary=%s, MenuId=%s. Err: %v", wp.dispensary, wp.menuId, err)
 	}
-	queryKey := fmt.Sprintf("terpenes-%s-%s-%s", dispensary, menuId, menuType)
+	queryKey := fmt.Sprintf("terpenes-%s-%s-%t", wp.dispensary, wp.menuId, wp.recreational)
 	terpenes, retErr := w.C.GetOrRetrieve(queryKey, DayTTL, func() (any, error) {
-		return repo.GetTerpenes(menuId)
+		return repo.GetTerpenes()
 	})
 	if retErr != nil {
 		return []*models.Terpene{}, retErr
@@ -145,14 +159,15 @@ func (w *DefaultWorkflow) Terpenes(dispensary, menuId, menuType string) ([]*mode
 	return terpenes.([]*models.Terpene), nil
 }
 
-func (w *DefaultWorkflow) Cannabinoids(dispensary, menuId, menuType string) ([]*models.Cannabinoid, error) {
-	repo, err := w.F.FindByDispensaryMenu(dispensary, menuId, menuType)
+func (w *DefaultWorkflow) Cannabinoids(wp WorkflowParams) ([]*models.Cannabinoid, error) {
+	f := factory.NewRepoFactory(wp.dispensary, wp.menuId, wp.recreational)
+	repo, err := f.FindByDispensaryMenu()
 	if err != nil {
-		return []*models.Cannabinoid{}, fmt.Errorf("couldn't find dispensary by menu for cannabinoids. Dispensary=%s, MenuId=%s, MenuType=%s. Err: %v", dispensary, menuId, menuType, err)
+		return []*models.Cannabinoid{}, fmt.Errorf("couldn't find dispensary by menu for cannabinoids. Dispensary=%s, MenuId=%s. Err: %v", wp.dispensary, wp.menuId, err)
 	}
-	queryKey := fmt.Sprintf("cannabinoids-%s-%s-%s", dispensary, menuId, menuType)
+	queryKey := fmt.Sprintf("cannabinoids-%s-%s-%t", wp.dispensary, wp.menuId, wp.recreational)
 	cannabinoids, retErr := w.C.GetOrRetrieve(queryKey, DayTTL, func() (any, error) {
-		return repo.GetCannabinoids(menuId)
+		return repo.GetCannabinoids()
 	})
 	if retErr != nil {
 		return []*models.Cannabinoid{}, retErr
@@ -161,14 +176,15 @@ func (w *DefaultWorkflow) Cannabinoids(dispensary, menuId, menuType string) ([]*
 	return cannabinoids.([]*models.Cannabinoid), nil
 }
 
-func (w *DefaultWorkflow) Offers(dispensary, menuId, menuType string) ([]*models.Offer, error) {
-	repo, err := w.F.FindByDispensaryMenu(dispensary, menuId, menuType)
+func (w *DefaultWorkflow) Offers(wp WorkflowParams) ([]*models.Offer, error) {
+	f := factory.NewRepoFactory(wp.dispensary, wp.menuId, wp.recreational)
+	repo, err := f.FindByDispensaryMenu()
 	if err != nil {
-		return []*models.Offer{}, fmt.Errorf("couldn't find dispensary by menu for offers. Dispensary=%s, MenuId=%s, MenuType=%s. Err: %v", dispensary, menuId, menuType, err)
+		return []*models.Offer{}, fmt.Errorf("couldn't find dispensary by menu for offers. Dispensary=%s, MenuId=%s. Err: %v", wp.dispensary, wp.menuId, err)
 	}
-	queryKey := fmt.Sprintf("offers-%s-%s-%s", dispensary, menuId, menuType)
+	queryKey := fmt.Sprintf("offers-%s-%s-%t", wp.dispensary, wp.menuId, wp.recreational)
 	offers, retErr := w.C.GetOrRetrieve(queryKey, HalfDayTTL, func() (any, error) {
-		return repo.GetOffers(menuId)
+		return repo.GetOffers()
 	})
 	if retErr != nil {
 		return []*models.Offer{}, retErr
@@ -177,52 +193,77 @@ func (w *DefaultWorkflow) Offers(dispensary, menuId, menuType string) ([]*models
 	return offers.([]*models.Offer), nil
 }
 
-func (w *DefaultWorkflow) ProductsForSubCategory(_, _, _ string, products []*models.Product, subCategory string) ([]*models.Product, error) {
-	return w.TF.SubCategory(subCategory, products), nil
+func (w *DefaultWorkflow) Filter(wp WorkflowParams, fp *transformation.FilterParams, products []*models.Product) ([]*models.Product, error) {
+	f := transformation.NewFilterer(fp)
+
+	return f.Filter(products), nil
 }
 
-func (w *DefaultWorkflow) ProductsExcludingBrands(_, _, _ string, products []*models.Product, brands []string) ([]*models.Product, error) {
-	return w.TF.NotBrands(brands, products), nil
+func (w *DefaultWorkflow) Sort(wp WorkflowParams, sp *transformation.SortParams, products []*models.Product) error {
+	s := transformation.NewSorterer(sp)
+	s.Sort(products)
+
+	return nil
 }
 
-func (w *DefaultWorkflow) ProductsForBrands(_, _, _ string, products []*models.Product, brands []string) ([]*models.Product, error) {
-	return w.TF.Brands(brands, products), nil
+func (w *DefaultWorkflow) ProductsForSubCategory(wp WorkflowParams, products []*models.Product, subCategory string) ([]*models.Product, error) {
+	tf := transformation.NewFilterer(nil)
+	return tf.SubCategory(subCategory, products), nil
 }
 
-func (w *DefaultWorkflow) ProductsForVariants(_, _, _ string, products []*models.Product, variants []string) ([]*models.Product, error) {
-	return w.TF.Variants(variants, products), nil
+func (w *DefaultWorkflow) ProductsExcludingBrands(wp WorkflowParams, products []*models.Product, brands []string) ([]*models.Product, error) {
+	tf := transformation.NewFilterer(nil)
+	return tf.NotBrands(brands, products), nil
 }
 
-func (w *DefaultWorkflow) ProductsForPriceRange(_, _, _ string, products []*models.Product, min, max float64) ([]*models.Product, error) {
-	return w.TF.Price(min, max, products), nil
+func (w *DefaultWorkflow) ProductsForBrands(wp WorkflowParams, products []*models.Product, brands []string) ([]*models.Product, error) {
+	tf := transformation.NewFilterer(nil)
+	return tf.Brands(brands, products), nil
 }
 
-func (w *DefaultWorkflow) ProductsIncludingTerms(_, _, _ string, products []*models.Product, includes []string) ([]*models.Product, error) {
-	return w.TF.IncludingTerms(includes, products), nil
+func (w *DefaultWorkflow) ProductsForVariants(wp WorkflowParams, products []*models.Product, variants []string) ([]*models.Product, error) {
+	tf := transformation.NewFilterer(nil)
+	return tf.Variants(variants, products), nil
 }
 
-func (w *DefaultWorkflow) ProductsExcludingTerms(_, _, _ string, products []*models.Product, excludes []string) ([]*models.Product, error) {
-	return w.TF.ExcludingTerms(excludes, products), nil
+func (w *DefaultWorkflow) ProductsForPriceRange(wp WorkflowParams, products []*models.Product, min, max float64) ([]*models.Product, error) {
+	tf := transformation.NewFilterer(nil)
+	return tf.Price(min, max, products), nil
 }
 
-func (w *DefaultWorkflow) SortProductsByPriceAsc(_, _, _ string, products []*models.Product) {
-	w.S.PriceAsc(products)
+func (w *DefaultWorkflow) ProductsIncludingTerms(wp WorkflowParams, products []*models.Product, includes []string) ([]*models.Product, error) {
+	tf := transformation.NewFilterer(nil)
+	return tf.IncludingTerms(includes, products), nil
 }
 
-func (w *DefaultWorkflow) SortProductsByPriceDesc(_, _, _ string, products []*models.Product) {
-	w.S.PriceDesc(products)
+func (w *DefaultWorkflow) ProductsExcludingTerms(wp WorkflowParams, products []*models.Product, excludes []string) ([]*models.Product, error) {
+	tf := transformation.NewFilterer(nil)
+	return tf.ExcludingTerms(excludes, products), nil
 }
 
-func (w *DefaultWorkflow) SortProductsByTHCAsc(_, _, _ string, products []*models.Product) {
-	w.S.THCAsc(products)
+func (w *DefaultWorkflow) SortProductsByPriceAsc(wp WorkflowParams, products []*models.Product) {
+	s := transformation.NewSorterer(nil)
+	s.PriceAsc(products)
 }
 
-func (w *DefaultWorkflow) SortProductsByTHCDesc(_, _, _ string, products []*models.Product) {
-	w.S.THCDesc(products)
+func (w *DefaultWorkflow) SortProductsByPriceDesc(wp WorkflowParams, products []*models.Product) {
+	s := transformation.NewSorterer(nil)
+	s.PriceDesc(products)
 }
 
-func (w *DefaultWorkflow) SortProductsByTop3Terps(_, _, _ string, products []*models.Product, terps [3]string) {
-	w.S.Top3Terps(products, terps)
+func (w *DefaultWorkflow) SortProductsByTHCAsc(wp WorkflowParams, products []*models.Product) {
+	s := transformation.NewSorterer(nil)
+	s.THCAsc(products)
+}
+
+func (w *DefaultWorkflow) SortProductsByTHCDesc(wp WorkflowParams, products []*models.Product) {
+	s := transformation.NewSorterer(nil)
+	s.THCDesc(products)
+}
+
+func (w *DefaultWorkflow) SortProductsByTop3Terps(wp WorkflowParams, products []*models.Product, terps [3]string) {
+	s := transformation.NewSorterer(nil)
+	s.Top3Terps(products, terps)
 }
 
 func (w *DefaultWorkflow) LogError(err error, context context.Context) {

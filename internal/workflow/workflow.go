@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/Linkinlog/LeafListr/internal/models"
+	"github.com/Linkinlog/LeafListr/internal/transformation"
 )
 
 //go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate
@@ -21,49 +22,65 @@ type Workflow interface {
 	ProductSorter
 }
 
+type WorkflowParams struct {
+	dispensary   string
+	menuId       string
+	recreational bool
+}
+
+func NewWorkflowParams(dispensary, menuId string, recreational bool) WorkflowParams {
+	return WorkflowParams{
+		dispensary:   dispensary,
+		menuId:       menuId,
+		recreational: recreational,
+	}
+}
+
 type LocationManager interface {
-	Location(dispensary, menuId, menuType string) (*models.Location, error)
-	Locations(dispensary, menuType string) ([]*models.Location, error)
+	Location(w WorkflowParams) (*models.Location, error)
+	Locations(w WorkflowParams) ([]*models.Location, error)
 }
 
 type ProductManager interface {
-	Product(dispensary, menuId, menuType, productId string) (*models.Product, error)
-	Products(dispensary, menuId, menuType string) ([]*models.Product, error)
-	ProductsInCategory(dispensary, menuId, menuType string, category models.Category) ([]*models.Product, error)
+	Product(w WorkflowParams, productId string) (*models.Product, error)
+	Products(w WorkflowParams) ([]*models.Product, error)
+	ProductsInCategory(w WorkflowParams, category string) ([]*models.Product, error)
 }
 
 type ProductFilter interface {
-	ProductsForSubCategory(dispensary, menuId, menuType string, products []*models.Product, subCategory string) ([]*models.Product, error)
-	ProductsForBrands(dispensary, menuId, menuType string, products []*models.Product, brands []string) ([]*models.Product, error)
-	ProductsExcludingBrands(dispensary, menuId, menuType string, products []*models.Product, brands []string) ([]*models.Product, error)
-	ProductsForVariants(dispensary, menuId, menuType string, products []*models.Product, variants []string) ([]*models.Product, error)
-	ProductsIncludingTerms(dispensary, menuId, menuType string, products []*models.Product, includes []string) ([]*models.Product, error)
-	ProductsExcludingTerms(dispensary, menuId, menuType string, products []*models.Product, excludes []string) ([]*models.Product, error)
-	ProductsForPriceRange(dispensary, menuId, menuType string, products []*models.Product, min, max float64) ([]*models.Product, error)
+	Filter(WorkflowParams, *transformation.FilterParams, []*models.Product) ([]*models.Product, error)
+	ProductsForSubCategory(w WorkflowParams, products []*models.Product, subCategory string) ([]*models.Product, error)
+	ProductsForBrands(w WorkflowParams, products []*models.Product, brands []string) ([]*models.Product, error)
+	ProductsExcludingBrands(w WorkflowParams, products []*models.Product, brands []string) ([]*models.Product, error)
+	ProductsForVariants(w WorkflowParams, products []*models.Product, variants []string) ([]*models.Product, error)
+	ProductsIncludingTerms(w WorkflowParams, products []*models.Product, includes []string) ([]*models.Product, error)
+	ProductsExcludingTerms(w WorkflowParams, products []*models.Product, excludes []string) ([]*models.Product, error)
+	ProductsForPriceRange(w WorkflowParams, products []*models.Product, min, max float64) ([]*models.Product, error)
 }
 
 type ProductSorter interface {
-	SortProductsByPriceAsc(dispensary, menuId, menuType string, products []*models.Product)
-	SortProductsByPriceDesc(dispensary, menuId, menuType string, products []*models.Product)
-	SortProductsByTHCAsc(dispensary, menuId, menuType string, products []*models.Product)
-	SortProductsByTHCDesc(dispensary, menuId, menuType string, products []*models.Product)
-	SortProductsByTop3Terps(dispensary, menuId, menuType string, products []*models.Product, terps [3]string)
+	Sort(WorkflowParams, *transformation.SortParams, []*models.Product) error
+	SortProductsByPriceAsc(w WorkflowParams, products []*models.Product)
+	SortProductsByPriceDesc(w WorkflowParams, products []*models.Product)
+	SortProductsByTHCAsc(w WorkflowParams, products []*models.Product)
+	SortProductsByTHCDesc(w WorkflowParams, products []*models.Product)
+	SortProductsByTop3Terps(w WorkflowParams, products []*models.Product, terps [3]string)
 }
 
 type CategoryManager interface {
-	Categories(dispensary, menuId, menuType string) ([]models.Category, error)
+	Categories(w WorkflowParams) ([]string, error)
 }
 
 type TerpeneManager interface {
-	Terpenes(dispensary, menuId, menuType string) ([]*models.Terpene, error)
+	Terpenes(w WorkflowParams) ([]*models.Terpene, error)
 }
 
 type CannabinoidManager interface {
-	Cannabinoids(dispensary, menuId, menuType string) ([]*models.Cannabinoid, error)
+	Cannabinoids(w WorkflowParams) ([]*models.Cannabinoid, error)
 }
 
 type OfferManager interface {
-	Offers(dispensary, menuId, menuType string) ([]*models.Offer, error)
+	Offers(w WorkflowParams) ([]*models.Offer, error)
 }
 
 type ErrorManager interface {

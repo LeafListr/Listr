@@ -1,0 +1,18 @@
+package components
+
+templ RecreationalToggle() {
+	<div class="toggle-switch">
+		<input
+			hx-get="/views/nav"
+			hx-target="#nav"
+			type="checkbox"
+			id="med-rec-toggle"
+			name="recreational"
+		/>
+		<label for="med-rec-toggle" class={ "switch-label" }>
+			<span class="toggle-text">Recreational</span>
+			<span class="switch-handle"></span>
+			<span class="toggle-text">Medical</span>
+		</label>
+	</div>
+}

@@ -1,0 +1,15 @@
+package components
+
+import (
+	"github.com/Linkinlog/LeafListr/internal/api/models"
+)
+
+templ Offers(offers []*models.Offer) {
+	@Accordion("offers", offerForm(offers))
+}
+
+templ offerForm(offers []*models.Offer) {
+	for _, offer := range offers {
+		<p>{ offer.Description }</p>
+	}
+}

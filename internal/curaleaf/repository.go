@@ -21,24 +21,25 @@ type Repository struct {
 	C        client.Client
 	T        *ClientTranslator
 	menuType string
+	menuId   string
 }
 
-func NewRepository(c client.Client, translator *ClientTranslator, menuType string) repository.Repository {
-	if strings.EqualFold(menuType, "recreational") || strings.EqualFold(menuType, "medical") {
-		menuType = strings.ToUpper(menuType)
-	} else {
-		menuType = "MEDICAL"
+func NewRepository(c client.Client, translator *ClientTranslator, menuId string, recreational bool) repository.Repository {
+	menuType := "MEDICAL"
+	if recreational {
+		menuType = "RECREATIONAL"
 	}
 	return &Repository{
 		C:        c,
 		T:        translator,
 		menuType: menuType,
+		menuId:   menuId,
 	}
 }
 
-func (r *Repository) Location(menuId string) (*models.Location, error) {
+func (r *Repository) Location() (*models.Location, error) {
 	query := AllLocationsQuery(0, 0)
-	return r.getLocation(query, menuId)
+	return r.getLocation(query, r.menuId)
 }
 
 func (r *Repository) Locations(longitude, latitude float64) ([]*models.Location, error) {
@@ -46,38 +47,38 @@ func (r *Repository) Locations(longitude, latitude float64) ([]*models.Location,
 	return r.getLocations(query)
 }
 
-func (r *Repository) GetProduct(menuId, productId string) (*models.Product, error) {
-	query := ProductQuery(menuId, productId, r.menuType)
+func (r *Repository) GetProduct(productId string) (*models.Product, error) {
+	query := ProductQuery(r.menuId, productId, r.menuType)
 	return r.getProduct(query)
 }
 
-func (r *Repository) GetProducts(menuId string) ([]*models.Product, error) {
-	query := AllProductQuery(menuId, r.menuType)
+func (r *Repository) GetProducts() ([]*models.Product, error) {
+	query := AllProductQuery(r.menuId, r.menuType)
 	return r.getProducts(query)
 }
 
-func (r *Repository) GetProductsForCategory(menuId string, category models.Category) ([]*models.Product, error) {
-	query := AllProductForCategoryQuery(menuId, r.menuType, string(category))
+func (r *Repository) GetProductsForCategory(category string) ([]*models.Product, error) {
+	query := AllProductForCategoryQuery(r.menuId, r.menuType, string(category))
 	return r.getProductsForCategory(query)
 }
 
-func (r *Repository) GetCategories(menuId string) ([]models.Category, error) {
-	query := AllCategoriesQuery(menuId, r.menuType)
+func (r *Repository) GetCategories() ([]string, error) {
+	query := AllCategoriesQuery(r.menuId, r.menuType)
 	return r.getCategories(query)
 }
 
-func (r *Repository) GetTerpenes(menuId string) ([]*models.Terpene, error) {
-	query := AllProductQuery(menuId, r.menuType)
+func (r *Repository) GetTerpenes() ([]*models.Terpene, error) {
+	query := AllProductQuery(r.menuId, r.menuType)
 	return r.getTerpenes(query)
 }
 
-func (r *Repository) GetCannabinoids(menuId string) ([]*models.Cannabinoid, error) {
-	query := AllProductQuery(menuId, r.menuType)
+func (r *Repository) GetCannabinoids() ([]*models.Cannabinoid, error) {
+	query := AllProductQuery(r.menuId, r.menuType)
 	return r.getCannabinoids(query)
 }
 
-func (r *Repository) GetOffers(menuId string) ([]*models.Offer, error) {
-	query := AllOffersQuery(menuId, r.menuType)
+func (r *Repository) GetOffers() ([]*models.Offer, error) {
+	query := AllOffersQuery(r.menuId, r.menuType)
 	return r.getOffers(query)
 }
 
@@ -141,10 +142,10 @@ func (r *Repository) getProductsForCategory(query string) ([]*models.Product, er
 	return r.T.TranslateClientProducts(allProdForCatResp.Data.DispensaryMenu.Products), nil
 }
 
-func (r *Repository) getCategories(query string) ([]models.Category, error) {
+func (r *Repository) getCategories(query string) ([]string, error) {
 	allCatsResp, err := r.getResponse(query)
 	if err != nil {
-		return []models.Category{}, err
+		return []string{}, err
 	}
 	return r.T.TranslateClientCategories(allCatsResp.Data.DispensaryMenu.AllFilters.Categories), nil
 }

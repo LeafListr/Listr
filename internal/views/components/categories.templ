@@ -1,0 +1,27 @@
+package components
+
+templ Categories(categories []string) {
+	<div id="categories">
+		for _, category := range categories {
+			<label for={ category }>
+				<input
+					hx-get="/views/products"
+					type="radio"
+					name="category"
+					id={ category }
+					value={ category }
+				/>
+				{ category }
+			</label>
+		}
+	</div>
+}
+
+script setActive(category string) {
+	const buttons = document.querySelectorAll('#categories button');
+    buttons.forEach((button) => {
+        button.dataset.active = 'false';
+    });
+    const activeButton = document.getElementById(category);
+    activeButton.dataset.active = 'true';
+}

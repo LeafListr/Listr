@@ -1,0 +1,415 @@
+package components
+
+import "github.com/Linkinlog/LeafListr/internal/api/models"
+
+templ Index(title string, dispensaries []string) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<link rel="icon" type="image/svg+xml" href="/assets/logo.png"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<meta name="theme-color" media="(prefers-color-scheme: dark)" content="black"/>
+			<script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+			<title>{ title }</title>
+		</head>
+		<body>
+			<main hx-include="[name='category'], [name='dispensary'], [name='location'], [name='recreational']" hx-params="*" id="app">
+				<h2 id="now-viewing">Please select a dispensary</h2>
+				<div class="toggle-switch">
+					<input
+						hx-get="/views/nav"
+						hx-target="#nav"
+						type="checkbox"
+						id="med-rec-toggle"
+						name="recreational"
+					/>
+					<label for="med-rec-toggle" class={ "switch-label" }>
+						<span class="toggle-text">Recreational</span>
+						<span class="switch-handle"></span>
+						<span class="toggle-text">Medical</span>
+					</label>
+				</div>
+				<nav id="nav">
+					@Dispensaries(dispensaries)
+					<br/>
+					@Locations("", []*models.Location{})
+				</nav>
+				<h3 id="loading-categories" class="htmx-indicator">Loading Categories...<img src="/assets/blocks-wave.svg"/></h3>
+				<section
+					id="offers-and-search"
+					hx-target="#products"
+					hx-indicator="#loading-products"
+					hx-swap="outerHTML"
+				></section>
+				<h3 id="loading-products" class="htmx-indicator">Loading Products...<img src="/assets/blocks-wave.svg"/></h3>
+				<div id="products" class={ "products-grid" }></div>
+			</main>
+		</body>
+	</html>
+	<style>
+        :root {
+          font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+          line-height: 1.5;
+          font-weight: 400;
+
+          color-scheme: dark;
+          color: rgba(255, 255, 255, 0.87);
+          background-color: #242424;
+
+          font-synthesis: none;
+          text-rendering: optimizeLegibility;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+        a {
+          font-weight: 500;
+          color: #646cff;
+          text-decoration: inherit;
+        }
+
+        a:hover {
+          color: #535bf2;
+        }
+
+        body {
+          margin: 0;
+          display: flex;
+          place-items: center;
+          min-width: 320px;
+          min-height: 100vh;
+        }
+
+        h1 {
+          font-size: 3.2em;
+          line-height: 1.1;
+        }
+
+        .card {
+          padding: 2em;
+        }
+
+        #app {
+          max-width: 1280px;
+          margin: 0 auto;
+          text-align: center;
+        }
+
+        #categories label {
+          display: inline-block;
+          border-radius: 8px;
+          border: 1px solid transparent;
+          padding: 0.6em 1.2em;
+          font-size: 1em;
+          font-weight: 500;
+          font-family: inherit;
+          background-color: #1a1a1a;
+          cursor: pointer;
+          transition: border-color 0.25s;
+        }
+
+        #categories label:hover {
+          border-color: #646cff;
+        }
+        #categories label:focus,
+        #categories label:focus-visible {
+          outline: 4px auto -webkit-focus-ring-color;
+        }
+
+        button {
+          grid-area: submit;
+          border-radius: 8px;
+          border: 1px solid transparent;
+          padding: 0.6em 1.2em;
+          font-size: 1em;
+          font-weight: 500;
+          font-family: inherit;
+          background-color: #1a1a1a;
+          cursor: pointer;
+          transition: border-color 0.25s;
+        }
+        button:hover {
+          border-color: #646cff;
+        }
+        button:focus,
+        button:focus-visible {
+          outline: 4px auto -webkit-focus-ring-color;
+        }
+
+        nav select {
+          min-width: 275px;
+        }
+        .products-grid {
+          display: grid;
+          gap: 16px;
+          grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
+        }
+
+        @media (min-width: 992px) {
+          .products-grid {
+            grid-template-columns: repeat(4, minmax(275px, 1fr));
+          }
+        }
+
+        @media (min-width: 768px) {
+          .products-grid {
+            grid-template-columns: repeat(3, minmax(275px, 1fr));
+          }
+        }
+
+        @media (max-width: 600px) {
+          .products-grid {
+            grid-template-columns: repeat(2, minmax(275px, 1fr));
+          }
+        }
+
+        @media (max-width: 480px) {
+          .products-grid {
+            grid-template-columns: repeat(1, minmax(275px, 1fr));
+          }
+        }
+        .product-card {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          grid-template-rows: auto auto auto;
+          grid-auto-rows: minmax(min-content, max-content);
+          grid-template-areas:
+            "headline headline"
+            "subcategory variant"
+            "cannabinoids cannabinoids"
+            "terpenes terpenes";
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+          background-color: #2c2030;
+          padding: 20px;
+          text-align: center;
+          align-items: center;
+        }
+
+        .product-card img {
+          grid-area: image;
+          width: 64px;
+          height: 64px;
+          border-radius: 4px;
+        }
+
+        .product-card .product-headline {
+          grid-area: headline;
+          grid-template-areas: "image name";
+          display: grid;
+        }
+
+        .product-card .product-name {
+          grid-area: name;
+          margin: 0 0 0 10px;
+        }
+
+        .product-card .product-cannabinoids {
+          grid-area: cannabinoids;
+          display: grid;
+          grid-gap: 10px;
+          margin: 6px 4px 0 0;
+          font-size: 10px;
+        }
+
+        .product-card .product-terpenes {
+          grid-area: terpenes;
+          display: grid;
+          grid-gap: 10px;
+          grid-template-columns: repeat(2, 1fr);
+          margin: 6px 4px 0 0;
+          font-size: 10px;
+        }
+
+        .product-card .product-variants {
+          grid-area: variant;
+          padding: 12px 0;
+        }
+
+        label {
+          font-size: 12px;
+          font-weight: bold;
+        }
+
+        .discounted-price {
+          color: green;
+        }
+
+        .discounted {
+          color: red;
+          text-decoration: line-through;
+          font-size: 0.75rem;
+          line-height: 1rem;
+        }
+        #categories {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 10px;
+          margin: 10px;
+        }
+        @media (min-width: 768px) {
+          #categories {
+            grid-template-columns: repeat(4, 1fr);
+          }
+        }
+        #categories button {
+          padding: 10px;
+          margin: 0 2px;
+          border: 1px solid #858585;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+        #categories input[type="radio"] {
+          position: fixed;
+          opacity: 0;
+          pointer-events: none;
+        }
+
+        .accordion {
+          margin: 1rem 0;
+        }
+
+        .header {
+          display: flex;
+          width: 100%;
+        }
+
+        .header .nav {
+          flex: 1;
+          margin-bottom: 7px;
+        }
+
+        .details {
+          box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+          background-color: #1d1d20;
+          border-radius: 60px;
+          padding: 1rem;
+          opacity: 0;
+          visibility: hidden;
+          transition:
+            opacity 0.5s,
+            visibility 0s 0.5s,
+            max-height 0.5s ease;
+          max-height: 0;
+          overflow: hidden;
+        }
+
+        .details.open {
+          opacity: 1;
+          visibility: visible;
+          max-height: 100%;
+          transition:
+            opacity 0.5s,
+            visibility 0s,
+            max-height 0.5s ease;
+        }
+
+        #filter-form {
+          display: grid;
+          grid-template-areas:
+            "variants subcategory"
+            "minPrice maxPrice"
+            "excluded-brands included-brands"
+            "excluded-terms included-terms"
+            "submit submit";
+          gap: 10px;
+          margin: 7px;
+          padding-bottom: 7px;
+        }
+        #filter-form input {
+          width: 90%;
+        }
+        #variants {
+          grid-area: variants;
+        }
+        #subcategory {
+          grid-area: subcategory;
+        }
+        #minPrice {
+          grid-area: minPrice;
+        }
+        #maxPrice {
+          grid-area: maxPrice;
+        }
+        .toggle-switch {
+          display: inline-block;
+          position: relative;
+        }
+
+        #med-rec-toggle {
+          display: none;
+        }
+
+        .switch-label {
+          display: block;
+          cursor: pointer;
+          background-color: #ddd;
+          border-radius: 20px;
+          overflow: hidden;
+          text-align: center;
+        }
+
+        .switch-handle {
+          display: block;
+          background-color: #242424;
+          position: absolute;
+          border-radius: 20px;
+          top: 2px;
+          left: 2px;
+          right: 50%;
+          bottom: 2px;
+          transition: all 0.3s ease;
+        }
+
+        #med-rec-toggle:checked + .switch-label .switch-handle {
+          right: 2px;
+          left: 50%;
+        }
+
+        .toggle-text {
+          line-height: 30px;
+          padding: 0 20px;
+          display: inline-block;
+          width: 100px;
+          color: #000;
+          font-weight: bold;
+        }
+
+        .switch-label {
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        #sorter-form {
+          display: grid;
+          grid-template-areas:
+            "sort-method terps"
+            "thc-sort-method terps"
+            "submit submit";
+          gap: 10px;
+          margin: 7px;
+          padding-bottom: 7px;
+        }
+        #sorter-form select {
+          width: 100%;
+        }
+
+        #sort-method {
+          grid-area: sort-method;
+        }
+
+        #terps {
+          grid-area: terps;
+        }
+        .htmx-indicator {
+          display: none;
+        }
+        .htmx-request .htmx-indicator {
+          display: block;
+        }
+        .htmx-request.htmx-indicator {
+          display: block;
+        }
+    </style>
+}

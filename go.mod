@@ -3,6 +3,7 @@ module github.com/Linkinlog/LeafListr
 go 1.21.0
 
 require (
+	github.com/a-h/templ v0.2.543
 	github.com/go-chi/chi/v5 v5.0.10
 	github.com/honeycombio/honeycomb-opentelemetry-go v0.9.0
 	github.com/honeycombio/otel-config-go v1.13.0

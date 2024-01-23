@@ -4,7 +4,7 @@
         "description": "This is the Listr server for dispensary management.",
         "title": "Listr API",
         "contact": {},
-        "version": "0.1.2"
+        "version": "0.2.0"
     },
     "basePath": "/api/v1",
     "paths": {
@@ -23,11 +23,11 @@
                 "summary": "List supported dispensaries",
                 "responses": {
                     "200": {
-                        "description": "List of supported dispensaries",
+                        "description": "List of supported dispensaries\" Enums(Curaleaf, Beyond-Hello)",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/api.supportedDispensary"
+                                "type": "string"
                             }
                         }
                     }
@@ -546,17 +546,6 @@
         }
     },
     "definitions": {
-        "api.supportedDispensary": {
-            "type": "string",
-            "enum": [
-                "Curaleaf",
-                "Beyond-Hello"
-            ],
-            "x-enum-varnames": [
-                "Curaleaf",
-                "Beyond"
-            ]
-        },
         "api.supportedDispensaryOptions": {
             "type": "string",
             "enum": [

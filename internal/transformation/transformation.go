@@ -1,8 +1,11 @@
 package transformation
 
-import "github.com/Linkinlog/LeafListr/internal/models"
+import (
+	"github.com/Linkinlog/LeafListr/internal/models"
+)
 
 type Filterer interface {
+	Filter(products []*models.Product) []*models.Product
 	SubCategory(subCategoryName string, products []*models.Product) []*models.Product
 	Price(min, max float64, products []*models.Product) []*models.Product
 	Brands(brandNames []string, products []*models.Product) []*models.Product
@@ -13,6 +16,7 @@ type Filterer interface {
 }
 
 type Sorter interface {
+	Sort(products []*models.Product)
 	PriceAsc(products []*models.Product)
 	PriceDesc(products []*models.Product)
 	THCAsc(products []*models.Product)

@@ -1,0 +1,14 @@
+package components
+
+import "github.com/Linkinlog/LeafListr/internal/api/models"
+
+templ NavigationForm(dispensaries []string) {
+	<nav id="nav">
+		@Dispensaries(dispensaries)
+		<br/>
+		@Locations("", []*models.Location{})
+		<br/>
+	</nav>
+	<div id="products" hx-swap-oob="true"></div>
+	<section id="offers-and-search" hx-swap-oob="true"></section>
+}

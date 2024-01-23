@@ -1,0 +1,82 @@
+package components
+
+templ Filters() {
+	@filterForm()
+}
+
+templ filterForm() {
+	<main id="filter-form">
+		<section id="variants">
+			<label for="variants-input">Variants</label>
+			<input
+				type="text"
+				id="variants-input"
+				name="variants"
+				placeholder="1oz,1g"
+			/>
+		</section>
+		<section id="subcategory">
+			<label for="subcategory-input">Subcategory</label>
+			<input
+				type="text"
+				id="subcategory-input"
+				name="sub"
+				placeholder="cartridges"
+			/>
+		</section>
+		<section id="minPrice">
+			<label for="minPrice-input">Min Price</label>
+			<input
+				type="text"
+				id="minPrice-input"
+				name="min_price"
+				placeholder="0"
+			/>
+		</section>
+		<section id="maxPrice">
+			<label for="maxPrice-input">Max Price</label>
+			<input
+				type="text"
+				id="maxPrice-input"
+				name="max_price"
+				placeholder="100"
+			/>
+		</section>
+		<section id="excluded-brands">
+			<label for="excluded-brands-input">Excl. Brands</label>
+			<input
+				type="text"
+				id="excluded-brands-input"
+				name="not_brands"
+				placeholder="brand1,brand2"
+			/>
+		</section>
+		<section id="included-brands">
+			<label for="included-brands-input">Incl. Brands</label>
+			<input
+				type="text"
+				id="included-brands-input"
+				name="brands"
+				placeholder="brand1,brand2"
+			/>
+		</section>
+		<section id="excluded-terms">
+			<label for="excluded-terms-input">Excl. Terms</label>
+			<input
+				type="text"
+				id="excluded-terms-input"
+				name="exclude"
+				placeholder="term1,term2"
+			/>
+		</section>
+		<section id="included-terms">
+			<label for="included-terms-input">Incl. Terms</label>
+			<input
+				type="text"
+				id="included-terms-input"
+				name="include"
+				placeholder="term1,term2"
+			/>
+		</section>
+	</main>
+}

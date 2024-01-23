@@ -7,10 +7,40 @@ import (
 	"github.com/Linkinlog/LeafListr/internal/models"
 )
 
-type sorter struct{}
+type SortParams struct {
+	Top3Terps [3]string
+	PriceAsc  bool
+	PriceDesc bool
+	THCAsc    bool
+	THCDesc   bool
+}
 
-func NewSorterer() Sorter {
-	return &sorter{}
+type sorter struct {
+	Sp *SortParams
+}
+
+func NewSorterer(sp *SortParams) Sorter {
+	return &sorter{
+		Sp: sp,
+	}
+}
+
+func (s *sorter) Sort(products []*models.Product) {
+	if s.Sp.Top3Terps != [3]string{} {
+		s.Top3Terps(products, s.Sp.Top3Terps)
+	}
+	if s.Sp.PriceAsc {
+		s.PriceAsc(products)
+	}
+	if s.Sp.PriceDesc {
+		s.PriceDesc(products)
+	}
+	if s.Sp.THCAsc {
+		s.THCAsc(products)
+	}
+	if s.Sp.THCDesc {
+		s.THCDesc(products)
+	}
 }
 
 func (s *sorter) PriceAsc(products []*models.Product) {

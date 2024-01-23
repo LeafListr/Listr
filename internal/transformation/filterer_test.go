@@ -81,7 +81,7 @@ func TestSubCategory(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			filterer := transformation.NewFilterer()
+			filterer := transformation.NewFilterer(nil)
 			filteredProducts := filterer.SubCategory(test.subCategoryName, test.products)
 			if len(filteredProducts) != len(test.expectedProducts) {
 				t.Errorf("expected %d products, got %d", len(test.expectedProducts), len(filteredProducts))
@@ -251,7 +251,7 @@ func TestPrice(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			filterer := transformation.NewFilterer()
+			filterer := transformation.NewFilterer(nil)
 			filteredProducts := filterer.Price(test.min, test.max, test.products)
 			if len(filteredProducts) != len(test.expectedProducts) {
 				t.Fatalf("expected %d products, got %d", len(test.expectedProducts), len(filteredProducts))
@@ -341,7 +341,7 @@ func TestBrand(t *testing.T) {
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			filterer := transformation.NewFilterer()
+			filterer := transformation.NewFilterer(nil)
 			filteredProducts := filterer.Brands([]string{test.brandName}, test.products)
 			if len(filteredProducts) != len(test.expectedProducts) {
 				t.Errorf("expected %d products, got %d", len(test.expectedProducts), len(filteredProducts))

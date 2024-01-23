@@ -22,21 +22,29 @@ var Headers = map[string][]string{
 	"Content-Type":             {"application/json"},
 }
 
-func NewRepository(menuType string) repository.Repository {
-	return &Repository{menuType: menuType}
+func NewRepository(menuId string, recreational bool) repository.Repository {
+	menuType := "MEDICAL"
+	if recreational {
+		menuType = "RECREATIONAL"
+	}
+	return &Repository{
+		menuType: menuType,
+		menuId:   menuId,
+	}
 }
 
 type Repository struct {
 	menuType string
+	menuId   string
 }
 
-func (r *Repository) Location(menuId string) (*models.Location, error) {
+func (r *Repository) Location() (*models.Location, error) {
 	locs, err := r.Locations(0, 0)
 	if err != nil {
 		return nil, err
 	}
 	for _, l := range locs {
-		if l.Id == menuId {
+		if l.Id == r.menuId {
 			return l, nil
 		}
 	}
@@ -67,8 +75,8 @@ func (r *Repository) Locations(longitude, latitude float64) ([]*models.Location,
 	return locs, nil
 }
 
-func (r *Repository) GetProduct(menuId, productId string) (*models.Product, error) {
-	mId, err := strconv.Atoi(menuId)
+func (r *Repository) GetProduct(productId string) (*models.Product, error) {
+	mId, err := strconv.Atoi(r.menuId)
 	if err != nil {
 		return nil, err
 	}
@@ -93,8 +101,8 @@ func (r *Repository) GetProduct(menuId, productId string) (*models.Product, erro
 	return nil, errors.New("no product found")
 }
 
-func (r *Repository) GetProducts(menuId string) ([]*models.Product, error) {
-	mId, err := strconv.Atoi(menuId)
+func (r *Repository) GetProducts() ([]*models.Product, error) {
+	mId, err := strconv.Atoi(r.menuId)
 	if err != nil {
 		return nil, err
 	}
@@ -102,9 +110,9 @@ func (r *Repository) GetProducts(menuId string) ([]*models.Product, error) {
 	return r.getProducts(query)
 }
 
-func (r *Repository) GetProductsForCategory(menuId string, category models.Category) ([]*models.Product, error) {
+func (r *Repository) GetProductsForCategory(category string) ([]*models.Product, error) {
 	categoryValid := false
-	validCategories, catErr := r.GetCategories(menuId)
+	validCategories, catErr := r.GetCategories()
 	if catErr != nil {
 		return nil, catErr
 	}
@@ -118,7 +126,7 @@ func (r *Repository) GetProductsForCategory(menuId string, category models.Categ
 		return nil, repository.InvalidCategoryError
 	}
 
-	mId, err := strconv.Atoi(menuId)
+	mId, err := strconv.Atoi(r.menuId)
 	if err != nil {
 		return nil, err
 	}
@@ -126,27 +134,27 @@ func (r *Repository) GetProductsForCategory(menuId string, category models.Categ
 	return r.getProducts(query)
 }
 
-func (r *Repository) GetCategories(menuId string) ([]models.Category, error) {
-	return []models.Category{
-		models.Category("flower"),
-		models.Category("vape"),
-		models.Category("extract"),
-		models.Category("edible"),
-		models.Category("tincture"),
-		models.Category("gear"),
-		models.Category("topical"),
+func (r *Repository) GetCategories() ([]string, error) {
+	return []string{
+		"flower",
+		"vape",
+		"extract",
+		"edible",
+		"tincture",
+		"gear",
+		"topical",
 	}, nil
 }
 
-func (r *Repository) GetTerpenes(menuId string) ([]*models.Terpene, error) {
+func (r *Repository) GetTerpenes() ([]*models.Terpene, error) {
 	return nil, nil
 }
 
-func (r *Repository) GetCannabinoids(menuId string) ([]*models.Cannabinoid, error) {
+func (r *Repository) GetCannabinoids() ([]*models.Cannabinoid, error) {
 	return nil, nil
 }
 
-func (r *Repository) GetOffers(menuId string) ([]*models.Offer, error) {
+func (r *Repository) GetOffers() ([]*models.Offer, error) {
 	return nil, nil
 }
 

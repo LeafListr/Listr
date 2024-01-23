@@ -54,7 +54,7 @@ func (r *ProductResponse) translateProducts() ([]*models.Product, error) {
 				Brand:  p.Brand,
 				Name:   p.Name,
 				SubCtg: p.KindSubtype,
-				Ctg:    models.Category(p.Kind),
+				Ctg:    p.Kind,
 				Weight: weightId,
 				Price:  p.translatePrice(weightId),
 				C:      p.translateCannabinoids(weightId),

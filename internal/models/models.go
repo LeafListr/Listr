@@ -20,8 +20,6 @@ type Terpene struct {
 	Value       float64
 }
 
-type Category string
-
 type Product struct {
 	Id     string
 	Brand  string
@@ -29,7 +27,7 @@ type Product struct {
 	SubCtg string
 	Images []string
 	Weight string
-	Ctg    Category
+	Ctg    string
 	Price  *Price
 	C      []*Cannabinoid
 	T      []*Terpene
@@ -58,7 +56,7 @@ type Dispensary struct {
 type Menu struct {
 	Products     []*Product
 	Offers       []*Offer
-	Categories   []*Category
+	Categories   []*string
 	Terpenes     []*Terpene
 	Cannabinoids []*Cannabinoid
 }

@@ -1,13 +1,5 @@
 basePath: /api/v1
 definitions:
-  api.supportedDispensary:
-    enum:
-    - Curaleaf
-    - Beyond-Hello
-    type: string
-    x-enum-varnames:
-    - Curaleaf
-    - Beyond
   api.supportedDispensaryOptions:
     enum:
     - locations
@@ -100,7 +92,7 @@ info:
   contact: {}
   description: This is the Listr server for dispensary management.
   title: Listr API
-  version: 0.1.2
+  version: 0.2.0
 paths:
   /dispensaries:
     get:
@@ -111,10 +103,10 @@ paths:
       - application/json
       responses:
         "200":
-          description: List of supported dispensaries
+          description: List of supported dispensaries" Enums(Curaleaf, Beyond-Hello)
           schema:
             items:
-              $ref: '#/definitions/api.supportedDispensary'
+              type: string
             type: array
       summary: List supported dispensaries
       tags:

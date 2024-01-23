@@ -18,13 +18,11 @@ type Terpene struct {
 	Value       float64 `json:"value"`
 }
 
-type Category string
-
 type Product struct {
 	Id      string         `json:"id"`
 	Brand   string         `json:"brand"`
 	Name    string         `json:"name"`
-	Ctg     Category       `json:"category"`
+	Ctg     string         `json:"category"`
 	SubCtg  string         `json:"subcategory"`
 	Variant string         `json:"variant,omitempty"`
 	Images  []string       `json:"images"`

@@ -1,0 +1,18 @@
+package components
+
+templ Dispensaries(dispensaries []string) {
+	<select
+		hx-get="/views/locations"
+		hx-target="#location-select"
+		hx-swap="outerHTML"
+		hx-disabled-elt="#location-select"
+		name="dispensary"
+		id="dispensary-select"
+		disabled?={ len(dispensaries) == 0 }
+	>
+		<option value="">Select Dispensary</option>
+		for _, dispensary := range dispensaries {
+			<option value={ dispensary }>{ dispensary }</option>
+		}
+	</select>
+}

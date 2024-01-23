@@ -1,0 +1,41 @@
+package components
+
+import (
+	"github.com/Linkinlog/LeafListr/internal/api/models"
+	"fmt"
+)
+
+templ Product(product *models.Product) {
+	<div class="product-card">
+		<div class="product-headline">
+			<img src={ product.Images[0] } alt={ product.Name }/>
+			<h4 class="product-name">{ product.Brand }: { product.Name }</h4>
+		</div>
+		<div class="product-variants">
+			<label for="variant">Variant/$</label>
+			<p id="variant">
+				{ product.Variant } /
+				<span class={ templ.KV("discounted", product.Price.IsDiscounted) }>${ fmt.Sprintf("%.2f", product.Price.Total) }</span>
+				if product.Price.IsDiscounted {
+					<span class="discounted-price">${ fmt.Sprintf("%.2f", product.Price.DiscountedTotal) }</span>
+				}
+			</p>
+		</div>
+		<div class="product-subcategory">
+			<label for="subcategory">Subcategory</label>
+			<p id="subcategory">
+				{ product.SubCtg }
+			</p>
+		</div>
+		<div class="product-cannabinoids">
+			for _, cannabinoid := range product.C {
+				<p>{ cannabinoid.Name } - { fmt.Sprintf("%.2f", cannabinoid.Value) }%</p>
+			}
+		</div>
+		<div class="product-terpenes">
+			for _, terp := range product.T {
+				<p>{ terp.Name } - { fmt.Sprintf("%.2f", terp.Value) }%</p>
+			}
+		</div>
+	</div>
+}

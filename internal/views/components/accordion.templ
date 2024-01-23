@@ -1,0 +1,30 @@
+package components
+
+import (
+	"html"
+	"strings"
+)
+
+func cleanTitle(title string) string {
+	return html.EscapeString(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(title, " ", ""), "/", ""), "\\", ""))
+}
+
+templ Accordion(title string, details templ.Component) {
+	<div class="accordion">
+		<div class="header">
+			<div hx-on:click={ toggle(cleanTitle(title)) } class="nav">
+				<button>
+					{ title }
+				</button>
+			</div>
+		</div>
+		<div id={ cleanTitle(title) } class="details">
+			@details
+		</div>
+	</div>
+}
+
+script toggle(id string) {
+      const details = document.getElementById(id);
+      details.classList.toggle("open");
+}

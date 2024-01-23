@@ -6,10 +6,51 @@ import (
 	"github.com/Linkinlog/LeafListr/internal/models"
 )
 
-type filterer struct{}
+type FilterParams struct {
+	SubCategoryName    string
+	MinPrice           float64
+	MaxPrice           float64
+	IncludedBrandNames []string
+	ExcludedBrandNames []string
+	Variants           []string
+	IncludedTerms      []string
+	ExcludedTerms      []string
+}
 
-func NewFilterer() Filterer {
-	return &filterer{}
+type filterer struct {
+	Fp *FilterParams
+}
+
+func NewFilterer(fp *FilterParams) Filterer {
+	return &filterer{
+		Fp: fp,
+	}
+}
+
+func (f *filterer) Filter(products []*models.Product) []*models.Product {
+	filteredProducts := products
+	if f.Fp.SubCategoryName != "" {
+		filteredProducts = f.SubCategory(f.Fp.SubCategoryName, filteredProducts)
+	}
+	if f.Fp.MinPrice > 0 || f.Fp.MaxPrice > 0 {
+		filteredProducts = f.Price(f.Fp.MinPrice, f.Fp.MaxPrice, filteredProducts)
+	}
+	if len(f.Fp.IncludedBrandNames) > 0 && f.Fp.IncludedBrandNames[0] != "" {
+		filteredProducts = f.Brands(f.Fp.IncludedBrandNames, filteredProducts)
+	}
+	if len(f.Fp.ExcludedBrandNames) > 0 && f.Fp.ExcludedBrandNames[0] != "" {
+		filteredProducts = f.NotBrands(f.Fp.ExcludedBrandNames, filteredProducts)
+	}
+	if len(f.Fp.Variants) > 0 && f.Fp.Variants[0] != "" {
+		filteredProducts = f.Variants(f.Fp.Variants, filteredProducts)
+	}
+	if len(f.Fp.IncludedTerms) > 0 && f.Fp.IncludedTerms[0] != "" {
+		filteredProducts = f.IncludingTerms(f.Fp.IncludedTerms, filteredProducts)
+	}
+	if len(f.Fp.ExcludedTerms) > 0 && f.Fp.ExcludedTerms[0] != "" {
+		filteredProducts = f.ExcludingTerms(f.Fp.ExcludedTerms, filteredProducts)
+	}
+	return filteredProducts
 }
 
 func (f *filterer) SubCategory(subCategoryName string, products []*models.Product) []*models.Product {

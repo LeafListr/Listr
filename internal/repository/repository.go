@@ -25,28 +25,28 @@ type Repository interface {
 }
 
 type LocationRepository interface {
-	Location(menuId string) (*models.Location, error)
+	Location() (*models.Location, error)
 	Locations(longitude, latitude float64) ([]*models.Location, error)
 }
 
 type ProductRepository interface {
-	GetProduct(menuId, productId string) (*models.Product, error)
-	GetProducts(menuId string) ([]*models.Product, error)
-	GetProductsForCategory(menuId string, category models.Category) ([]*models.Product, error)
+	GetProduct(productId string) (*models.Product, error)
+	GetProducts() ([]*models.Product, error)
+	GetProductsForCategory(category string) ([]*models.Product, error)
 }
 
 type CategoryRepository interface {
-	GetCategories(menuId string) ([]models.Category, error)
+	GetCategories() ([]string, error)
 }
 
 type TerpeneRepository interface {
-	GetTerpenes(menuId string) ([]*models.Terpene, error)
+	GetTerpenes() ([]*models.Terpene, error)
 }
 
 type CannabinoidRepository interface {
-	GetCannabinoids(menuId string) ([]*models.Cannabinoid, error)
+	GetCannabinoids() ([]*models.Cannabinoid, error)
 }
 
 type OfferRepository interface {
-	GetOffers(menuId string) ([]*models.Offer, error)
+	GetOffers() ([]*models.Offer, error)
 }
