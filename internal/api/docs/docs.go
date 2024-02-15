@@ -399,22 +399,32 @@ const docTemplate = `{
                     },
                     {
                         "enum": [
-                            "price_asc",
-                            "price_desc"
+                            "asc",
+                            "desc"
                         ],
                         "type": "string",
-                        "description": "Sort products",
+                        "description": "Sort products by price",
                         "name": "price_sort",
                         "in": "query"
                     },
                     {
                         "enum": [
-                            "thc_asc",
-                            "thc_desc"
+                            "asc",
+                            "desc"
                         ],
                         "type": "string",
-                        "description": "Sort products",
+                        "description": "Sort products by THC",
                         "name": "thc_sort",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ],
+                        "type": "string",
+                        "description": "Sort products by Total Terpenes",
+                        "name": "terp_sort",
                         "in": "query"
                     },
                     {
@@ -619,6 +629,9 @@ const docTemplate = `{
                 "isDiscounted": {
                     "type": "boolean"
                 },
+                "perGram": {
+                    "type": "number"
+                },
                 "total": {
                     "type": "number"
                 }
@@ -687,7 +700,7 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "0.2.0",
+	Version:          "0.2.1",
 	Host:             "",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},

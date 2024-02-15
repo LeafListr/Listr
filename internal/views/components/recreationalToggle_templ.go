@@ -23,7 +23,7 @@ func RecreationalToggle() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"toggle-switch\"><input hx-get=\"/views/nav\" hx-target=\"#nav\" hx-vals=\"js:{&#39;recreational&#39;: this.checked}\" type=\"checkbox\" id=\"med-rec-toggle\" name=\"recreational\"> ")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"toggle-switch\"><input hx-get=\"/views/nav\" hx-target=\"#nav\" type=\"checkbox\" id=\"med-rec-toggle\" name=\"recreational\"> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

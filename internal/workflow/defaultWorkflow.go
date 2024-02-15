@@ -156,7 +156,14 @@ func (w *DefaultWorkflow) Terpenes(wp WorkflowParams) ([]*models.Terpene, error)
 		return []*models.Terpene{}, retErr
 	}
 
-	return terpenes.([]*models.Terpene), nil
+	terps := terpenes.([]*models.Terpene)
+	if len(terps) != 0 {
+		sort.SliceStable(terps, func(i, j int) bool {
+			return terps[i].Name < terps[j].Name
+		})
+	}
+
+	return terps, nil
 }
 
 func (w *DefaultWorkflow) Cannabinoids(wp WorkflowParams) ([]*models.Cannabinoid, error) {

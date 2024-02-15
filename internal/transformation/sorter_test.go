@@ -21,48 +21,48 @@ func TestPriceAsc(t *testing.T) {
 		"multiple": {
 			products: []*models.Product{
 				{
-					Price: &models.Price{Total: 10, DiscountedTotal: 5},
+					P: &models.Price{Total: 10, DiscountedTotal: 5},
 				},
 				{
-					Price: &models.Price{Total: 25, DiscountedTotal: 2},
+					P: &models.Price{Total: 25, DiscountedTotal: 2},
 				},
 				{
-					Price: &models.Price{Total: 20, DiscountedTotal: 10},
+					P: &models.Price{Total: 20, DiscountedTotal: 10},
 				},
 			},
 			want: []*models.Product{
 				{
-					Price: &models.Price{Total: 25, DiscountedTotal: 2},
+					P: &models.Price{Total: 25, DiscountedTotal: 2},
 				},
 				{
-					Price: &models.Price{Total: 10, DiscountedTotal: 5},
+					P: &models.Price{Total: 10, DiscountedTotal: 5},
 				},
 				{
-					Price: &models.Price{Total: 20, DiscountedTotal: 10},
+					P: &models.Price{Total: 20, DiscountedTotal: 10},
 				},
 			},
 		},
 		"multiple, some without discounts": {
 			products: []*models.Product{
 				{
-					Price: &models.Price{Total: 10, DiscountedTotal: 5},
+					P: &models.Price{Total: 10, DiscountedTotal: 5},
 				},
 				{
-					Price: &models.Price{Total: 25, DiscountedTotal: 0},
+					P: &models.Price{Total: 25, DiscountedTotal: 0},
 				},
 				{
-					Price: &models.Price{Total: 20, DiscountedTotal: 10},
+					P: &models.Price{Total: 20, DiscountedTotal: 10},
 				},
 			},
 			want: []*models.Product{
 				{
-					Price: &models.Price{Total: 10, DiscountedTotal: 5},
+					P: &models.Price{Total: 10, DiscountedTotal: 5},
 				},
 				{
-					Price: &models.Price{Total: 20, DiscountedTotal: 10},
+					P: &models.Price{Total: 20, DiscountedTotal: 10},
 				},
 				{
-					Price: &models.Price{Total: 25, DiscountedTotal: 0},
+					P: &models.Price{Total: 25, DiscountedTotal: 0},
 				},
 			},
 		},
@@ -90,24 +90,24 @@ func TestPriceDesc(t *testing.T) {
 		"multiple": {
 			products: []*models.Product{
 				{
-					Price: &models.Price{Total: 10, DiscountedTotal: 5},
+					P: &models.Price{Total: 10, DiscountedTotal: 5},
 				},
 				{
-					Price: &models.Price{Total: 25, DiscountedTotal: 2},
+					P: &models.Price{Total: 25, DiscountedTotal: 2},
 				},
 				{
-					Price: &models.Price{Total: 20, DiscountedTotal: 10},
+					P: &models.Price{Total: 20, DiscountedTotal: 10},
 				},
 			},
 			want: []*models.Product{
 				{
-					Price: &models.Price{Total: 20, DiscountedTotal: 10},
+					P: &models.Price{Total: 20, DiscountedTotal: 10},
 				},
 				{
-					Price: &models.Price{Total: 10, DiscountedTotal: 5},
+					P: &models.Price{Total: 10, DiscountedTotal: 5},
 				},
 				{
-					Price: &models.Price{Total: 25, DiscountedTotal: 2},
+					P: &models.Price{Total: 25, DiscountedTotal: 2},
 				},
 			},
 		},
@@ -118,10 +118,10 @@ func TestPriceDesc(t *testing.T) {
 			transformation.NewSorterer(nil).PriceDesc(tc.products)
 			if !reflect.DeepEqual(tc.products, tc.want) {
 				for _, p := range tc.products {
-					t.Logf("got: %+v", *p.Price)
+					t.Logf("got: %+v", *p.P)
 				}
 				for _, p := range tc.want {
-					t.Logf("wanted: %+v", *p.Price)
+					t.Logf("wanted: %+v", *p.P)
 				}
 				t.Fatalf("got: %+v, want: %+v", tc.products, tc.want)
 			}

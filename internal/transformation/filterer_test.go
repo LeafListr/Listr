@@ -114,14 +114,14 @@ func TestPrice(t *testing.T) {
 			products: []*models.Product{
 				{
 					Id: "test",
-					Price: &models.Price{
+					P: &models.Price{
 						Total:        15,
 						IsDiscounted: false,
 					},
 				},
 				{
 					Id: "test 2",
-					Price: &models.Price{
+					P: &models.Price{
 						Total:        25,
 						IsDiscounted: false,
 					},
@@ -130,7 +130,7 @@ func TestPrice(t *testing.T) {
 			expectedProducts: []*models.Product{
 				{
 					Id: "test",
-					Price: &models.Price{
+					P: &models.Price{
 						Total:        15,
 						IsDiscounted: false,
 					},
@@ -143,7 +143,7 @@ func TestPrice(t *testing.T) {
 			products: []*models.Product{
 				{
 					Id: "test",
-					Price: &models.Price{
+					P: &models.Price{
 						Total:        15,
 						IsDiscounted: false,
 					},
@@ -157,7 +157,7 @@ func TestPrice(t *testing.T) {
 			products: []*models.Product{
 				{
 					Id: "test",
-					Price: &models.Price{
+					P: &models.Price{
 						Total:           15,
 						DiscountedTotal: 5,
 						IsDiscounted:    true,
@@ -165,7 +165,7 @@ func TestPrice(t *testing.T) {
 				},
 				{
 					Id: "test 2",
-					Price: &models.Price{
+					P: &models.Price{
 						Total:           25,
 						DiscountedTotal: 21,
 						IsDiscounted:    true,
@@ -173,7 +173,7 @@ func TestPrice(t *testing.T) {
 				},
 				{
 					Id: "test 3",
-					Price: &models.Price{
+					P: &models.Price{
 						Total:           35,
 						DiscountedTotal: 15,
 						IsDiscounted:    true,
@@ -183,7 +183,7 @@ func TestPrice(t *testing.T) {
 			expectedProducts: []*models.Product{
 				{
 					Id: "test",
-					Price: &models.Price{
+					P: &models.Price{
 						Total:           15,
 						DiscountedTotal: 5,
 						IsDiscounted:    true,
@@ -191,7 +191,7 @@ func TestPrice(t *testing.T) {
 				},
 				{
 					Id: "test 3",
-					Price: &models.Price{
+					P: &models.Price{
 						Total:           35,
 						DiscountedTotal: 15,
 						IsDiscounted:    true,
@@ -205,7 +205,7 @@ func TestPrice(t *testing.T) {
 			products: []*models.Product{
 				{
 					Id: "test",
-					Price: &models.Price{
+					P: &models.Price{
 						Total:           15,
 						DiscountedTotal: 5,
 						IsDiscounted:    true,
@@ -213,7 +213,7 @@ func TestPrice(t *testing.T) {
 				},
 				{
 					Id: "test 2",
-					Price: &models.Price{
+					P: &models.Price{
 						Total:           25,
 						DiscountedTotal: 21,
 						IsDiscounted:    true,
@@ -221,7 +221,7 @@ func TestPrice(t *testing.T) {
 				},
 				{
 					Id: "test 3",
-					Price: &models.Price{
+					P: &models.Price{
 						Total:           35,
 						DiscountedTotal: 15,
 						IsDiscounted:    true,
@@ -231,7 +231,7 @@ func TestPrice(t *testing.T) {
 			expectedProducts: []*models.Product{
 				{
 					Id: "test 2",
-					Price: &models.Price{
+					P: &models.Price{
 						Total:           25,
 						DiscountedTotal: 21,
 						IsDiscounted:    true,
@@ -239,7 +239,7 @@ func TestPrice(t *testing.T) {
 				},
 				{
 					Id: "test 3",
-					Price: &models.Price{
+					P: &models.Price{
 						Total:           35,
 						DiscountedTotal: 15,
 						IsDiscounted:    true,

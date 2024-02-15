@@ -52,17 +52,18 @@ func (i *internalToAPI) TranslateDispensaries(ds []*models.Dispensary) []*apiMod
 
 func (i *internalToAPI) TranslateProduct(p *models.Product) *apiModels.Product {
 	apiP := &apiModels.Product{
-		Id:      p.Id,
-		Brand:   p.Brand,
-		Name:    p.Name,
-		Images:  p.Images,
-		Ctg:     string(p.Ctg),
-		SubCtg:  p.SubCtg,
-		Variant: p.Weight,
-		Price: &apiModels.Price{
-			Total:           p.Price.Total,
-			DiscountedTotal: p.Price.DiscountedTotal,
-			IsDiscounted:    p.Price.IsDiscounted,
+		Id:     p.Id,
+		Brand:  p.Brand,
+		Name:   p.Name,
+		Images: p.Images,
+		Ctg:    string(p.Ctg),
+		SubCtg: p.SubCtg,
+		Weight: p.Weight,
+		P: &apiModels.Price{
+			Total:           p.P.Total,
+			DiscountedTotal: p.P.DiscountedTotal,
+			IsDiscounted:    p.P.IsDiscounted,
+			PerGram:         p.P.PerGram,
 		},
 	}
 

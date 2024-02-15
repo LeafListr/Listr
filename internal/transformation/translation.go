@@ -22,11 +22,15 @@ func RequestToFilterParams(req *http.Request) *FilterParams {
 
 func RequestToSortParams(request *http.Request) *SortParams {
 	return &SortParams{
-		Top3Terps: top3Terps(request),
-		PriceAsc:  sortPriceAsc(request),
-		PriceDesc: sortPriceDesc(request),
-		THCAsc:    sortTHCAsc(request),
-		THCDesc:   sortTHCDesc(request),
+		Top3Terps:     top3Terps(request),
+		PriceAsc:      sortPriceAsc(request),
+		PriceDesc:     sortPriceDesc(request),
+		THCAsc:        sortTHCAsc(request),
+		THCDesc:       sortTHCDesc(request),
+		TerpAsc:       sortTerpAsc(request),
+		TerpDesc:      sortTerpDesc(request),
+		GramPriceAsc:  sortGramPriceAsc(request),
+		GramPriceDesc: sortGramPriceDesc(request),
 	}
 }
 
@@ -94,6 +98,22 @@ func sortTHCAsc(req *http.Request) bool {
 
 func sortTHCDesc(req *http.Request) bool {
 	return req.URL.Query().Get("thc_sort") == "desc"
+}
+
+func sortTerpAsc(req *http.Request) bool {
+	return req.URL.Query().Get("terp_sort") == "asc"
+}
+
+func sortTerpDesc(req *http.Request) bool {
+	return req.URL.Query().Get("terp_sort") == "desc"
+}
+
+func sortGramPriceAsc(req *http.Request) bool {
+	return req.URL.Query().Get("gram_price_sort") == "asc"
+}
+
+func sortGramPriceDesc(req *http.Request) bool {
+	return req.URL.Query().Get("gram_price_sort") == "desc"
 }
 
 func top3Terps(req *http.Request) [3]string {

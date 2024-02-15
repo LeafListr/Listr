@@ -11,20 +11,26 @@ templ Product(product *models.Product) {
 			<img src={ product.Images[0] } alt={ product.Name }/>
 			<h4 class="product-name">{ product.Brand }: { product.Name }</h4>
 		</div>
-		<div class="product-variants">
-			<label for="variant">Variant/$</label>
-			<p id="variant">
-				{ product.Variant } /
-				<span class={ templ.KV("discounted", product.Price.IsDiscounted) }>${ fmt.Sprintf("%.2f", product.Price.Total) }</span>
-				if product.Price.IsDiscounted {
-					<span class="discounted-price">${ fmt.Sprintf("%.2f", product.Price.DiscountedTotal) }</span>
-				}
-			</p>
-		</div>
 		<div class="product-subcategory">
 			<label for="subcategory">Subcategory</label>
 			<p id="subcategory">
 				{ product.SubCtg }
+			</p>
+		</div>
+		<div class="product-gram-price">
+			<label for="gram-price">Price/gram</label>
+			<p id="gram-price">
+				${ fmt.Sprintf("%.2f", product.P.PerGram) }/g
+			</p>
+		</div>
+		<div class="product-variants">
+			<label for="variant">Variant/$</label>
+			<p id="variant">
+				{ product.Weight } /
+				if product.P.IsDiscounted {
+					<span class="discounted-price">${ fmt.Sprintf("%.2f", product.P.DiscountedTotal) }</span>
+				}
+				<span class={ templ.KV("discounted", product.P.IsDiscounted) }>${ fmt.Sprintf("%.2f", product.P.Total) }</span>
 			</p>
 		</div>
 		<div class="product-cannabinoids">

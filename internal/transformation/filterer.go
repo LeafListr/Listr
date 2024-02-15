@@ -66,9 +66,9 @@ func (f *filterer) SubCategory(subCategoryName string, products []*models.Produc
 func (f *filterer) Price(min, max float64, products []*models.Product) []*models.Product {
 	filteredProducts := make([]*models.Product, 0)
 	for _, product := range products {
-		price := product.Price.Total
-		if product.Price.IsDiscounted {
-			price = product.Price.DiscountedTotal
+		price := product.P.Total
+		if product.P.IsDiscounted {
+			price = product.P.DiscountedTotal
 		}
 
 		if price >= min && price <= max {

@@ -55,8 +55,8 @@ func (r *ProductResponse) translateProducts() ([]*models.Product, error) {
 				Name:   p.Name,
 				SubCtg: p.KindSubtype,
 				Ctg:    p.Kind,
-				Weight: weightId,
-				Price:  p.translatePrice(weightId),
+				Weight: p.translateWeight(weightId),
+				P:      p.translatePrice(weightId),
 				C:      p.translateCannabinoids(weightId),
 				T:      p.translateTerpenes(weightId),
 				Images: make([]string, 0),
@@ -67,6 +67,7 @@ func (r *ProductResponse) translateProducts() ([]*models.Product, error) {
 			if product.SubCtg == "" {
 				product.SubCtg = "default"
 			}
+			product.P.PerGram = product.PricePerGram()
 			products = append(products, &product)
 		}
 	}
@@ -109,6 +110,27 @@ func (h *hit) translateTerpenes(weight string) []*models.Terpene {
 		}
 	}
 	return terpenes
+}
+
+func (h *hit) translateWeight(weight string) string {
+	switch weight {
+	case "half_gram":
+		return "0.5g"
+	case "gram":
+		return "1g"
+	case "two_gram":
+		return "2g"
+	case "eighth_ounce":
+		return "3.5g"
+	case "quarter_ounce":
+		return "7g"
+	case "half_ounce":
+		return "14g"
+	case "ounce":
+		return "28g"
+	default:
+		return "each"
+	}
 }
 
 func (h *hit) translatePrice(weight string) *models.Price {

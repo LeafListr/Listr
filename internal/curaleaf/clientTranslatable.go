@@ -49,7 +49,7 @@ func (cT *ClientTranslator) TranslateClientProducts(ps []Product) []*models.Prod
 		for _, v := range p.Variants {
 			variantProduct := cT.TranslateClientProduct(p)
 			variantProduct.Id = v.Id
-			variantProduct.Price = &models.Price{
+			variantProduct.P = &models.Price{
 				Total:           v.Price,
 				DiscountedTotal: v.SpecialPrice,
 				IsDiscounted:    v.IsSpecial,
@@ -77,7 +77,7 @@ func (cT *ClientTranslator) TranslateClientProducts(ps []Product) []*models.Prod
 					}
 				}
 			}
-
+			variantProduct.P.PerGram = variantProduct.PricePerGram()
 			products = append(products, variantProduct)
 		}
 	}

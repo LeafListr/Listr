@@ -5,6 +5,7 @@ templ Filters() {
 }
 
 templ filterForm() {
+	<p>Filter your search results</p>
 	<main id="filter-form">
 		<section id="variants">
 			<label for="variants-input">Variants</label>
@@ -12,16 +13,16 @@ templ filterForm() {
 				type="text"
 				id="variants-input"
 				name="variants"
-				placeholder="1oz,1g"
+				placeholder="Ex: 1oz,1g"
 			/>
 		</section>
-		<section id="subcategory">
+		<section id="filter-subcategory">
 			<label for="subcategory-input">Subcategory</label>
 			<input
 				type="text"
 				id="subcategory-input"
 				name="sub"
-				placeholder="cartridges"
+				placeholder="Ex: cartridges"
 			/>
 		</section>
 		<section id="minPrice">
@@ -30,7 +31,7 @@ templ filterForm() {
 				type="text"
 				id="minPrice-input"
 				name="min_price"
-				placeholder="0"
+				placeholder="Ex: 0"
 			/>
 		</section>
 		<section id="maxPrice">
@@ -39,7 +40,7 @@ templ filterForm() {
 				type="text"
 				id="maxPrice-input"
 				name="max_price"
-				placeholder="100"
+				placeholder="Ex: 100"
 			/>
 		</section>
 		<section id="excluded-brands">
@@ -48,7 +49,7 @@ templ filterForm() {
 				type="text"
 				id="excluded-brands-input"
 				name="not_brands"
-				placeholder="brand1,brand2"
+				placeholder="Ex: select,curaleaf"
 			/>
 		</section>
 		<section id="included-brands">
@@ -57,7 +58,7 @@ templ filterForm() {
 				type="text"
 				id="included-brands-input"
 				name="brands"
-				placeholder="brand1,brand2"
+				placeholder="Ex: grassroots,cresco"
 			/>
 		</section>
 		<section id="excluded-terms">
@@ -66,7 +67,7 @@ templ filterForm() {
 				type="text"
 				id="excluded-terms-input"
 				name="exclude"
-				placeholder="term1,term2"
+				placeholder="Ex: distillate,C02"
 			/>
 		</section>
 		<section id="included-terms">
@@ -75,7 +76,7 @@ templ filterForm() {
 				type="text"
 				id="included-terms-input"
 				name="include"
-				placeholder="term1,term2"
+				placeholder="Ex: resin,live"
 			/>
 		</section>
 	</main>

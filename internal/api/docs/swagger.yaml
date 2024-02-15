@@ -43,6 +43,8 @@ definitions:
         type: number
       isDiscounted:
         type: boolean
+      perGram:
+        type: number
       total:
         type: number
     type: object
@@ -88,7 +90,7 @@ info:
   contact: {}
   description: This is the Listr server for dispensary management.
   title: Listr API
-  version: 0.2.0
+  version: 0.2.1
 paths:
   /dispensaries:
     get:
@@ -343,19 +345,26 @@ paths:
         in: query
         name: includes
         type: string
-      - description: Sort products
+      - description: Sort products by price
         enum:
-        - price_asc
-        - price_desc
+        - asc
+        - desc
         in: query
         name: price_sort
         type: string
-      - description: Sort products
+      - description: Sort products by THC
         enum:
-        - thc_asc
-        - thc_desc
+        - asc
+        - desc
         in: query
         name: thc_sort
+        type: string
+      - description: Sort products by Total Terpenes
+        enum:
+        - asc
+        - desc
+        in: query
+        name: terp_sort
         type: string
       - description: Most important terpene
         in: query

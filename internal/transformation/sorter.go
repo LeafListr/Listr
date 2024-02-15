@@ -8,11 +8,15 @@ import (
 )
 
 type SortParams struct {
-	Top3Terps [3]string
-	PriceAsc  bool
-	PriceDesc bool
-	THCAsc    bool
-	THCDesc   bool
+	Top3Terps     [3]string
+	PriceAsc      bool
+	PriceDesc     bool
+	THCAsc        bool
+	THCDesc       bool
+	TerpAsc       bool
+	TerpDesc      bool
+	GramPriceAsc  bool
+	GramPriceDesc bool
 }
 
 type sorter struct {
@@ -41,19 +45,31 @@ func (s *sorter) Sort(products []*models.Product) {
 	if s.Sp.THCDesc {
 		s.THCDesc(products)
 	}
+	if s.Sp.TerpAsc {
+		s.TerpAsc(products)
+	}
+	if s.Sp.TerpDesc {
+		s.TerpDesc(products)
+	}
+	if s.Sp.GramPriceAsc {
+		s.GramPriceAsc(products)
+	}
+	if s.Sp.GramPriceDesc {
+		s.GramPriceDesc(products)
+	}
 }
 
 func (s *sorter) PriceAsc(products []*models.Product) {
 	slices.SortStableFunc(products, func(productA, productB *models.Product) int {
-		productAPrice := productA.Price.DiscountedTotal
-		productBPrice := productB.Price.DiscountedTotal
+		productAPrice := productA.P.DiscountedTotal
+		productBPrice := productB.P.DiscountedTotal
 
 		if productAPrice == 0 {
-			productAPrice = productA.Price.Total
+			productAPrice = productA.P.Total
 		}
 
 		if productBPrice == 0 {
-			productBPrice = productB.Price.Total
+			productBPrice = productB.P.Total
 		}
 
 		if productAPrice < productBPrice {
@@ -70,15 +86,15 @@ func (s *sorter) PriceAsc(products []*models.Product) {
 
 func (s *sorter) PriceDesc(products []*models.Product) {
 	slices.SortStableFunc(products, func(productA, productB *models.Product) int {
-		productAPrice := productA.Price.DiscountedTotal
-		productBPrice := productB.Price.DiscountedTotal
+		productAPrice := productA.P.DiscountedTotal
+		productBPrice := productB.P.DiscountedTotal
 
 		if productAPrice == 0 {
-			productAPrice = productA.Price.Total
+			productAPrice = productA.P.Total
 		}
 
 		if productBPrice == 0 {
-			productBPrice = productB.Price.Total
+			productBPrice = productB.P.Total
 		}
 
 		if productAPrice > productBPrice {
@@ -120,6 +136,74 @@ func (s *sorter) THCDesc(products []*models.Product) {
 		}
 
 		if productATHC < productBTHC {
+			return 1
+		}
+
+		return 0
+	})
+}
+
+func (s *sorter) TerpAsc(products []*models.Product) {
+	slices.SortStableFunc(products, func(productA, productB *models.Product) int {
+		productATerp := productA.TotalTerps()
+		productBTerp := productB.TotalTerps()
+
+		if productATerp < productBTerp {
+			return -1
+		}
+
+		if productATerp > productBTerp {
+			return 1
+		}
+
+		return 0
+	})
+}
+
+func (s *sorter) TerpDesc(products []*models.Product) {
+	slices.SortStableFunc(products, func(productA, productB *models.Product) int {
+		productATerp := productA.TotalTerps()
+		productBTerp := productB.TotalTerps()
+
+		if productATerp > productBTerp {
+			return -1
+		}
+
+		if productATerp < productBTerp {
+			return 1
+		}
+
+		return 0
+	})
+}
+
+func (s *sorter) GramPriceAsc(products []*models.Product) {
+	slices.SortStableFunc(products, func(productA, productB *models.Product) int {
+		productAGPrice := productA.PricePerGram()
+		productBGPrice := productB.PricePerGram()
+
+		if productAGPrice < productBGPrice {
+			return -1
+		}
+
+		if productAGPrice > productBGPrice {
+			return 1
+		}
+
+		return 0
+	})
+}
+
+func (s *sorter) GramPriceDesc(products []*models.Product) {
+	slices.SortStableFunc(products, func(productA, productB *models.Product) int {
+		productAGPrice := productA.PricePerGram()
+		productBGPrice := productB.PricePerGram()
+
+		if productAGPrice > productBGPrice {
+			return -1
+		}
+
+		if productAGPrice < productBGPrice {
 			return 1
 		}
 

@@ -4,6 +4,7 @@ type Price struct {
 	Total           float64 `json:"total"`
 	DiscountedTotal float64 `json:"discountedTotal"`
 	IsDiscounted    bool    `json:"isDiscounted"`
+	PerGram         float64 `json:"perGram"`
 }
 
 type Cannabinoid struct {
@@ -19,16 +20,16 @@ type Terpene struct {
 }
 
 type Product struct {
-	Id      string         `json:"id"`
-	Brand   string         `json:"brand"`
-	Name    string         `json:"name"`
-	Ctg     string         `json:"category"`
-	SubCtg  string         `json:"subcategory"`
-	Variant string         `json:"variant,omitempty"`
-	Images  []string       `json:"images"`
-	Price   *Price         `json:"price,omitempty"`
-	C       []*Cannabinoid `json:"cannabinoids,omitempty"`
-	T       []*Terpene     `json:"terpenes,omitempty"`
+	Id     string         `json:"id"`
+	Brand  string         `json:"brand"`
+	Name   string         `json:"name"`
+	Ctg    string         `json:"category"`
+	SubCtg string         `json:"subcategory"`
+	Weight string         `json:"variant,omitempty"`
+	Images []string       `json:"images"`
+	P      *Price         `json:"price,omitempty"`
+	C      []*Cannabinoid `json:"cannabinoids,omitempty"`
+	T      []*Terpene     `json:"terpenes,omitempty"`
 }
 
 type Offer struct {

@@ -8,24 +8,44 @@ templ Sorters(terpenes []*models.Terpene) {
 
 templ sorterForm(terpenes []*models.Terpene) {
 	<main id="sorter-form">
-		<section id="sort-method">
-			<label for="sort-method-input">Price Sort Method</label>
-			<select name="price_sort">
-				<option value="">Select Price Sorter</option>
-				<option value="asc">Low to High</option>
-				<option value="desc">High to Low</option>
-			</select>
+		<section id="general-sorters">
+			<p>General Sorters</p>
+			<section id="gram-price-sort-method">
+				<label for="gram-price-sort-method-input">Price Per Gram</label>
+				<select name="gram_price_sort">
+					<option value="">Select option</option>
+					<option value="asc">Low to High</option>
+					<option value="desc">High to Low</option>
+				</select>
+			</section>
+			<section id="price-sort-method">
+				<label for="price-sort-method-input">Price</label>
+				<select name="price_sort">
+					<option value="">Select option</option>
+					<option value="asc">Low to High</option>
+					<option value="desc">High to Low</option>
+				</select>
+			</section>
+			<section id="thc-sort-method">
+				<label for="thc-sort-method-input">THC</label>
+				<select name="thc_sort">
+					<option value="">Select option</option>
+					<option value="asc">Low to High</option>
+					<option value="desc">High to Low</option>
+				</select>
+			</section>
+			<section id="terpene-sort-method">
+				<label for="terpene-sort-method-input">Terpenes</label>
+				<select name="terp_sort">
+					<option value="">Select option</option>
+					<option value="asc">Low to High</option>
+					<option value="desc">High to Low</option>
+				</select>
+			</section>
 		</section>
-		<section id="thc-sort-method">
-			<label for="thc-sort-method-input">THC Sort Method</label>
-			<select name="thc_sort">
-				<option value="">Select THC Sorter</option>
-				<option value="asc">Low to High</option>
-				<option value="desc">High to Low</option>
-			</select>
-		</section>
-		<section id="terps">
-			if len(terpenes) > 0 {
+		if len(terpenes) > 0 {
+			<section id="terps">
+				<p>Terpene Profile Sort</p>
 				<label for="terp1-input">Terpene #1</label>
 				<select name="terp1">
 					<option value="">Select Terpene</option>
@@ -47,7 +67,7 @@ templ sorterForm(terpenes []*models.Terpene) {
 						<option value={ terpene.Name }>{ terpene.Name }</option>
 					}
 				</select>
-			}
-		</section>
+			</section>
+		}
 	</main>
 }

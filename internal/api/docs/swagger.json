@@ -4,7 +4,7 @@
         "description": "This is the Listr server for dispensary management.",
         "title": "Listr API",
         "contact": {},
-        "version": "0.2.0"
+        "version": "0.2.1"
     },
     "basePath": "/api/v1",
     "paths": {
@@ -392,22 +392,32 @@
                     },
                     {
                         "enum": [
-                            "price_asc",
-                            "price_desc"
+                            "asc",
+                            "desc"
                         ],
                         "type": "string",
-                        "description": "Sort products",
+                        "description": "Sort products by price",
                         "name": "price_sort",
                         "in": "query"
                     },
                     {
                         "enum": [
-                            "thc_asc",
-                            "thc_desc"
+                            "asc",
+                            "desc"
                         ],
                         "type": "string",
-                        "description": "Sort products",
+                        "description": "Sort products by THC",
                         "name": "thc_sort",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ],
+                        "type": "string",
+                        "description": "Sort products by Total Terpenes",
+                        "name": "terp_sort",
                         "in": "query"
                     },
                     {
@@ -611,6 +621,9 @@
                 },
                 "isDiscounted": {
                     "type": "boolean"
+                },
+                "perGram": {
+                    "type": "number"
                 },
                 "total": {
                     "type": "number"

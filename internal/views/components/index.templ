@@ -148,12 +148,6 @@ templ Index(title string, dispensaries []string) {
 
         @media (min-width: 992px) {
           .products-grid {
-            grid-template-columns: repeat(4, minmax(275px, 1fr));
-          }
-        }
-
-        @media (min-width: 768px) {
-          .products-grid {
             grid-template-columns: repeat(3, minmax(275px, 1fr));
           }
         }
@@ -175,10 +169,10 @@ templ Index(title string, dispensaries []string) {
           grid-template-rows: auto auto auto;
           grid-auto-rows: minmax(min-content, max-content);
           grid-template-areas:
-            "headline headline"
-            "subcategory variant"
-            "cannabinoids cannabinoids"
-            "terpenes terpenes";
+            "headline headline headline"
+            "subcategory gram-price variant"
+            "cannabinoids cannabinoids cannabinoids"
+            "terpenes terpenes terpenes";
           border: 1px solid #ccc;
           border-radius: 8px;
           box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
@@ -186,6 +180,10 @@ templ Index(title string, dispensaries []string) {
           padding: 20px;
           text-align: center;
           align-items: center;
+        }
+
+        .product-card p {
+            font-size: .75rem;
         }
 
         .product-card img {
@@ -211,7 +209,10 @@ templ Index(title string, dispensaries []string) {
           display: grid;
           grid-gap: 10px;
           margin: 6px 4px 0 0;
-          font-size: 10px;
+        }
+
+        .product-card .product-cannabinoids p {
+            font-size: .55rem;
         }
 
         .product-card .product-terpenes {
@@ -220,7 +221,18 @@ templ Index(title string, dispensaries []string) {
           grid-gap: 10px;
           grid-template-columns: repeat(2, 1fr);
           margin: 6px 4px 0 0;
-          font-size: 10px;
+        }
+
+        .product-card .product-terpenes p {
+            font-size: .55rem;
+        }
+
+        .product-card .product-subcategory {
+          grid-area: subcategory;
+        }
+
+        .product-card .product-gram-price {
+          grid-area: gram-price;
         }
 
         .product-card .product-variants {
@@ -240,8 +252,9 @@ templ Index(title string, dispensaries []string) {
         .discounted {
           color: red;
           text-decoration: line-through;
-          font-size: 0.75rem;
-          line-height: 1rem;
+          font-size: 0.65rem;
+          line-height: 0;
+          vertical-align: super;
         }
         #categories {
           display: grid;
@@ -324,7 +337,7 @@ templ Index(title string, dispensaries []string) {
         #variants {
           grid-area: variants;
         }
-        #subcategory {
+        #filter-form filter-subcategory {
           grid-area: subcategory;
         }
         #minPrice {
@@ -384,9 +397,12 @@ templ Index(title string, dispensaries []string) {
         #sorter-form {
           display: grid;
           grid-template-areas:
-            "sort-method terps"
+            "gram-price-sort-method terps"
+            "price-sort-method terps"
             "thc-sort-method terps"
+            "terpene-sort-method terps"
             "submit submit";
+          grid-template-columns: 1fr 1fr;
           gap: 10px;
           margin: 7px;
           padding-bottom: 7px;
@@ -395,8 +411,12 @@ templ Index(title string, dispensaries []string) {
           width: 100%;
         }
 
-        #sort-method {
-          grid-area: sort-method;
+        #gram-price-sort-method {
+          grid-area: gram-price-sort-method;
+        }
+
+        #price-sort-method {
+          grid-area: price-sort-method;
         }
 
         #terps {
