@@ -38,6 +38,7 @@ templ Product(product *models.Product) {
 				<p>{ cannabinoid.Name } - { fmt.Sprintf("%.2f", cannabinoid.Value) }%</p>
 			}
 		</div>
+		<p>Total Terpenes - { fmt.Sprintf("%.2f", product.TT) }%</p>
 		<div class="product-terpenes">
 			for _, terp := range product.T {
 				<p>{ terp.Name } - { fmt.Sprintf("%.2f", terp.Value) }%</p>

@@ -670,6 +670,9 @@ const docTemplate = `{
                 "subcategory": {
                     "type": "string"
                 },
+                "terpeneTotal": {
+                    "type": "number"
+                },
                 "terpenes": {
                     "type": "array",
                     "items": {

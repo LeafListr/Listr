@@ -65,6 +65,7 @@ func (i *internalToAPI) TranslateProduct(p *models.Product) *apiModels.Product {
 			IsDiscounted:    p.P.IsDiscounted,
 			PerGram:         p.P.PerGram,
 		},
+		TT: p.TotalTerps(),
 	}
 
 	for _, c := range p.C {

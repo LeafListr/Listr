@@ -70,6 +70,8 @@ definitions:
         $ref: '#/definitions/models.Price'
       subcategory:
         type: string
+      terpeneTotal:
+        type: number
       terpenes:
         items:
           $ref: '#/definitions/models.Terpene'

@@ -30,6 +30,7 @@ type Product struct {
 	P      *Price         `json:"price,omitempty"`
 	C      []*Cannabinoid `json:"cannabinoids,omitempty"`
 	T      []*Terpene     `json:"terpenes,omitempty"`
+	TT     float64        `json:"terpeneTotal,omitempty"`
 }
 
 type Offer struct {
