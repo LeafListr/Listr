@@ -354,3 +354,104 @@ func TestBrand(t *testing.T) {
 		})
 	}
 }
+
+func TestNotBrand(t *testing.T) {
+	tests := map[string]struct {
+		brandName        []string
+		products         []*models.Product
+		expectedProducts []*models.Product
+	}{
+		"empty products": {
+			brandName:        []string{"test"},
+			products:         []*models.Product{},
+			expectedProducts: []*models.Product{},
+		},
+		"empty brandName": {
+			brandName: []string{},
+			products: []*models.Product{
+				{Brand: "test brand"},
+				{Brand: "test brand 2"},
+			},
+			expectedProducts: []*models.Product{
+				{Brand: "test brand"},
+				{Brand: "test brand 2"},
+			},
+		},
+		"valid brandName": {
+			brandName: []string{"test brand"},
+			products: []*models.Product{
+				{Brand: "test brand"},
+				{Brand: "test brand 2"},
+			},
+			expectedProducts: []*models.Product{
+				{Brand: "test brand 2"},
+			},
+		},
+		"valid brandNames": {
+			brandName: []string{"test brand", "test brand 2"},
+			products: []*models.Product{
+				{Brand: "test brand"},
+				{Brand: "test brand 2"},
+			},
+			expectedProducts: []*models.Product{},
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			filterer := transformation.NewFilterer(nil)
+			filteredProducts := filterer.NotBrands(test.brandName, test.products)
+			if len(filteredProducts) != len(test.expectedProducts) {
+				t.Errorf("expected %d products, got %d", len(test.expectedProducts), len(filteredProducts))
+			}
+			for i := range filteredProducts {
+				if filteredProducts[i].Brand != test.expectedProducts[i].Brand {
+					t.Errorf("expected product brand %s, got %s", test.expectedProducts[i].Brand, filteredProducts[i].Brand)
+				}
+			}
+		})
+	}
+
+}
+
+func TestExcludingTerms(t *testing.T) {
+	tests := map[string]struct {
+		excludedTerms    []string
+		products         []*models.Product
+		expectedProducts []*models.Product
+	}{
+		"empty products": {
+			excludedTerms:    []string{"test"},
+			products:         []*models.Product{},
+			expectedProducts: []*models.Product{},
+		},
+		"valid excludedTerms": {
+			excludedTerms: []string{"test", "apple"},
+			products: []*models.Product{
+				{
+					Name: "tEst name",
+				},
+				{
+					Name: "APPLE name",
+				},
+			},
+			expectedProducts: []*models.Product{},
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			filterer := transformation.NewFilterer(nil)
+			filteredProducts := filterer.ExcludingTerms(test.excludedTerms, test.products)
+			if len(filteredProducts) != len(test.expectedProducts) {
+				t.Errorf("expected %d products, got %d", len(test.expectedProducts), len(filteredProducts))
+			}
+			for i := range test.expectedProducts {
+				if filteredProducts[i].Name != test.expectedProducts[i].Name {
+					t.Errorf("expected product name %s, got %s", test.expectedProducts[i].Name, filteredProducts[i].Name)
+				}
+			}
+		})
+	}
+
+}

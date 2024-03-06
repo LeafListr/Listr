@@ -95,10 +95,14 @@ func (f *filterer) Brands(brandNames []string, products []*models.Product) []*mo
 func (f *filterer) NotBrands(brandNames []string, products []*models.Product) []*models.Product {
 	filteredProducts := make([]*models.Product, 0)
 	for _, product := range products {
+		valid := true
 		for _, brandName := range brandNames {
-			if brandName != "" && !strings.EqualFold(product.Brand, brandName) {
-				filteredProducts = append(filteredProducts, product)
+			if strings.EqualFold(product.Brand, brandName) {
+				valid = false
 			}
+		}
+		if valid {
+			filteredProducts = append(filteredProducts, product)
 		}
 	}
 	return filteredProducts
@@ -131,10 +135,14 @@ func (f *filterer) IncludingTerms(terms []string, products []*models.Product) []
 func (f *filterer) ExcludingTerms(terms []string, products []*models.Product) []*models.Product {
 	filteredProducts := make([]*models.Product, 0)
 	for _, product := range products {
+		valid := true
 		for _, term := range terms {
-			if term != "" && !strings.Contains(strings.ToLower(product.Name), strings.ToLower(term)) {
-				filteredProducts = append(filteredProducts, product)
+			if term != "" && strings.Contains(strings.ToLower(product.Name), strings.ToLower(term)) {
+				valid = false
 			}
+		}
+		if valid {
+			filteredProducts = append(filteredProducts, product)
 		}
 	}
 	return filteredProducts
