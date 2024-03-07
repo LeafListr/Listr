@@ -8,6 +8,7 @@ type Filterer interface {
 	Filter(products []*models.Product) []*models.Product
 	SubCategory(subCategoryName string, products []*models.Product) []*models.Product
 	Price(min, max float64, products []*models.Product) []*models.Product
+	PricePerG(min, max float64, products []*models.Product) []*models.Product
 	Brands(brandNames []string, products []*models.Product) []*models.Product
 	NotBrands(brandNames []string, products []*models.Product) []*models.Product
 	Variants(variantNames []string, products []*models.Product) []*models.Product

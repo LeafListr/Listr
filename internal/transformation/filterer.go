@@ -10,6 +10,8 @@ type FilterParams struct {
 	SubCategoryName    string
 	MinPrice           float64
 	MaxPrice           float64
+	MinPricePerG       float64
+	MaxPricePerG       float64
 	IncludedBrandNames []string
 	ExcludedBrandNames []string
 	Variants           []string
@@ -31,6 +33,9 @@ func (f *filterer) Filter(products []*models.Product) []*models.Product {
 	filteredProducts := products
 	if f.Fp.SubCategoryName != "" {
 		filteredProducts = f.SubCategory(f.Fp.SubCategoryName, filteredProducts)
+	}
+	if f.Fp.MinPricePerG > 0 || f.Fp.MaxPricePerG > 0 {
+		filteredProducts = f.PricePerG(f.Fp.MinPricePerG, f.Fp.MaxPricePerG, filteredProducts)
 	}
 	if f.Fp.MinPrice > 0 || f.Fp.MaxPrice > 0 {
 		filteredProducts = f.Price(f.Fp.MinPrice, f.Fp.MaxPrice, filteredProducts)
@@ -57,6 +62,20 @@ func (f *filterer) SubCategory(subCategoryName string, products []*models.Produc
 	filteredProducts := make([]*models.Product, 0)
 	for _, product := range products {
 		if strings.EqualFold(product.SubCtg, subCategoryName) {
+			filteredProducts = append(filteredProducts, product)
+		}
+	}
+	return filteredProducts
+}
+
+func (f *filterer) PricePerG(min, max float64, products []*models.Product) []*models.Product {
+	filteredProducts := make([]*models.Product, 0)
+	for _, product := range products {
+		price := product.P.PerGram
+
+		if price >= min && price <= max {
+			filteredProducts = append(filteredProducts, product)
+		} else if max == 0 && min > 0 && price >= min {
 			filteredProducts = append(filteredProducts, product)
 		}
 	}

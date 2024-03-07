@@ -1,7 +1,6 @@
 package curaleaf
 
 import (
-	"fmt"
 	"log/slog"
 	"regexp"
 	"strconv"
@@ -68,7 +67,6 @@ func (cT *ClientTranslator) TranslateClientProducts(ps []Product) []*models.Prod
 					if strings.Contains(split[j], "THC") {
 						thcSplit := strings.Split(split[j], "-")
 						for k := range thcSplit {
-							fmt.Println(thcSplit[k])
 							thc := cT.numberRegex.FindString(thcSplit[k])
 							thcVal, err := strconv.ParseFloat(thc, 64)
 							if err == nil {

@@ -10,6 +10,8 @@ import (
 func RequestToFilterParams(req *http.Request) *FilterParams {
 	return &FilterParams{
 		SubCategoryName:    subCategoryFilter(req),
+		MinPricePerG:       minPricePerGFilter(req),
+		MaxPricePerG:       maxPricePerGFilter(req),
 		MinPrice:           minPriceFilter(req),
 		MaxPrice:           maxPriceFilter(req),
 		IncludedBrandNames: brandFilters(req),
@@ -38,6 +40,31 @@ func subCategoryFilter(req *http.Request) string {
 	return req.URL.Query().Get("sub")
 }
 
+func maxPricePerGFilter(req *http.Request) float64 {
+	var maxP float64
+	var err error
+	if maxStr := req.URL.Query().Get("max_price_per_g"); maxStr != "" {
+		maxP, err = strconv.ParseFloat(maxStr, 64)
+		if err != nil {
+			slog.Debug("Error parsing max price", err)
+			return 0
+		}
+	}
+	return maxP
+}
+
+func minPricePerGFilter(req *http.Request) float64 {
+	var minP float64
+	var err error
+	if minStr := req.URL.Query().Get("min_price_per_g"); minStr != "" {
+		minP, err = strconv.ParseFloat(minStr, 64)
+		if err != nil {
+			slog.Debug("Error parsing min price", err)
+			return 0
+		}
+	}
+	return minP
+}
 func maxPriceFilter(req *http.Request) float64 {
 	var maxP float64
 	var err error

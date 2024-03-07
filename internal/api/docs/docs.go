@@ -357,6 +357,18 @@ const docTemplate = `{
                     },
                     {
                         "type": "number",
+                        "description": "Minimum price per gram",
+                        "name": "min_price_per_g",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Maximum price per gram",
+                        "name": "max_price_per_g",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
                         "description": "Minimum price",
                         "name": "min_price",
                         "in": "query"

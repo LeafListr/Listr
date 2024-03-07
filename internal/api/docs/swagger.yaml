@@ -319,6 +319,14 @@ paths:
         in: query
         name: sub
         type: string
+      - description: Minimum price per gram
+        in: query
+        name: min_price_per_g
+        type: number
+      - description: Maximum price per gram
+        in: query
+        name: max_price_per_g
+        type: number
       - description: Minimum price
         in: query
         name: min_price

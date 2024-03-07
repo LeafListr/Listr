@@ -273,6 +273,8 @@ func (a *API) handleProduct(r http.ResponseWriter, req *http.Request) {
 // @Param			recreational	query	bool			true	"Recreational or medical"
 // @Param			category		query	string			true	"Category"
 // @Param			sub				query	string			false	"Sub Category"
+// @Param			min_price_per_g		query	number			false	"Minimum price per gram"
+// @Param			max_price_per_g		query	number			false	"Maximum price per gram"
 // @Param			min_price		query	number			false	"Minimum price"
 // @Param			max_price		query	number			false	"Maximum price"
 // @Param			brands			query	string			false	"Brands to include"
