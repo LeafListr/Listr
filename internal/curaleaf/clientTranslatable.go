@@ -1,6 +1,7 @@
 package curaleaf
 
 import (
+	"fmt"
 	"log/slog"
 	"regexp"
 	"strconv"
@@ -9,10 +10,14 @@ import (
 	"github.com/Linkinlog/LeafListr/internal/models"
 )
 
-type ClientTranslator struct{}
+type ClientTranslator struct {
+	numberRegex *regexp.Regexp
+}
 
 func NewClientTranslator() *ClientTranslator {
-	return &ClientTranslator{}
+	return &ClientTranslator{
+		numberRegex: regexp.MustCompile(`^-?(?:\d+|\d+\.\d+)`),
+	}
 }
 
 func (cT *ClientTranslator) TranslateClientLocation(l Location) *models.Location {
@@ -63,8 +68,8 @@ func (cT *ClientTranslator) TranslateClientProducts(ps []Product) []*models.Prod
 					if strings.Contains(split[j], "THC") {
 						thcSplit := strings.Split(split[j], "-")
 						for k := range thcSplit {
-							floatRegex := regexp.MustCompile(`\d+\.\d+`)
-							thc := floatRegex.FindString(thcSplit[k])
+							fmt.Println(thcSplit[k])
+							thc := cT.numberRegex.FindString(thcSplit[k])
 							thcVal, err := strconv.ParseFloat(thc, 64)
 							if err == nil {
 								variantProduct.C = append(variantProduct.C, &models.Cannabinoid{
