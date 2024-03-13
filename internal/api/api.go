@@ -429,7 +429,7 @@ func RequestLogger(next http.Handler) http.Handler {
 
 func corsMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		originRegex := regexp.MustCompile(`^https?:\/\/(localhost:[0-9]+|.*dahlton.org)\/?$`)
+		originRegex := regexp.MustCompile(`^https?:\/\/(localhost:[0-9]+|.*dahlton.org|.*leaflistr.store)\/?$`)
 		origin := r.Header.Get("Origin")
 		if originRegex.MatchString(origin) {
 			w.Header().Set("Access-Control-Allow-Origin", origin)
