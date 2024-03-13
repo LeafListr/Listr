@@ -411,7 +411,6 @@ func TestNotBrand(t *testing.T) {
 			}
 		})
 	}
-
 }
 
 func TestExcludingTerms(t *testing.T) {
@@ -453,5 +452,4 @@ func TestExcludingTerms(t *testing.T) {
 			}
 		})
 	}
-
 }

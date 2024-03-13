@@ -65,6 +65,7 @@ func minPricePerGFilter(req *http.Request) float64 {
 	}
 	return minP
 }
+
 func maxPriceFilter(req *http.Request) float64 {
 	var maxP float64
 	var err error
