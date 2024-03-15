@@ -187,7 +187,30 @@ func (r *Repository) GetCannabinoids() ([]*models.Cannabinoid, error) {
 }
 
 func (r *Repository) GetOffers() ([]*models.Offer, error) {
-	return nil, nil
+	// TODO this is awful
+	mId, err := strconv.Atoi(r.menuId)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := r.productResponse(menuQuery(mId))
+	if err != nil {
+		return nil, err
+	}
+
+	offerMap := map[string]struct{}{}
+	for _, p := range resp.Hits {
+		if p.SpecialTitle != "" {
+			offerMap[p.SpecialTitle] = struct{}{}
+		}
+	}
+	offers := make([]*models.Offer, 0)
+	for o := range offerMap {
+		offers = append(offers, &models.Offer{
+			Id:          o,
+			Description: o,
+		})
+	}
+	return offers, nil
 }
 
 func (r *Repository) getProducts(query string) ([]*models.Product, error) {
