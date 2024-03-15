@@ -8,7 +8,7 @@ import (
 templ Product(product *models.Product) {
 	<div class="product-card">
 		<div class="product-headline">
-			<img src={ product.Images[0] } alt={ product.Name }/>
+			<img src={ product.Image() } alt={ product.Name }/>
 			<h4 class="product-name">{ product.Brand }: { product.Name }</h4>
 		</div>
 		<div class="product-subcategory">

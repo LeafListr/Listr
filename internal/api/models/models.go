@@ -33,6 +33,13 @@ type Product struct {
 	TT     float64        `json:"terpeneTotal,omitempty"`
 }
 
+func (p *Product) Image() string {
+	if len(p.Images) == 0 {
+		return ""
+	}
+	return p.Images[0]
+}
+
 type Offer struct {
 	Id          string `json:"id"`
 	Description string `json:"description"`

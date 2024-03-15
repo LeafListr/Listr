@@ -147,11 +147,43 @@ func (r *Repository) GetCategories() ([]string, error) {
 }
 
 func (r *Repository) GetTerpenes() ([]*models.Terpene, error) {
-	return nil, nil
+	terps := map[string]struct{}{}
+	products, err := r.GetProducts()
+	if err != nil {
+		return nil, err
+	}
+	for _, p := range products {
+		for _, t := range p.T {
+			terps[t.Name] = struct{}{}
+		}
+	}
+	terpSlice := make([]*models.Terpene, 0, len(terps))
+	for t := range terps {
+		terpSlice = append(terpSlice, &models.Terpene{
+			Name: t,
+		})
+	}
+	return terpSlice, nil
 }
 
 func (r *Repository) GetCannabinoids() ([]*models.Cannabinoid, error) {
-	return nil, nil
+	canns := map[string]struct{}{}
+	products, err := r.GetProducts()
+	if err != nil {
+		return nil, err
+	}
+	for _, p := range products {
+		for _, c := range p.C {
+			canns[c.Name] = struct{}{}
+		}
+	}
+	cannSlice := make([]*models.Cannabinoid, 0, len(canns))
+	for c := range canns {
+		cannSlice = append(cannSlice, &models.Cannabinoid{
+			Name: c,
+		})
+	}
+	return cannSlice, nil
 }
 
 func (r *Repository) GetOffers() ([]*models.Offer, error) {
