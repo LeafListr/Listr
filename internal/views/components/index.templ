@@ -398,10 +398,10 @@ templ Index(title string, dispensaries []string) {
         #sorter-form {
           display: grid;
           grid-template-areas:
-            "gram-price-sort-method terps"
-            "price-sort-method terps"
-            "thc-sort-method terps"
-            "terpene-sort-method terps"
+            "general-sorters terps"
+            "general-sorters terps"
+            "general-sorters terps"
+            "general-sorters terps"
             "submit submit";
           grid-template-columns: 1fr 1fr;
           gap: 10px;
@@ -412,6 +412,21 @@ templ Index(title string, dispensaries []string) {
           width: 100%;
         }
 
+        #sorter-form section {
+          padding: 24px;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+        }
+
+
+        section#general-sorters {
+          grid-area: general-sorters;
+        }
+
+        section#terps {
+          grid-area: terps;
+        }
+
         #gram-price-sort-method {
           grid-area: gram-price-sort-method;
         }
@@ -420,9 +435,6 @@ templ Index(title string, dispensaries []string) {
           grid-area: price-sort-method;
         }
 
-        #terps {
-          grid-area: terps;
-        }
         .htmx-indicator {
           display: none;
         }

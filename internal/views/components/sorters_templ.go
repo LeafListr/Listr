@@ -49,12 +49,12 @@ func sorterForm(terpenes []*models.Terpene) templ.Component {
 			templ_7745c5c3_Var2 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main id=\"sorter-form\"><section id=\"general-sorters\"><p>General Sorters</p><section id=\"gram-price-sort-method\"><label for=\"gram-price-sort-method-input\">Price Per Gram</label> <select name=\"gram_price_sort\"><option value=\"\">Select option</option> <option value=\"asc\">Low to High</option> <option value=\"desc\">High to Low</option></select></section><section id=\"price-sort-method\"><label for=\"price-sort-method-input\">Price</label> <select name=\"price_sort\"><option value=\"\">Select option</option> <option value=\"asc\">Low to High</option> <option value=\"desc\">High to Low</option></select></section><section id=\"thc-sort-method\"><label for=\"thc-sort-method-input\">THC</label> <select name=\"thc_sort\"><option value=\"\">Select option</option> <option value=\"asc\">Low to High</option> <option value=\"desc\">High to Low</option></select></section><section id=\"terpene-sort-method\"><label for=\"terpene-sort-method-input\">Terpenes</label> <select name=\"terp_sort\"><option value=\"\">Select option</option> <option value=\"asc\">Low to High</option> <option value=\"desc\">High to Low</option></select></section></section>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main id=\"sorter-form\"><section id=\"general-sorters\"><p>General Sorters</p><label for=\"gram-price-sort-method-input\">Price Per Gram</label> <select name=\"gram_price_sort\"><option value=\"\">Select option</option> <option value=\"asc\">Low to High</option> <option value=\"desc\">High to Low</option></select> <label for=\"price-sort-method-input\">Price</label> <select name=\"price_sort\"><option value=\"\">Select option</option> <option value=\"asc\">Low to High</option> <option value=\"desc\">High to Low</option></select> <label for=\"thc-sort-method-input\">THC</label> <select name=\"thc_sort\"><option value=\"\">Select option</option> <option value=\"asc\">Low to High</option> <option value=\"desc\">High to Low</option></select> <label for=\"terpene-sort-method-input\">Terpenes</label> <select name=\"terp_sort\"><option value=\"\">Select option</option> <option value=\"asc\">Low to High</option> <option value=\"desc\">High to Low</option></select></section>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if len(terpenes) > 0 {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<section id=\"terps\"><p>Terpene Profile Sort</p><label for=\"terp1-input\">Terpene #1</label> <select name=\"terp1\"><option value=\"\">Select Terpene</option> ")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<section id=\"terps\"><p>Terpene Profile Sort</p><label for=\"terp1-input\">Terpene #1</label> <select name=\"terp1\" id=\"terp1-input\"><option value=\"\">Select Terpene</option> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -74,7 +74,7 @@ func sorterForm(terpenes []*models.Terpene) templ.Component {
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(terpene.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/sorters.templ`, Line: 52, Col: 51}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/sorters.templ`, Line: 44, Col: 51}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
@@ -85,7 +85,7 @@ func sorterForm(terpenes []*models.Terpene) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select> <label for=\"terp2-input\">Terpene #2</label> <select name=\"terp2\"><option value=\"\">Select Terpene</option> ")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select> <label for=\"terp2-input\">Terpene #2</label> <select name=\"terp2\" id=\"terp2-input\"><option value=\"\">Select Terpene</option> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -105,7 +105,7 @@ func sorterForm(terpenes []*models.Terpene) templ.Component {
 				var templ_7745c5c3_Var4 string
 				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(terpene.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/sorters.templ`, Line: 59, Col: 51}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/sorters.templ`, Line: 51, Col: 51}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
@@ -116,7 +116,7 @@ func sorterForm(terpenes []*models.Terpene) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select> <label for=\"terp3-input\">Terpene #3</label> <select name=\"terp3\"><option value=\"\">Select Terpene</option> ")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select> <label for=\"terp3-input\">Terpene #3</label> <select name=\"terp3\" id=\"terp3-input\"><option value=\"\">Select Terpene</option> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -136,7 +136,7 @@ func sorterForm(terpenes []*models.Terpene) templ.Component {
 				var templ_7745c5c3_Var5 string
 				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(terpene.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/sorters.templ`, Line: 66, Col: 51}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/sorters.templ`, Line: 58, Col: 51}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
@@ -147,7 +147,7 @@ func sorterForm(terpenes []*models.Terpene) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select></section>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select> <label for=\"terp-asc\">Low to High?</label> <input type=\"checkbox\" id=\"terp-asc\" name=\"terp_asc\"></section>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

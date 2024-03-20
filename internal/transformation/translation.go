@@ -25,6 +25,7 @@ func RequestToFilterParams(req *http.Request) *FilterParams {
 func RequestToSortParams(request *http.Request) *SortParams {
 	return &SortParams{
 		Top3Terps:     top3Terps(request),
+		Top3Asc:       top3Asc(request),
 		PriceAsc:      sortPriceAsc(request),
 		PriceDesc:     sortPriceDesc(request),
 		THCAsc:        sortTHCAsc(request),
@@ -156,4 +157,8 @@ func top3Terps(req *http.Request) [3]string {
 		terps[2] = terp3
 	}
 	return terps
+}
+
+func top3Asc(req *http.Request) bool {
+	return req.URL.Query().Get("terp_asc") == "on"
 }

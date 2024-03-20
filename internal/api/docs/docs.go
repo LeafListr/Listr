@@ -456,6 +456,12 @@ const docTemplate = `{
                         "description": "Third most important terpene",
                         "name": "terp3",
                         "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Sort terpene profile low to high",
+                        "name": "terp_asc",
+                        "in": "query"
                     }
                 ],
                 "responses": {

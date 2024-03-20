@@ -252,7 +252,7 @@ func TestTop3Terps(t *testing.T) {
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			transformation.NewSorterer(nil).Top3Terps(tc.products, tc.terps)
+			transformation.NewSorterer(nil).Top3Terps(tc.products, tc.terps, false)
 			for i, p := range tc.products {
 				if p.Id != tc.want[i].Id {
 					t.Fatalf("got: %+v, want: %+v", p.Id, tc.want[i].Id)

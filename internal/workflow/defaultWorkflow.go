@@ -200,77 +200,17 @@ func (w *DefaultWorkflow) Offers(wp WorkflowParams) ([]*models.Offer, error) {
 	return offers.([]*models.Offer), nil
 }
 
-func (w *DefaultWorkflow) Filter(wp WorkflowParams, fp *transformation.FilterParams, products []*models.Product) ([]*models.Product, error) {
+func (w *DefaultWorkflow) Filter(fp *transformation.FilterParams, products []*models.Product) ([]*models.Product, error) {
 	f := transformation.NewFilterer(fp)
 
 	return f.Filter(products), nil
 }
 
-func (w *DefaultWorkflow) Sort(wp WorkflowParams, sp *transformation.SortParams, products []*models.Product) error {
+func (w *DefaultWorkflow) Sort(sp *transformation.SortParams, products []*models.Product) error {
 	s := transformation.NewSorterer(sp)
 	s.Sort(products)
 
 	return nil
-}
-
-func (w *DefaultWorkflow) ProductsForSubCategory(wp WorkflowParams, products []*models.Product, subCategory string) ([]*models.Product, error) {
-	tf := transformation.NewFilterer(nil)
-	return tf.SubCategory(subCategory, products), nil
-}
-
-func (w *DefaultWorkflow) ProductsExcludingBrands(wp WorkflowParams, products []*models.Product, brands []string) ([]*models.Product, error) {
-	tf := transformation.NewFilterer(nil)
-	return tf.NotBrands(brands, products), nil
-}
-
-func (w *DefaultWorkflow) ProductsForBrands(wp WorkflowParams, products []*models.Product, brands []string) ([]*models.Product, error) {
-	tf := transformation.NewFilterer(nil)
-	return tf.Brands(brands, products), nil
-}
-
-func (w *DefaultWorkflow) ProductsForVariants(wp WorkflowParams, products []*models.Product, variants []string) ([]*models.Product, error) {
-	tf := transformation.NewFilterer(nil)
-	return tf.Variants(variants, products), nil
-}
-
-func (w *DefaultWorkflow) ProductsForPriceRange(wp WorkflowParams, products []*models.Product, min, max float64) ([]*models.Product, error) {
-	tf := transformation.NewFilterer(nil)
-	return tf.Price(min, max, products), nil
-}
-
-func (w *DefaultWorkflow) ProductsIncludingTerms(wp WorkflowParams, products []*models.Product, includes []string) ([]*models.Product, error) {
-	tf := transformation.NewFilterer(nil)
-	return tf.IncludingTerms(includes, products), nil
-}
-
-func (w *DefaultWorkflow) ProductsExcludingTerms(wp WorkflowParams, products []*models.Product, excludes []string) ([]*models.Product, error) {
-	tf := transformation.NewFilterer(nil)
-	return tf.ExcludingTerms(excludes, products), nil
-}
-
-func (w *DefaultWorkflow) SortProductsByPriceAsc(wp WorkflowParams, products []*models.Product) {
-	s := transformation.NewSorterer(nil)
-	s.PriceAsc(products)
-}
-
-func (w *DefaultWorkflow) SortProductsByPriceDesc(wp WorkflowParams, products []*models.Product) {
-	s := transformation.NewSorterer(nil)
-	s.PriceDesc(products)
-}
-
-func (w *DefaultWorkflow) SortProductsByTHCAsc(wp WorkflowParams, products []*models.Product) {
-	s := transformation.NewSorterer(nil)
-	s.THCAsc(products)
-}
-
-func (w *DefaultWorkflow) SortProductsByTHCDesc(wp WorkflowParams, products []*models.Product) {
-	s := transformation.NewSorterer(nil)
-	s.THCDesc(products)
-}
-
-func (w *DefaultWorkflow) SortProductsByTop3Terps(wp WorkflowParams, products []*models.Product, terps [3]string) {
-	s := transformation.NewSorterer(nil)
-	s.Top3Terps(products, terps)
 }
 
 func (w *DefaultWorkflow) LogError(err error, context context.Context) {

@@ -10,63 +10,57 @@ templ sorterForm(terpenes []*models.Terpene) {
 	<main id="sorter-form">
 		<section id="general-sorters">
 			<p>General Sorters</p>
-			<section id="gram-price-sort-method">
-				<label for="gram-price-sort-method-input">Price Per Gram</label>
-				<select name="gram_price_sort">
-					<option value="">Select option</option>
-					<option value="asc">Low to High</option>
-					<option value="desc">High to Low</option>
-				</select>
-			</section>
-			<section id="price-sort-method">
-				<label for="price-sort-method-input">Price</label>
-				<select name="price_sort">
-					<option value="">Select option</option>
-					<option value="asc">Low to High</option>
-					<option value="desc">High to Low</option>
-				</select>
-			</section>
-			<section id="thc-sort-method">
-				<label for="thc-sort-method-input">THC</label>
-				<select name="thc_sort">
-					<option value="">Select option</option>
-					<option value="asc">Low to High</option>
-					<option value="desc">High to Low</option>
-				</select>
-			</section>
-			<section id="terpene-sort-method">
-				<label for="terpene-sort-method-input">Terpenes</label>
-				<select name="terp_sort">
-					<option value="">Select option</option>
-					<option value="asc">Low to High</option>
-					<option value="desc">High to Low</option>
-				</select>
-			</section>
+			<label for="gram-price-sort-method-input">Price Per Gram</label>
+			<select name="gram_price_sort">
+				<option value="">Select option</option>
+				<option value="asc">Low to High</option>
+				<option value="desc">High to Low</option>
+			</select>
+			<label for="price-sort-method-input">Price</label>
+			<select name="price_sort">
+				<option value="">Select option</option>
+				<option value="asc">Low to High</option>
+				<option value="desc">High to Low</option>
+			</select>
+			<label for="thc-sort-method-input">THC</label>
+			<select name="thc_sort">
+				<option value="">Select option</option>
+				<option value="asc">Low to High</option>
+				<option value="desc">High to Low</option>
+			</select>
+			<label for="terpene-sort-method-input">Terpenes</label>
+			<select name="terp_sort">
+				<option value="">Select option</option>
+				<option value="asc">Low to High</option>
+				<option value="desc">High to Low</option>
+			</select>
 		</section>
 		if len(terpenes) > 0 {
 			<section id="terps">
 				<p>Terpene Profile Sort</p>
 				<label for="terp1-input">Terpene #1</label>
-				<select name="terp1">
+				<select name="terp1" id="terp1-input">
 					<option value="">Select Terpene</option>
 					for _, terpene := range terpenes {
 						<option value={ terpene.Name }>{ terpene.Name }</option>
 					}
 				</select>
 				<label for="terp2-input">Terpene #2</label>
-				<select name="terp2">
+				<select name="terp2" id="terp2-input">
 					<option value="">Select Terpene</option>
 					for _, terpene := range terpenes {
 						<option value={ terpene.Name }>{ terpene.Name }</option>
 					}
 				</select>
 				<label for="terp3-input">Terpene #3</label>
-				<select name="terp3">
+				<select name="terp3" id="terp3-input">
 					<option value="">Select Terpene</option>
 					for _, terpene := range terpenes {
 						<option value={ terpene.Name }>{ terpene.Name }</option>
 					}
 				</select>
+				<label for="terp-asc">Low to High?</label>
+				<input type="checkbox" id="terp-asc" name="terp_asc"/>
 			</section>
 		}
 	</main>

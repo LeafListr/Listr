@@ -37,12 +37,11 @@ type FakeWorkflow struct {
 		result1 []string
 		result2 error
 	}
-	FilterStub        func(workflow.WorkflowParams, *transformation.FilterParams, []*models.Product) ([]*models.Product, error)
+	FilterStub        func(*transformation.FilterParams, []*models.Product) ([]*models.Product, error)
 	filterMutex       sync.RWMutex
 	filterArgsForCall []struct {
-		arg1 workflow.WorkflowParams
-		arg2 *transformation.FilterParams
-		arg3 []*models.Product
+		arg1 *transformation.FilterParams
+		arg2 []*models.Product
 	}
 	filterReturns struct {
 		result1 []*models.Product
@@ -124,97 +123,6 @@ type FakeWorkflow struct {
 		result1 []*models.Product
 		result2 error
 	}
-	ProductsExcludingBrandsStub        func(workflow.WorkflowParams, []*models.Product, []string) ([]*models.Product, error)
-	productsExcludingBrandsMutex       sync.RWMutex
-	productsExcludingBrandsArgsForCall []struct {
-		arg1 workflow.WorkflowParams
-		arg2 []*models.Product
-		arg3 []string
-	}
-	productsExcludingBrandsReturns struct {
-		result1 []*models.Product
-		result2 error
-	}
-	productsExcludingBrandsReturnsOnCall map[int]struct {
-		result1 []*models.Product
-		result2 error
-	}
-	ProductsExcludingTermsStub        func(workflow.WorkflowParams, []*models.Product, []string) ([]*models.Product, error)
-	productsExcludingTermsMutex       sync.RWMutex
-	productsExcludingTermsArgsForCall []struct {
-		arg1 workflow.WorkflowParams
-		arg2 []*models.Product
-		arg3 []string
-	}
-	productsExcludingTermsReturns struct {
-		result1 []*models.Product
-		result2 error
-	}
-	productsExcludingTermsReturnsOnCall map[int]struct {
-		result1 []*models.Product
-		result2 error
-	}
-	ProductsForBrandsStub        func(workflow.WorkflowParams, []*models.Product, []string) ([]*models.Product, error)
-	productsForBrandsMutex       sync.RWMutex
-	productsForBrandsArgsForCall []struct {
-		arg1 workflow.WorkflowParams
-		arg2 []*models.Product
-		arg3 []string
-	}
-	productsForBrandsReturns struct {
-		result1 []*models.Product
-		result2 error
-	}
-	productsForBrandsReturnsOnCall map[int]struct {
-		result1 []*models.Product
-		result2 error
-	}
-	ProductsForPriceRangeStub        func(workflow.WorkflowParams, []*models.Product, float64, float64) ([]*models.Product, error)
-	productsForPriceRangeMutex       sync.RWMutex
-	productsForPriceRangeArgsForCall []struct {
-		arg1 workflow.WorkflowParams
-		arg2 []*models.Product
-		arg3 float64
-		arg4 float64
-	}
-	productsForPriceRangeReturns struct {
-		result1 []*models.Product
-		result2 error
-	}
-	productsForPriceRangeReturnsOnCall map[int]struct {
-		result1 []*models.Product
-		result2 error
-	}
-	ProductsForSubCategoryStub        func(workflow.WorkflowParams, []*models.Product, string) ([]*models.Product, error)
-	productsForSubCategoryMutex       sync.RWMutex
-	productsForSubCategoryArgsForCall []struct {
-		arg1 workflow.WorkflowParams
-		arg2 []*models.Product
-		arg3 string
-	}
-	productsForSubCategoryReturns struct {
-		result1 []*models.Product
-		result2 error
-	}
-	productsForSubCategoryReturnsOnCall map[int]struct {
-		result1 []*models.Product
-		result2 error
-	}
-	ProductsForVariantsStub        func(workflow.WorkflowParams, []*models.Product, []string) ([]*models.Product, error)
-	productsForVariantsMutex       sync.RWMutex
-	productsForVariantsArgsForCall []struct {
-		arg1 workflow.WorkflowParams
-		arg2 []*models.Product
-		arg3 []string
-	}
-	productsForVariantsReturns struct {
-		result1 []*models.Product
-		result2 error
-	}
-	productsForVariantsReturnsOnCall map[int]struct {
-		result1 []*models.Product
-		result2 error
-	}
 	ProductsInCategoryStub        func(workflow.WorkflowParams, string) ([]*models.Product, error)
 	productsInCategoryMutex       sync.RWMutex
 	productsInCategoryArgsForCall []struct {
@@ -229,64 +137,17 @@ type FakeWorkflow struct {
 		result1 []*models.Product
 		result2 error
 	}
-	ProductsIncludingTermsStub        func(workflow.WorkflowParams, []*models.Product, []string) ([]*models.Product, error)
-	productsIncludingTermsMutex       sync.RWMutex
-	productsIncludingTermsArgsForCall []struct {
-		arg1 workflow.WorkflowParams
-		arg2 []*models.Product
-		arg3 []string
-	}
-	productsIncludingTermsReturns struct {
-		result1 []*models.Product
-		result2 error
-	}
-	productsIncludingTermsReturnsOnCall map[int]struct {
-		result1 []*models.Product
-		result2 error
-	}
-	SortStub        func(workflow.WorkflowParams, *transformation.SortParams, []*models.Product) error
+	SortStub        func(*transformation.SortParams, []*models.Product) error
 	sortMutex       sync.RWMutex
 	sortArgsForCall []struct {
-		arg1 workflow.WorkflowParams
-		arg2 *transformation.SortParams
-		arg3 []*models.Product
+		arg1 *transformation.SortParams
+		arg2 []*models.Product
 	}
 	sortReturns struct {
 		result1 error
 	}
 	sortReturnsOnCall map[int]struct {
 		result1 error
-	}
-	SortProductsByPriceAscStub        func(workflow.WorkflowParams, []*models.Product)
-	sortProductsByPriceAscMutex       sync.RWMutex
-	sortProductsByPriceAscArgsForCall []struct {
-		arg1 workflow.WorkflowParams
-		arg2 []*models.Product
-	}
-	SortProductsByPriceDescStub        func(workflow.WorkflowParams, []*models.Product)
-	sortProductsByPriceDescMutex       sync.RWMutex
-	sortProductsByPriceDescArgsForCall []struct {
-		arg1 workflow.WorkflowParams
-		arg2 []*models.Product
-	}
-	SortProductsByTHCAscStub        func(workflow.WorkflowParams, []*models.Product)
-	sortProductsByTHCAscMutex       sync.RWMutex
-	sortProductsByTHCAscArgsForCall []struct {
-		arg1 workflow.WorkflowParams
-		arg2 []*models.Product
-	}
-	SortProductsByTHCDescStub        func(workflow.WorkflowParams, []*models.Product)
-	sortProductsByTHCDescMutex       sync.RWMutex
-	sortProductsByTHCDescArgsForCall []struct {
-		arg1 workflow.WorkflowParams
-		arg2 []*models.Product
-	}
-	SortProductsByTop3TerpsStub        func(workflow.WorkflowParams, []*models.Product, [3]string)
-	sortProductsByTop3TerpsMutex       sync.RWMutex
-	sortProductsByTop3TerpsArgsForCall []struct {
-		arg1 workflow.WorkflowParams
-		arg2 []*models.Product
-		arg3 [3]string
 	}
 	TerpenesStub        func(workflow.WorkflowParams) ([]*models.Terpene, error)
 	terpenesMutex       sync.RWMutex
@@ -433,25 +294,24 @@ func (fake *FakeWorkflow) CategoriesReturnsOnCall(i int, result1 []string, resul
 	}{result1, result2}
 }
 
-func (fake *FakeWorkflow) Filter(arg1 workflow.WorkflowParams, arg2 *transformation.FilterParams, arg3 []*models.Product) ([]*models.Product, error) {
-	var arg3Copy []*models.Product
-	if arg3 != nil {
-		arg3Copy = make([]*models.Product, len(arg3))
-		copy(arg3Copy, arg3)
+func (fake *FakeWorkflow) Filter(arg1 *transformation.FilterParams, arg2 []*models.Product) ([]*models.Product, error) {
+	var arg2Copy []*models.Product
+	if arg2 != nil {
+		arg2Copy = make([]*models.Product, len(arg2))
+		copy(arg2Copy, arg2)
 	}
 	fake.filterMutex.Lock()
 	ret, specificReturn := fake.filterReturnsOnCall[len(fake.filterArgsForCall)]
 	fake.filterArgsForCall = append(fake.filterArgsForCall, struct {
-		arg1 workflow.WorkflowParams
-		arg2 *transformation.FilterParams
-		arg3 []*models.Product
-	}{arg1, arg2, arg3Copy})
+		arg1 *transformation.FilterParams
+		arg2 []*models.Product
+	}{arg1, arg2Copy})
 	stub := fake.FilterStub
 	fakeReturns := fake.filterReturns
-	fake.recordInvocation("Filter", []interface{}{arg1, arg2, arg3Copy})
+	fake.recordInvocation("Filter", []interface{}{arg1, arg2Copy})
 	fake.filterMutex.Unlock()
 	if stub != nil {
-		return stub(arg1, arg2, arg3)
+		return stub(arg1, arg2)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
@@ -465,17 +325,17 @@ func (fake *FakeWorkflow) FilterCallCount() int {
 	return len(fake.filterArgsForCall)
 }
 
-func (fake *FakeWorkflow) FilterCalls(stub func(workflow.WorkflowParams, *transformation.FilterParams, []*models.Product) ([]*models.Product, error)) {
+func (fake *FakeWorkflow) FilterCalls(stub func(*transformation.FilterParams, []*models.Product) ([]*models.Product, error)) {
 	fake.filterMutex.Lock()
 	defer fake.filterMutex.Unlock()
 	fake.FilterStub = stub
 }
 
-func (fake *FakeWorkflow) FilterArgsForCall(i int) (workflow.WorkflowParams, *transformation.FilterParams, []*models.Product) {
+func (fake *FakeWorkflow) FilterArgsForCall(i int) (*transformation.FilterParams, []*models.Product) {
 	fake.filterMutex.RLock()
 	defer fake.filterMutex.RUnlock()
 	argsForCall := fake.filterArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
+	return argsForCall.arg1, argsForCall.arg2
 }
 
 func (fake *FakeWorkflow) FilterReturns(result1 []*models.Product, result2 error) {
@@ -858,453 +718,6 @@ func (fake *FakeWorkflow) ProductsReturnsOnCall(i int, result1 []*models.Product
 	}{result1, result2}
 }
 
-func (fake *FakeWorkflow) ProductsExcludingBrands(arg1 workflow.WorkflowParams, arg2 []*models.Product, arg3 []string) ([]*models.Product, error) {
-	var arg2Copy []*models.Product
-	if arg2 != nil {
-		arg2Copy = make([]*models.Product, len(arg2))
-		copy(arg2Copy, arg2)
-	}
-	var arg3Copy []string
-	if arg3 != nil {
-		arg3Copy = make([]string, len(arg3))
-		copy(arg3Copy, arg3)
-	}
-	fake.productsExcludingBrandsMutex.Lock()
-	ret, specificReturn := fake.productsExcludingBrandsReturnsOnCall[len(fake.productsExcludingBrandsArgsForCall)]
-	fake.productsExcludingBrandsArgsForCall = append(fake.productsExcludingBrandsArgsForCall, struct {
-		arg1 workflow.WorkflowParams
-		arg2 []*models.Product
-		arg3 []string
-	}{arg1, arg2Copy, arg3Copy})
-	stub := fake.ProductsExcludingBrandsStub
-	fakeReturns := fake.productsExcludingBrandsReturns
-	fake.recordInvocation("ProductsExcludingBrands", []interface{}{arg1, arg2Copy, arg3Copy})
-	fake.productsExcludingBrandsMutex.Unlock()
-	if stub != nil {
-		return stub(arg1, arg2, arg3)
-	}
-	if specificReturn {
-		return ret.result1, ret.result2
-	}
-	return fakeReturns.result1, fakeReturns.result2
-}
-
-func (fake *FakeWorkflow) ProductsExcludingBrandsCallCount() int {
-	fake.productsExcludingBrandsMutex.RLock()
-	defer fake.productsExcludingBrandsMutex.RUnlock()
-	return len(fake.productsExcludingBrandsArgsForCall)
-}
-
-func (fake *FakeWorkflow) ProductsExcludingBrandsCalls(stub func(workflow.WorkflowParams, []*models.Product, []string) ([]*models.Product, error)) {
-	fake.productsExcludingBrandsMutex.Lock()
-	defer fake.productsExcludingBrandsMutex.Unlock()
-	fake.ProductsExcludingBrandsStub = stub
-}
-
-func (fake *FakeWorkflow) ProductsExcludingBrandsArgsForCall(i int) (workflow.WorkflowParams, []*models.Product, []string) {
-	fake.productsExcludingBrandsMutex.RLock()
-	defer fake.productsExcludingBrandsMutex.RUnlock()
-	argsForCall := fake.productsExcludingBrandsArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
-}
-
-func (fake *FakeWorkflow) ProductsExcludingBrandsReturns(result1 []*models.Product, result2 error) {
-	fake.productsExcludingBrandsMutex.Lock()
-	defer fake.productsExcludingBrandsMutex.Unlock()
-	fake.ProductsExcludingBrandsStub = nil
-	fake.productsExcludingBrandsReturns = struct {
-		result1 []*models.Product
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeWorkflow) ProductsExcludingBrandsReturnsOnCall(i int, result1 []*models.Product, result2 error) {
-	fake.productsExcludingBrandsMutex.Lock()
-	defer fake.productsExcludingBrandsMutex.Unlock()
-	fake.ProductsExcludingBrandsStub = nil
-	if fake.productsExcludingBrandsReturnsOnCall == nil {
-		fake.productsExcludingBrandsReturnsOnCall = make(map[int]struct {
-			result1 []*models.Product
-			result2 error
-		})
-	}
-	fake.productsExcludingBrandsReturnsOnCall[i] = struct {
-		result1 []*models.Product
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeWorkflow) ProductsExcludingTerms(arg1 workflow.WorkflowParams, arg2 []*models.Product, arg3 []string) ([]*models.Product, error) {
-	var arg2Copy []*models.Product
-	if arg2 != nil {
-		arg2Copy = make([]*models.Product, len(arg2))
-		copy(arg2Copy, arg2)
-	}
-	var arg3Copy []string
-	if arg3 != nil {
-		arg3Copy = make([]string, len(arg3))
-		copy(arg3Copy, arg3)
-	}
-	fake.productsExcludingTermsMutex.Lock()
-	ret, specificReturn := fake.productsExcludingTermsReturnsOnCall[len(fake.productsExcludingTermsArgsForCall)]
-	fake.productsExcludingTermsArgsForCall = append(fake.productsExcludingTermsArgsForCall, struct {
-		arg1 workflow.WorkflowParams
-		arg2 []*models.Product
-		arg3 []string
-	}{arg1, arg2Copy, arg3Copy})
-	stub := fake.ProductsExcludingTermsStub
-	fakeReturns := fake.productsExcludingTermsReturns
-	fake.recordInvocation("ProductsExcludingTerms", []interface{}{arg1, arg2Copy, arg3Copy})
-	fake.productsExcludingTermsMutex.Unlock()
-	if stub != nil {
-		return stub(arg1, arg2, arg3)
-	}
-	if specificReturn {
-		return ret.result1, ret.result2
-	}
-	return fakeReturns.result1, fakeReturns.result2
-}
-
-func (fake *FakeWorkflow) ProductsExcludingTermsCallCount() int {
-	fake.productsExcludingTermsMutex.RLock()
-	defer fake.productsExcludingTermsMutex.RUnlock()
-	return len(fake.productsExcludingTermsArgsForCall)
-}
-
-func (fake *FakeWorkflow) ProductsExcludingTermsCalls(stub func(workflow.WorkflowParams, []*models.Product, []string) ([]*models.Product, error)) {
-	fake.productsExcludingTermsMutex.Lock()
-	defer fake.productsExcludingTermsMutex.Unlock()
-	fake.ProductsExcludingTermsStub = stub
-}
-
-func (fake *FakeWorkflow) ProductsExcludingTermsArgsForCall(i int) (workflow.WorkflowParams, []*models.Product, []string) {
-	fake.productsExcludingTermsMutex.RLock()
-	defer fake.productsExcludingTermsMutex.RUnlock()
-	argsForCall := fake.productsExcludingTermsArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
-}
-
-func (fake *FakeWorkflow) ProductsExcludingTermsReturns(result1 []*models.Product, result2 error) {
-	fake.productsExcludingTermsMutex.Lock()
-	defer fake.productsExcludingTermsMutex.Unlock()
-	fake.ProductsExcludingTermsStub = nil
-	fake.productsExcludingTermsReturns = struct {
-		result1 []*models.Product
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeWorkflow) ProductsExcludingTermsReturnsOnCall(i int, result1 []*models.Product, result2 error) {
-	fake.productsExcludingTermsMutex.Lock()
-	defer fake.productsExcludingTermsMutex.Unlock()
-	fake.ProductsExcludingTermsStub = nil
-	if fake.productsExcludingTermsReturnsOnCall == nil {
-		fake.productsExcludingTermsReturnsOnCall = make(map[int]struct {
-			result1 []*models.Product
-			result2 error
-		})
-	}
-	fake.productsExcludingTermsReturnsOnCall[i] = struct {
-		result1 []*models.Product
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeWorkflow) ProductsForBrands(arg1 workflow.WorkflowParams, arg2 []*models.Product, arg3 []string) ([]*models.Product, error) {
-	var arg2Copy []*models.Product
-	if arg2 != nil {
-		arg2Copy = make([]*models.Product, len(arg2))
-		copy(arg2Copy, arg2)
-	}
-	var arg3Copy []string
-	if arg3 != nil {
-		arg3Copy = make([]string, len(arg3))
-		copy(arg3Copy, arg3)
-	}
-	fake.productsForBrandsMutex.Lock()
-	ret, specificReturn := fake.productsForBrandsReturnsOnCall[len(fake.productsForBrandsArgsForCall)]
-	fake.productsForBrandsArgsForCall = append(fake.productsForBrandsArgsForCall, struct {
-		arg1 workflow.WorkflowParams
-		arg2 []*models.Product
-		arg3 []string
-	}{arg1, arg2Copy, arg3Copy})
-	stub := fake.ProductsForBrandsStub
-	fakeReturns := fake.productsForBrandsReturns
-	fake.recordInvocation("ProductsForBrands", []interface{}{arg1, arg2Copy, arg3Copy})
-	fake.productsForBrandsMutex.Unlock()
-	if stub != nil {
-		return stub(arg1, arg2, arg3)
-	}
-	if specificReturn {
-		return ret.result1, ret.result2
-	}
-	return fakeReturns.result1, fakeReturns.result2
-}
-
-func (fake *FakeWorkflow) ProductsForBrandsCallCount() int {
-	fake.productsForBrandsMutex.RLock()
-	defer fake.productsForBrandsMutex.RUnlock()
-	return len(fake.productsForBrandsArgsForCall)
-}
-
-func (fake *FakeWorkflow) ProductsForBrandsCalls(stub func(workflow.WorkflowParams, []*models.Product, []string) ([]*models.Product, error)) {
-	fake.productsForBrandsMutex.Lock()
-	defer fake.productsForBrandsMutex.Unlock()
-	fake.ProductsForBrandsStub = stub
-}
-
-func (fake *FakeWorkflow) ProductsForBrandsArgsForCall(i int) (workflow.WorkflowParams, []*models.Product, []string) {
-	fake.productsForBrandsMutex.RLock()
-	defer fake.productsForBrandsMutex.RUnlock()
-	argsForCall := fake.productsForBrandsArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
-}
-
-func (fake *FakeWorkflow) ProductsForBrandsReturns(result1 []*models.Product, result2 error) {
-	fake.productsForBrandsMutex.Lock()
-	defer fake.productsForBrandsMutex.Unlock()
-	fake.ProductsForBrandsStub = nil
-	fake.productsForBrandsReturns = struct {
-		result1 []*models.Product
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeWorkflow) ProductsForBrandsReturnsOnCall(i int, result1 []*models.Product, result2 error) {
-	fake.productsForBrandsMutex.Lock()
-	defer fake.productsForBrandsMutex.Unlock()
-	fake.ProductsForBrandsStub = nil
-	if fake.productsForBrandsReturnsOnCall == nil {
-		fake.productsForBrandsReturnsOnCall = make(map[int]struct {
-			result1 []*models.Product
-			result2 error
-		})
-	}
-	fake.productsForBrandsReturnsOnCall[i] = struct {
-		result1 []*models.Product
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeWorkflow) ProductsForPriceRange(arg1 workflow.WorkflowParams, arg2 []*models.Product, arg3 float64, arg4 float64) ([]*models.Product, error) {
-	var arg2Copy []*models.Product
-	if arg2 != nil {
-		arg2Copy = make([]*models.Product, len(arg2))
-		copy(arg2Copy, arg2)
-	}
-	fake.productsForPriceRangeMutex.Lock()
-	ret, specificReturn := fake.productsForPriceRangeReturnsOnCall[len(fake.productsForPriceRangeArgsForCall)]
-	fake.productsForPriceRangeArgsForCall = append(fake.productsForPriceRangeArgsForCall, struct {
-		arg1 workflow.WorkflowParams
-		arg2 []*models.Product
-		arg3 float64
-		arg4 float64
-	}{arg1, arg2Copy, arg3, arg4})
-	stub := fake.ProductsForPriceRangeStub
-	fakeReturns := fake.productsForPriceRangeReturns
-	fake.recordInvocation("ProductsForPriceRange", []interface{}{arg1, arg2Copy, arg3, arg4})
-	fake.productsForPriceRangeMutex.Unlock()
-	if stub != nil {
-		return stub(arg1, arg2, arg3, arg4)
-	}
-	if specificReturn {
-		return ret.result1, ret.result2
-	}
-	return fakeReturns.result1, fakeReturns.result2
-}
-
-func (fake *FakeWorkflow) ProductsForPriceRangeCallCount() int {
-	fake.productsForPriceRangeMutex.RLock()
-	defer fake.productsForPriceRangeMutex.RUnlock()
-	return len(fake.productsForPriceRangeArgsForCall)
-}
-
-func (fake *FakeWorkflow) ProductsForPriceRangeCalls(stub func(workflow.WorkflowParams, []*models.Product, float64, float64) ([]*models.Product, error)) {
-	fake.productsForPriceRangeMutex.Lock()
-	defer fake.productsForPriceRangeMutex.Unlock()
-	fake.ProductsForPriceRangeStub = stub
-}
-
-func (fake *FakeWorkflow) ProductsForPriceRangeArgsForCall(i int) (workflow.WorkflowParams, []*models.Product, float64, float64) {
-	fake.productsForPriceRangeMutex.RLock()
-	defer fake.productsForPriceRangeMutex.RUnlock()
-	argsForCall := fake.productsForPriceRangeArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3, argsForCall.arg4
-}
-
-func (fake *FakeWorkflow) ProductsForPriceRangeReturns(result1 []*models.Product, result2 error) {
-	fake.productsForPriceRangeMutex.Lock()
-	defer fake.productsForPriceRangeMutex.Unlock()
-	fake.ProductsForPriceRangeStub = nil
-	fake.productsForPriceRangeReturns = struct {
-		result1 []*models.Product
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeWorkflow) ProductsForPriceRangeReturnsOnCall(i int, result1 []*models.Product, result2 error) {
-	fake.productsForPriceRangeMutex.Lock()
-	defer fake.productsForPriceRangeMutex.Unlock()
-	fake.ProductsForPriceRangeStub = nil
-	if fake.productsForPriceRangeReturnsOnCall == nil {
-		fake.productsForPriceRangeReturnsOnCall = make(map[int]struct {
-			result1 []*models.Product
-			result2 error
-		})
-	}
-	fake.productsForPriceRangeReturnsOnCall[i] = struct {
-		result1 []*models.Product
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeWorkflow) ProductsForSubCategory(arg1 workflow.WorkflowParams, arg2 []*models.Product, arg3 string) ([]*models.Product, error) {
-	var arg2Copy []*models.Product
-	if arg2 != nil {
-		arg2Copy = make([]*models.Product, len(arg2))
-		copy(arg2Copy, arg2)
-	}
-	fake.productsForSubCategoryMutex.Lock()
-	ret, specificReturn := fake.productsForSubCategoryReturnsOnCall[len(fake.productsForSubCategoryArgsForCall)]
-	fake.productsForSubCategoryArgsForCall = append(fake.productsForSubCategoryArgsForCall, struct {
-		arg1 workflow.WorkflowParams
-		arg2 []*models.Product
-		arg3 string
-	}{arg1, arg2Copy, arg3})
-	stub := fake.ProductsForSubCategoryStub
-	fakeReturns := fake.productsForSubCategoryReturns
-	fake.recordInvocation("ProductsForSubCategory", []interface{}{arg1, arg2Copy, arg3})
-	fake.productsForSubCategoryMutex.Unlock()
-	if stub != nil {
-		return stub(arg1, arg2, arg3)
-	}
-	if specificReturn {
-		return ret.result1, ret.result2
-	}
-	return fakeReturns.result1, fakeReturns.result2
-}
-
-func (fake *FakeWorkflow) ProductsForSubCategoryCallCount() int {
-	fake.productsForSubCategoryMutex.RLock()
-	defer fake.productsForSubCategoryMutex.RUnlock()
-	return len(fake.productsForSubCategoryArgsForCall)
-}
-
-func (fake *FakeWorkflow) ProductsForSubCategoryCalls(stub func(workflow.WorkflowParams, []*models.Product, string) ([]*models.Product, error)) {
-	fake.productsForSubCategoryMutex.Lock()
-	defer fake.productsForSubCategoryMutex.Unlock()
-	fake.ProductsForSubCategoryStub = stub
-}
-
-func (fake *FakeWorkflow) ProductsForSubCategoryArgsForCall(i int) (workflow.WorkflowParams, []*models.Product, string) {
-	fake.productsForSubCategoryMutex.RLock()
-	defer fake.productsForSubCategoryMutex.RUnlock()
-	argsForCall := fake.productsForSubCategoryArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
-}
-
-func (fake *FakeWorkflow) ProductsForSubCategoryReturns(result1 []*models.Product, result2 error) {
-	fake.productsForSubCategoryMutex.Lock()
-	defer fake.productsForSubCategoryMutex.Unlock()
-	fake.ProductsForSubCategoryStub = nil
-	fake.productsForSubCategoryReturns = struct {
-		result1 []*models.Product
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeWorkflow) ProductsForSubCategoryReturnsOnCall(i int, result1 []*models.Product, result2 error) {
-	fake.productsForSubCategoryMutex.Lock()
-	defer fake.productsForSubCategoryMutex.Unlock()
-	fake.ProductsForSubCategoryStub = nil
-	if fake.productsForSubCategoryReturnsOnCall == nil {
-		fake.productsForSubCategoryReturnsOnCall = make(map[int]struct {
-			result1 []*models.Product
-			result2 error
-		})
-	}
-	fake.productsForSubCategoryReturnsOnCall[i] = struct {
-		result1 []*models.Product
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeWorkflow) ProductsForVariants(arg1 workflow.WorkflowParams, arg2 []*models.Product, arg3 []string) ([]*models.Product, error) {
-	var arg2Copy []*models.Product
-	if arg2 != nil {
-		arg2Copy = make([]*models.Product, len(arg2))
-		copy(arg2Copy, arg2)
-	}
-	var arg3Copy []string
-	if arg3 != nil {
-		arg3Copy = make([]string, len(arg3))
-		copy(arg3Copy, arg3)
-	}
-	fake.productsForVariantsMutex.Lock()
-	ret, specificReturn := fake.productsForVariantsReturnsOnCall[len(fake.productsForVariantsArgsForCall)]
-	fake.productsForVariantsArgsForCall = append(fake.productsForVariantsArgsForCall, struct {
-		arg1 workflow.WorkflowParams
-		arg2 []*models.Product
-		arg3 []string
-	}{arg1, arg2Copy, arg3Copy})
-	stub := fake.ProductsForVariantsStub
-	fakeReturns := fake.productsForVariantsReturns
-	fake.recordInvocation("ProductsForVariants", []interface{}{arg1, arg2Copy, arg3Copy})
-	fake.productsForVariantsMutex.Unlock()
-	if stub != nil {
-		return stub(arg1, arg2, arg3)
-	}
-	if specificReturn {
-		return ret.result1, ret.result2
-	}
-	return fakeReturns.result1, fakeReturns.result2
-}
-
-func (fake *FakeWorkflow) ProductsForVariantsCallCount() int {
-	fake.productsForVariantsMutex.RLock()
-	defer fake.productsForVariantsMutex.RUnlock()
-	return len(fake.productsForVariantsArgsForCall)
-}
-
-func (fake *FakeWorkflow) ProductsForVariantsCalls(stub func(workflow.WorkflowParams, []*models.Product, []string) ([]*models.Product, error)) {
-	fake.productsForVariantsMutex.Lock()
-	defer fake.productsForVariantsMutex.Unlock()
-	fake.ProductsForVariantsStub = stub
-}
-
-func (fake *FakeWorkflow) ProductsForVariantsArgsForCall(i int) (workflow.WorkflowParams, []*models.Product, []string) {
-	fake.productsForVariantsMutex.RLock()
-	defer fake.productsForVariantsMutex.RUnlock()
-	argsForCall := fake.productsForVariantsArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
-}
-
-func (fake *FakeWorkflow) ProductsForVariantsReturns(result1 []*models.Product, result2 error) {
-	fake.productsForVariantsMutex.Lock()
-	defer fake.productsForVariantsMutex.Unlock()
-	fake.ProductsForVariantsStub = nil
-	fake.productsForVariantsReturns = struct {
-		result1 []*models.Product
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeWorkflow) ProductsForVariantsReturnsOnCall(i int, result1 []*models.Product, result2 error) {
-	fake.productsForVariantsMutex.Lock()
-	defer fake.productsForVariantsMutex.Unlock()
-	fake.ProductsForVariantsStub = nil
-	if fake.productsForVariantsReturnsOnCall == nil {
-		fake.productsForVariantsReturnsOnCall = make(map[int]struct {
-			result1 []*models.Product
-			result2 error
-		})
-	}
-	fake.productsForVariantsReturnsOnCall[i] = struct {
-		result1 []*models.Product
-		result2 error
-	}{result1, result2}
-}
-
 func (fake *FakeWorkflow) ProductsInCategory(arg1 workflow.WorkflowParams, arg2 string) ([]*models.Product, error) {
 	fake.productsInCategoryMutex.Lock()
 	ret, specificReturn := fake.productsInCategoryReturnsOnCall[len(fake.productsInCategoryArgsForCall)]
@@ -1370,101 +783,24 @@ func (fake *FakeWorkflow) ProductsInCategoryReturnsOnCall(i int, result1 []*mode
 	}{result1, result2}
 }
 
-func (fake *FakeWorkflow) ProductsIncludingTerms(arg1 workflow.WorkflowParams, arg2 []*models.Product, arg3 []string) ([]*models.Product, error) {
+func (fake *FakeWorkflow) Sort(arg1 *transformation.SortParams, arg2 []*models.Product) error {
 	var arg2Copy []*models.Product
 	if arg2 != nil {
 		arg2Copy = make([]*models.Product, len(arg2))
 		copy(arg2Copy, arg2)
 	}
-	var arg3Copy []string
-	if arg3 != nil {
-		arg3Copy = make([]string, len(arg3))
-		copy(arg3Copy, arg3)
-	}
-	fake.productsIncludingTermsMutex.Lock()
-	ret, specificReturn := fake.productsIncludingTermsReturnsOnCall[len(fake.productsIncludingTermsArgsForCall)]
-	fake.productsIncludingTermsArgsForCall = append(fake.productsIncludingTermsArgsForCall, struct {
-		arg1 workflow.WorkflowParams
-		arg2 []*models.Product
-		arg3 []string
-	}{arg1, arg2Copy, arg3Copy})
-	stub := fake.ProductsIncludingTermsStub
-	fakeReturns := fake.productsIncludingTermsReturns
-	fake.recordInvocation("ProductsIncludingTerms", []interface{}{arg1, arg2Copy, arg3Copy})
-	fake.productsIncludingTermsMutex.Unlock()
-	if stub != nil {
-		return stub(arg1, arg2, arg3)
-	}
-	if specificReturn {
-		return ret.result1, ret.result2
-	}
-	return fakeReturns.result1, fakeReturns.result2
-}
-
-func (fake *FakeWorkflow) ProductsIncludingTermsCallCount() int {
-	fake.productsIncludingTermsMutex.RLock()
-	defer fake.productsIncludingTermsMutex.RUnlock()
-	return len(fake.productsIncludingTermsArgsForCall)
-}
-
-func (fake *FakeWorkflow) ProductsIncludingTermsCalls(stub func(workflow.WorkflowParams, []*models.Product, []string) ([]*models.Product, error)) {
-	fake.productsIncludingTermsMutex.Lock()
-	defer fake.productsIncludingTermsMutex.Unlock()
-	fake.ProductsIncludingTermsStub = stub
-}
-
-func (fake *FakeWorkflow) ProductsIncludingTermsArgsForCall(i int) (workflow.WorkflowParams, []*models.Product, []string) {
-	fake.productsIncludingTermsMutex.RLock()
-	defer fake.productsIncludingTermsMutex.RUnlock()
-	argsForCall := fake.productsIncludingTermsArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
-}
-
-func (fake *FakeWorkflow) ProductsIncludingTermsReturns(result1 []*models.Product, result2 error) {
-	fake.productsIncludingTermsMutex.Lock()
-	defer fake.productsIncludingTermsMutex.Unlock()
-	fake.ProductsIncludingTermsStub = nil
-	fake.productsIncludingTermsReturns = struct {
-		result1 []*models.Product
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeWorkflow) ProductsIncludingTermsReturnsOnCall(i int, result1 []*models.Product, result2 error) {
-	fake.productsIncludingTermsMutex.Lock()
-	defer fake.productsIncludingTermsMutex.Unlock()
-	fake.ProductsIncludingTermsStub = nil
-	if fake.productsIncludingTermsReturnsOnCall == nil {
-		fake.productsIncludingTermsReturnsOnCall = make(map[int]struct {
-			result1 []*models.Product
-			result2 error
-		})
-	}
-	fake.productsIncludingTermsReturnsOnCall[i] = struct {
-		result1 []*models.Product
-		result2 error
-	}{result1, result2}
-}
-
-func (fake *FakeWorkflow) Sort(arg1 workflow.WorkflowParams, arg2 *transformation.SortParams, arg3 []*models.Product) error {
-	var arg3Copy []*models.Product
-	if arg3 != nil {
-		arg3Copy = make([]*models.Product, len(arg3))
-		copy(arg3Copy, arg3)
-	}
 	fake.sortMutex.Lock()
 	ret, specificReturn := fake.sortReturnsOnCall[len(fake.sortArgsForCall)]
 	fake.sortArgsForCall = append(fake.sortArgsForCall, struct {
-		arg1 workflow.WorkflowParams
-		arg2 *transformation.SortParams
-		arg3 []*models.Product
-	}{arg1, arg2, arg3Copy})
+		arg1 *transformation.SortParams
+		arg2 []*models.Product
+	}{arg1, arg2Copy})
 	stub := fake.SortStub
 	fakeReturns := fake.sortReturns
-	fake.recordInvocation("Sort", []interface{}{arg1, arg2, arg3Copy})
+	fake.recordInvocation("Sort", []interface{}{arg1, arg2Copy})
 	fake.sortMutex.Unlock()
 	if stub != nil {
-		return stub(arg1, arg2, arg3)
+		return stub(arg1, arg2)
 	}
 	if specificReturn {
 		return ret.result1
@@ -1478,17 +814,17 @@ func (fake *FakeWorkflow) SortCallCount() int {
 	return len(fake.sortArgsForCall)
 }
 
-func (fake *FakeWorkflow) SortCalls(stub func(workflow.WorkflowParams, *transformation.SortParams, []*models.Product) error) {
+func (fake *FakeWorkflow) SortCalls(stub func(*transformation.SortParams, []*models.Product) error) {
 	fake.sortMutex.Lock()
 	defer fake.sortMutex.Unlock()
 	fake.SortStub = stub
 }
 
-func (fake *FakeWorkflow) SortArgsForCall(i int) (workflow.WorkflowParams, *transformation.SortParams, []*models.Product) {
+func (fake *FakeWorkflow) SortArgsForCall(i int) (*transformation.SortParams, []*models.Product) {
 	fake.sortMutex.RLock()
 	defer fake.sortMutex.RUnlock()
 	argsForCall := fake.sortArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
+	return argsForCall.arg1, argsForCall.arg2
 }
 
 func (fake *FakeWorkflow) SortReturns(result1 error) {
@@ -1512,197 +848,6 @@ func (fake *FakeWorkflow) SortReturnsOnCall(i int, result1 error) {
 	fake.sortReturnsOnCall[i] = struct {
 		result1 error
 	}{result1}
-}
-
-func (fake *FakeWorkflow) SortProductsByPriceAsc(arg1 workflow.WorkflowParams, arg2 []*models.Product) {
-	var arg2Copy []*models.Product
-	if arg2 != nil {
-		arg2Copy = make([]*models.Product, len(arg2))
-		copy(arg2Copy, arg2)
-	}
-	fake.sortProductsByPriceAscMutex.Lock()
-	fake.sortProductsByPriceAscArgsForCall = append(fake.sortProductsByPriceAscArgsForCall, struct {
-		arg1 workflow.WorkflowParams
-		arg2 []*models.Product
-	}{arg1, arg2Copy})
-	stub := fake.SortProductsByPriceAscStub
-	fake.recordInvocation("SortProductsByPriceAsc", []interface{}{arg1, arg2Copy})
-	fake.sortProductsByPriceAscMutex.Unlock()
-	if stub != nil {
-		fake.SortProductsByPriceAscStub(arg1, arg2)
-	}
-}
-
-func (fake *FakeWorkflow) SortProductsByPriceAscCallCount() int {
-	fake.sortProductsByPriceAscMutex.RLock()
-	defer fake.sortProductsByPriceAscMutex.RUnlock()
-	return len(fake.sortProductsByPriceAscArgsForCall)
-}
-
-func (fake *FakeWorkflow) SortProductsByPriceAscCalls(stub func(workflow.WorkflowParams, []*models.Product)) {
-	fake.sortProductsByPriceAscMutex.Lock()
-	defer fake.sortProductsByPriceAscMutex.Unlock()
-	fake.SortProductsByPriceAscStub = stub
-}
-
-func (fake *FakeWorkflow) SortProductsByPriceAscArgsForCall(i int) (workflow.WorkflowParams, []*models.Product) {
-	fake.sortProductsByPriceAscMutex.RLock()
-	defer fake.sortProductsByPriceAscMutex.RUnlock()
-	argsForCall := fake.sortProductsByPriceAscArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2
-}
-
-func (fake *FakeWorkflow) SortProductsByPriceDesc(arg1 workflow.WorkflowParams, arg2 []*models.Product) {
-	var arg2Copy []*models.Product
-	if arg2 != nil {
-		arg2Copy = make([]*models.Product, len(arg2))
-		copy(arg2Copy, arg2)
-	}
-	fake.sortProductsByPriceDescMutex.Lock()
-	fake.sortProductsByPriceDescArgsForCall = append(fake.sortProductsByPriceDescArgsForCall, struct {
-		arg1 workflow.WorkflowParams
-		arg2 []*models.Product
-	}{arg1, arg2Copy})
-	stub := fake.SortProductsByPriceDescStub
-	fake.recordInvocation("SortProductsByPriceDesc", []interface{}{arg1, arg2Copy})
-	fake.sortProductsByPriceDescMutex.Unlock()
-	if stub != nil {
-		fake.SortProductsByPriceDescStub(arg1, arg2)
-	}
-}
-
-func (fake *FakeWorkflow) SortProductsByPriceDescCallCount() int {
-	fake.sortProductsByPriceDescMutex.RLock()
-	defer fake.sortProductsByPriceDescMutex.RUnlock()
-	return len(fake.sortProductsByPriceDescArgsForCall)
-}
-
-func (fake *FakeWorkflow) SortProductsByPriceDescCalls(stub func(workflow.WorkflowParams, []*models.Product)) {
-	fake.sortProductsByPriceDescMutex.Lock()
-	defer fake.sortProductsByPriceDescMutex.Unlock()
-	fake.SortProductsByPriceDescStub = stub
-}
-
-func (fake *FakeWorkflow) SortProductsByPriceDescArgsForCall(i int) (workflow.WorkflowParams, []*models.Product) {
-	fake.sortProductsByPriceDescMutex.RLock()
-	defer fake.sortProductsByPriceDescMutex.RUnlock()
-	argsForCall := fake.sortProductsByPriceDescArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2
-}
-
-func (fake *FakeWorkflow) SortProductsByTHCAsc(arg1 workflow.WorkflowParams, arg2 []*models.Product) {
-	var arg2Copy []*models.Product
-	if arg2 != nil {
-		arg2Copy = make([]*models.Product, len(arg2))
-		copy(arg2Copy, arg2)
-	}
-	fake.sortProductsByTHCAscMutex.Lock()
-	fake.sortProductsByTHCAscArgsForCall = append(fake.sortProductsByTHCAscArgsForCall, struct {
-		arg1 workflow.WorkflowParams
-		arg2 []*models.Product
-	}{arg1, arg2Copy})
-	stub := fake.SortProductsByTHCAscStub
-	fake.recordInvocation("SortProductsByTHCAsc", []interface{}{arg1, arg2Copy})
-	fake.sortProductsByTHCAscMutex.Unlock()
-	if stub != nil {
-		fake.SortProductsByTHCAscStub(arg1, arg2)
-	}
-}
-
-func (fake *FakeWorkflow) SortProductsByTHCAscCallCount() int {
-	fake.sortProductsByTHCAscMutex.RLock()
-	defer fake.sortProductsByTHCAscMutex.RUnlock()
-	return len(fake.sortProductsByTHCAscArgsForCall)
-}
-
-func (fake *FakeWorkflow) SortProductsByTHCAscCalls(stub func(workflow.WorkflowParams, []*models.Product)) {
-	fake.sortProductsByTHCAscMutex.Lock()
-	defer fake.sortProductsByTHCAscMutex.Unlock()
-	fake.SortProductsByTHCAscStub = stub
-}
-
-func (fake *FakeWorkflow) SortProductsByTHCAscArgsForCall(i int) (workflow.WorkflowParams, []*models.Product) {
-	fake.sortProductsByTHCAscMutex.RLock()
-	defer fake.sortProductsByTHCAscMutex.RUnlock()
-	argsForCall := fake.sortProductsByTHCAscArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2
-}
-
-func (fake *FakeWorkflow) SortProductsByTHCDesc(arg1 workflow.WorkflowParams, arg2 []*models.Product) {
-	var arg2Copy []*models.Product
-	if arg2 != nil {
-		arg2Copy = make([]*models.Product, len(arg2))
-		copy(arg2Copy, arg2)
-	}
-	fake.sortProductsByTHCDescMutex.Lock()
-	fake.sortProductsByTHCDescArgsForCall = append(fake.sortProductsByTHCDescArgsForCall, struct {
-		arg1 workflow.WorkflowParams
-		arg2 []*models.Product
-	}{arg1, arg2Copy})
-	stub := fake.SortProductsByTHCDescStub
-	fake.recordInvocation("SortProductsByTHCDesc", []interface{}{arg1, arg2Copy})
-	fake.sortProductsByTHCDescMutex.Unlock()
-	if stub != nil {
-		fake.SortProductsByTHCDescStub(arg1, arg2)
-	}
-}
-
-func (fake *FakeWorkflow) SortProductsByTHCDescCallCount() int {
-	fake.sortProductsByTHCDescMutex.RLock()
-	defer fake.sortProductsByTHCDescMutex.RUnlock()
-	return len(fake.sortProductsByTHCDescArgsForCall)
-}
-
-func (fake *FakeWorkflow) SortProductsByTHCDescCalls(stub func(workflow.WorkflowParams, []*models.Product)) {
-	fake.sortProductsByTHCDescMutex.Lock()
-	defer fake.sortProductsByTHCDescMutex.Unlock()
-	fake.SortProductsByTHCDescStub = stub
-}
-
-func (fake *FakeWorkflow) SortProductsByTHCDescArgsForCall(i int) (workflow.WorkflowParams, []*models.Product) {
-	fake.sortProductsByTHCDescMutex.RLock()
-	defer fake.sortProductsByTHCDescMutex.RUnlock()
-	argsForCall := fake.sortProductsByTHCDescArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2
-}
-
-func (fake *FakeWorkflow) SortProductsByTop3Terps(arg1 workflow.WorkflowParams, arg2 []*models.Product, arg3 [3]string) {
-	var arg2Copy []*models.Product
-	if arg2 != nil {
-		arg2Copy = make([]*models.Product, len(arg2))
-		copy(arg2Copy, arg2)
-	}
-	fake.sortProductsByTop3TerpsMutex.Lock()
-	fake.sortProductsByTop3TerpsArgsForCall = append(fake.sortProductsByTop3TerpsArgsForCall, struct {
-		arg1 workflow.WorkflowParams
-		arg2 []*models.Product
-		arg3 [3]string
-	}{arg1, arg2Copy, arg3})
-	stub := fake.SortProductsByTop3TerpsStub
-	fake.recordInvocation("SortProductsByTop3Terps", []interface{}{arg1, arg2Copy, arg3})
-	fake.sortProductsByTop3TerpsMutex.Unlock()
-	if stub != nil {
-		fake.SortProductsByTop3TerpsStub(arg1, arg2, arg3)
-	}
-}
-
-func (fake *FakeWorkflow) SortProductsByTop3TerpsCallCount() int {
-	fake.sortProductsByTop3TerpsMutex.RLock()
-	defer fake.sortProductsByTop3TerpsMutex.RUnlock()
-	return len(fake.sortProductsByTop3TerpsArgsForCall)
-}
-
-func (fake *FakeWorkflow) SortProductsByTop3TerpsCalls(stub func(workflow.WorkflowParams, []*models.Product, [3]string)) {
-	fake.sortProductsByTop3TerpsMutex.Lock()
-	defer fake.sortProductsByTop3TerpsMutex.Unlock()
-	fake.SortProductsByTop3TerpsStub = stub
-}
-
-func (fake *FakeWorkflow) SortProductsByTop3TerpsArgsForCall(i int) (workflow.WorkflowParams, []*models.Product, [3]string) {
-	fake.sortProductsByTop3TerpsMutex.RLock()
-	defer fake.sortProductsByTop3TerpsMutex.RUnlock()
-	argsForCall := fake.sortProductsByTop3TerpsArgsForCall[i]
-	return argsForCall.arg1, argsForCall.arg2, argsForCall.arg3
 }
 
 func (fake *FakeWorkflow) Terpenes(arg1 workflow.WorkflowParams) ([]*models.Terpene, error) {
@@ -1790,34 +935,10 @@ func (fake *FakeWorkflow) Invocations() map[string][][]interface{} {
 	defer fake.productMutex.RUnlock()
 	fake.productsMutex.RLock()
 	defer fake.productsMutex.RUnlock()
-	fake.productsExcludingBrandsMutex.RLock()
-	defer fake.productsExcludingBrandsMutex.RUnlock()
-	fake.productsExcludingTermsMutex.RLock()
-	defer fake.productsExcludingTermsMutex.RUnlock()
-	fake.productsForBrandsMutex.RLock()
-	defer fake.productsForBrandsMutex.RUnlock()
-	fake.productsForPriceRangeMutex.RLock()
-	defer fake.productsForPriceRangeMutex.RUnlock()
-	fake.productsForSubCategoryMutex.RLock()
-	defer fake.productsForSubCategoryMutex.RUnlock()
-	fake.productsForVariantsMutex.RLock()
-	defer fake.productsForVariantsMutex.RUnlock()
 	fake.productsInCategoryMutex.RLock()
 	defer fake.productsInCategoryMutex.RUnlock()
-	fake.productsIncludingTermsMutex.RLock()
-	defer fake.productsIncludingTermsMutex.RUnlock()
 	fake.sortMutex.RLock()
 	defer fake.sortMutex.RUnlock()
-	fake.sortProductsByPriceAscMutex.RLock()
-	defer fake.sortProductsByPriceAscMutex.RUnlock()
-	fake.sortProductsByPriceDescMutex.RLock()
-	defer fake.sortProductsByPriceDescMutex.RUnlock()
-	fake.sortProductsByTHCAscMutex.RLock()
-	defer fake.sortProductsByTHCAscMutex.RUnlock()
-	fake.sortProductsByTHCDescMutex.RLock()
-	defer fake.sortProductsByTHCDescMutex.RUnlock()
-	fake.sortProductsByTop3TerpsMutex.RLock()
-	defer fake.sortProductsByTop3TerpsMutex.RUnlock()
 	fake.terpenesMutex.RLock()
 	defer fake.terpenesMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}

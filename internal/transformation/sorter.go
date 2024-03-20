@@ -9,6 +9,7 @@ import (
 
 type SortParams struct {
 	Top3Terps     [3]string
+	Top3Asc       bool
 	PriceAsc      bool
 	PriceDesc     bool
 	THCAsc        bool
@@ -31,7 +32,7 @@ func NewSorterer(sp *SortParams) Sorter {
 
 func (s *sorter) Sort(products []*models.Product) {
 	if s.Sp.Top3Terps != [3]string{} {
-		s.Top3Terps(products, s.Sp.Top3Terps)
+		s.Top3Terps(products, s.Sp.Top3Terps, s.Sp.Top3Asc)
 	}
 	if s.Sp.PriceAsc {
 		s.PriceAsc(products)
@@ -211,7 +212,8 @@ func (s *sorter) GramPriceDesc(products []*models.Product) {
 	})
 }
 
-func (s *sorter) Top3Terps(products []*models.Product, terpenes [3]string) {
+func (s *sorter) Top3Terps(products []*models.Product, terpenes [3]string, asc bool) {
+	// TODO simplify this
 	findTerpeneValue := func(p *models.Product, terpeneName string) float64 {
 		for _, t := range p.T {
 			if strings.EqualFold(t.Name, terpeneName) {
@@ -234,10 +236,16 @@ func (s *sorter) Top3Terps(products []*models.Product, terpenes [3]string) {
 		productBScore := scoreProduct(productB)
 
 		if productAScore > productBScore {
+			if asc {
+				return 1
+			}
 			return -1
 		}
 
 		if productAScore < productBScore {
+			if asc {
+				return -1
+			}
 			return 1
 		}
 

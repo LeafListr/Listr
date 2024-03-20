@@ -22,5 +22,5 @@ type Sorter interface {
 	PriceDesc(products []*models.Product)
 	THCAsc(products []*models.Product)
 	THCDesc(products []*models.Product)
-	Top3Terps(products []*models.Product, terps [3]string)
+	Top3Terps(products []*models.Product, terps [3]string, asc bool)
 }

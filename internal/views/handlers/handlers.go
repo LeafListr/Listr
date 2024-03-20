@@ -143,14 +143,14 @@ func (h *HtmlHandler) Products(r http.ResponseWriter, req *http.Request) {
 		return
 	}
 	fp := transformation.RequestToFilterParams(req)
-	fProducts, fErr := h.w.Filter(params, fp, products)
+	fProducts, fErr := h.w.Filter(fp, products)
 	if fErr != nil {
 		h.w.LogError(fErr, req.Context())
 		return
 	}
 
 	sp := transformation.RequestToSortParams(req)
-	sErr := h.w.Sort(params, sp, fProducts)
+	sErr := h.w.Sort(sp, fProducts)
 	if sErr != nil {
 		h.w.LogError(sErr, req.Context())
 		return

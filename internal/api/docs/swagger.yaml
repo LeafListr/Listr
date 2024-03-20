@@ -388,6 +388,10 @@ paths:
         in: query
         name: terp3
         type: string
+      - description: Sort terpene profile low to high
+        in: query
+        name: terp_asc
+        type: boolean
       produces:
       - application/json
       responses:
