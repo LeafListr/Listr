@@ -27,16 +27,18 @@ type Terpene struct {
 }
 
 type Product struct {
-	Id     string
-	Brand  string
-	Name   string
-	SubCtg string
-	Images []string
-	Weight string
-	Ctg    string
-	P      *Price
-	C      []*Cannabinoid
-	T      []*Terpene
+	Id        string
+	Brand     string
+	Name      string
+	SubCtg    string
+	Images    []string
+	Weight    string
+	Ctg       string
+	P         *Price
+	C         []*Cannabinoid
+	T         []*Terpene
+	Slug      string
+	Permalink string
 }
 
 func (p *Product) WeightInGrams() float64 {
@@ -155,4 +157,5 @@ type Location struct {
 	City          string
 	State         string
 	ZipCode       string
+	Slug          string
 }

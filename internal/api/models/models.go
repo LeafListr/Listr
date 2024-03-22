@@ -20,17 +20,18 @@ type Terpene struct {
 }
 
 type Product struct {
-	Id     string         `json:"id"`
-	Brand  string         `json:"brand"`
-	Name   string         `json:"name"`
-	Ctg    string         `json:"category"`
-	SubCtg string         `json:"subcategory"`
-	Weight string         `json:"variant,omitempty"`
-	Images []string       `json:"images"`
-	P      *Price         `json:"price,omitempty"`
-	C      []*Cannabinoid `json:"cannabinoids,omitempty"`
-	T      []*Terpene     `json:"terpenes,omitempty"`
-	TT     float64        `json:"terpeneTotal,omitempty"`
+	Id        string         `json:"id"`
+	Brand     string         `json:"brand"`
+	Name      string         `json:"name"`
+	Ctg       string         `json:"category"`
+	SubCtg    string         `json:"subcategory"`
+	Weight    string         `json:"variant,omitempty"`
+	Images    []string       `json:"images"`
+	P         *Price         `json:"price,omitempty"`
+	C         []*Cannabinoid `json:"cannabinoids,omitempty"`
+	T         []*Terpene     `json:"terpenes,omitempty"`
+	TT        float64        `json:"terpeneTotal,omitempty"`
+	Permalink string         `json:"permalink"`
 }
 
 func (p *Product) Image() string {

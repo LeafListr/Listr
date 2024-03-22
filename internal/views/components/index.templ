@@ -36,7 +36,7 @@ templ Index(title string, dispensaries []string) {
 					<br/>
 					@Locations("", []*models.Location{})
 				</nav>
-				<h3 id="loading-categories" class="htmx-indicator">Loading Categories...<img src="/assets/blocks-wave.svg"/></h3>
+				<h3 id="loading-categories" class="htmx-indicator">Loading Menu...<img src="/assets/blocks-wave.svg"/></h3>
 				<section
 					id="offers-and-search"
 					hx-target="#products"
@@ -66,7 +66,7 @@ templ Index(title string, dispensaries []string) {
 
         a {
           font-weight: 500;
-          color: #646cff;
+          color: unset;
           text-decoration: inherit;
         }
 

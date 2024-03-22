@@ -6,43 +6,45 @@ import (
 )
 
 templ Product(product *models.Product) {
-	<div class="product-card">
-		<div class="product-headline">
-			<img src={ product.Image() } alt={ product.Name }/>
-			<h4 class="product-name">{ product.Brand }: { product.Name }</h4>
-		</div>
-		<div class="product-subcategory">
-			<label for="subcategory">Subcategory</label>
-			<p id="subcategory">
-				{ product.SubCtg }
-			</p>
-		</div>
-		<div class="product-gram-price">
-			<label for="gram-price">Price/gram</label>
-			<p id="gram-price">
-				${ fmt.Sprintf("%.2f", product.P.PerGram) }/g
-			</p>
-		</div>
-		<div class="product-variants">
-			<label for="variant">Variant/$</label>
-			<p id="variant">
-				{ product.Weight } /
-				if product.P.IsDiscounted {
-					<span class="discounted-price">${ fmt.Sprintf("%.2f", product.P.DiscountedTotal) }</span>
+	<a href={ templ.URL(product.Permalink) } target="_blank">
+		<div class="product-card">
+			<div class="product-headline">
+				<img src={ product.Image() } alt={ product.Name }/>
+				<h4 class="product-name">{ product.Brand }: { product.Name }</h4>
+			</div>
+			<div class="product-subcategory">
+				<label for="subcategory">Subcategory</label>
+				<p id="subcategory">
+					{ product.SubCtg }
+				</p>
+			</div>
+			<div class="product-gram-price">
+				<label for="gram-price">Price/gram</label>
+				<p id="gram-price">
+					${ fmt.Sprintf("%.2f", product.P.PerGram) }/g
+				</p>
+			</div>
+			<div class="product-variants">
+				<label for="variant">Variant/$</label>
+				<p id="variant">
+					{ product.Weight } /
+					if product.P.IsDiscounted {
+						<span class="discounted-price">${ fmt.Sprintf("%.2f", product.P.DiscountedTotal) }</span>
+					}
+					<span class={ templ.KV("discounted", product.P.IsDiscounted) }>${ fmt.Sprintf("%.2f", product.P.Total) }</span>
+				</p>
+			</div>
+			<div class="product-cannabinoids">
+				for _, cannabinoid := range product.C {
+					<p>{ cannabinoid.Name } - { fmt.Sprintf("%.2f", cannabinoid.Value) }%</p>
 				}
-				<span class={ templ.KV("discounted", product.P.IsDiscounted) }>${ fmt.Sprintf("%.2f", product.P.Total) }</span>
-			</p>
+			</div>
+			<p>Total Terpenes - { fmt.Sprintf("%.2f", product.TT) }%</p>
+			<div class="product-terpenes">
+				for _, terp := range product.T {
+					<p>{ terp.Name } - { fmt.Sprintf("%.2f", terp.Value) }%</p>
+				}
+			</div>
 		</div>
-		<div class="product-cannabinoids">
-			for _, cannabinoid := range product.C {
-				<p>{ cannabinoid.Name } - { fmt.Sprintf("%.2f", cannabinoid.Value) }%</p>
-			}
-		</div>
-		<p>Total Terpenes - { fmt.Sprintf("%.2f", product.TT) }%</p>
-		<div class="product-terpenes">
-			for _, terp := range product.T {
-				<p>{ terp.Name } - { fmt.Sprintf("%.2f", terp.Value) }%</p>
-			}
-		</div>
-	</div>
+	</a>
 }

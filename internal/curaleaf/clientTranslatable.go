@@ -20,6 +20,10 @@ func NewClientTranslator() *ClientTranslator {
 }
 
 func (cT *ClientTranslator) TranslateClientLocation(l Location) *models.Location {
+	slug := ""
+	if l.Location.StateSlug != "" && l.Location.State != "" {
+		slug = "/" + l.Location.StateSlug + "/" + l.Slug
+	}
 	return &models.Location{
 		Id:            l.UniqueId,
 		Name:          l.Name,
@@ -28,6 +32,7 @@ func (cT *ClientTranslator) TranslateClientLocation(l Location) *models.Location
 		State:         l.Location.State,
 		ZipCode:       l.Location.ZipCode,
 		LocationTypes: l.MenuTypes,
+		Slug:          slug,
 	}
 }
 
@@ -39,19 +44,19 @@ func (cT *ClientTranslator) TranslateClientLocations(ls []Location) []*models.Lo
 	return locations
 }
 
-func (cT *ClientTranslator) TranslateClientProducts(ps []Product) []*models.Product {
+func (cT *ClientTranslator) TranslateClientProducts(ps []Product, menuUrl string) []*models.Product {
 	products := make([]*models.Product, 0)
 
 	for _, p := range ps {
 		if len(p.Variants) == 0 {
-			baseProduct := cT.TranslateClientProduct(p)
+			baseProduct := cT.TranslateClientProduct(p, menuUrl)
 			products = append(products, baseProduct)
 			slog.Debug("no variants for product", slog.String("product name", p.Name))
 			continue
 		}
 
 		for _, v := range p.Variants {
-			variantProduct := cT.TranslateClientProduct(p)
+			variantProduct := cT.TranslateClientProduct(p, menuUrl)
 			variantProduct.Id = v.Id
 			variantProduct.P = &models.Price{
 				Total:           v.Price,
@@ -88,13 +93,20 @@ func (cT *ClientTranslator) TranslateClientProducts(ps []Product) []*models.Prod
 	return products
 }
 
-func (cT *ClientTranslator) TranslateClientProduct(p Product) *models.Product {
+func (cT *ClientTranslator) TranslateClientProduct(p Product, menuUrl string) *models.Product {
+	slug := "/products/" + p.ID
+	permalink := ""
+	if menuUrl != "" {
+		permalink = menuUrl + slug
+	}
 	product := &models.Product{
-		Id:     p.ID,
-		Brand:  strings.TrimSpace(p.Brand.Name),
-		Name:   p.Name,
-		Ctg:    p.Category.Key,
-		SubCtg: strings.ToLower(p.Subcategory.Key),
+		Id:        p.ID,
+		Brand:     strings.TrimSpace(p.Brand.Name),
+		Name:      p.Name,
+		Ctg:       p.Category.Key,
+		SubCtg:    strings.ToLower(p.Subcategory.Key),
+		Slug:      slug,
+		Permalink: permalink,
 	}
 	for _, t := range p.LabResults.Terpenes {
 		tempTerp := &models.Terpene{

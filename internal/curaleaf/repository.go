@@ -15,6 +15,7 @@ import (
 
 const (
 	GqlEndpoint = "https://graph.curaleaf.com/api/curaql"
+	baseUrl     = "https://curaleaf.com/shop"
 )
 
 type Repository struct {
@@ -22,6 +23,7 @@ type Repository struct {
 	T        *ClientTranslator
 	menuType string
 	menuId   string
+	menuUrl  string
 }
 
 func NewRepository(c client.Client, translator *ClientTranslator, menuId string, recreational bool) repository.Repository {
@@ -29,12 +31,24 @@ func NewRepository(c client.Client, translator *ClientTranslator, menuId string,
 	if recreational {
 		menuType = "RECREATIONAL"
 	}
-	return &Repository{
+	repo := &Repository{
 		C:        c,
 		T:        translator,
 		menuType: menuType,
 		menuId:   menuId,
 	}
+
+	repo.menuUrl = baseUrl + repo.slug()
+	return repo
+}
+
+func (r *Repository) slug() string {
+	query := AllLocationsQuery(0, 0)
+	loc, err := r.getLocation(query, r.menuId)
+	if err != nil {
+		return ""
+	}
+	return loc.Slug
 }
 
 func (r *Repository) Location() (*models.Location, error) {
@@ -122,7 +136,7 @@ func (r *Repository) getProduct(query string) (*models.Product, error) {
 		return &models.Product{}, repository.ResourceNotFound
 	}
 
-	return r.T.TranslateClientProduct(productResp.Data.Product.Product), nil
+	return r.T.TranslateClientProduct(productResp.Data.Product.Product, r.menuUrl), nil
 }
 
 func (r *Repository) getProducts(query string) ([]*models.Product, error) {
@@ -131,7 +145,7 @@ func (r *Repository) getProducts(query string) ([]*models.Product, error) {
 		return []*models.Product{}, err
 	}
 
-	return r.T.TranslateClientProducts(allProdResp.Data.DispensaryMenu.Products), nil
+	return r.T.TranslateClientProducts(allProdResp.Data.DispensaryMenu.Products, r.menuUrl), nil
 }
 
 func (r *Repository) getProductsForCategory(query string) ([]*models.Product, error) {
@@ -139,7 +153,7 @@ func (r *Repository) getProductsForCategory(query string) ([]*models.Product, er
 	if err != nil {
 		return []*models.Product{}, err
 	}
-	return r.T.TranslateClientProducts(allProdForCatResp.Data.DispensaryMenu.Products), nil
+	return r.T.TranslateClientProducts(allProdForCatResp.Data.DispensaryMenu.Products, r.menuUrl), nil
 }
 
 func (r *Repository) getCategories(query string) ([]string, error) {
