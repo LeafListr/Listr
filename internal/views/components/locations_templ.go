@@ -27,7 +27,7 @@ func Locations(selectedDisp string, locations []*models.Location) templ.Componen
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select hx-get=\"/views/offers-and-search\" hx-target=\"#offers-and-search\" hx-swap=\"outerHTML\" hx-indicator=\"#loading-categories\" name=\"location\" id=\"location-select\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select hx-get=\"/views/categories\" hx-target=\"#categories\" hx-swap=\"outerHTML\" hx-indicator=\"#loading-categories\" name=\"location\" id=\"location-select\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -143,6 +143,18 @@ func (cT *ClientTranslator) TranslateClientCategories(cs []Category) []string {
 	return categories
 }
 
+func (cT *ClientTranslator) TranslateClientSubCategories(ps []Product) []string {
+	subCatMap := make(map[string]struct{})
+	for _, p := range ps {
+		subCatMap[p.Subcategory.DisplayName] = struct{}{}
+	}
+	subCategories := make([]string, 0)
+	for k := range subCatMap {
+		subCategories = append(subCategories, k)
+	}
+	return subCategories
+}
+
 func (cT *ClientTranslator) TranslateClientTerpene(terp TerpeneObj) *models.Terpene {
 	return &models.Terpene{
 		Name:        terp.Terpene.Name,

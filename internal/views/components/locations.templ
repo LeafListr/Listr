@@ -6,8 +6,8 @@ import (
 
 templ Locations(selectedDisp string, locations []*models.Location) {
 	<select
-		hx-get="/views/offers-and-search"
-		hx-target="#offers-and-search"
+		hx-get="/views/categories"
+		hx-target="#categories"
 		hx-swap="outerHTML"
 		hx-indicator="#loading-categories"
 		name="location"

@@ -37,6 +37,7 @@ type ProductRepository interface {
 
 type CategoryRepository interface {
 	GetCategories() ([]string, error)
+	GetSubcategories(category string) ([]string, error)
 }
 
 type TerpeneRepository interface {

@@ -2,16 +2,15 @@ package components
 
 import "github.com/Linkinlog/LeafListr/internal/api/models"
 
-templ OffersAndSearch(categories []string, offers []*models.Offer, terpenes []*models.Terpene) {
+templ OffersAndSearch(categories, subCategories []string, offers []*models.Offer, terpenes []*models.Terpene) {
 	<section
 		id="offers-and-search"
 		hx-target="#products"
 		hx-indicator="#loading-products"
 		hx-swap="outerHTML"
 	>
-		@Categories(categories)
 		@Offers(offers)
-		@Search(terpenes)
+		@Search(terpenes, subCategories)
 	</section>
 	<div id="products" hx-swap-oob="true"></div>
 }

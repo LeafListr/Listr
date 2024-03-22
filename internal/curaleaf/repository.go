@@ -81,6 +81,11 @@ func (r *Repository) GetCategories() ([]string, error) {
 	return r.getCategories(query)
 }
 
+func (r *Repository) GetSubcategories(category string) ([]string, error) {
+	query := AllSubCategoriesQuery(r.menuId, r.menuType, category)
+	return r.getSubCategories(query)
+}
+
 func (r *Repository) GetTerpenes() ([]*models.Terpene, error) {
 	query := AllProductQuery(r.menuId, r.menuType)
 	return r.getTerpenes(query)
@@ -154,6 +159,14 @@ func (r *Repository) getProductsForCategory(query string) ([]*models.Product, er
 		return []*models.Product{}, err
 	}
 	return r.T.TranslateClientProducts(allProdForCatResp.Data.DispensaryMenu.Products, r.menuUrl), nil
+}
+
+func (r *Repository) getSubCategories(query string) ([]string, error) {
+	allCatsResp, err := r.getResponse(query)
+	if err != nil {
+		return []string{}, err
+	}
+	return r.T.TranslateClientSubCategories(allCatsResp.Data.DispensaryMenu.Products), nil
 }
 
 func (r *Repository) getCategories(query string) ([]string, error) {

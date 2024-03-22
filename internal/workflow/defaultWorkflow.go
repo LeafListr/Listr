@@ -142,6 +142,29 @@ func (w *DefaultWorkflow) Categories(wp WorkflowParams) ([]string, error) {
 	return cats, nil
 }
 
+func (w *DefaultWorkflow) Subcategories(wp WorkflowParams, category string) ([]string, error) {
+	f := factory.NewRepoFactory(wp.dispensary, wp.menuId, wp.recreational)
+	repo, err := f.FindByDispensaryMenu()
+	if err != nil {
+		return []string{}, fmt.Errorf("couldn't find dispensary by menu for categories. Dispensary=%s, MenuId=%s. Err: %v", wp.dispensary, wp.menuId, err)
+	}
+	queryKey := fmt.Sprintf("subcategories-%s-%s-%t", wp.dispensary, wp.menuId, wp.recreational)
+	categories, retErr := w.C.GetOrRetrieve(queryKey, DayTTL, func() (any, error) {
+		return repo.GetSubcategories(category)
+	})
+	if retErr != nil {
+		return []string{}, retErr
+	}
+	cats := categories.([]string)
+	if len(cats) != 0 {
+		sort.SliceStable(cats, func(i, j int) bool {
+			return cats[i] < cats[j]
+		})
+	}
+
+	return cats, nil
+}
+
 func (w *DefaultWorkflow) Terpenes(wp WorkflowParams) ([]*models.Terpene, error) {
 	f := factory.NewRepoFactory(wp.dispensary, wp.menuId, wp.recreational)
 	repo, err := f.FindByDispensaryMenu()

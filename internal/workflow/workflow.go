@@ -57,6 +57,7 @@ type ProductSorter interface {
 
 type CategoryManager interface {
 	Categories(w WorkflowParams) ([]string, error)
+	Subcategories(w WorkflowParams, category string) ([]string, error)
 }
 
 type TerpeneManager interface {

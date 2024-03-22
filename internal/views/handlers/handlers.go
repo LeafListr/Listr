@@ -59,6 +59,7 @@ func (h *HtmlHandler) Categories(r http.ResponseWriter, req *http.Request) {
 		http.Error(r, cErr.Error(), http.StatusInternalServerError)
 		return
 	}
+	go h.OffersAndSearch(r, req)
 	rErr := components.Categories(categories).Render(req.Context(), r)
 	if rErr != nil {
 		http.Error(r, rErr.Error(), http.StatusInternalServerError)
@@ -87,7 +88,13 @@ func (h *HtmlHandler) OffersAndSearch(r http.ResponseWriter, req *http.Request) 
 		return
 	}
 
-	err := components.OffersAndSearch(categories, transOffers, transTerps).Render(req.Context(), r)
+	subcategories, subErr := h.w.Subcategories(params, "FLOWER")
+	if subErr != nil {
+		http.Error(r, subErr.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	err := components.OffersAndSearch(categories, subcategories, transOffers, transTerps).Render(req.Context(), r)
 	if err != nil {
 		http.Error(r, err.Error(), http.StatusInternalServerError)
 		return
@@ -111,7 +118,7 @@ func (h *HtmlHandler) Sorters(r http.ResponseWriter, req *http.Request) {
 }
 
 func (h *HtmlHandler) Filters(r http.ResponseWriter, req *http.Request) {
-	err := components.Filters().Render(req.Context(), r)
+	err := components.Filters([]string{""}).Render(req.Context(), r)
 	if err != nil {
 		http.Error(r, err.Error(), http.StatusInternalServerError)
 	}

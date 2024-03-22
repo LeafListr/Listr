@@ -83,6 +83,19 @@ type FakeRepository struct {
 		result1 []*models.Product
 		result2 error
 	}
+	GetSubcategoriesStub        func(string) ([]string, error)
+	getSubcategoriesMutex       sync.RWMutex
+	getSubcategoriesArgsForCall []struct {
+		arg1 string
+	}
+	getSubcategoriesReturns struct {
+		result1 []string
+		result2 error
+	}
+	getSubcategoriesReturnsOnCall map[int]struct {
+		result1 []string
+		result2 error
+	}
 	GetTerpenesStub        func() ([]*models.Terpene, error)
 	getTerpenesMutex       sync.RWMutex
 	getTerpenesArgsForCall []struct {
@@ -477,6 +490,70 @@ func (fake *FakeRepository) GetProductsForCategoryReturnsOnCall(i int, result1 [
 	}{result1, result2}
 }
 
+func (fake *FakeRepository) GetSubcategories(arg1 string) ([]string, error) {
+	fake.getSubcategoriesMutex.Lock()
+	ret, specificReturn := fake.getSubcategoriesReturnsOnCall[len(fake.getSubcategoriesArgsForCall)]
+	fake.getSubcategoriesArgsForCall = append(fake.getSubcategoriesArgsForCall, struct {
+		arg1 string
+	}{arg1})
+	stub := fake.GetSubcategoriesStub
+	fakeReturns := fake.getSubcategoriesReturns
+	fake.recordInvocation("GetSubcategories", []interface{}{arg1})
+	fake.getSubcategoriesMutex.Unlock()
+	if stub != nil {
+		return stub(arg1)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fakeReturns.result1, fakeReturns.result2
+}
+
+func (fake *FakeRepository) GetSubcategoriesCallCount() int {
+	fake.getSubcategoriesMutex.RLock()
+	defer fake.getSubcategoriesMutex.RUnlock()
+	return len(fake.getSubcategoriesArgsForCall)
+}
+
+func (fake *FakeRepository) GetSubcategoriesCalls(stub func(string) ([]string, error)) {
+	fake.getSubcategoriesMutex.Lock()
+	defer fake.getSubcategoriesMutex.Unlock()
+	fake.GetSubcategoriesStub = stub
+}
+
+func (fake *FakeRepository) GetSubcategoriesArgsForCall(i int) string {
+	fake.getSubcategoriesMutex.RLock()
+	defer fake.getSubcategoriesMutex.RUnlock()
+	argsForCall := fake.getSubcategoriesArgsForCall[i]
+	return argsForCall.arg1
+}
+
+func (fake *FakeRepository) GetSubcategoriesReturns(result1 []string, result2 error) {
+	fake.getSubcategoriesMutex.Lock()
+	defer fake.getSubcategoriesMutex.Unlock()
+	fake.GetSubcategoriesStub = nil
+	fake.getSubcategoriesReturns = struct {
+		result1 []string
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeRepository) GetSubcategoriesReturnsOnCall(i int, result1 []string, result2 error) {
+	fake.getSubcategoriesMutex.Lock()
+	defer fake.getSubcategoriesMutex.Unlock()
+	fake.GetSubcategoriesStub = nil
+	if fake.getSubcategoriesReturnsOnCall == nil {
+		fake.getSubcategoriesReturnsOnCall = make(map[int]struct {
+			result1 []string
+			result2 error
+		})
+	}
+	fake.getSubcategoriesReturnsOnCall[i] = struct {
+		result1 []string
+		result2 error
+	}{result1, result2}
+}
+
 func (fake *FakeRepository) GetTerpenes() ([]*models.Terpene, error) {
 	fake.getTerpenesMutex.Lock()
 	ret, specificReturn := fake.getTerpenesReturnsOnCall[len(fake.getTerpenesArgsForCall)]
@@ -669,6 +746,8 @@ func (fake *FakeRepository) Invocations() map[string][][]interface{} {
 	defer fake.getProductsMutex.RUnlock()
 	fake.getProductsForCategoryMutex.RLock()
 	defer fake.getProductsForCategoryMutex.RUnlock()
+	fake.getSubcategoriesMutex.RLock()
+	defer fake.getSubcategoriesMutex.RUnlock()
 	fake.getTerpenesMutex.RLock()
 	defer fake.getTerpenesMutex.RUnlock()
 	fake.locationMutex.RLock()

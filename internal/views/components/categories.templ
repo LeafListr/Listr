@@ -5,7 +5,9 @@ templ Categories(categories []string) {
 		for _, category := range categories {
 			<label for={ category }>
 				<input
-					hx-get="/views/products"
+					hx-get="/views/offers-and-search"
+                    hx-target="#offers-and-search"
+                    hx-indicator="#loading-categories"
 					type="radio"
 					name="category"
 					id={ category }

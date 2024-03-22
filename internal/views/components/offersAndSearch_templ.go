@@ -12,7 +12,7 @@ import "bytes"
 
 import "github.com/Linkinlog/LeafListr/internal/api/models"
 
-func OffersAndSearch(categories []string, offers []*models.Offer, terpenes []*models.Terpene) templ.Component {
+func OffersAndSearch(categories, subCategories []string, offers []*models.Offer, terpenes []*models.Terpene) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -29,15 +29,11 @@ func OffersAndSearch(categories []string, offers []*models.Offer, terpenes []*mo
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Categories(categories).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
 		templ_7745c5c3_Err = Offers(offers).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Search(terpenes).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Search(terpenes, subCategories).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

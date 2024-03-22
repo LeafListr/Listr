@@ -79,7 +79,7 @@ func Index(title string, dispensaries []string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</nav><h3 id=\"loading-categories\" class=\"htmx-indicator\">Loading Menu...<img src=\"/assets/blocks-wave.svg\"></h3><section id=\"offers-and-search\" hx-target=\"#products\" hx-indicator=\"#loading-products\" hx-swap=\"outerHTML\"></section><h3 id=\"loading-products\" class=\"htmx-indicator\">Loading Products...<img src=\"/assets/blocks-wave.svg\"></h3>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</nav><h3 id=\"loading-categories\" class=\"htmx-indicator\">Loading Menu...<img src=\"/assets/blocks-wave.svg\"></h3><div id=\"categories\"></div><section id=\"offers-and-search\" hx-target=\"#products\" hx-indicator=\"#loading-products\" hx-swap=\"outerHTML\"></section><h3 id=\"loading-products\" class=\"htmx-indicator\">Loading Products...<img src=\"/assets/blocks-wave.svg\"></h3>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

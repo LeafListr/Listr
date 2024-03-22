@@ -1,10 +1,10 @@
 package components
 
-templ Filters() {
-	@filterForm()
+templ Filters(subcategories []string) {
+	@filterForm(subcategories)
 }
 
-templ filterForm() {
+templ filterForm(subcategories []string) {
 	<p>Filter your search results</p>
 	<main id="filter-form">
 		<section id="variants">
@@ -18,12 +18,12 @@ templ filterForm() {
 		</section>
 		<section id="filter-subcategory">
 			<label for="subcategory-input">Subcategory</label>
-			<input
-				type="text"
-				id="subcategory-input"
-				name="sub"
-				placeholder="Ex: cartridges"
-			/>
+            <select name="sub" id="subcategory-input">
+                <option value="">Select Subcategory</option>
+                for _, sub := range subcategories {
+                    <option value={ sub }>{ sub }</option>
+                }
+            </select>
 		</section>
 		<section id="minPricePerG">
 			<label for="minPricePerG-input">Min Price Per G</label>

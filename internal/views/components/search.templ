@@ -2,16 +2,16 @@ package components
 
 import "github.com/Linkinlog/LeafListr/internal/api/models"
 
-templ Search(terps []*models.Terpene) {
-	@Accordion("filter/sort", group(terps))
+templ Search(terps []*models.Terpene, subcategories []string) {
+	@Accordion("filter/sort", group(terps, subcategories))
 }
 
-templ group(terps []*models.Terpene) {
+templ group(terps []*models.Terpene, subcategories []string) {
 	<form
 		hx-get="/views/products"
 		hx-boost="true"
 	>
-		@Filters()
+		@Filters(subcategories)
 		@Sorters(terps)
 		<button type="submit">Filter / Sort</button>
 	</form>

@@ -134,6 +134,12 @@ func (r *Repository) GetProductsForCategory(category string) ([]*models.Product,
 	return r.getProducts(query)
 }
 
+func (r *Repository) GetSubcategories(category string) ([]string, error) {
+	return []string{
+		"",
+	}, nil
+}
+
 func (r *Repository) GetCategories() ([]string, error) {
 	return []string{
 		"flower",

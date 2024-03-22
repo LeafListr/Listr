@@ -37,6 +37,7 @@ templ Index(title string, dispensaries []string) {
 					@Locations("", []*models.Location{})
 				</nav>
 				<h3 id="loading-categories" class="htmx-indicator">Loading Menu...<img src="/assets/blocks-wave.svg"/></h3>
+	<div id="categories"></div>
 				<section
 					id="offers-and-search"
 					hx-target="#products"

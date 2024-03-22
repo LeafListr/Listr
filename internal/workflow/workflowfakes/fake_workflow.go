@@ -149,6 +149,20 @@ type FakeWorkflow struct {
 	sortReturnsOnCall map[int]struct {
 		result1 error
 	}
+	SubcategoriesStub        func(workflow.WorkflowParams, string) ([]string, error)
+	subcategoriesMutex       sync.RWMutex
+	subcategoriesArgsForCall []struct {
+		arg1 workflow.WorkflowParams
+		arg2 string
+	}
+	subcategoriesReturns struct {
+		result1 []string
+		result2 error
+	}
+	subcategoriesReturnsOnCall map[int]struct {
+		result1 []string
+		result2 error
+	}
 	TerpenesStub        func(workflow.WorkflowParams) ([]*models.Terpene, error)
 	terpenesMutex       sync.RWMutex
 	terpenesArgsForCall []struct {
@@ -850,6 +864,71 @@ func (fake *FakeWorkflow) SortReturnsOnCall(i int, result1 error) {
 	}{result1}
 }
 
+func (fake *FakeWorkflow) Subcategories(arg1 workflow.WorkflowParams, arg2 string) ([]string, error) {
+	fake.subcategoriesMutex.Lock()
+	ret, specificReturn := fake.subcategoriesReturnsOnCall[len(fake.subcategoriesArgsForCall)]
+	fake.subcategoriesArgsForCall = append(fake.subcategoriesArgsForCall, struct {
+		arg1 workflow.WorkflowParams
+		arg2 string
+	}{arg1, arg2})
+	stub := fake.SubcategoriesStub
+	fakeReturns := fake.subcategoriesReturns
+	fake.recordInvocation("Subcategories", []interface{}{arg1, arg2})
+	fake.subcategoriesMutex.Unlock()
+	if stub != nil {
+		return stub(arg1, arg2)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fakeReturns.result1, fakeReturns.result2
+}
+
+func (fake *FakeWorkflow) SubcategoriesCallCount() int {
+	fake.subcategoriesMutex.RLock()
+	defer fake.subcategoriesMutex.RUnlock()
+	return len(fake.subcategoriesArgsForCall)
+}
+
+func (fake *FakeWorkflow) SubcategoriesCalls(stub func(workflow.WorkflowParams, string) ([]string, error)) {
+	fake.subcategoriesMutex.Lock()
+	defer fake.subcategoriesMutex.Unlock()
+	fake.SubcategoriesStub = stub
+}
+
+func (fake *FakeWorkflow) SubcategoriesArgsForCall(i int) (workflow.WorkflowParams, string) {
+	fake.subcategoriesMutex.RLock()
+	defer fake.subcategoriesMutex.RUnlock()
+	argsForCall := fake.subcategoriesArgsForCall[i]
+	return argsForCall.arg1, argsForCall.arg2
+}
+
+func (fake *FakeWorkflow) SubcategoriesReturns(result1 []string, result2 error) {
+	fake.subcategoriesMutex.Lock()
+	defer fake.subcategoriesMutex.Unlock()
+	fake.SubcategoriesStub = nil
+	fake.subcategoriesReturns = struct {
+		result1 []string
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *FakeWorkflow) SubcategoriesReturnsOnCall(i int, result1 []string, result2 error) {
+	fake.subcategoriesMutex.Lock()
+	defer fake.subcategoriesMutex.Unlock()
+	fake.SubcategoriesStub = nil
+	if fake.subcategoriesReturnsOnCall == nil {
+		fake.subcategoriesReturnsOnCall = make(map[int]struct {
+			result1 []string
+			result2 error
+		})
+	}
+	fake.subcategoriesReturnsOnCall[i] = struct {
+		result1 []string
+		result2 error
+	}{result1, result2}
+}
+
 func (fake *FakeWorkflow) Terpenes(arg1 workflow.WorkflowParams) ([]*models.Terpene, error) {
 	fake.terpenesMutex.Lock()
 	ret, specificReturn := fake.terpenesReturnsOnCall[len(fake.terpenesArgsForCall)]
@@ -939,6 +1018,8 @@ func (fake *FakeWorkflow) Invocations() map[string][][]interface{} {
 	defer fake.productsInCategoryMutex.RUnlock()
 	fake.sortMutex.RLock()
 	defer fake.sortMutex.RUnlock()
+	fake.subcategoriesMutex.RLock()
+	defer fake.subcategoriesMutex.RUnlock()
 	fake.terpenesMutex.RLock()
 	defer fake.terpenesMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
