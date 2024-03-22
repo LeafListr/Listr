@@ -24,6 +24,11 @@ type FakeClient struct {
 		result1 []byte
 		result2 error
 	}
+	SetEndpointStub        func(client.Endpoint)
+	setEndpointMutex       sync.RWMutex
+	setEndpointArgsForCall []struct {
+		arg1 client.Endpoint
+	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
@@ -94,11 +99,45 @@ func (fake *FakeClient) QueryReturnsOnCall(i int, result1 []byte, result2 error)
 	}{result1, result2}
 }
 
+func (fake *FakeClient) SetEndpoint(arg1 client.Endpoint) {
+	fake.setEndpointMutex.Lock()
+	fake.setEndpointArgsForCall = append(fake.setEndpointArgsForCall, struct {
+		arg1 client.Endpoint
+	}{arg1})
+	stub := fake.SetEndpointStub
+	fake.recordInvocation("SetEndpoint", []interface{}{arg1})
+	fake.setEndpointMutex.Unlock()
+	if stub != nil {
+		fake.SetEndpointStub(arg1)
+	}
+}
+
+func (fake *FakeClient) SetEndpointCallCount() int {
+	fake.setEndpointMutex.RLock()
+	defer fake.setEndpointMutex.RUnlock()
+	return len(fake.setEndpointArgsForCall)
+}
+
+func (fake *FakeClient) SetEndpointCalls(stub func(client.Endpoint)) {
+	fake.setEndpointMutex.Lock()
+	defer fake.setEndpointMutex.Unlock()
+	fake.SetEndpointStub = stub
+}
+
+func (fake *FakeClient) SetEndpointArgsForCall(i int) client.Endpoint {
+	fake.setEndpointMutex.RLock()
+	defer fake.setEndpointMutex.RUnlock()
+	argsForCall := fake.setEndpointArgsForCall[i]
+	return argsForCall.arg1
+}
+
 func (fake *FakeClient) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
 	fake.queryMutex.RLock()
 	defer fake.queryMutex.RUnlock()
+	fake.setEndpointMutex.RLock()
+	defer fake.setEndpointMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
 	for key, value := range fake.invocations {
 		copiedInvocations[key] = value

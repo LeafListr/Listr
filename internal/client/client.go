@@ -17,6 +17,7 @@ import (
 //counterfeiter:generate . Client
 type Client interface {
 	Query(ctx context.Context, body string, method string) ([]byte, error)
+	SetEndpoint(e Endpoint)
 }
 
 type Endpoint string
@@ -35,6 +36,10 @@ func NewHTTPClient(endpoint Endpoint, headers http.Header, c cache.Cacher) *Http
 		e:       endpoint,
 		c:       c,
 	}
+}
+
+func (hc *HttpClient) SetEndpoint(e Endpoint) {
+	hc.e = e
 }
 
 func (hc *HttpClient) Query(ctx context.Context, body string, method string) ([]byte, error) {

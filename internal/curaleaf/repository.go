@@ -81,12 +81,13 @@ func (r *Repository) GetProductsForCategory(category string) ([]*models.Product,
 }
 
 func (r *Repository) GetCategories() ([]string, error) {
-	if r.menuId == "" {
-		panic("FUCK")
-		return []string{}, repository.ResourceNotFound
-	}
 	query := AllCategoriesQuery(r.menuId, r.menuType)
 	return r.getCategories(query)
+}
+
+func (r *Repository) GetSubcategories(cat string) ([]string, error) {
+	query := AllProductSubcategoriesQuery(r.menuId, r.menuType, cat)
+	return r.getSubcategories(query)
 }
 
 func (r *Repository) GetTerpenes() ([]*models.Terpene, error) {
@@ -170,6 +171,14 @@ func (r *Repository) getCategories(query string) ([]string, error) {
 		return []string{}, err
 	}
 	return r.T.TranslateClientCategories(allCatsResp.Data.DispensaryMenu.AllFilters.Categories), nil
+}
+
+func (r *Repository) getSubcategories(query string) ([]string, error) {
+	allProdsResp, err := r.getResponse(query)
+	if err != nil {
+		return []string{}, err
+	}
+	return r.T.TranslateClientSubcategories(allProdsResp.Data.DispensaryMenu.Products), nil
 }
 
 func (r *Repository) getTerpenes(query string) ([]*models.Terpene, error) {

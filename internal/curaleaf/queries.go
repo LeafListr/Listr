@@ -62,6 +62,18 @@ func AllCategoriesQuery(menuId, menuType string) string {
 }`, menuId, menuType)
 }
 
+func AllProductSubcategoriesQuery(menuId, menuType, categoryType string) string {
+	return fmt.Sprintf(`
+{
+	"query": "query PGP($dispensaryUniqueId: ID!, $menuType: MenuType!, $categoryType: [Category]) { dispensaryMenu(dispensaryUniqueId: $dispensaryUniqueId, menuType: $menuType, categories: $categoryType) { products { subcategory { key displayName } } } }",
+	"variables": {
+        "dispensaryUniqueId": "%s",
+        "menuType": "%s",
+        "categoryType": "%s"
+	}
+}`, menuId, menuType, strings.ToUpper(categoryType))
+}
+
 func AllLocationsQuery(longitude, latitude float64) string {
 	return fmt.Sprintf(`
 {

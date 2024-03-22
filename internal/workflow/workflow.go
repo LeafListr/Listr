@@ -116,6 +116,24 @@ func (w *Workflow) Categories(wp WorkflowParams, repo repository.CategoryReposit
 	return cats, nil
 }
 
+func (w *Workflow) Subcategories(wp WorkflowParams, category string, repo repository.CategoryRepository) ([]string, error) {
+	queryKey := fmt.Sprintf("subcategories-%s-%s-%t", wp.Dispensary, wp.MenuId, wp.Recreational)
+	categories, retErr := w.C.GetOrRetrieve(queryKey, DayTTL, func() (any, error) {
+		return repo.GetSubcategories(category)
+	})
+	if retErr != nil {
+		return []string{}, retErr
+	}
+	cats := categories.([]string)
+	if len(cats) != 0 {
+		sort.SliceStable(cats, func(i, j int) bool {
+			return cats[i] < cats[j]
+		})
+	}
+
+	return cats, nil
+}
+
 func (w *Workflow) Terpenes(wp WorkflowParams, repo repository.TerpeneRepository) ([]*models.Terpene, error) {
 	queryKey := fmt.Sprintf("terpenes-%s-%s-%t", wp.Dispensary, wp.MenuId, wp.Recreational)
 	terpenes, retErr := w.C.GetOrRetrieve(queryKey, DayTTL, func() (any, error) {
@@ -184,4 +202,20 @@ func (w *Workflow) Sort(sp *transformation.SortParams, products []*models.Produc
 
 func (w *Workflow) LogError(err error, context context.Context) {
 	slog.InfoContext(context, err.Error())
+}
+
+func (w *Workflow) RepoFromFactory(params WorkflowParams) (repository.Repository, error) {
+	f := factory.NewRepoFactory(params.Dispensary, params.MenuId, params.Recreational)
+	if params.MenuId == "" {
+		repo, err := f.FindByDispensary()
+		if err != nil {
+			return nil, err
+		}
+		return repo, nil
+	}
+	repo, err := f.FindByDispensaryMenu()
+	if err != nil {
+		return nil, err
+	}
+	return repo, nil
 }

@@ -6,6 +6,7 @@ import (
 	"errors"
 	"strconv"
 	"strings"
+	"sync"
 
 	"github.com/Linkinlog/LeafListr/internal/client"
 	"github.com/Linkinlog/LeafListr/internal/models"
@@ -149,15 +150,30 @@ func (r *Repository) GetCategories() ([]string, error) {
 	}, nil
 }
 
+func (r *Repository) GetSubcategories(_ string) ([]string, error) {
+	return []string{
+		"flower",
+		"vape",
+		"extract",
+		"edible",
+		"tincture",
+		"gear",
+		"topical",
+	}, nil
+}
+
 func (r *Repository) GetTerpenes() ([]*models.Terpene, error) {
 	terps := map[string]struct{}{}
 	products, err := r.GetProducts()
 	if err != nil {
 		return nil, err
 	}
+	var mu sync.Mutex
 	for _, p := range products {
 		for _, t := range p.T {
+			mu.Lock()
 			terps[t.Name] = struct{}{}
+			mu.Unlock()
 		}
 	}
 	terpSlice := make([]*models.Terpene, 0, len(terps))
@@ -175,9 +191,12 @@ func (r *Repository) GetCannabinoids() ([]*models.Cannabinoid, error) {
 	if err != nil {
 		return nil, err
 	}
+	var mu sync.Mutex
 	for _, p := range products {
 		for _, c := range p.C {
+			mu.Lock()
 			canns[c.Name] = struct{}{}
+			mu.Unlock()
 		}
 	}
 	cannSlice := make([]*models.Cannabinoid, 0, len(canns))
@@ -200,10 +219,13 @@ func (r *Repository) GetOffers() ([]*models.Offer, error) {
 		return nil, err
 	}
 
+	var mu sync.Mutex
 	offerMap := map[string]struct{}{}
 	for _, p := range resp.Hits {
 		if p.SpecialTitle != "" {
+			mu.Lock()
 			offerMap[p.SpecialTitle] = struct{}{}
+			mu.Unlock()
 		}
 	}
 	offers := make([]*models.Offer, 0)
@@ -226,6 +248,7 @@ func (r *Repository) getProducts(query string) ([]*models.Product, error) {
 }
 
 func (r *Repository) productResponse(query string) (ProductResponse, error) {
+	r.client.SetEndpoint(BeyondEndpoint)
 	resp, err := r.client.Query(context.Background(), query, "POST")
 	if err != nil {
 		return ProductResponse{}, err
@@ -245,6 +268,7 @@ func (r *Repository) productResponse(query string) (ProductResponse, error) {
 }
 
 func (r *Repository) locationResponse() (LocationResponse, error) {
+	r.client.SetEndpoint(client.Endpoint(LocationListingEndpoint))
 	resp, err := r.client.Query(context.Background(), "", "GET")
 	if err != nil {
 		return LocationResponse{}, err

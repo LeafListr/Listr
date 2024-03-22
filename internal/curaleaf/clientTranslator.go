@@ -143,6 +143,14 @@ func (cT *ClientTranslator) TranslateClientCategories(cs []Category) []string {
 	return categories
 }
 
+func (cT *ClientTranslator) TranslateClientSubcategories(ps []Product) []string {
+	subcategories := make([]string, 0)
+	for _, p := range ps {
+		subcategories = append(subcategories, strings.ToLower(p.Subcategory.Key))
+	}
+	return subcategories
+}
+
 func (cT *ClientTranslator) TranslateClientTerpene(terp TerpeneObj) *models.Terpene {
 	return &models.Terpene{
 		Name:        terp.Terpene.Name,

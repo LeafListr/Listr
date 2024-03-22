@@ -13,9 +13,7 @@ import (
 	"time"
 
 	"github.com/Linkinlog/LeafListr/internal/cache"
-	"github.com/Linkinlog/LeafListr/internal/factory"
 	"github.com/Linkinlog/LeafListr/internal/models"
-	"github.com/Linkinlog/LeafListr/internal/repository"
 	"github.com/Linkinlog/LeafListr/internal/transformation"
 	"github.com/Linkinlog/LeafListr/internal/views/assets"
 	"github.com/Linkinlog/LeafListr/internal/views/handlers"
@@ -244,7 +242,7 @@ func (a *API) handleLocation(res http.ResponseWriter, req *http.Request) {
 // @Router			/dispensaries/{dispensaryId}/locations [get].
 func (a *API) handleLocationListing(r http.ResponseWriter, req *http.Request) {
 	params, _ := params(req, "")
-	repo, err := repoFromFactory(params)
+	repo, err := a.w.RepoFromFactory(params)
 	if err != nil {
 		a.handleError(r, req, err)
 		return
@@ -267,7 +265,7 @@ func (a *API) handleLocationListing(r http.ResponseWriter, req *http.Request) {
 // @Router			/dispensaries/{dispensaryId}/locations/{locationId}/products/{productId} [get].
 func (a *API) handleProduct(r http.ResponseWriter, req *http.Request) {
 	params, productId := params(req, "productId")
-	repo, err := repoFromFactory(params)
+	repo, err := a.w.RepoFromFactory(params)
 	if err != nil {
 		a.handleError(r, req, err)
 		return
@@ -306,7 +304,7 @@ func (a *API) handleProduct(r http.ResponseWriter, req *http.Request) {
 // @Router			/dispensaries/{dispensaryId}/locations/{locationId}/products [get].
 func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 	params, _ := params(req, "")
-	repo, rErr := repoFromFactory(params)
+	repo, rErr := a.w.RepoFromFactory(params)
 	if rErr != nil {
 		a.handleError(r, req, rErr)
 		return
@@ -357,7 +355,7 @@ func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 // @Router			/dispensaries/{dispensaryId}/locations/{locationId}/offers [get].
 func (a *API) handleOfferListing(r http.ResponseWriter, req *http.Request) {
 	params, _ := params(req, "")
-	repo, err := repoFromFactory(params)
+	repo, err := a.w.RepoFromFactory(params)
 	if err != nil {
 		a.handleError(r, req, err)
 		return
@@ -379,7 +377,7 @@ func (a *API) handleOfferListing(r http.ResponseWriter, req *http.Request) {
 // @Router			/dispensaries/{dispensaryId}/locations/{locationId}/categories [get].
 func (a *API) handleCategoryListing(r http.ResponseWriter, req *http.Request) {
 	params, _ := params(req, "")
-	repo, err := repoFromFactory(params)
+	repo, err := a.w.RepoFromFactory(params)
 	if err != nil {
 		a.handleError(r, req, err)
 		return
@@ -400,7 +398,7 @@ func (a *API) handleCategoryListing(r http.ResponseWriter, req *http.Request) {
 // @Router			/dispensaries/{dispensaryId}/locations/{locationId}/terpenes [get].
 func (a *API) handleTerpeneListing(r http.ResponseWriter, req *http.Request) {
 	params, _ := params(req, "")
-	repo, err := repoFromFactory(params)
+	repo, err := a.w.RepoFromFactory(params)
 	if err != nil {
 		a.handleError(r, req, err)
 		return
@@ -421,7 +419,7 @@ func (a *API) handleTerpeneListing(r http.ResponseWriter, req *http.Request) {
 // @Router			/dispensaries/{dispensaryId}/locations/{locationId}/cannabinoids [get].
 func (a *API) handleCannabinoidListing(r http.ResponseWriter, req *http.Request) {
 	params, _ := params(req, "")
-	repo, err := repoFromFactory(params)
+	repo, err := a.w.RepoFromFactory(params)
 	if err != nil {
 		a.handleError(r, req, err)
 		return
@@ -496,13 +494,4 @@ func params(req *http.Request, resource string) (wp workflow.WorkflowParams, res
 	}
 
 	return workflow.NewWorkflowParams(dispensaryId, locationId, recreational != ""), resourceId
-}
-
-func repoFromFactory(params workflow.WorkflowParams) (repository.Repository, error) {
-	f := factory.NewRepoFactory(params.Dispensary, params.MenuId, params.Recreational)
-	repo, err := f.FindByDispensaryMenu()
-	if err != nil {
-		return nil, err
-	}
-	return repo, nil
 }
