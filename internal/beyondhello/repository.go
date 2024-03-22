@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/Linkinlog/LeafListr/internal/client"
 	"github.com/Linkinlog/LeafListr/internal/models"
 	"github.com/Linkinlog/LeafListr/internal/repository"
 )
@@ -22,7 +23,7 @@ var Headers = map[string][]string{
 	"Content-Type":             {"application/json"},
 }
 
-func NewRepository(menuId string, recreational bool) repository.Repository {
+func NewRepository(menuId string, recreational bool, c client.Client) repository.Repository {
 	menuType := "MEDICAL"
 	if recreational {
 		menuType = "RECREATIONAL"
@@ -30,12 +31,14 @@ func NewRepository(menuId string, recreational bool) repository.Repository {
 	return &Repository{
 		menuType: menuType,
 		menuId:   menuId,
+		client:   c,
 	}
 }
 
 type Repository struct {
 	menuType string
 	menuId   string
+	client   client.Client
 }
 
 func (r *Repository) Location() (*models.Location, error) {
@@ -223,8 +226,7 @@ func (r *Repository) getProducts(query string) ([]*models.Product, error) {
 }
 
 func (r *Repository) productResponse(query string) (ProductResponse, error) {
-	c := NewHTTPClient(Endpoint(BeyondEndpoint), Headers)
-	resp, err := c.Query(context.Background(), query, "POST")
+	resp, err := r.client.Query(context.Background(), query, "POST")
 	if err != nil {
 		return ProductResponse{}, err
 	}
@@ -243,8 +245,7 @@ func (r *Repository) productResponse(query string) (ProductResponse, error) {
 }
 
 func (r *Repository) locationResponse() (LocationResponse, error) {
-	c := NewHTTPClient(Endpoint(LocationListingEndpoint), Headers)
-	resp, err := c.Query(context.Background(), "", "GET")
+	resp, err := r.client.Query(context.Background(), "", "GET")
 	if err != nil {
 		return LocationResponse{}, err
 	}

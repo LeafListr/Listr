@@ -682,6 +682,9 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
+                "permalink": {
+                    "type": "string"
+                },
                 "price": {
                     "$ref": "#/definitions/models.Price"
                 },

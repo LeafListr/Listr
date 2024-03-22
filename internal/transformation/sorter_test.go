@@ -10,6 +10,7 @@ import (
 )
 
 func TestPriceAsc(t *testing.T) {
+	t.Parallel()
 	tests := map[string]struct {
 		products []*models.Product
 		want     []*models.Product
@@ -79,6 +80,7 @@ func TestPriceAsc(t *testing.T) {
 }
 
 func TestPriceDesc(t *testing.T) {
+	t.Parallel()
 	tests := map[string]struct {
 		products []*models.Product
 		want     []*models.Product
@@ -130,6 +132,7 @@ func TestPriceDesc(t *testing.T) {
 }
 
 func TestTop3Terps(t *testing.T) {
+	t.Parallel()
 	tests := map[string]struct {
 		products []*models.Product
 		terps    [3]string
@@ -263,6 +266,7 @@ func TestTop3Terps(t *testing.T) {
 }
 
 func TestTHCAsc(t *testing.T) {
+	t.Parallel()
 	tests := map[string]struct {
 		products []*models.Product
 		want     []*models.Product
@@ -344,6 +348,7 @@ func TestTHCAsc(t *testing.T) {
 }
 
 func TestTHCDesc(t *testing.T) {
+	t.Parallel()
 	tests := map[string]struct {
 		products []*models.Product
 		want     []*models.Product

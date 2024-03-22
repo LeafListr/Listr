@@ -8,6 +8,7 @@ import (
 )
 
 func TestProduct_Weight(t *testing.T) {
+	t.Parallel()
 	tests := map[string]struct {
 		weight string
 		want   float64
@@ -70,6 +71,7 @@ func TestProduct_Weight(t *testing.T) {
 }
 
 func TestProduct_PricePerGram(t *testing.T) {
+	t.Parallel()
 	tests := map[string]struct {
 		price  *models.Price
 		weight string

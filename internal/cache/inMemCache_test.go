@@ -8,6 +8,7 @@ import (
 )
 
 func TestSet(t *testing.T) {
+	t.Parallel()
 	tests := map[string]struct {
 		key   string
 		value any

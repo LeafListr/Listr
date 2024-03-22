@@ -4,6 +4,8 @@ import (
 	"net/http"
 
 	"github.com/Linkinlog/LeafListr/internal/api/translation"
+	"github.com/Linkinlog/LeafListr/internal/factory"
+	"github.com/Linkinlog/LeafListr/internal/repository"
 	"github.com/Linkinlog/LeafListr/internal/transformation"
 	"github.com/Linkinlog/LeafListr/internal/views/components"
 	"github.com/Linkinlog/LeafListr/internal/workflow"
@@ -11,10 +13,10 @@ import (
 
 type HtmlHandler struct {
 	supportedDispensaries []string
-	w                     workflow.Workflow
+	w                     *workflow.Workflow
 }
 
-func NewHtmlHandler(supportedDispensaries []string, w workflow.Workflow) *HtmlHandler {
+func NewHtmlHandler(supportedDispensaries []string, w *workflow.Workflow) *HtmlHandler {
 	return &HtmlHandler{
 		supportedDispensaries: supportedDispensaries,
 		w:                     w,
@@ -31,8 +33,13 @@ func (h *HtmlHandler) LandingPage(r http.ResponseWriter, req *http.Request) {
 func (h *HtmlHandler) Locations(r http.ResponseWriter, req *http.Request) {
 	selectedDispenary := req.URL.Query().Get("dispensary")
 	params := params(req)
+	repo, err := repoFromFactory(params)
+	if err != nil {
+		http.Error(r, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
-	locs, locErr := h.w.Locations(params)
+	locs, locErr := h.w.Locations(params, repo)
 	if locErr != nil {
 		http.Error(r, locErr.Error(), http.StatusInternalServerError)
 		return
@@ -53,8 +60,13 @@ func (h *HtmlHandler) Navigation(r http.ResponseWriter, req *http.Request) {
 
 func (h *HtmlHandler) Categories(r http.ResponseWriter, req *http.Request) {
 	params := params(req)
+	repo, err := repoFromFactory(params)
+	if err != nil {
+		http.Error(r, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
-	categories, cErr := h.w.Categories(params)
+	categories, cErr := h.w.Categories(params, repo)
 	if cErr != nil {
 		http.Error(r, cErr.Error(), http.StatusInternalServerError)
 		return
@@ -67,21 +79,26 @@ func (h *HtmlHandler) Categories(r http.ResponseWriter, req *http.Request) {
 
 func (h *HtmlHandler) OffersAndSearch(r http.ResponseWriter, req *http.Request) {
 	params := params(req)
+	repo, rErr := repoFromFactory(params)
+	if rErr != nil {
+		http.Error(r, rErr.Error(), http.StatusInternalServerError)
+		return
+	}
 
-	terps, terpErr := h.w.Terpenes(params)
+	terps, terpErr := h.w.Terpenes(params, repo)
 	if terpErr != nil {
 		h.w.LogError(terpErr, req.Context())
 	}
 	transTerps := translation.NewAPITranslator().TranslateTerpenes(terps)
 
-	offers, offerErr := h.w.Offers(params)
+	offers, offerErr := h.w.Offers(params, repo)
 	if offerErr != nil {
 		http.Error(r, offerErr.Error(), http.StatusInternalServerError)
 		return
 	}
 	transOffers := translation.NewAPITranslator().TranslateOffers(offers)
 
-	categories, cErr := h.w.Categories(params)
+	categories, cErr := h.w.Categories(params, repo)
 	if cErr != nil {
 		http.Error(r, cErr.Error(), http.StatusInternalServerError)
 		return
@@ -96,8 +113,13 @@ func (h *HtmlHandler) OffersAndSearch(r http.ResponseWriter, req *http.Request) 
 
 func (h *HtmlHandler) Sorters(r http.ResponseWriter, req *http.Request) {
 	params := params(req)
+	repo, rErr := repoFromFactory(params)
+	if rErr != nil {
+		http.Error(r, rErr.Error(), http.StatusInternalServerError)
+		return
+	}
 
-	terps, terpErr := h.w.Terpenes(params)
+	terps, terpErr := h.w.Terpenes(params, repo)
 	if terpErr != nil {
 		h.w.LogError(terpErr, req.Context())
 	}
@@ -119,8 +141,13 @@ func (h *HtmlHandler) Filters(r http.ResponseWriter, req *http.Request) {
 
 func (h *HtmlHandler) Offers(r http.ResponseWriter, req *http.Request) {
 	params := params(req)
+	repo, rErr := repoFromFactory(params)
+	if rErr != nil {
+		http.Error(r, rErr.Error(), http.StatusInternalServerError)
+		return
+	}
 
-	offers, offerErr := h.w.Offers(params)
+	offers, offerErr := h.w.Offers(params, repo)
 	if offerErr != nil {
 		http.Error(r, offerErr.Error(), http.StatusInternalServerError)
 		return
@@ -136,8 +163,13 @@ func (h *HtmlHandler) Offers(r http.ResponseWriter, req *http.Request) {
 func (h *HtmlHandler) Products(r http.ResponseWriter, req *http.Request) {
 	selectedCategory := req.URL.Query().Get("category")
 	params := params(req)
+	repo, err := repoFromFactory(params)
+	if err != nil {
+		http.Error(r, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
-	products, pErr := h.w.ProductsInCategory(params, selectedCategory)
+	products, pErr := h.w.ProductsInCategory(params, selectedCategory, repo)
 	if pErr != nil {
 		http.Error(r, pErr.Error(), http.StatusInternalServerError)
 		return
@@ -172,4 +204,13 @@ func params(r *http.Request) (wp workflow.WorkflowParams) {
 	}
 
 	return workflow.NewWorkflowParams(selectedDispensary, selectedLocation, recreational)
+}
+
+func repoFromFactory(params workflow.WorkflowParams) (repository.Repository, error) {
+	f := factory.NewRepoFactory(params.Dispensary, params.MenuId, params.Recreational)
+	repo, err := f.FindByDispensaryMenu()
+	if err != nil {
+		return nil, err
+	}
+	return repo, nil
 }

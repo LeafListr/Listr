@@ -8,13 +8,10 @@ import (
 
 var (
 	InvalidJSONError     = errors.New("invalid json")
-	ResourceNotFound     = errors.New("resource not found")
 	InvalidCategoryError = errors.New("invalid category")
+	ResourceNotFound     = errors.New("resource not found")
 )
 
-//go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate
-
-//counterfeiter:generate . Repository
 type Repository interface {
 	LocationRepository
 	ProductRepository

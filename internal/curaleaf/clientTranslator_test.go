@@ -10,6 +10,7 @@ import (
 )
 
 func TestClientTranslator_TranslateClientLocation(t *testing.T) {
+	t.Parallel()
 	tests := map[string]struct {
 		input    curaleaf.Location
 		expected *models.Location
@@ -47,6 +48,7 @@ func TestClientTranslator_TranslateClientLocation(t *testing.T) {
 }
 
 func TestClientTranslator_TranslateClientLocations(t *testing.T) {
+	t.Parallel()
 	tests := map[string]struct {
 		input    []curaleaf.Location
 		expected []*models.Location
@@ -106,6 +108,7 @@ func TestClientTranslator_TranslateClientLocations(t *testing.T) {
 }
 
 func TestClientTranslator_TranslateClientProduct(t *testing.T) {
+	t.Parallel()
 	tests := map[string]struct {
 		input    curaleaf.Product
 		expected *models.Product
@@ -118,6 +121,7 @@ func TestClientTranslator_TranslateClientProduct(t *testing.T) {
 			expected: &models.Product{
 				Id:   "Product1",
 				Name: "Test Product",
+				Slug: "/products/Product1",
 			},
 		},
 	}
@@ -126,13 +130,14 @@ func TestClientTranslator_TranslateClientProduct(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			result := translator.TranslateClientProduct(tt.input)
+			result := translator.TranslateClientProduct(tt.input, "")
 			assert.Equal(t, tt.expected, result)
 		})
 	}
 }
 
 func TestClientTranslator_TranslateClientProducts(t *testing.T) {
+	t.Parallel()
 	tests := map[string]struct {
 		input    []curaleaf.Product
 		expected []*models.Product
@@ -150,12 +155,16 @@ func TestClientTranslator_TranslateClientProducts(t *testing.T) {
 			},
 			expected: []*models.Product{
 				{
-					Id:   "Product1",
-					Name: "Test Product 1",
+					Id:        "Product1",
+					Name:      "Test Product 1",
+					Slug:      "/products/Product1",
+					Permalink: "",
 				},
 				{
-					Id:   "Product2",
-					Name: "Test Product 2",
+					Id:        "Product2",
+					Name:      "Test Product 2",
+					Slug:      "/products/Product2",
+					Permalink: "",
 				},
 			},
 		},
@@ -165,7 +174,7 @@ func TestClientTranslator_TranslateClientProducts(t *testing.T) {
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			result := translator.TranslateClientProducts(tt.input)
+			result := translator.TranslateClientProducts(tt.input, "")
 			assert.Equal(t, tt.expected, result)
 		})
 	}

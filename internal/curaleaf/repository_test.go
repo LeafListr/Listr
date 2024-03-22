@@ -14,6 +14,7 @@ import (
 )
 
 func TestGetLocation(t *testing.T) {
+	t.Parallel()
 	response := responseSample()
 	bs, err := json.Marshal(response)
 	if err != nil {
@@ -58,9 +59,7 @@ func TestGetLocation(t *testing.T) {
 		},
 	}
 	for name, tt := range tests {
-		tt := tt // shadowed so we can run in parallel
 		t.Run(name, func(t *testing.T) {
-			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
 			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "ASDF123", false)
@@ -71,6 +70,7 @@ func TestGetLocation(t *testing.T) {
 }
 
 func TestGetLocations(t *testing.T) {
+	t.Parallel()
 	response := responseSample()
 	bs, err := json.Marshal(response)
 	if err != nil {
@@ -118,9 +118,7 @@ func TestGetLocations(t *testing.T) {
 		},
 	}
 	for name, tt := range tests {
-		tt := tt // shadowed so we can run in parallel
 		t.Run(name, func(t *testing.T) {
-			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
 			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "ASDF", false)
@@ -131,6 +129,7 @@ func TestGetLocations(t *testing.T) {
 }
 
 func TestGetProduct(t *testing.T) {
+	t.Parallel()
 	response := responseSample()
 	bs, err := json.Marshal(response)
 	if err != nil {
@@ -191,9 +190,7 @@ func TestGetProduct(t *testing.T) {
 		},
 	}
 	for name, tt := range tests {
-		tt := tt // shadowed so we can run in parallel
 		t.Run(name, func(t *testing.T) {
-			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
 			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "ASDF", false)
@@ -204,6 +201,7 @@ func TestGetProduct(t *testing.T) {
 }
 
 func TestGetProducts(t *testing.T) {
+	t.Parallel()
 	response := responseSample()
 	bs, err := json.Marshal(response)
 	if err != nil {
@@ -275,9 +273,7 @@ func TestGetProducts(t *testing.T) {
 		},
 	}
 	for name, tt := range tests {
-		tt := tt // shadowed so we can run in parallel
 		t.Run(name, func(t *testing.T) {
-			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
 			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "foo", false)
@@ -288,6 +284,7 @@ func TestGetProducts(t *testing.T) {
 }
 
 func TestGetProductsForCategory(t *testing.T) {
+	t.Parallel()
 	response := responseSample()
 	bs, err := json.Marshal(response)
 	if err != nil {
@@ -359,9 +356,7 @@ func TestGetProductsForCategory(t *testing.T) {
 		},
 	}
 	for name, tt := range tests {
-		tt := tt // shadowed so we can run in parallel
 		t.Run(name, func(t *testing.T) {
-			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
 			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "foo", false)
@@ -372,6 +367,7 @@ func TestGetProductsForCategory(t *testing.T) {
 }
 
 func TestGetCategories(t *testing.T) {
+	t.Parallel()
 	response := responseSample()
 	bs, err := json.Marshal(response)
 	if err != nil {
@@ -418,9 +414,7 @@ func TestGetCategories(t *testing.T) {
 		},
 	}
 	for name, tt := range tests {
-		tt := tt // shadowed so we can run in parallel
 		t.Run(name, func(t *testing.T) {
-			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
 			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "foo", false)
@@ -431,6 +425,7 @@ func TestGetCategories(t *testing.T) {
 }
 
 func TestGetTerpenes(t *testing.T) {
+	t.Parallel()
 	response := responseSample()
 	bs, err := json.Marshal(response)
 	if err != nil {
@@ -480,9 +475,7 @@ func TestGetTerpenes(t *testing.T) {
 		},
 	}
 	for name, tt := range tests {
-		tt := tt // shadowed so we can run in parallel
 		t.Run(name, func(t *testing.T) {
-			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
 			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "foo", false)
@@ -493,6 +486,7 @@ func TestGetTerpenes(t *testing.T) {
 }
 
 func TestGetCannabinoids(t *testing.T) {
+	t.Parallel()
 	response := responseSample()
 	bs, err := json.Marshal(response)
 	if err != nil {
@@ -542,9 +536,7 @@ func TestGetCannabinoids(t *testing.T) {
 		},
 	}
 	for name, tt := range tests {
-		tt := tt // shadowed so we can run in parallel
 		t.Run(name, func(t *testing.T) {
-			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
 			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "foo", false)
@@ -555,6 +547,7 @@ func TestGetCannabinoids(t *testing.T) {
 }
 
 func TestGetOffers(t *testing.T) {
+	t.Parallel()
 	response := responseSample()
 	bs, err := json.Marshal(response)
 	if err != nil {
@@ -603,9 +596,7 @@ func TestGetOffers(t *testing.T) {
 		},
 	}
 	for name, tt := range tests {
-		tt := tt // shadowed so we can run in parallel
 		t.Run(name, func(t *testing.T) {
-			t.Parallel()
 			c := new(clientfakes.FakeClient)
 			tt.setup(c)
 			cr := curaleaf.NewRepository(c, curaleaf.NewClientTranslator(), "foo", false)

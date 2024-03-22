@@ -9,6 +9,7 @@ import (
 )
 
 func TestSubCategory(t *testing.T) {
+	t.Parallel()
 	tests := map[string]struct {
 		subCategoryName  string
 		products         []*models.Product
@@ -96,6 +97,7 @@ func TestSubCategory(t *testing.T) {
 }
 
 func TestPrice(t *testing.T) {
+	t.Parallel()
 	tests := map[string]struct {
 		min              float64
 		max              float64
@@ -266,6 +268,7 @@ func TestPrice(t *testing.T) {
 }
 
 func TestBrand(t *testing.T) {
+	t.Parallel()
 	tests := map[string]struct {
 		brandName        string
 		products         []*models.Product
@@ -356,6 +359,7 @@ func TestBrand(t *testing.T) {
 }
 
 func TestNotBrand(t *testing.T) {
+	t.Parallel()
 	tests := map[string]struct {
 		brandName        []string
 		products         []*models.Product
@@ -414,6 +418,7 @@ func TestNotBrand(t *testing.T) {
 }
 
 func TestExcludingTerms(t *testing.T) {
+	t.Parallel()
 	tests := map[string]struct {
 		excludedTerms    []string
 		products         []*models.Product

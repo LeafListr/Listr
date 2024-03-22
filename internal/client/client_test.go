@@ -1,20 +1,24 @@
-package curaleaf_test
+package client_test
 
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"testing"
 
+	"github.com/Linkinlog/LeafListr/internal/cache/cachefakes"
+	"github.com/Linkinlog/LeafListr/internal/client"
 	"github.com/Linkinlog/LeafListr/internal/curaleaf"
 )
 
-func TestSend(t *testing.T) {
+func TestQuery(t *testing.T) {
+	t.Parallel()
 	menuType := "MEDICAL"
 	gbgId := "LMR124"
 	tests := map[string]struct {
 		ctx           context.Context
 		query         string
-		endpoint      curaleaf.Endpoint
+		endpoint      client.Endpoint
 		response      interface{}
 		expectedError bool
 	}{
@@ -69,7 +73,9 @@ func TestSend(t *testing.T) {
 	}
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			c := curaleaf.NewHTTPClient(tt.endpoint)
+			cacher := &cachefakes.FakeCacher{}
+			cacher.GetReturns(nil, errors.New("cache miss"))
+			c := client.NewHTTPClient(tt.endpoint, curaleaf.Headers, cacher)
 			respBytes, err := c.Query(tt.ctx, tt.query, "POST")
 			if err != nil && !tt.expectedError {
 				t.Fatal(err)

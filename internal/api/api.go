@@ -13,7 +13,9 @@ import (
 	"time"
 
 	"github.com/Linkinlog/LeafListr/internal/cache"
+	"github.com/Linkinlog/LeafListr/internal/factory"
 	"github.com/Linkinlog/LeafListr/internal/models"
+	"github.com/Linkinlog/LeafListr/internal/repository"
 	"github.com/Linkinlog/LeafListr/internal/transformation"
 	"github.com/Linkinlog/LeafListr/internal/views/assets"
 	"github.com/Linkinlog/LeafListr/internal/views/handlers"
@@ -63,7 +65,7 @@ const (
 )
 
 type API struct {
-	w                     workflow.Workflow
+	w                     *workflow.Workflow
 	t                     translation.APITranslatable
 	h                     http.Handler
 	supportedDispensaries []string
@@ -195,116 +197,131 @@ func (a *API) handleError(r http.ResponseWriter, req *http.Request, err error) {
 	r.WriteHeader(http.StatusInternalServerError)
 }
 
-//	@Summary		Get dispensary details
-//	@Description	Returns details of a specific dispensary
-//	@Tags			dispensaries
-//	@Accept			json
-//	@Produce		json
-//	@Param			dispensaryId	path	string						true	"Dispensary ID"
-//	@Success		200				{array}	supportedDispensaryOptions	"Dispensary details"
-//	@Router			/dispensaries/{dispensaryId} [get].
+// @Summary		Get dispensary details
+// @Description	Returns details of a specific dispensary
+// @Tags			dispensaries
+// @Accept			json
+// @Produce		json
+// @Param			dispensaryId	path	string						true	"Dispensary ID"
+// @Success		200				{array}	supportedDispensaryOptions	"Dispensary details"
+// @Router			/dispensaries/{dispensaryId} [get].
 func (a *API) handleDispensary(r http.ResponseWriter, _ *http.Request) {
 	a.writeJson(r, nil, []supportedDispensaryOptions{Locations}, nil)
 }
 
-//	@Summary		List supported dispensaries
-//	@Description	Returns a list of supported dispensaries
-//	@Tags			dispensaries
-//	@Accept			json
-//	@Produce		json
-//	@Success		200	{array}	string	"List of supported dispensaries"	Enums(Curaleaf, Beyond-Hello)
-//	@Router			/dispensaries [get].
+// @Summary		List supported dispensaries
+// @Description	Returns a list of supported dispensaries
+// @Tags			dispensaries
+// @Accept			json
+// @Produce		json
+// @Success		200	{array}	string	"List of supported dispensaries"	Enums(Curaleaf, Beyond-Hello)
+// @Router			/dispensaries [get].
 func (a *API) handleDispensaryListing(r http.ResponseWriter, _ *http.Request) {
 	a.writeJson(r, nil, a.supportedDispensaries, nil)
 }
 
-//	@Summary		Get location details
-//	@Description	Returns details of a specific location
-//	@Tags			locations
-//	@Accept			json
-//	@Produce		json
-//	@Param			dispensaryId	path	string	true	"Dispensary ID"
-//	@Param			locationId		path	string	true	"Location ID"
-//	@Success		200				{array}	string	"Location details"
-//	@Router			/dispensaries/{dispensaryId}/locations/{locationId} [get].
+// @Summary		Get location details
+// @Description	Returns details of a specific location
+// @Tags			locations
+// @Accept			json
+// @Produce		json
+// @Param			dispensaryId	path	string	true	"Dispensary ID"
+// @Param			locationId		path	string	true	"Location ID"
+// @Success		200				{array}	string	"Location details"
+// @Router			/dispensaries/{dispensaryId}/locations/{locationId} [get].
 func (a *API) handleLocation(res http.ResponseWriter, req *http.Request) {
 	a.writeJson(res, req, []supportedLocationOptions{Products, Offers, Terpenes, Cannabinoids, Categories}, nil)
 }
 
-//	@Summary		List locations for a dispensary
-//	@Description	Returns a list of locations for a specific dispensary
-//	@Tags			locations
-//	@Accept			json
-//	@Produce		json
-//	@Param			dispensaryId	path	string			true	"Dispensary ID"
-//	@Param			recreational	query	bool			true	"Recreational or medical"
-//	@Success		200				{array}	models.Location	"List of locations"
-//	@Router			/dispensaries/{dispensaryId}/locations [get].
+// @Summary		List locations for a dispensary
+// @Description	Returns a list of locations for a specific dispensary
+// @Tags			locations
+// @Accept			json
+// @Produce		json
+// @Param			dispensaryId	path	string			true	"Dispensary ID"
+// @Param			recreational	query	bool			true	"Recreational or medical"
+// @Success		200				{array}	models.Location	"List of locations"
+// @Router			/dispensaries/{dispensaryId}/locations [get].
 func (a *API) handleLocationListing(r http.ResponseWriter, req *http.Request) {
 	params, _ := params(req, "")
-	locations, err := a.w.Locations(params)
+	repo, err := repoFromFactory(params)
+	if err != nil {
+		a.handleError(r, req, err)
+		return
+	}
+
+	locations, err := a.w.Locations(params, repo)
 	a.writeJson(r, req, a.t.TranslateLocations(locations), err)
 }
 
-//	@Summary		Get product details
-//	@Description	Returns details of a specific product
-//	@Tags			products
-//	@Accept			json
-//	@Produce		json
-//	@Param			dispensaryId	path		string			true	"Dispensary ID"
-//	@Param			locationId		path		string			true	"Location ID"
-//	@Param			recreational	query		bool			true	"Recreational or medical"
-//	@Param			productId		path		string			true	"Product ID"
-//	@Success		200				{object}	models.Product	"Product details"
-//	@Router			/dispensaries/{dispensaryId}/locations/{locationId}/products/{productId} [get].
+// @Summary		Get product details
+// @Description	Returns details of a specific product
+// @Tags			products
+// @Accept			json
+// @Produce		json
+// @Param			dispensaryId	path		string			true	"Dispensary ID"
+// @Param			locationId		path		string			true	"Location ID"
+// @Param			recreational	query		bool			true	"Recreational or medical"
+// @Param			productId		path		string			true	"Product ID"
+// @Success		200				{object}	models.Product	"Product details"
+// @Router			/dispensaries/{dispensaryId}/locations/{locationId}/products/{productId} [get].
 func (a *API) handleProduct(r http.ResponseWriter, req *http.Request) {
 	params, productId := params(req, "productId")
-	product, err := a.w.Product(params, productId)
+	repo, err := repoFromFactory(params)
+	if err != nil {
+		a.handleError(r, req, err)
+		return
+	}
+	product, err := a.w.Product(params, productId, repo)
 	a.writeJson(r, req, a.t.TranslateProduct(product), err)
 }
 
-//	@Summary		List products for a location
-//	@Description	Returns a list of products for a specific location
-//	@Tags			products
-//	@Accept			json
-//	@Produce		json
-//	@Param			dispensaryId	path	string			true	"Dispensary ID"
-//	@Param			locationId		path	string			true	"Location ID"
-//	@Param			recreational	query	bool			true	"Recreational or medical"
-//	@Param			category		query	string			true	"Category"
-//	@Param			sub				query	string			false	"Sub Category"
-//	@Param			min_price_per_g	query	number			false	"Minimum price per gram"
-//	@Param			max_price_per_g	query	number			false	"Maximum price per gram"
-//	@Param			min_price		query	number			false	"Minimum price"
-//	@Param			max_price		query	number			false	"Maximum price"
-//	@Param			brands			query	string			false	"Brands to include"
-//	@Param			not_brands		query	string			false	"Brands to exclude"
-//	@Param			variants		query	string			false	"Variants to include"
-//	@Param			excludes		query	string			false	"Terms to exclude"
-//	@Param			includes		query	string			false	"Terms to include"
-//	@Param			price_sort		query	string			false	"Sort products by price"			Enums(asc, desc)
-//	@Param			thc_sort		query	string			false	"Sort products by THC"				Enums(asc, desc)
-//	@Param			terp_sort		query	string			false	"Sort products by Total Terpenes"	Enums(asc, desc)
-//	@Param			terp1			query	string			false	"Most important terpene"
-//	@Param			terp2			query	string			false	"Second most important terpene"
-//	@Param			terp3			query	string			false	"Third most important terpene"
-//	@Param			terp_asc		query	bool			false	"Sort terpene profile low to high"
-//	@Success		200				{array}	models.Product	"List of products"
-//	@Router			/dispensaries/{dispensaryId}/locations/{locationId}/products [get].
+// @Summary		List products for a location
+// @Description	Returns a list of products for a specific location
+// @Tags			products
+// @Accept			json
+// @Produce		json
+// @Param			dispensaryId	path	string			true	"Dispensary ID"
+// @Param			locationId		path	string			true	"Location ID"
+// @Param			recreational	query	bool			true	"Recreational or medical"
+// @Param			category		query	string			true	"Category"
+// @Param			sub				query	string			false	"Sub Category"
+// @Param			min_price_per_g	query	number			false	"Minimum price per gram"
+// @Param			max_price_per_g	query	number			false	"Maximum price per gram"
+// @Param			min_price		query	number			false	"Minimum price"
+// @Param			max_price		query	number			false	"Maximum price"
+// @Param			brands			query	string			false	"Brands to include"
+// @Param			not_brands		query	string			false	"Brands to exclude"
+// @Param			variants		query	string			false	"Variants to include"
+// @Param			excludes		query	string			false	"Terms to exclude"
+// @Param			includes		query	string			false	"Terms to include"
+// @Param			price_sort		query	string			false	"Sort products by price"			Enums(asc, desc)
+// @Param			thc_sort		query	string			false	"Sort products by THC"				Enums(asc, desc)
+// @Param			terp_sort		query	string			false	"Sort products by Total Terpenes"	Enums(asc, desc)
+// @Param			terp1			query	string			false	"Most important terpene"
+// @Param			terp2			query	string			false	"Second most important terpene"
+// @Param			terp3			query	string			false	"Third most important terpene"
+// @Param			terp_asc		query	bool			false	"Sort terpene profile low to high"
+// @Success		200				{array}	models.Product	"List of products"
+// @Router			/dispensaries/{dispensaryId}/locations/{locationId}/products [get].
 func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 	params, _ := params(req, "")
-
+	repo, rErr := repoFromFactory(params)
+	if rErr != nil {
+		a.handleError(r, req, rErr)
+		return
+	}
 	var products []*models.Product
 	if category := req.URL.Query().Get("category"); category != "" {
 		var err error
-		products, err = a.w.ProductsInCategory(params, category)
+		products, err = a.w.ProductsInCategory(params, category, repo)
 		if err != nil {
 			a.handleError(r, req, err)
 			return
 		}
 	} else {
 		var err error
-		products, err = a.w.Products(params)
+		products, err = a.w.Products(params, repo)
 		if err != nil {
 			a.handleError(r, req, err)
 			return
@@ -328,67 +345,88 @@ func (a *API) handleProductListing(r http.ResponseWriter, req *http.Request) {
 	a.writeJson(r, req, a.t.TranslateProducts(products), nil)
 }
 
-//	@Summary		List offers for a location
-//	@Description	Returns a list of offers for a specific location
-//	@Tags			offers
-//	@Accept			json
-//	@Produce		json
-//	@Param			dispensaryId	path	string			true	"Dispensary ID"
-//	@Param			locationId		path	string			true	"Location ID"
-//	@Param			recreational	query	bool			true	"Recreational or medical"
-//	@Success		200				{array}	models.Offer	"List of offers"
-//	@Router			/dispensaries/{dispensaryId}/locations/{locationId}/offers [get].
+// @Summary		List offers for a location
+// @Description	Returns a list of offers for a specific location
+// @Tags			offers
+// @Accept			json
+// @Produce		json
+// @Param			dispensaryId	path	string			true	"Dispensary ID"
+// @Param			locationId		path	string			true	"Location ID"
+// @Param			recreational	query	bool			true	"Recreational or medical"
+// @Success		200				{array}	models.Offer	"List of offers"
+// @Router			/dispensaries/{dispensaryId}/locations/{locationId}/offers [get].
 func (a *API) handleOfferListing(r http.ResponseWriter, req *http.Request) {
 	params, _ := params(req, "")
-	offers, err := a.w.Offers(params)
+	repo, err := repoFromFactory(params)
+	if err != nil {
+		a.handleError(r, req, err)
+		return
+	}
+
+	offers, err := a.w.Offers(params, repo)
 	a.writeJson(r, req, a.t.TranslateOffers(offers), err)
 }
 
-//	@Summary		List categories for a location
-//	@Description	Returns a list of categories for a specific location
-//	@Tags			categories
-//	@Accept			json
-//	@Produce		json
-//	@Param			dispensaryId	path	string	true	"Dispensary ID"
-//	@Param			locationId		path	string	true	"Location ID"
-//	@Param			recreational	query	bool	true	"Recreational or medical"
-//	@Success		200				{array}	string	"List of categories"
-//	@Router			/dispensaries/{dispensaryId}/locations/{locationId}/categories [get].
+// @Summary		List categories for a location
+// @Description	Returns a list of categories for a specific location
+// @Tags			categories
+// @Accept			json
+// @Produce		json
+// @Param			dispensaryId	path	string	true	"Dispensary ID"
+// @Param			locationId		path	string	true	"Location ID"
+// @Param			recreational	query	bool	true	"Recreational or medical"
+// @Success		200				{array}	string	"List of categories"
+// @Router			/dispensaries/{dispensaryId}/locations/{locationId}/categories [get].
 func (a *API) handleCategoryListing(r http.ResponseWriter, req *http.Request) {
 	params, _ := params(req, "")
-	categories, err := a.w.Categories(params)
+	repo, err := repoFromFactory(params)
+	if err != nil {
+		a.handleError(r, req, err)
+		return
+	}
+	categories, err := a.w.Categories(params, repo)
 	a.writeJson(r, req, a.t.TranslateCategories(categories), err)
 }
 
-//	@Summary		List terpenes for a location
-//	@Description	Returns a list of terpenes for a specific location
-//	@Tags			terpenes
-//	@Accept			json
-//	@Produce		json
-//	@Param			dispensaryId	path	string			true	"Dispensary ID"
-//	@Param			locationId		path	string			true	"Location ID"
-//	@Param			recreational	query	bool			true	"Recreational or medical"
-//	@Success		200				{array}	models.Terpene	"List of terpenes"
-//	@Router			/dispensaries/{dispensaryId}/locations/{locationId}/terpenes [get].
+// @Summary		List terpenes for a location
+// @Description	Returns a list of terpenes for a specific location
+// @Tags			terpenes
+// @Accept			json
+// @Produce		json
+// @Param			dispensaryId	path	string			true	"Dispensary ID"
+// @Param			locationId		path	string			true	"Location ID"
+// @Param			recreational	query	bool			true	"Recreational or medical"
+// @Success		200				{array}	models.Terpene	"List of terpenes"
+// @Router			/dispensaries/{dispensaryId}/locations/{locationId}/terpenes [get].
 func (a *API) handleTerpeneListing(r http.ResponseWriter, req *http.Request) {
 	params, _ := params(req, "")
-	terpenes, err := a.w.Terpenes(params)
+	repo, err := repoFromFactory(params)
+	if err != nil {
+		a.handleError(r, req, err)
+		return
+	}
+	terpenes, err := a.w.Terpenes(params, repo)
 	a.writeJson(r, req, a.t.TranslateTerpenes(terpenes), err)
 }
 
-//	@Summary		List cannabinoids for a location
-//	@Description	Returns a list of cannabinoids for a specific location
-//	@Tags			cannabinoids
-//	@Accept			json
-//	@Produce		json
-//	@Param			dispensaryId	path	string				true	"Dispensary ID"
-//	@Param			locationId		path	string				true	"Location ID"
-//	@Param			recreational	query	bool				true	"Recreational or medical"
-//	@Success		200				{array}	models.Cannabinoid	"List of cannabinoids"
-//	@Router			/dispensaries/{dispensaryId}/locations/{locationId}/cannabinoids [get].
+// @Summary		List cannabinoids for a location
+// @Description	Returns a list of cannabinoids for a specific location
+// @Tags			cannabinoids
+// @Accept			json
+// @Produce		json
+// @Param			dispensaryId	path	string				true	"Dispensary ID"
+// @Param			locationId		path	string				true	"Location ID"
+// @Param			recreational	query	bool				true	"Recreational or medical"
+// @Success		200				{array}	models.Cannabinoid	"List of cannabinoids"
+// @Router			/dispensaries/{dispensaryId}/locations/{locationId}/cannabinoids [get].
 func (a *API) handleCannabinoidListing(r http.ResponseWriter, req *http.Request) {
 	params, _ := params(req, "")
-	cannabinoids, err := a.w.Cannabinoids(params)
+	repo, err := repoFromFactory(params)
+	if err != nil {
+		a.handleError(r, req, err)
+		return
+	}
+	cannabinoids, err := a.w.Cannabinoids(params, repo)
 	a.writeJson(r, req, a.t.TranslateCannabinoids(cannabinoids), err)
 }
 
@@ -458,4 +496,13 @@ func params(req *http.Request, resource string) (wp workflow.WorkflowParams, res
 	}
 
 	return workflow.NewWorkflowParams(dispensaryId, locationId, recreational != ""), resourceId
+}
+
+func repoFromFactory(params workflow.WorkflowParams) (repository.Repository, error) {
+	f := factory.NewRepoFactory(params.Dispensary, params.MenuId, params.Recreational)
+	repo, err := f.FindByDispensaryMenu()
+	if err != nil {
+		return nil, err
+	}
+	return repo, nil
 }

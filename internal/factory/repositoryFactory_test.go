@@ -9,6 +9,7 @@ import (
 )
 
 func TestFindByDispensary(t *testing.T) {
+	t.Parallel()
 	tests := map[string]struct {
 		dispensary string
 		rec        bool
@@ -27,9 +28,7 @@ func TestFindByDispensary(t *testing.T) {
 		},
 	}
 	for name, tt := range tests {
-		tt := tt
 		t.Run(name, func(t *testing.T) {
-			t.Parallel()
 			repoFactory := factory.NewRepoFactory(tt.dispensary, "", tt.rec)
 			repo, err := repoFactory.FindByDispensary()
 			if tt.wantErr {
@@ -45,6 +44,7 @@ func TestFindByDispensary(t *testing.T) {
 }
 
 func TestFindByDispensaryMenu(t *testing.T) {
+	t.Parallel()
 	tests := map[string]struct {
 		dispensary string
 		location   string
@@ -72,9 +72,7 @@ func TestFindByDispensaryMenu(t *testing.T) {
 		},
 	}
 	for name, tt := range tests {
-		tt := tt
 		t.Run(name, func(t *testing.T) {
-			t.Parallel()
 			repoFactory := factory.NewRepoFactory(tt.dispensary, tt.location, tt.rec)
 			repo, err := repoFactory.FindByDispensaryMenu()
 			if tt.wantErr {
