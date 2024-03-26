@@ -149,3 +149,53 @@ func TestProduct_PricePerGram(t *testing.T) {
 		})
 	}
 }
+
+func TestProductTHC(t *testing.T) {
+	t.Parallel()
+	tests := map[string]struct {
+		cannabinoids []*models.Cannabinoid
+		want         float64
+	}{
+		"10% THC, 5% THCA, 2% THCV": {
+			cannabinoids: []*models.Cannabinoid{
+				{Name: "THCV", Value: 2.0},
+				{Name: "THCA", Value: 5.0},
+				{Name: "THC", Value: 10.0},
+			},
+			want: 10.0,
+		},
+		"no data": {
+			cannabinoids: []*models.Cannabinoid{},
+			want:         0.0,
+		},
+		"1% THC": {
+			cannabinoids: []*models.Cannabinoid{
+				{Name: "THC (Tetrahydrocannabinol)", Value: 1.0},
+			},
+			want: 1.0,
+		},
+		"10% THC": {
+			cannabinoids: []*models.Cannabinoid{
+				{Name: "THC", Value: 10.0},
+			},
+			want: 10.0,
+		},
+		"10% THC, 5% CBD": {
+			cannabinoids: []*models.Cannabinoid{
+				{Name: "THC", Value: 10.0},
+				{Name: "CBD", Value: 5.0},
+			},
+			want: 10.0,
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			p := &models.Product{C: tc.cannabinoids}
+			got := p.THC()
+			if got != tc.want {
+				t.Errorf("expected %f, got %f", tc.want, got)
+			}
+		})
+	}
+}

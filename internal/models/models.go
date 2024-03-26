@@ -112,9 +112,11 @@ func convertFractionToGrams(frac string, unit string) (float64, error) {
 	}
 }
 
+var pattern = regexp.MustCompile(`thc[\W]|thc$`)
+
 func (p *Product) THC() float64 {
 	for _, c := range p.C {
-		if strings.Contains(strings.ToLower(c.Name), "thc") {
+		if pattern.MatchString(strings.ToLower(c.Name)) {
 			return c.Value
 		}
 	}

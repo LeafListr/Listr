@@ -386,8 +386,43 @@ func TestTHCDesc(t *testing.T) {
 						},
 					},
 				},
+				{
+					Id: "4",
+					C: []*models.Cannabinoid{
+						{
+							Name:  "THC",
+							Value: 19,
+						},
+					},
+				},
+				{
+					Id: "5",
+					C: []*models.Cannabinoid{
+						{
+							Name:  "THCA (Δ9-TETRAHYDROCANNABINOLIC ACID)",
+							Value: 6,
+						},
+						{
+							Name:  "THC",
+							Value: 55,
+						},
+					},
+				},
 			},
 			want: []*models.Product{
+				{
+					Id: "5",
+					C: []*models.Cannabinoid{
+						{
+							Name:  "THCA (Δ9-TETRAHYDROCANNABINOLIC ACID)",
+							Value: 6,
+						},
+						{
+							Name:  "THC",
+							Value: 55,
+						},
+					},
+				},
 				{
 					Id: "2",
 					C: []*models.Cannabinoid{
@@ -403,6 +438,15 @@ func TestTHCDesc(t *testing.T) {
 						{
 							Name:  "THC",
 							Value: 20,
+						},
+					},
+				},
+				{
+					Id: "4",
+					C: []*models.Cannabinoid{
+						{
+							Name:  "THC",
+							Value: 19,
 						},
 					},
 				},
