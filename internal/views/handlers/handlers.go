@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/Linkinlog/LeafListr/internal/api/translation"
@@ -186,6 +187,14 @@ func (h *HtmlHandler) Products(r http.ResponseWriter, req *http.Request) {
 		return
 	}
 	transProds := translation.NewAPITranslator().TranslateProducts(fProducts)
+
+	if req.URL.Query().Get("json") == "true" {
+		r.Header().Set("Content-Type", "application/json")
+		r.WriteHeader(http.StatusOK)
+		json.NewEncoder(r).Encode(transProds)
+		return
+	}
+
 	rErr := components.Products(transProds).Render(req.Context(), r)
 	if rErr != nil {
 		http.Error(r, rErr.Error(), http.StatusInternalServerError)
